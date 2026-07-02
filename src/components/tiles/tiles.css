@@ -1,6 +1,7 @@
 .mj-tile-wrap {
-  --mj-tile-w: 40px;
+  /* 実物の牌は 300x400 (= 3:4)。歪みを避けるため幅=高さ×0.75 に揃える。 */
   --mj-tile-h: 56px;
+  --mj-tile-w: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10,13 +11,13 @@
 }
 
 .mj-tile-wrap.mj-tile-size-sm {
-  --mj-tile-w: 28px;
   --mj-tile-h: 40px;
+  --mj-tile-w: 30px;
 }
 
 .mj-tile-wrap.mj-tile-size-lg {
-  --mj-tile-w: 52px;
   --mj-tile-h: 72px;
+  --mj-tile-w: 54px;
 }
 
 .mj-tile-wrap.mj-tile-rotated {
@@ -24,14 +25,23 @@
   height: var(--mj-tile-w);
 }
 
-.mj-tile-svg {
+/* 地(Front)と絵柄を重ねるための箱。牌本来の縦横比で保持し、回転時のみ90度回す。 */
+.mj-tile-inner {
+  position: relative;
   width: var(--mj-tile-w);
   height: var(--mj-tile-h);
-  display: block;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.18));
 }
 
-.mj-tile-rotated .mj-tile-svg {
+.mj-tile-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mj-tile-rotated .mj-tile-inner {
   transform: rotate(90deg);
 }
 
