@@ -4,7 +4,7 @@ import type { Payment } from "../engine/score";
 import { generateChoices, paymentKey } from "../generator/distractors";
 import { nextProblem } from "../store/nextProblem";
 import { recordAnswer } from "../store/statsStore";
-import { formatPayment, WIND_LABELS, WIN_TYPE_LABELS } from "./format";
+import { formatPayment, WIND_LABELS } from "./format";
 import { HandDisplay } from "./tiles/HandDisplay";
 import { TileRow } from "./tiles/TileRow";
 import "./quiz.css";
@@ -48,7 +48,6 @@ export function QuizPage() {
         <span className="badge">場風: {WIND_LABELS[problem.conditions.roundWind]}</span>
         <span className="badge">自風: {WIND_LABELS[problem.conditions.seatWind]}</span>
         <span className="badge">{problem.conditions.isDealer ? "親" : "子"}</span>
-        <span className="badge">{WIN_TYPE_LABELS[problem.hand.winType]}</span>
         {problem.conditions.riichi ? <span className="badge badge-riichi">リーチ</span> : null}
       </section>
 
@@ -58,6 +57,7 @@ export function QuizPage() {
           concealed={problem.hand.concealed}
           melds={problem.hand.melds}
           winningTile={problem.hand.winningTile}
+          winType={problem.hand.winType}
         />
       </section>
 

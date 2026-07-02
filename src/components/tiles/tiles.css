@@ -64,31 +64,47 @@
 
 .mj-hand-display {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* 上がり牌はツモ/ロンのラベルを添えて手牌の上段に置く。 */
+.mj-winning-area {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.mj-winning-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-text-secondary);
+}
+
+/* 純手牌＋副露の並び（横方向、幅が足りなければ副露が折り返す）。 */
+.mj-hand-row {
+  display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 10px;
 }
 
-.mj-hand-display .mj-winning-tile {
-  margin-left: 8px;
-}
-
-/* --- スマホ表示: 手牌(md)を横スクロールなしで1画面に収める ---
-   純手牌は最大14枚(13枚+上がり牌)。牌の実寸比(3:4)を保ったまま、
-   viewport 幅から1枚あたりの幅を算出し、全牌が1行に収まるよう縮小する。
-   -60px は shell余白(32)+行gap(12)+手牌間gap(4)+上がり牌margin(4)+安全域。 */
+/* --- スマホ表示: 純手牌(md)を横スクロールなしで1画面に収める ---
+   上がり牌は上段へ移したので、下段の純手牌は最大13枚。牌の実寸比(3:4)を
+   保ったまま、viewport 幅から1枚あたりの幅を算出し1行に収める。
+   -52px は shell余白(32)+行gap(12)+安全域(8)。 */
 @media (max-width: 480px) {
   .mj-tile-wrap.mj-tile-size-md {
-    --mj-tile-w: calc((100vw - 60px) / 14);
-    --mj-tile-h: calc((100vw - 60px) / 14 * 4 / 3);
+    --mj-tile-w: calc((100vw - 52px) / 13);
+    --mj-tile-h: calc((100vw - 52px) / 13 * 4 / 3);
   }
   .mj-tile-row {
     gap: 1px;
   }
   .mj-hand-display {
-    gap: 4px;
-  }
-  .mj-hand-display .mj-winning-tile {
-    margin-left: 4px;
+    gap: 8px;
   }
 }
