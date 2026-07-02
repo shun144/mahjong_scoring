@@ -72,3 +72,23 @@
 .mj-hand-display .mj-winning-tile {
   margin-left: 8px;
 }
+
+/* --- スマホ表示: 手牌(md)を横スクロールなしで1画面に収める ---
+   純手牌は最大14枚(13枚+上がり牌)。牌の実寸比(3:4)を保ったまま、
+   viewport 幅から1枚あたりの幅を算出し、全牌が1行に収まるよう縮小する。
+   -60px は shell余白(32)+行gap(12)+手牌間gap(4)+上がり牌margin(4)+安全域。 */
+@media (max-width: 480px) {
+  .mj-tile-wrap.mj-tile-size-md {
+    --mj-tile-w: calc((100vw - 60px) / 14);
+    --mj-tile-h: calc((100vw - 60px) / 14 * 4 / 3);
+  }
+  .mj-tile-row {
+    gap: 1px;
+  }
+  .mj-hand-display {
+    gap: 4px;
+  }
+  .mj-hand-display .mj-winning-tile {
+    margin-left: 4px;
+  }
+}
