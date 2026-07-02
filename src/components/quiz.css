@@ -1,0 +1,73 @@
+.quiz-conditions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.badge-riichi {
+  background: var(--color-danger-bg);
+  border-color: #f3b4b4;
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.quiz-hand {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.quiz-hand h2,
+.quiz-dora h2 {
+  margin: 0 0 8px;
+}
+
+.quiz-dora {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.quiz-dora > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dora-label {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.quiz-answer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border);
+}
+
+.quiz-answer label {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.quiz-answer select {
+  font-size: 16px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-bg);
+  color: var(--color-text);
+}

@@ -1,0 +1,64 @@
+.mj-tile-wrap {
+  --mj-tile-w: 40px;
+  --mj-tile-h: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mj-tile-w);
+  height: var(--mj-tile-h);
+  vertical-align: bottom;
+}
+
+.mj-tile-wrap.mj-tile-size-sm {
+  --mj-tile-w: 28px;
+  --mj-tile-h: 40px;
+}
+
+.mj-tile-wrap.mj-tile-size-lg {
+  --mj-tile-w: 52px;
+  --mj-tile-h: 72px;
+}
+
+.mj-tile-wrap.mj-tile-rotated {
+  width: var(--mj-tile-h);
+  height: var(--mj-tile-w);
+}
+
+.mj-tile-svg {
+  width: var(--mj-tile-w);
+  height: var(--mj-tile-h);
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.18));
+}
+
+.mj-tile-rotated .mj-tile-svg {
+  transform: rotate(90deg);
+}
+
+.mj-tile-row {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.mj-tile-row.mj-tile-row-gap-tight {
+  gap: 0;
+}
+
+.mj-meld-group {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1px;
+  padding: 0 4px;
+}
+
+.mj-hand-display {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.mj-hand-display .mj-winning-tile {
+  margin-left: 8px;
+}

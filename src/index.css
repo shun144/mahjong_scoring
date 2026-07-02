@@ -1,0 +1,141 @@
+:root {
+  color-scheme: light;
+
+  /* --- カラー（モダン・ニュートラル） --- */
+  --color-bg: #ffffff;
+  --color-surface: #fdfcf8;
+  --color-surface-alt: #f4f3ec;
+  --color-border: #e5e4e7;
+  --color-border-strong: #d6d3cb;
+  --color-text: #08060d;
+  --color-text-secondary: #6b6375;
+  --color-accent: #9333ea;
+  --color-accent-contrast: #ffffff;
+  --color-success: #15803d;
+  --color-success-bg: #f0fdf4;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fff1f1;
+  --color-warning-bg: #fff8e6;
+  --color-warning-border: #f3d98b;
+  --color-warning-text: #8a6d1f;
+
+  /* --- 形状 --- */
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /* --- タイポグラフィ --- */
+  --font-sans: system-ui, "Hiragino Sans", "Segoe UI", Meiryo, sans-serif;
+
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text);
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* --- 共通カード --- */
+.card {
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+/* --- 各ページ共通の外枠（スマホ最優先、PCは中央寄せカード幅） --- */
+.page-shell {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    padding: 32px 16px;
+  }
+}
+
+/* --- 各ページ見出し行（h1＋ナビリンク） --- */
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-header-link {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.page-header-link:hover {
+  text-decoration: underline;
+}
+
+/* --- ページ共通のボタン --- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  background: var(--color-border-strong);
+  cursor: not-allowed;
+}

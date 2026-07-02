@@ -1,0 +1,5557 @@
+[
+  {
+    "id": "riichi-pinfu-ryanmen-ron",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 9
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        }
+      ],
+      "han": 2,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 2000
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "リーチ",
+        "平和"
+      ]
+    }
+  },
+  {
+    "id": "pinfu-tsumo-20fu",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 9
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        }
+      ],
+      "han": 2,
+      "fu": 20,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 400,
+        "dealer": 700
+      }
+    },
+    "tags": {
+      "fuType": 20,
+      "yakuCategories": [
+        "門前清自摸和",
+        "平和"
+      ]
+    }
+  },
+  {
+    "id": "tanyao-tsumo",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 8
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "断幺九",
+          "han": 1
+        }
+      ],
+      "han": 3,
+      "fu": 20,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 700,
+        "dealer": 1300
+      }
+    },
+    "tags": {
+      "fuType": 20,
+      "yakuCategories": [
+        "門前清自摸和",
+        "平和",
+        "断幺九"
+      ]
+    }
+  },
+  {
+    "id": "tanyao-dora-riichi",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 8
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      },
+      {
+        "suit": "p",
+        "rank": 2
+      }
+    ],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "断幺九",
+          "han": 1
+        },
+        {
+          "name": "ドラ",
+          "han": 2
+        }
+      ],
+      "han": 5,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 8000
+      },
+      "rank": "mangan"
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "リーチ",
+        "平和",
+        "断幺九",
+        "ドラ"
+      ]
+    }
+  },
+  {
+    "id": "yakuhai-haku-tsumo",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 5
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "役牌(白)",
+          "han": 1
+        }
+      ],
+      "han": 2,
+      "fu": 40,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 700,
+        "dealer": 1300
+      }
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "門前清自摸和",
+        "役牌(白)"
+      ]
+    }
+  },
+  {
+    "id": "yakuhai-seat-and-round-wind",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 1
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "役牌(自風・東)",
+          "han": 1
+        },
+        {
+          "name": "役牌(場風・東)",
+          "han": 1
+        }
+      ],
+      "han": 2,
+      "fu": 40,
+      "payment": {
+        "kind": "ron",
+        "total": 2600
+      }
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "役牌(自風・東)",
+        "役牌(場風・東)"
+      ]
+    }
+  },
+  {
+    "id": "yakuhai-south-round-non-dealer",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 2
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "south",
+      "roundWind": "south",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "役牌(自風・南)",
+          "han": 1
+        },
+        {
+          "name": "役牌(場風・南)",
+          "han": 1
+        }
+      ],
+      "han": 2,
+      "fu": 40,
+      "payment": {
+        "kind": "ron",
+        "total": 2600
+      }
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "役牌(自風・南)",
+        "役牌(場風・南)"
+      ]
+    }
+  },
+  {
+    "id": "fu-50-yakuhai-pair-plus-kanchan",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "p",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "役牌(自風・東)",
+          "han": 1
+        },
+        {
+          "name": "役牌(場風・東)",
+          "han": 1
+        }
+      ],
+      "han": 2,
+      "fu": 50,
+      "payment": {
+        "kind": "ron",
+        "total": 3200
+      }
+    },
+    "tags": {
+      "fuType": 50,
+      "yakuCategories": [
+        "役牌(自風・東)",
+        "役牌(場風・東)"
+      ]
+    }
+  },
+  {
+    "id": "fu-40-ankou-tanki",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 4
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        }
+      ],
+      "han": 1,
+      "fu": 40,
+      "payment": {
+        "kind": "ron",
+        "total": 1300
+      }
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "リーチ"
+      ]
+    }
+  },
+  {
+    "id": "fu-50-ankou-plus-ryanmen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 7
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        }
+      ],
+      "han": 1,
+      "fu": 50,
+      "payment": {
+        "kind": "ron",
+        "total": 1600
+      }
+    },
+    "tags": {
+      "fuType": 50,
+      "yakuCategories": [
+        "リーチ"
+      ]
+    }
+  },
+  {
+    "id": "fu-60-triple-ankou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "p",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "役牌(自風・東)",
+          "han": 1
+        },
+        {
+          "name": "役牌(場風・東)",
+          "han": 1
+        },
+        {
+          "name": "三暗刻",
+          "han": 2
+        }
+      ],
+      "han": 4,
+      "fu": 60,
+      "payment": {
+        "kind": "ron",
+        "total": 8000
+      },
+      "rank": "mangan"
+    },
+    "tags": {
+      "fuType": 60,
+      "yakuCategories": [
+        "役牌(自風・東)",
+        "役牌(場風・東)",
+        "三暗刻"
+      ]
+    }
+  },
+  {
+    "id": "iipeikou-ryanmen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 7
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "一盃口",
+          "han": 1
+        }
+      ],
+      "han": 2,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 2000
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "平和",
+        "一盃口"
+      ]
+    }
+  },
+  {
+    "id": "ryanpeikou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "p",
+        "rank": 7
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "二盃口",
+          "han": 3
+        }
+      ],
+      "han": 4,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 7700
+      },
+      "interpretationNote": "別解: 2翻25符 (1600点相当) という解釈も可能だが、高点法により此方（+6100点）を採用。"
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "平和",
+        "二盃口"
+      ]
+    }
+  },
+  {
+    "id": "sanshoku-menzen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 8
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "三色同順",
+          "han": 2
+        }
+      ],
+      "han": 3,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 3900
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "平和",
+        "三色同順"
+      ]
+    }
+  },
+  {
+    "id": "sanshoku-open",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        }
+      ],
+      "melds": [
+        {
+          "type": "chi",
+          "tiles": [
+            {
+              "suit": "s",
+              "rank": 1
+            },
+            {
+              "suit": "s",
+              "rank": 2
+            },
+            {
+              "suit": "s",
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "winningTile": {
+        "suit": "s",
+        "rank": 8
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "三色同順",
+          "han": 1
+        }
+      ],
+      "han": 1,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 1000
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "三色同順"
+      ]
+    }
+  },
+  {
+    "id": "ittsuu-menzen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "p",
+        "rank": 8
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "一気通貫",
+          "han": 2
+        }
+      ],
+      "han": 3,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 3900
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "平和",
+        "一気通貫"
+      ]
+    }
+  },
+  {
+    "id": "ittsuu-open",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [
+        {
+          "type": "chi",
+          "tiles": [
+            {
+              "suit": "p",
+              "rank": 6
+            },
+            {
+              "suit": "p",
+              "rank": 7
+            },
+            {
+              "suit": "p",
+              "rank": 8
+            }
+          ]
+        }
+      ],
+      "winningTile": {
+        "suit": "m",
+        "rank": 9
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "一気通貫",
+          "han": 1
+        }
+      ],
+      "han": 1,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 1000
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "一気通貫"
+      ]
+    }
+  },
+  {
+    "id": "chanta",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 9
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "混全帯幺九",
+          "han": 2
+        }
+      ],
+      "han": 2,
+      "fu": 40,
+      "payment": {
+        "kind": "ron",
+        "total": 2600
+      }
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "混全帯幺九"
+      ]
+    }
+  },
+  {
+    "id": "junchan",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 9
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "純全帯幺九",
+          "han": 3
+        }
+      ],
+      "han": 4,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 7700
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "平和",
+        "純全帯幺九"
+      ]
+    }
+  },
+  {
+    "id": "toitoi-ron",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "役牌(白)",
+          "han": 1
+        },
+        {
+          "name": "対々和",
+          "han": 2
+        },
+        {
+          "name": "三暗刻",
+          "han": 2
+        }
+      ],
+      "han": 5,
+      "fu": 50,
+      "payment": {
+        "kind": "ron",
+        "total": 8000
+      },
+      "rank": "mangan"
+    },
+    "tags": {
+      "fuType": 50,
+      "yakuCategories": [
+        "役牌(白)",
+        "対々和",
+        "三暗刻"
+      ]
+    }
+  },
+  {
+    "id": "sanankou-tsumo",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 5
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "三暗刻",
+          "han": 2
+        }
+      ],
+      "han": 3,
+      "fu": 40,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 1300,
+        "dealer": 2600
+      }
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "門前清自摸和",
+        "三暗刻"
+      ]
+    }
+  },
+  {
+    "id": "sanshoku-doukou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 6
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "役牌(發)",
+          "han": 1
+        },
+        {
+          "name": "対々和",
+          "han": 2
+        },
+        {
+          "name": "三暗刻",
+          "han": 2
+        },
+        {
+          "name": "三色同刻",
+          "han": 2
+        }
+      ],
+      "han": 7,
+      "fu": 50,
+      "payment": {
+        "kind": "ron",
+        "total": 12000
+      },
+      "rank": "haneman"
+    },
+    "tags": {
+      "fuType": 50,
+      "yakuCategories": [
+        "役牌(發)",
+        "対々和",
+        "三暗刻",
+        "三色同刻"
+      ]
+    }
+  },
+  {
+    "id": "sankantsu",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "p",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        }
+      ],
+      "melds": [
+        {
+          "type": "ankan",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 1
+            },
+            {
+              "suit": "m",
+              "rank": 1
+            },
+            {
+              "suit": "m",
+              "rank": 1
+            },
+            {
+              "suit": "m",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "type": "ankan",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 2
+            },
+            {
+              "suit": "m",
+              "rank": 2
+            },
+            {
+              "suit": "m",
+              "rank": 2
+            },
+            {
+              "suit": "m",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "type": "minkan",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 3
+            },
+            {
+              "suit": "m",
+              "rank": 3
+            },
+            {
+              "suit": "m",
+              "rank": 3
+            },
+            {
+              "suit": "m",
+              "rank": 3
+            }
+          ],
+          "calledTile": {
+            "suit": "m",
+            "rank": 3
+          }
+        }
+      ],
+      "winningTile": {
+        "suit": "p",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "三槓子",
+          "han": 2
+        }
+      ],
+      "han": 2,
+      "fu": 80,
+      "payment": {
+        "kind": "ron",
+        "total": 5200
+      }
+    },
+    "tags": {
+      "fuType": 80,
+      "yakuCategories": [
+        "三槓子"
+      ]
+    }
+  },
+  {
+    "id": "honroutou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 3
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "混全帯幺九",
+          "han": 2
+        },
+        {
+          "name": "対々和",
+          "han": 2
+        },
+        {
+          "name": "三暗刻",
+          "han": 2
+        },
+        {
+          "name": "混老頭",
+          "han": 2
+        }
+      ],
+      "han": 8,
+      "fu": 60,
+      "payment": {
+        "kind": "ron",
+        "total": 16000
+      },
+      "rank": "baiman"
+    },
+    "tags": {
+      "fuType": 60,
+      "yakuCategories": [
+        "混全帯幺九",
+        "対々和",
+        "三暗刻",
+        "混老頭"
+      ]
+    }
+  },
+  {
+    "id": "shousangen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 7
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "役牌(白)",
+          "han": 1
+        },
+        {
+          "name": "役牌(發)",
+          "han": 1
+        },
+        {
+          "name": "混全帯幺九",
+          "han": 2
+        },
+        {
+          "name": "小三元",
+          "han": 2
+        }
+      ],
+      "han": 7,
+      "fu": 50,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 3000,
+        "dealer": 6000
+      },
+      "rank": "haneman"
+    },
+    "tags": {
+      "fuType": 50,
+      "yakuCategories": [
+        "門前清自摸和",
+        "役牌(白)",
+        "役牌(發)",
+        "混全帯幺九",
+        "小三元"
+      ]
+    }
+  },
+  {
+    "id": "honitsu-menzen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 4
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "一気通貫",
+          "han": 2
+        },
+        {
+          "name": "混一色",
+          "han": 3
+        }
+      ],
+      "han": 6,
+      "fu": 30,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 3000,
+        "dealer": 6000
+      },
+      "rank": "haneman"
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "門前清自摸和",
+        "一気通貫",
+        "混一色"
+      ]
+    }
+  },
+  {
+    "id": "honitsu-open",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        }
+      ],
+      "melds": [
+        {
+          "type": "pon",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 4
+            },
+            {
+              "suit": "m",
+              "rank": 4
+            },
+            {
+              "suit": "m",
+              "rank": 4
+            }
+          ],
+          "calledTile": {
+            "suit": "m",
+            "rank": 4
+          }
+        }
+      ],
+      "winningTile": {
+        "suit": "z",
+        "rank": 2
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "役牌(自風・東)",
+          "han": 1
+        },
+        {
+          "name": "役牌(場風・東)",
+          "han": 1
+        },
+        {
+          "name": "混一色",
+          "han": 2
+        }
+      ],
+      "han": 4,
+      "fu": 40,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 2000,
+        "dealer": 4000
+      },
+      "rank": "mangan"
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "役牌(自風・東)",
+        "役牌(場風・東)",
+        "混一色"
+      ]
+    }
+  },
+  {
+    "id": "chinitsu-menzen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 4
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "一気通貫",
+          "han": 2
+        },
+        {
+          "name": "清一色",
+          "han": 6
+        }
+      ],
+      "han": 9,
+      "fu": 30,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 4000,
+        "dealer": 8000
+      },
+      "rank": "baiman",
+      "interpretationNote": "別解: 7翻30符 (12000点相当) という解釈も可能だが、高点法により此方（+4000点）を採用。"
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "門前清自摸和",
+        "一気通貫",
+        "清一色"
+      ]
+    }
+  },
+  {
+    "id": "chinitsu-open",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        }
+      ],
+      "melds": [
+        {
+          "type": "pon",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 4
+            },
+            {
+              "suit": "m",
+              "rank": 4
+            },
+            {
+              "suit": "m",
+              "rank": 4
+            }
+          ],
+          "calledTile": {
+            "suit": "m",
+            "rank": 4
+          }
+        }
+      ],
+      "winningTile": {
+        "suit": "m",
+        "rank": 4
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "一気通貫",
+          "han": 1
+        },
+        {
+          "name": "清一色",
+          "han": 5
+        }
+      ],
+      "han": 6,
+      "fu": 30,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 3000,
+        "dealer": 6000
+      },
+      "rank": "haneman"
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "一気通貫",
+        "清一色"
+      ]
+    }
+  },
+  {
+    "id": "chiitoitsu-plain",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "七対子",
+          "han": 2
+        },
+        {
+          "name": "リーチ",
+          "han": 1
+        }
+      ],
+      "han": 3,
+      "fu": 25,
+      "payment": {
+        "kind": "ron",
+        "total": 3200
+      }
+    },
+    "tags": {
+      "fuType": 25,
+      "yakuCategories": [
+        "七対子",
+        "リーチ"
+      ]
+    }
+  },
+  {
+    "id": "chiitoitsu-tanyao",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "七対子",
+          "han": 2
+        },
+        {
+          "name": "断幺九",
+          "han": 1
+        }
+      ],
+      "han": 3,
+      "fu": 25,
+      "payment": {
+        "kind": "ron",
+        "total": 3200
+      }
+    },
+    "tags": {
+      "fuType": 25,
+      "yakuCategories": [
+        "七対子",
+        "断幺九"
+      ]
+    }
+  },
+  {
+    "id": "chiitoitsu-honitsu",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "七対子",
+          "han": 2
+        },
+        {
+          "name": "混一色",
+          "han": 3
+        }
+      ],
+      "han": 5,
+      "fu": 25,
+      "payment": {
+        "kind": "ron",
+        "total": 8000
+      },
+      "rank": "mangan"
+    },
+    "tags": {
+      "fuType": 25,
+      "yakuCategories": [
+        "七対子",
+        "混一色"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-suuankou-tanki",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四暗刻",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 60,
+      "payment": {
+        "kind": "ron",
+        "total": 32000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 60,
+      "yakuCategories": [
+        "四暗刻"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-suuankou-tsumo",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 5
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四暗刻",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 50,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 50,
+      "yakuCategories": [
+        "四暗刻"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-daisangen",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 4
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": true,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "大三元",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 50,
+      "payment": {
+        "kind": "tsumo-oya",
+        "each": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 50,
+      "yakuCategories": [
+        "大三元"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-tsuuiisou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 6
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四暗刻",
+          "han": 13
+        },
+        {
+          "name": "字一色",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 60,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 60,
+      "yakuCategories": [
+        "四暗刻",
+        "字一色"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-tsuuiisou-chiitoitsu",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 7
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "字一色(七対子)",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 25,
+      "payment": {
+        "kind": "ron",
+        "total": 32000
+      },
+      "rank": "yakuman",
+      "interpretationNote": "別解: 2翻25符 (1600点相当) という解釈も可能だが、高点法により此方（+30400点）を採用。"
+    },
+    "tags": {
+      "fuType": 25,
+      "yakuCategories": [
+        "字一色(七対子)"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-ryuuiisou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 8
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四暗刻",
+          "han": 13
+        },
+        {
+          "name": "緑一色",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 40,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "四暗刻",
+        "緑一色"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-chinroutou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 1
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四暗刻",
+          "han": 13
+        },
+        {
+          "name": "清老頭",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 60,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 60,
+      "yakuCategories": [
+        "四暗刻",
+        "清老頭"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-shousuushi",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "z",
+        "rank": 5
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四暗刻",
+          "han": 13
+        },
+        {
+          "name": "字一色",
+          "han": 13
+        },
+        {
+          "name": "小四喜",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 60,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 60,
+      "yakuCategories": [
+        "四暗刻",
+        "字一色",
+        "小四喜"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-daisuushi",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 5
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四暗刻",
+          "han": 13
+        },
+        {
+          "name": "大四喜",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 60,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 60,
+      "yakuCategories": [
+        "四暗刻",
+        "大四喜"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-suukantsu",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        }
+      ],
+      "melds": [
+        {
+          "type": "ankan",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 1
+            },
+            {
+              "suit": "m",
+              "rank": 1
+            },
+            {
+              "suit": "m",
+              "rank": 1
+            },
+            {
+              "suit": "m",
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "type": "ankan",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 2
+            },
+            {
+              "suit": "m",
+              "rank": 2
+            },
+            {
+              "suit": "m",
+              "rank": 2
+            },
+            {
+              "suit": "m",
+              "rank": 2
+            }
+          ]
+        },
+        {
+          "type": "minkan",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 3
+            },
+            {
+              "suit": "m",
+              "rank": 3
+            },
+            {
+              "suit": "m",
+              "rank": 3
+            },
+            {
+              "suit": "m",
+              "rank": 3
+            }
+          ],
+          "calledTile": {
+            "suit": "m",
+            "rank": 3
+          }
+        },
+        {
+          "type": "minkan",
+          "tiles": [
+            {
+              "suit": "m",
+              "rank": 4
+            },
+            {
+              "suit": "m",
+              "rank": 4
+            },
+            {
+              "suit": "m",
+              "rank": 4
+            },
+            {
+              "suit": "m",
+              "rank": 4
+            }
+          ],
+          "calledTile": {
+            "suit": "m",
+            "rank": 4
+          }
+        }
+      ],
+      "winningTile": {
+        "suit": "p",
+        "rank": 5
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "四槓子",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 90,
+      "payment": {
+        "kind": "ron",
+        "total": 32000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 90,
+      "yakuCategories": [
+        "四槓子"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-chuurenpoutou",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 5
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "九蓮宝燈",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 40,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "九蓮宝燈"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-kokushi",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 1
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 1
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "国士無双",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 0,
+      "payment": {
+        "kind": "ron",
+        "total": 32000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 0,
+      "yakuCategories": [
+        "国士無双"
+      ]
+    }
+  },
+  {
+    "id": "yakuman-kokushi-13wait",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 9
+        },
+        {
+          "suit": "z",
+          "rank": 1
+        },
+        {
+          "suit": "z",
+          "rank": 2
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 5
+        },
+        {
+          "suit": "z",
+          "rank": 6
+        },
+        {
+          "suit": "z",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 9
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "国士無双",
+          "han": 13
+        }
+      ],
+      "han": 13,
+      "fu": 0,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 8000,
+        "dealer": 16000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 0,
+      "yakuCategories": [
+        "国士無双"
+      ]
+    }
+  },
+  {
+    "id": "kazoe-yakuman",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 8
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      },
+      {
+        "suit": "m",
+        "rank": 1
+      },
+      {
+        "suit": "m",
+        "rank": 2
+      },
+      {
+        "suit": "p",
+        "rank": 9
+      },
+      {
+        "suit": "p",
+        "rank": 1
+      },
+      {
+        "suit": "p",
+        "rank": 2
+      },
+      {
+        "suit": "z",
+        "rank": 3
+      }
+    ],
+    "uraDoraIndicators": [
+      {
+        "suit": "s",
+        "rank": 9
+      },
+      {
+        "suit": "s",
+        "rank": 1
+      },
+      {
+        "suit": "s",
+        "rank": 2
+      }
+    ],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "三色同順",
+          "han": 2
+        },
+        {
+          "name": "ドラ",
+          "han": 8
+        },
+        {
+          "name": "裏ドラ",
+          "han": 3
+        }
+      ],
+      "han": 15,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 32000
+      },
+      "rank": "yakuman"
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "リーチ",
+        "平和",
+        "三色同順",
+        "ドラ",
+        "裏ドラ"
+      ]
+    }
+  },
+  {
+    "id": "takamehou-sequence-vs-triplet",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "p",
+          "rank": 8
+        },
+        {
+          "suit": "p",
+          "rank": 9
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 4
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": false
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "三暗刻",
+          "han": 2
+        }
+      ],
+      "han": 3,
+      "fu": 40,
+      "payment": {
+        "kind": "tsumo-ko",
+        "nonDealer": 1300,
+        "dealer": 2600
+      },
+      "interpretationNote": "別解: 3翻20符 (2700点相当) という解釈も可能だが、高点法により此方（+2500点）を採用。"
+    },
+    "tags": {
+      "fuType": 40,
+      "yakuCategories": [
+        "門前清自摸和",
+        "三暗刻"
+      ]
+    }
+  },
+  {
+    "id": "aka-dora-one",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5,
+          "red": true
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        },
+        {
+          "suit": "m",
+          "rank": 9
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 9
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "赤ドラ",
+          "han": 1
+        }
+      ],
+      "han": 3,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 3900
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "リーチ",
+        "平和",
+        "赤ドラ"
+      ]
+    }
+  },
+  {
+    "id": "ura-dora-with-riichi",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 4
+        },
+        {
+          "suit": "p",
+          "rank": 5
+        },
+        {
+          "suit": "p",
+          "rank": 6
+        },
+        {
+          "suit": "p",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 5
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "m",
+          "rank": 6
+        },
+        {
+          "suit": "m",
+          "rank": 7
+        },
+        {
+          "suit": "m",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "m",
+        "rank": 6
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": false,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "断幺九",
+          "han": 1
+        },
+        {
+          "name": "裏ドラ",
+          "han": 1
+        }
+      ],
+      "han": 4,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 7700
+      }
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "リーチ",
+        "平和",
+        "断幺九",
+        "裏ドラ"
+      ]
+    }
+  },
+  {
+    "id": "dealer-tsumo-mangan",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 8
+      },
+      "winType": "tsumo"
+    },
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      },
+      {
+        "suit": "p",
+        "rank": 9
+      }
+    ],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": true,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        },
+        {
+          "name": "門前清自摸和",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "三色同順",
+          "han": 2
+        },
+        {
+          "name": "ドラ",
+          "han": 2
+        }
+      ],
+      "han": 7,
+      "fu": 20,
+      "payment": {
+        "kind": "tsumo-oya",
+        "each": 6000
+      },
+      "rank": "haneman"
+    },
+    "tags": {
+      "fuType": 20,
+      "yakuCategories": [
+        "リーチ",
+        "門前清自摸和",
+        "平和",
+        "三色同順",
+        "ドラ"
+      ]
+    }
+  },
+  {
+    "id": "dealer-ron-haneman",
+    "source": "bank",
+    "hand": {
+      "concealed": [
+        {
+          "suit": "m",
+          "rank": 1
+        },
+        {
+          "suit": "m",
+          "rank": 2
+        },
+        {
+          "suit": "m",
+          "rank": 3
+        },
+        {
+          "suit": "p",
+          "rank": 1
+        },
+        {
+          "suit": "p",
+          "rank": 2
+        },
+        {
+          "suit": "p",
+          "rank": 3
+        },
+        {
+          "suit": "s",
+          "rank": 1
+        },
+        {
+          "suit": "s",
+          "rank": 2
+        },
+        {
+          "suit": "s",
+          "rank": 3
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "z",
+          "rank": 4
+        },
+        {
+          "suit": "s",
+          "rank": 6
+        },
+        {
+          "suit": "s",
+          "rank": 7
+        },
+        {
+          "suit": "s",
+          "rank": 8
+        }
+      ],
+      "melds": [],
+      "winningTile": {
+        "suit": "s",
+        "rank": 8
+      },
+      "winType": "ron"
+    },
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      },
+      {
+        "suit": "p",
+        "rank": 9
+      },
+      {
+        "suit": "s",
+        "rank": 9
+      }
+    ],
+    "uraDoraIndicators": [],
+    "conditions": {
+      "seatWind": "east",
+      "roundWind": "east",
+      "isDealer": true,
+      "riichi": true
+    },
+    "answer": {
+      "yaku": [
+        {
+          "name": "リーチ",
+          "han": 1
+        },
+        {
+          "name": "平和",
+          "han": 1
+        },
+        {
+          "name": "三色同順",
+          "han": 2
+        },
+        {
+          "name": "ドラ",
+          "han": 3
+        }
+      ],
+      "han": 7,
+      "fu": 30,
+      "payment": {
+        "kind": "ron",
+        "total": 18000
+      },
+      "rank": "haneman"
+    },
+    "tags": {
+      "fuType": 30,
+      "yakuCategories": [
+        "リーチ",
+        "平和",
+        "三色同順",
+        "ドラ"
+      ]
+    }
+  }
+]
