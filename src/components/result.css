@@ -52,6 +52,16 @@
   font-weight: 600;
 }
 
+.result-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.result-actions .btn-primary,
+.result-actions .btn-secondary {
+  flex: 1;
+}
+
 .result-fu {
   display: flex;
   flex-direction: column;
@@ -89,8 +99,10 @@
 
 .dora-reveal {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
 }
 
 .dora-reveal-row {
@@ -98,12 +110,6 @@
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-}
-
-.dora-reveal-pair {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .result-alt {

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import type { Problem } from "../data/problem";
 import type { Payment } from "../engine/score";
 import { generateChoices, paymentKey } from "../generator/distractors";
 import { nextProblem } from "../store/nextProblem";
@@ -9,9 +10,19 @@ import { HandDisplay } from "./tiles/HandDisplay";
 import { TileRow } from "./tiles/TileRow";
 import "./quiz.css";
 
+/** 解説画面から「問題に戻る」で渡される復習用の遷移 state。 */
+function isReviewState(state: unknown): state is { problem: Problem; review: boolean } {
+  return !!state && typeof state === "object" && "problem" in state && "review" in state;
+}
+
 export function QuizPage() {
   const navigate = useNavigate();
-  const [problem] = useState(() => nextProblem());
+  const location = useLocation();
+  // 解説から「問題に戻る」で来た場合は同じ問題を再表示する。復習なので成績は記録しない。
+  const [reviewProblem] = useState(() =>
+    isReviewState(location.state) ? location.state.problem : null,
+  );
+  const [problem] = useState(() => reviewProblem ?? nextProblem());
   const choices = useMemo<Payment[]>(
     () =>
       generateChoices(
@@ -28,7 +39,7 @@ export function QuizPage() {
   );
   function handleAnswer(selected: Payment) {
     const isCorrect = paymentKey(selected) === paymentKey(problem.answer.payment);
-    recordAnswer(problem, isCorrect);
+    if (!reviewProblem) recordAnswer(problem, isCorrect); // 復習（同じ問題の再回答）は二重計上しない
     navigate("/result", { state: { problem, selected, isCorrect } });
   }
 

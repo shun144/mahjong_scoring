@@ -13,7 +13,10 @@ export interface FuContext {
 /** 符計算の1要素（解説画面の内訳表示用）。 */
 export interface FuItem {
   label: string;
+  /** この要素の符（集約時は count 個ぶんの合計）。 */
   fu: number;
+  /** 同種の面子を集約した個数。1 または未指定なら単一。 */
+  count?: number;
 }
 
 /** 符計算の内訳（SPEC.md §5.2）。合計 total は calculateFu と一致する。 */
@@ -30,11 +33,11 @@ export interface FuBreakdown {
 }
 
 const WAIT_LABELS: Record<WaitKind, string> = {
-  ryanmen: "両面",
-  kanchan: "嵌張",
-  penchan: "辺張",
-  shanpon: "双碰",
-  tanki: "単騎",
+  ryanmen: "両面(リャンメン)",
+  kanchan: "嵌張(カンチャン)",
+  penchan: "辺張(ペンチャン)",
+  shanpon: "双碰(シャンポン)",
+  tanki: "単騎(タンキ)",
 };
 
 function meldFuLabel(set: HandSet): string {
@@ -111,9 +114,18 @@ export function calculateFuBreakdown(
   if (ctx.isMenzen && ctx.winType === "ron") items.push({ label: "門前ロン", fu: 10 });
   if (ctx.winType === "tsumo") items.push({ label: "ツモ", fu: 2 });
 
+  // 面子の符は同種（同じラベル）をまとめて「... ×N」で表示する。
   for (const set of interp.sets) {
     const setValue = setFu(set);
-    if (setValue > 0) items.push({ label: meldFuLabel(set), fu: setValue });
+    if (setValue === 0) continue;
+    const label = meldFuLabel(set);
+    const existing = items.find((item) => item.label === label);
+    if (existing) {
+      existing.fu += setValue;
+      existing.count = (existing.count ?? 1) + 1;
+    } else {
+      items.push({ label, fu: setValue, count: 1 });
+    }
   }
 
   if (isYakuhaiPairType(interp.pair.tileType, ctx)) items.push({ label: "雀頭(役牌)", fu: 2 });
@@ -121,8 +133,10 @@ export function calculateFuBreakdown(
   const winningSet = interp.sets.find((s) => s.isWinningGroup);
   const waitKind: WaitKind | undefined =
     winningSet?.waitKind ?? (interp.pair.isWinningGroup ? "tanki" : undefined);
-  // 待ちの形は +0（両面・双碰）でも学習のため必ず表示する。
-  if (waitKind) items.push({ label: `待ち: ${WAIT_LABELS[waitKind]}`, fu: waitFu(waitKind) });
+  // +0符の待ち（両面・双碰）は表示しない。加符のある待ち（嵌張・辺張・単騎）のみ表示する。
+  if (waitKind && waitFu(waitKind) > 0) {
+    items.push({ label: `待ち: ${WAIT_LABELS[waitKind]}`, fu: waitFu(waitKind) });
+  }
 
   const subtotal = items.reduce((sum, item) => sum + item.fu, 0);
 

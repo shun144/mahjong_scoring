@@ -4,29 +4,29 @@ import { formatCalculationLine, formatPayment } from "./format";
 
 describe("formatPayment", () => {
   it("formats ron as a single value", () => {
-    expect(formatPayment({ kind: "ron", total: 8000 })).toBe("8000点");
+    expect(formatPayment({ kind: "ron", total: 8000 })).toBe("8000");
   });
 
   it("formats tsumo-oya as an 'all' value", () => {
-    expect(formatPayment({ kind: "tsumo-oya", each: 4000 })).toBe("4000点オール");
+    expect(formatPayment({ kind: "tsumo-oya", each: 4000 })).toBe("4000オール");
   });
 
   it("formats tsumo-ko as a child/parent split", () => {
     expect(formatPayment({ kind: "tsumo-ko", nonDealer: 2000, dealer: 4000 })).toBe(
-      "子2000点 / 親4000点",
+      "子2000 / 親4000",
     );
   });
 });
 
 describe("formatCalculationLine", () => {
-  it("matches the SPEC.md example: 40符3翻 → 子ロン 5200点", () => {
+  it("matches the SPEC.md example: 40符3翻 → 子ロン 5200", () => {
     const answer: ScoreResult = {
       yaku: [{ name: "役牌(白)", han: 1 }],
       han: 3,
       fu: 40,
       payment: { kind: "ron", total: 5200 },
     };
-    expect(formatCalculationLine(answer, false, "ron")).toBe("40符3翻 → 子ロン 5200点");
+    expect(formatCalculationLine(answer, false, "ron")).toBe("40符3翻 → 子ロン 5200");
   });
 
   it("shows the rank name instead of fu for mangan and above", () => {
@@ -37,7 +37,7 @@ describe("formatCalculationLine", () => {
       payment: { kind: "ron", total: 12000 },
       rank: "mangan",
     };
-    expect(formatCalculationLine(answer, true, "ron")).toBe("5翻 満貫 → 親ロン 12000点");
+    expect(formatCalculationLine(answer, true, "ron")).toBe("5翻 満貫 → 親ロン 12000");
   });
 
   it("shows 役満 without a fu value for yakuman", () => {
@@ -48,7 +48,7 @@ describe("formatCalculationLine", () => {
       payment: { kind: "ron", total: 32000 },
       rank: "yakuman",
     };
-    expect(formatCalculationLine(answer, false, "ron")).toBe("13翻 役満 → 子ロン 32000点");
+    expect(formatCalculationLine(answer, false, "ron")).toBe("13翻 役満 → 子ロン 32000");
   });
 
   it("formats tsumo lines with the payment split", () => {
@@ -59,7 +59,7 @@ describe("formatCalculationLine", () => {
       payment: { kind: "tsumo-ko", nonDealer: 500, dealer: 1000 },
     };
     expect(formatCalculationLine(answer, false, "tsumo")).toBe(
-      "30符2翻 → 子ツモ 子500点 / 親1000点",
+      "30符2翻 → 子ツモ 子500 / 親1000",
     );
   });
 });

@@ -53,7 +53,7 @@ describe("ResultPage", () => {
 
     expect(screen.getByText("○ 正解")).toBeInTheDocument();
     expect(screen.queryByText(/あなたの回答/)).not.toBeInTheDocument();
-    expect(screen.getByText("正解: 2000点")).toBeInTheDocument();
+    expect(screen.getByText("正解: 2000")).toBeInTheDocument();
   });
 
   it("shows ✕ 不正解 with both the user's answer and the correct answer when wrong", () => {
@@ -65,8 +65,8 @@ describe("ResultPage", () => {
     });
 
     expect(screen.getByText("✕ 不正解")).toBeInTheDocument();
-    expect(screen.getByText("あなたの回答: 3900点")).toBeInTheDocument();
-    expect(screen.getByText("正解: 2000点")).toBeInTheDocument();
+    expect(screen.getByText("あなたの回答: 3900")).toBeInTheDocument();
+    expect(screen.getByText("正解: 2000")).toBeInTheDocument();
   });
 
   it("lists every yaku with its han and shows the calculation line", () => {
@@ -76,7 +76,7 @@ describe("ResultPage", () => {
     expect(screen.getByText("リーチ")).toBeInTheDocument();
     expect(screen.getByText("平和")).toBeInTheDocument();
     expect(screen.getAllByText("1翻")).toHaveLength(2);
-    expect(screen.getByText("30符2翻 → 子ロン 2000点")).toBeInTheDocument();
+    expect(screen.getByText("30符2翻 → 子ロン 2000")).toBeInTheDocument();
   });
 
   it("shows the alternative (高点法) interpretation note when present", () => {
@@ -98,16 +98,16 @@ describe("ResultPage", () => {
     expect(screen.queryByText("高点法の別解")).not.toBeInTheDocument();
   });
 
-  it("reveals the actual dora derived from the dora indicator", () => {
+  it("shows the actual dora (not the indicator) derived from the dora indicator", () => {
     const problem = baseProblem();
     renderResult({ problem, selected: problem.answer.payment, isCorrect: true });
 
-    // doraIndicators: 4索 -> ドラは5索
-    expect(screen.getByRole("img", { name: "四索" })).toBeInTheDocument();
+    // doraIndicators: 4索 -> ドラは5索。表示牌(四索)は表示せず、実ドラ(五索)のみ表示する。
     expect(screen.getByRole("img", { name: "五索" })).toBeInTheDocument();
-    // uraDoraIndicators: 6筒 -> 裏ドラは7筒 (riichi=trueなので表示される)
-    expect(screen.getByRole("img", { name: "六筒" })).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "四索" })).not.toBeInTheDocument();
+    // uraDoraIndicators: 6筒 -> 裏ドラは7筒 (riichi=trueなので表示される)。表示牌(六筒)は非表示。
     expect(screen.getByRole("img", { name: "七筒" })).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "六筒" })).not.toBeInTheDocument();
   });
 
   it("hides the ura-dora reveal when the hand was not riichi", () => {
@@ -122,6 +122,13 @@ describe("ResultPage", () => {
     const problem = baseProblem();
     renderResult({ problem, selected: problem.answer.payment, isCorrect: true });
     const link = screen.getByRole("link", { name: "次の問題へ" });
+    expect(link).toHaveAttribute("href", "/quiz");
+  });
+
+  it("provides a link back to the same question", () => {
+    const problem = baseProblem();
+    renderResult({ problem, selected: problem.answer.payment, isCorrect: true });
+    const link = screen.getByRole("link", { name: "問題に戻る" });
     expect(link).toHaveAttribute("href", "/quiz");
   });
 });

@@ -18,24 +18,17 @@ function isResultLocationState(state: unknown): state is ResultLocationState {
   return !!state && typeof state === "object" && "problem" in state && "selected" in state;
 }
 
-function DoraRevealRow({ label, indicators }: { label: string; indicators: readonly Tile[] }) {
-  if (indicators.length === 0) {
-    return (
-      <div className="dora-reveal-row">
-        <span>{label}: なし</span>
-      </div>
-    );
-  }
+function DoraRow({ label, indicators }: { label: string; indicators: readonly Tile[] }) {
   return (
     <div className="dora-reveal-row">
       <span>{label}:</span>
-      {indicators.map((indicator, i) => (
-        <span className="dora-reveal-pair" key={i}>
-          <TileFace tile={indicator} size="sm" />
-          <span aria-hidden="true">→</span>
-          <TileFace tile={doraFromIndicator(indicator)} size="sm" />
-        </span>
-      ))}
+      {indicators.length === 0 ? (
+        <span>なし</span>
+      ) : (
+        indicators.map((indicator, i) => (
+          <TileFace key={i} tile={doraFromIndicator(indicator)} size="sm" />
+        ))
+      )}
     </div>
   );
 }
@@ -52,7 +45,7 @@ function FuBreakdownSection({ detail }: { detail: FuBreakdown }) {
       <ul className="fu-list">
         {detail.items.map((item, i) => (
           <li key={i}>
-            <span>{item.label}</span>
+            <span>{item.count && item.count > 1 ? `${item.label} × ${item.count}` : item.label}</span>
             <span>{formatFuItem(item.fu, i === 0)}</span>
           </li>
         ))}
@@ -129,10 +122,10 @@ export function ResultPage() {
 
       {fuDetail ? <FuBreakdownSection detail={fuDetail} /> : null}
 
-      <section className="dora-reveal" aria-label="ドラの読み替え">
-        <DoraRevealRow label="ドラ表示牌 → ドラ" indicators={problem.doraIndicators} />
+      <section className="dora-reveal" aria-label="ドラ・裏ドラ">
+        <DoraRow label="ドラ" indicators={problem.doraIndicators} />
         {problem.conditions.riichi ? (
-          <DoraRevealRow label="裏ドラ表示牌 → 裏ドラ" indicators={problem.uraDoraIndicators} />
+          <DoraRow label="裏ドラ" indicators={problem.uraDoraIndicators} />
         ) : null}
       </section>
 
@@ -143,9 +136,14 @@ export function ResultPage() {
         </section>
       ) : null}
 
-      <Link to="/quiz" className="btn-primary">
-        次の問題へ
-      </Link>
+      <div className="result-actions">
+        <Link to="/quiz" state={{ problem, review: true }} className="btn-secondary">
+          問題に戻る
+        </Link>
+        <Link to="/quiz" className="btn-primary">
+          次の問題へ
+        </Link>
+      </div>
     </main>
   );
 }

@@ -41,18 +41,20 @@ test.describe("麻雀点数計算ドリル - 一連の学習フロー", () => {
 
     const badgeTexts = await page.locator(".badge").allTextContents();
     const isDealer = badgeTexts.includes("親");
-    const isTsumo = badgeTexts.includes("ツモ");
+    // ツモ/ロンは局条件バッジではなく上がり牌のラベル(.mj-winning-label)に表示される。
+    const winLabel = (await page.locator(".mj-winning-label").first().textContent())?.trim();
+    const isTsumo = winLabel === "ツモ";
 
     const realOptions = await page.locator(".quiz-choice-btn").allTextContents();
     expect(realOptions.length).toBe(4);
 
     for (const opt of realOptions) {
       if (!isTsumo) {
-        expect(opt).toMatch(/^\d+点$/); // ロン: 単一値
+        expect(opt).toMatch(/^\d+$/); // ロン: 単一値
       } else if (isDealer) {
-        expect(opt).toMatch(/^\d+点オール$/); // 親ツモ: Xオール
+        expect(opt).toMatch(/^\d+オール$/); // 親ツモ: Xオール
       } else {
-        expect(opt).toMatch(/^子\d+点 \/ 親\d+点$/); // 子ツモ: 子X/親Y
+        expect(opt).toMatch(/^子\d+ \/ 親\d+$/); // 子ツモ: 子X/親Y
       }
     }
   });

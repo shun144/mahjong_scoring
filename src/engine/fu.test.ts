@@ -91,7 +91,36 @@ describe("calculateFuBreakdown - itemised breakdown", () => {
     expect(labels).toContain("副底");
     expect(labels).toContain("門前ロン");
     expect(labels).toContain("暗刻(幺九)");
-    expect(labels).toContain("待ち: 単騎");
+    // 待ちのラベルにはふりがなを添える。
+    expect(labels).toContain("待ち: 単騎(タンキ)");
+  });
+
+  it("aggregates identical melds into one item with a count and summed fu", () => {
+    // 111m(暗刻,老頭) 999s(暗刻,老頭) 44p 22p... ではなく、中張の暗刻を2つ持つ手で検証。
+    // 222m(暗刻,中張) 888s(暗刻,中張) 456p 33z(非役牌雀頭) + 2m単騎? ここでは単純に
+    // 222m 888s 456p 789p 55m の形（暗刻2つ＋順子2つ＋雀頭）を作る。
+    const counts = countsFromCompact("222m888s456p789p55m");
+    const winType = tileToType(parseTileNotation("5m")); // 雀頭シャンポンではなく単騎相当
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "tsumo");
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "tsumo" }));
+
+    const ankouChuchan = breakdown.items.find((i) => i.label === "暗刻(中張)");
+    expect(ankouChuchan).toBeDefined();
+    expect(ankouChuchan?.count).toBe(2);
+    expect(ankouChuchan?.fu).toBe(8); // 中張暗刻4符 × 2
+    // 集約しても合計は各要素の和と一致する。
+    expect(breakdown.items.reduce((s, i) => s + i.fu, 0)).toBe(breakdown.subtotal);
+  });
+
+  it("omits +0 fu waits (両面・双碰) from the breakdown", () => {
+    // 平和にならない両面待ち: 役牌雀頭で両面。222m(暗刻) を含め両面ロン。
+    const counts = countsFromCompact("234m567p345s222m");
+    counts[31] += 2; // 白(役牌)雀頭 index 31
+    const winType = tileToType(parseTileNotation("2m")); // 234mの両面上がり
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "ron" }));
+
+    expect(breakdown.items.some((i) => i.label.startsWith("待ち"))).toBe(false);
   });
 
   it("marks pinfu tsumo as a fixed 20 fu with a single item", () => {

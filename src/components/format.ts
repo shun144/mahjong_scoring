@@ -26,9 +26,9 @@ export const RANK_LABELS: Record<ScoreRank, string> = {
  * ロン=単一値／子ツモ=「子X/親Y」／親ツモ=「Xオール」。
  */
 export function formatPayment(payment: Payment): string {
-  if (payment.kind === "ron") return `${payment.total}点`;
-  if (payment.kind === "tsumo-oya") return `${payment.each}点オール`;
-  return `子${payment.nonDealer}点 / 親${payment.dealer}点`;
+  if (payment.kind === "ron") return `${payment.total}`;
+  if (payment.kind === "tsumo-oya") return `${payment.each}オール`;
+  return `子${payment.nonDealer} / 親${payment.dealer}`;
 }
 
 /**
