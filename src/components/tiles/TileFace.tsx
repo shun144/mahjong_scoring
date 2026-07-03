@@ -44,7 +44,7 @@ export function TileFace({ tile, rotated = false, faceDown, size = "md", classNa
     <span className={wrapClassName(size, rotated, className)} role="img" aria-label={label}>
       <span className="mj-tile-inner">
         <img className="mj-tile-layer" src={frontUrl} alt="" />
-        <img className="mj-tile-layer" src={markUrl(tile)} alt="" />
+        <img className="mj-tile-layer mj-tile-mark" src={markUrl(tile)} alt="" />
       </span>
     </span>
   );

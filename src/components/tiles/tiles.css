@@ -41,6 +41,13 @@
   display: block;
 }
 
+/* 模様は地(Front)より少し内側に収め、ほんの少し余白を持たせる。 */
+.mj-tile-mark {
+  box-sizing: border-box;
+  padding: 7%;
+  object-fit: contain;
+}
+
 .mj-tile-rotated .mj-tile-inner {
   transform: rotate(90deg);
 }
@@ -48,7 +55,7 @@
 .mj-tile-row {
   display: inline-flex;
   align-items: flex-end;
-  gap: 2px;
+  gap: 4px;
 }
 
 .mj-tile-row.mj-tile-row-gap-tight {
