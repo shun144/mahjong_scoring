@@ -52,6 +52,41 @@
   font-weight: 600;
 }
 
+.result-fu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fu-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  color: var(--color-text-secondary);
+}
+
+.fu-total {
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-border-strong);
+  font-size: 15px;
+}
+
+.fu-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
 .dora-reveal {
   display: flex;
   flex-direction: column;

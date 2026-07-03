@@ -10,6 +10,39 @@ export interface FuContext {
   roundWind: Wind;
 }
 
+/** 符計算の1要素（解説画面の内訳表示用）。 */
+export interface FuItem {
+  label: string;
+  fu: number;
+}
+
+/** 符計算の内訳（SPEC.md §5.2）。合計 total は calculateFu と一致する。 */
+export interface FuBreakdown {
+  items: FuItem[];
+  /** 切り上げ前の合計。固定符（平和/七対子等）では total と同じ。 */
+  subtotal: number;
+  /** 10符切り上げ後の最終符。 */
+  total: number;
+  /** 平和・七対子など固定符で、切り上げ計算を伴わない場合 true。 */
+  fixed: boolean;
+  /** 喰い平和形の切り上げ等、補足があれば記す。 */
+  note?: string;
+}
+
+const WAIT_LABELS: Record<WaitKind, string> = {
+  ryanmen: "両面",
+  kanchan: "嵌張",
+  penchan: "辺張",
+  shanpon: "双碰",
+  tanki: "単騎",
+};
+
+function meldFuLabel(set: HandSet): string {
+  const grade = isTerminalOrHonor(set.tileType) ? "幺九" : "中張";
+  const base = set.isKan ? (set.concealed ? "暗槓" : "明槓") : set.concealed ? "暗刻" : "明刻";
+  return `${base}(${grade})`;
+}
+
 const SANGEN_TYPES = [31, 32, 33]; // 白發中
 
 function windToHonorType(wind: Wind): number {
@@ -50,36 +83,61 @@ function waitFu(waitKind: WaitKind | undefined): number {
 }
 
 /**
- * 4面子1雀頭形の符を計算する（SPEC.md §5.2）。
+ * 4面子1雀頭形の符を計算し、内訳付きで返す（SPEC.md §5.2）。
  * 七対子は固定25符のためこの関数の対象外（呼び出し側で分岐する）。
  */
-export function calculateFu(interp: StandardInterpretation, ctx: FuContext): number {
-  const pinfu = isPinfuShape(interp, ctx);
-
-  if (pinfu) {
-    return ctx.winType === "tsumo" ? 20 : 30;
+export function calculateFuBreakdown(
+  interp: StandardInterpretation,
+  ctx: FuContext,
+): FuBreakdown {
+  // 平和形は固定符（ツモ20／ロン30）。
+  if (isPinfuShape(interp, ctx)) {
+    if (ctx.winType === "tsumo") {
+      return { items: [{ label: "平和ツモ(固定)", fu: 20 }], subtotal: 20, total: 20, fixed: true };
+    }
+    return {
+      items: [
+        { label: "副底", fu: 20 },
+        { label: "門前ロン", fu: 10 },
+      ],
+      subtotal: 30,
+      total: 30,
+      fixed: false,
+    };
   }
 
-  let fu = 20; // 副底
+  const items: FuItem[] = [{ label: "副底", fu: 20 }];
 
-  if (ctx.isMenzen && ctx.winType === "ron") fu += 10;
-  if (ctx.winType === "tsumo") fu += 2;
+  if (ctx.isMenzen && ctx.winType === "ron") items.push({ label: "門前ロン", fu: 10 });
+  if (ctx.winType === "tsumo") items.push({ label: "ツモ", fu: 2 });
 
   for (const set of interp.sets) {
-    fu += setFu(set);
+    const setValue = setFu(set);
+    if (setValue > 0) items.push({ label: meldFuLabel(set), fu: setValue });
   }
 
-  if (isYakuhaiPairType(interp.pair.tileType, ctx)) fu += 2;
+  if (isYakuhaiPairType(interp.pair.tileType, ctx)) items.push({ label: "雀頭(役牌)", fu: 2 });
 
   const winningSet = interp.sets.find((s) => s.isWinningGroup);
   const waitKind: WaitKind | undefined =
     winningSet?.waitKind ?? (interp.pair.isWinningGroup ? "tanki" : undefined);
-  fu += waitFu(waitKind);
+  // 待ちの形は +0（両面・双碰）でも学習のため必ず表示する。
+  if (waitKind) items.push({ label: `待ち: ${WAIT_LABELS[waitKind]}`, fu: waitFu(waitKind) });
+
+  const subtotal = items.reduce((sum, item) => sum + item.fu, 0);
 
   // 喰い平和形のロン（鳴きで符が一切付かない20符形）は30符に切り上げる。
-  if (fu === 20 && ctx.winType === "ron" && !ctx.isMenzen) {
-    fu = 30;
+  if (subtotal === 20 && ctx.winType === "ron" && !ctx.isMenzen) {
+    return { items, subtotal, total: 30, fixed: false, note: "喰い平和形のため30符に切り上げ" };
   }
 
-  return Math.ceil(fu / 10) * 10;
+  return { items, subtotal, total: Math.ceil(subtotal / 10) * 10, fixed: false };
+}
+
+/**
+ * 4面子1雀頭形の符（合計値）を計算する（SPEC.md §5.2）。
+ * 七対子は固定25符のためこの関数の対象外（呼び出し側で分岐する）。
+ */
+export function calculateFu(interp: StandardInterpretation, ctx: FuContext): number {
+  return calculateFuBreakdown(interp, ctx).total;
 }

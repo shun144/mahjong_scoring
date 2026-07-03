@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import type { Problem } from "../data/problem";
+import { problemToScoreHandInput, type Problem } from "../data/problem";
 import { doraFromIndicator } from "../engine/dora";
-import type { Payment } from "../engine/score";
+import type { FuBreakdown, Payment } from "../engine/score";
+import { scoreHand } from "../engine/scoreHand";
 import type { Tile } from "../engine/model";
 import { formatCalculationLine, formatPayment } from "./format";
 import { TileFace } from "./tiles/TileFace";
@@ -39,6 +40,37 @@ function DoraRevealRow({ label, indicators }: { label: string; indicators: reado
   );
 }
 
+function formatFuItem(fu: number, isBase: boolean): string {
+  // 先頭の基本値（副底・固定符）は素の値、それ以外は加符として「+」を付ける。
+  return isBase ? `${fu}符` : `+${fu}符`;
+}
+
+function FuBreakdownSection({ detail }: { detail: FuBreakdown }) {
+  return (
+    <section className="card result-fu" aria-label="符の内訳">
+      <h2>符の計算</h2>
+      <ul className="fu-list">
+        {detail.items.map((item, i) => (
+          <li key={i}>
+            <span>{item.label}</span>
+            <span>{formatFuItem(item.fu, i === 0)}</span>
+          </li>
+        ))}
+      </ul>
+      {detail.fixed ? (
+        <p className="fu-total">
+          合計 <strong>{detail.total}符</strong>（固定）
+        </p>
+      ) : (
+        <p className="fu-total">
+          小計 {detail.subtotal}符 → 切り上げ <strong>{detail.total}符</strong>
+        </p>
+      )}
+      {detail.note ? <p className="fu-note">{detail.note}</p> : null}
+    </section>
+  );
+}
+
 export function ResultPage() {
   const location = useLocation();
   const state = isResultLocationState(location.state) ? location.state : null;
@@ -56,6 +88,13 @@ export function ResultPage() {
 
   const { problem, selected, isCorrect } = state;
   const { answer } = problem;
+
+  // バンク問題の保存済み answer には符内訳が無いため、無ければエンジンで再計算する
+  // （scoreHand は決定的なので保存済みの解釈・符と一致する）。
+  // 満貫以上（rank あり）は符が点数に影響しないため符内訳は表示しない。
+  const fuDetail = answer.rank
+    ? undefined
+    : (answer.fuDetail ?? scoreHand(problemToScoreHandInput(problem))?.fuDetail);
 
   return (
     <main className="page-shell">
@@ -87,6 +126,8 @@ export function ResultPage() {
           {formatCalculationLine(answer, problem.conditions.isDealer, problem.hand.winType)}
         </p>
       </section>
+
+      {fuDetail ? <FuBreakdownSection detail={fuDetail} /> : null}
 
       <section className="dora-reveal" aria-label="ドラの読み替え">
         <DoraRevealRow label="ドラ表示牌 → ドラ" indicators={problem.doraIndicators} />

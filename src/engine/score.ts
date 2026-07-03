@@ -1,4 +1,7 @@
 import type { WinType } from "./model";
+import type { FuBreakdown } from "./fu";
+
+export type { FuBreakdown, FuItem } from "./fu";
 
 export interface YakuResult {
   name: string;
@@ -19,6 +22,8 @@ export interface ScoreResult {
   payment: Payment;
   rank?: ScoreRank;
   interpretationNote?: string;
+  /** 符の内訳（解説表示用）。満貫以上など符が点数に影響しない場合は省略され得る。 */
+  fuDetail?: FuBreakdown;
 }
 
 function roundUp100(n: number): number {

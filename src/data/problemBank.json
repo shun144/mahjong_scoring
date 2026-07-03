@@ -92,6 +92,21 @@
       "payment": {
         "kind": "ron",
         "total": 2000
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
       }
     },
     "tags": {
@@ -196,6 +211,17 @@
         "kind": "tsumo-ko",
         "nonDealer": 400,
         "dealer": 700
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "平和ツモ(固定)",
+            "fu": 20
+          }
+        ],
+        "subtotal": 20,
+        "total": 20,
+        "fixed": true
       }
     },
     "tags": {
@@ -304,6 +330,17 @@
         "kind": "tsumo-ko",
         "nonDealer": 700,
         "dealer": 1300
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "平和ツモ(固定)",
+            "fu": 20
+          }
+        ],
+        "subtotal": 20,
+        "total": 20,
+        "fixed": true
       }
     },
     "tags": {
@@ -426,7 +463,22 @@
         "kind": "ron",
         "total": 8000
       },
-      "rank": "mangan"
+      "rank": "mangan",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 30,
@@ -532,6 +584,33 @@
         "kind": "tsumo-ko",
         "nonDealer": 700,
         "dealer": 1300
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 32,
+        "total": 40,
+        "fixed": false
       }
     },
     "tags": {
@@ -635,6 +714,29 @@
       "payment": {
         "kind": "ron",
         "total": 2600
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "明刻(幺九)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 34,
+        "total": 40,
+        "fixed": false
       }
     },
     "tags": {
@@ -738,6 +840,29 @@
       "payment": {
         "kind": "ron",
         "total": 2600
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "明刻(幺九)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 34,
+        "total": 40,
+        "fixed": false
       }
     },
     "tags": {
@@ -841,6 +966,33 @@
       "payment": {
         "kind": "ron",
         "total": 3200
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 嵌張",
+            "fu": 2
+          }
+        ],
+        "subtotal": 42,
+        "total": 50,
+        "fixed": false
       }
     },
     "tags": {
@@ -940,6 +1092,29 @@
       "payment": {
         "kind": "ron",
         "total": 1300
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 40,
+        "total": 40,
+        "fixed": false
       }
     },
     "tags": {
@@ -1038,6 +1213,33 @@
       "payment": {
         "kind": "ron",
         "total": 1600
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 両面",
+            "fu": 0
+          }
+        ],
+        "subtotal": 42,
+        "total": 50,
+        "fixed": false
       }
     },
     "tags": {
@@ -1145,7 +1347,38 @@
         "kind": "ron",
         "total": 8000
       },
-      "rank": "mangan"
+      "rank": "mangan",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 嵌張",
+            "fu": 2
+          }
+        ],
+        "subtotal": 56,
+        "total": 60,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 60,
@@ -1249,6 +1482,21 @@
       "payment": {
         "kind": "ron",
         "total": 2000
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
       }
     },
     "tags": {
@@ -1353,6 +1601,21 @@
         "kind": "ron",
         "total": 7700
       },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
+      },
       "interpretationNote": "別解: 2翻25符 (1600点相当) という解釈も可能だが、高点法により此方（+6100点）を採用。"
     },
     "tags": {
@@ -1456,6 +1719,21 @@
       "payment": {
         "kind": "ron",
         "total": 3900
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
       }
     },
     "tags": {
@@ -1561,6 +1839,22 @@
       "payment": {
         "kind": "ron",
         "total": 1000
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "待ち: 両面",
+            "fu": 0
+          }
+        ],
+        "subtotal": 20,
+        "total": 30,
+        "fixed": false,
+        "note": "喰い平和形のため30符に切り上げ"
       }
     },
     "tags": {
@@ -1663,6 +1957,21 @@
       "payment": {
         "kind": "ron",
         "total": 3900
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
       }
     },
     "tags": {
@@ -1768,6 +2077,22 @@
       "payment": {
         "kind": "ron",
         "total": 1000
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "待ち: 両面",
+            "fu": 0
+          }
+        ],
+        "subtotal": 20,
+        "total": 30,
+        "fixed": false,
+        "note": "喰い平和形のため30符に切り上げ"
       }
     },
     "tags": {
@@ -1866,6 +2191,29 @@
       "payment": {
         "kind": "ron",
         "total": 2600
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 両面",
+            "fu": 0
+          }
+        ],
+        "subtotal": 32,
+        "total": 40,
+        "fixed": false
       }
     },
     "tags": {
@@ -1968,6 +2316,21 @@
       "payment": {
         "kind": "ron",
         "total": 7700
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
       }
     },
     "tags": {
@@ -2076,7 +2439,42 @@
         "kind": "ron",
         "total": 8000
       },
-      "rank": "mangan"
+      "rank": "mangan",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "明刻(幺九)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 50,
+        "total": 50,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 50,
@@ -2181,6 +2579,37 @@
         "kind": "tsumo-ko",
         "nonDealer": 1300,
         "dealer": 2600
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 嵌張",
+            "fu": 2
+          }
+        ],
+        "subtotal": 40,
+        "total": 40,
+        "fixed": false
       }
     },
     "tags": {
@@ -2293,7 +2722,42 @@
         "kind": "ron",
         "total": 12000
       },
-      "rank": "haneman"
+      "rank": "haneman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "明刻(幺九)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 46,
+        "total": 50,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 50,
@@ -2426,6 +2890,33 @@
       "payment": {
         "kind": "ron",
         "total": 5200
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "暗槓(幺九)",
+            "fu": 32
+          },
+          {
+            "label": "暗槓(中張)",
+            "fu": 16
+          },
+          {
+            "label": "明槓(中張)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 嵌張",
+            "fu": 2
+          }
+        ],
+        "subtotal": 78,
+        "total": 80,
+        "fixed": false
       }
     },
     "tags": {
@@ -2537,7 +3028,46 @@
         "kind": "ron",
         "total": 16000
       },
-      "rank": "baiman"
+      "rank": "baiman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "明刻(幺九)",
+            "fu": 4
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 60,
+        "total": 60,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 60,
@@ -2656,7 +3186,38 @@
         "nonDealer": 3000,
         "dealer": 6000
       },
-      "rank": "haneman"
+      "rank": "haneman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 42,
+        "total": 50,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 50,
@@ -2768,7 +3329,30 @@
         "nonDealer": 3000,
         "dealer": 6000
       },
-      "rank": "haneman"
+      "rank": "haneman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 30,
@@ -2888,7 +3472,34 @@
         "nonDealer": 2000,
         "dealer": 4000
       },
-      "rank": "mangan"
+      "rank": "mangan",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "明刻(中張)",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 34,
+        "total": 40,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 40,
@@ -2999,6 +3610,29 @@
         "dealer": 8000
       },
       "rank": "baiman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 両面",
+            "fu": 0
+          }
+        ],
+        "subtotal": 26,
+        "total": 30,
+        "fixed": false
+      },
       "interpretationNote": "別解: 7翻30符 (12000点相当) という解釈も可能だが、高点法により此方（+4000点）を採用。"
     },
     "tags": {
@@ -3115,7 +3749,30 @@
         "nonDealer": 3000,
         "dealer": 6000
       },
-      "rank": "haneman"
+      "rank": "haneman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "明刻(中張)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 両面",
+            "fu": 0
+          }
+        ],
+        "subtotal": 24,
+        "total": 30,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 30,
@@ -3218,6 +3875,17 @@
       "payment": {
         "kind": "ron",
         "total": 3200
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "七対子(固定)",
+            "fu": 25
+          }
+        ],
+        "subtotal": 25,
+        "total": 25,
+        "fixed": true
       }
     },
     "tags": {
@@ -3321,6 +3989,17 @@
       "payment": {
         "kind": "ron",
         "total": 3200
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "七対子(固定)",
+            "fu": 25
+          }
+        ],
+        "subtotal": 25,
+        "total": 25,
+        "fixed": true
       }
     },
     "tags": {
@@ -3425,7 +4104,18 @@
         "kind": "ron",
         "total": 8000
       },
-      "rank": "mangan"
+      "rank": "mangan",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "七対子(固定)",
+            "fu": 25
+          }
+        ],
+        "subtotal": 25,
+        "total": 25,
+        "fixed": true
+      }
     },
     "tags": {
       "fuType": 25,
@@ -3525,7 +4215,46 @@
         "kind": "ron",
         "total": 32000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 58,
+        "total": 60,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 60,
@@ -3625,7 +4354,42 @@
         "nonDealer": 8000,
         "dealer": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 46,
+        "total": 50,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 50,
@@ -3724,7 +4488,38 @@
         "kind": "tsumo-oya",
         "each": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 48,
+        "total": 50,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 50,
@@ -3828,7 +4623,46 @@
         "nonDealer": 8000,
         "dealer": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 56,
+        "total": 60,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 60,
@@ -4033,7 +4867,46 @@
         "nonDealer": 8000,
         "dealer": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 40,
+        "total": 40,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 40,
@@ -4138,7 +5011,42 @@
         "nonDealer": 8000,
         "dealer": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 56,
+        "total": 60,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 60,
@@ -4247,7 +5155,42 @@
         "nonDealer": 8000,
         "dealer": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 54,
+        "total": 60,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 60,
@@ -4353,7 +5296,42 @@
         "nonDealer": 8000,
         "dealer": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 56,
+        "total": 60,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 60,
@@ -4498,7 +5476,38 @@
         "kind": "ron",
         "total": 32000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "暗槓(幺九)",
+            "fu": 32
+          },
+          {
+            "label": "暗槓(中張)",
+            "fu": 16
+          },
+          {
+            "label": "明槓(中張)",
+            "fu": 8
+          },
+          {
+            "label": "明槓(中張)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 86,
+        "total": 90,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 90,
@@ -4598,7 +5607,34 @@
         "nonDealer": 8000,
         "dealer": 16000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "暗刻(幺九)",
+            "fu": 8
+          },
+          {
+            "label": "待ち: 単騎",
+            "fu": 2
+          }
+        ],
+        "subtotal": 40,
+        "total": 40,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 40,
@@ -4954,7 +5990,22 @@
         "kind": "ron",
         "total": 32000
       },
-      "rank": "yakuman"
+      "rank": "yakuman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 30,
@@ -5061,6 +6112,37 @@
         "kind": "tsumo-ko",
         "nonDealer": 1300,
         "dealer": 2600
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "ツモ",
+            "fu": 2
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "暗刻(中張)",
+            "fu": 4
+          },
+          {
+            "label": "待ち: 双碰",
+            "fu": 0
+          }
+        ],
+        "subtotal": 34,
+        "total": 40,
+        "fixed": false
       },
       "interpretationNote": "別解: 3翻20符 (2700点相当) という解釈も可能だが、高点法により此方（+2500点）を採用。"
     },
@@ -5170,6 +6252,21 @@
       "payment": {
         "kind": "ron",
         "total": 3900
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
       }
     },
     "tags": {
@@ -5287,6 +6384,21 @@
       "payment": {
         "kind": "ron",
         "total": 7700
+      },
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
       }
     },
     "tags": {
@@ -5414,7 +6526,18 @@
         "kind": "tsumo-oya",
         "each": 6000
       },
-      "rank": "haneman"
+      "rank": "haneman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "平和ツモ(固定)",
+            "fu": 20
+          }
+        ],
+        "subtotal": 20,
+        "total": 20,
+        "fixed": true
+      }
     },
     "tags": {
       "fuType": 20,
@@ -5542,7 +6665,22 @@
         "kind": "ron",
         "total": 18000
       },
-      "rank": "haneman"
+      "rank": "haneman",
+      "fuDetail": {
+        "items": [
+          {
+            "label": "副底",
+            "fu": 20
+          },
+          {
+            "label": "門前ロン",
+            "fu": 10
+          }
+        ],
+        "subtotal": 30,
+        "total": 30,
+        "fixed": false
+      }
     },
     "tags": {
       "fuType": 30,

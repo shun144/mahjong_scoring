@@ -1,5 +1,5 @@
 import { countAkaDora, countDoraFromIndicators } from "./dora";
-import { calculateFu } from "./fu";
+import { calculateFuBreakdown, type FuBreakdown } from "./fu";
 import { buildStandardInterpretations, type StandardInterpretation } from "./interpretation";
 import { decomposeChiitoitsu, decomposeKokushi } from "./decompose";
 import type { Meld, Tile, Wind, WinType } from "./model";
@@ -29,6 +29,7 @@ interface Candidate {
   han: number;
   fu: number;
   isYakuman: boolean;
+  fuDetail?: FuBreakdown;
 }
 
 function isMenzenHand(melds: readonly Meld[]): boolean {
@@ -47,6 +48,7 @@ function buildCandidateResult(
     fu: candidate.fu,
     payment,
     rank: rank ?? undefined,
+    fuDetail: candidate.fuDetail,
   };
 }
 
@@ -91,23 +93,24 @@ export function scoreHand(input: ScoreHandInput): ScoreResult | null {
   };
 
   for (const interp of interpretations) {
+    const fuDetail = calculateFuBreakdown(interp, yakuCtx);
     const yakumanResults = detectYakuman(interp, { isMenzen }, concealedCounts);
     if (yakumanResults.length > 0) {
       candidates.push({
         yaku: yakumanResults,
         han: 13,
-        fu: calculateFu(interp, yakuCtx),
+        fu: fuDetail.total,
         isYakuman: true,
+        fuDetail,
       });
       continue; // 役満と通常役は複合させない
     }
 
     const regularYaku = detectStandardYaku(interp, yakuCtx);
     if (regularYaku.length === 0) continue; // 役なし（ドラのみ）は無効
-    const fu = calculateFu(interp, yakuCtx);
     const yaku = [...regularYaku, ...doraYaku];
     const han = regularYaku.reduce((a, y) => a + y.han, 0) + bonusHan;
-    candidates.push({ yaku, han, fu, isYakuman: false });
+    candidates.push({ yaku, han, fu: fuDetail.total, isYakuman: false, fuDetail });
   }
 
   // --- 七対子・国士無双は副露が無い場合のみ ---
@@ -150,6 +153,12 @@ export function scoreHand(input: ScoreHandInput): ScoreResult | null {
         han: chiitoiHan,
         fu: 25,
         isYakuman: false,
+        fuDetail: {
+          items: [{ label: "七対子(固定)", fu: 25 }],
+          subtotal: 25,
+          total: 25,
+          fixed: true,
+        },
       });
     }
   }

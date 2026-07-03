@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateFu, type FuContext } from "./fu";
+import { calculateFu, calculateFuBreakdown, type FuContext } from "./fu";
 import { buildStandardInterpretations } from "./interpretation";
 import { tileToType, tilesToCounts } from "./tileType";
 import { parseTileNotation } from "./tiles";
@@ -70,5 +70,50 @@ describe("calculateFu - standard combinations", () => {
     const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
     const fu = calculateFu(interp, baseCtx({ winType: "ron", isMenzen: false }));
     expect(fu).toBe(30);
+  });
+});
+
+describe("calculateFuBreakdown - itemised breakdown", () => {
+  it("itemises menzen ron + terminal ankou + tanki and sums to the total", () => {
+    // 20(副底)+10(門前ロン)+8(老頭暗刻)+2(単騎) = 40
+    const counts = countsFromCompact("111m456p789s234s4z4z");
+    const winType = tileToType(parseTileNotation("4z"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "ron" }));
+
+    expect(breakdown.total).toBe(40);
+    expect(breakdown.total).toBe(calculateFu(interp, baseCtx({ winType: "ron" })));
+    expect(breakdown.subtotal).toBe(40);
+    expect(breakdown.fixed).toBe(false);
+    // 各要素の合計が subtotal と一致する
+    expect(breakdown.items.reduce((s, i) => s + i.fu, 0)).toBe(breakdown.subtotal);
+    const labels = breakdown.items.map((i) => i.label);
+    expect(labels).toContain("副底");
+    expect(labels).toContain("門前ロン");
+    expect(labels).toContain("暗刻(幺九)");
+    expect(labels).toContain("待ち: 単騎");
+  });
+
+  it("marks pinfu tsumo as a fixed 20 fu with a single item", () => {
+    const counts = countsFromCompact("234m567p33z345s789m");
+    const winType = tileToType(parseTileNotation("9m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "tsumo");
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "tsumo" }));
+
+    expect(breakdown.total).toBe(20);
+    expect(breakdown.fixed).toBe(true);
+    expect(breakdown.items).toHaveLength(1);
+  });
+
+  it("notes the kuipinfu ron bump to 30 fu", () => {
+    const counts = countsFromCompact("234m456m567p345s");
+    counts[9 + 8] += 2;
+    const winType = tileToType(parseTileNotation("6m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "ron", isMenzen: false }));
+
+    expect(breakdown.subtotal).toBe(20);
+    expect(breakdown.total).toBe(30);
+    expect(breakdown.note).toBeTruthy();
   });
 });
