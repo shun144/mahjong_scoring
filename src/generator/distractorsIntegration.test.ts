@@ -7,7 +7,7 @@ import { createSeededRandom } from "./random";
 const problemBank = problemBankRaw as unknown as Problem[];
 
 describe("generateChoices against the real problem bank", () => {
-  it("produces valid 4-8 choice sets for every bank problem, always including the correct answer", () => {
+  it("produces valid 4-choice sets for every bank problem, always including the correct answer", () => {
     const rng = createSeededRandom(42);
     for (const p of problemBank) {
       const choices = generateChoices(
@@ -20,8 +20,7 @@ describe("generateChoices against the real problem bank", () => {
         },
         rng,
       );
-      expect(choices.length).toBeGreaterThanOrEqual(2);
-      expect(choices.length).toBeLessThanOrEqual(8);
+      expect(choices.length).toBe(4);
       expect(choices).toContainEqual(p.answer.payment);
       for (const c of choices) {
         expect(c.kind).toBe(p.answer.payment.kind);

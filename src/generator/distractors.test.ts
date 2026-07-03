@@ -18,7 +18,7 @@ describe("generateChoices", () => {
     expect(choices.some((c) => paymentKey(c) === paymentKey(correct))).toBe(true);
   });
 
-  it("produces between 4 and 8 choices", () => {
+  it("produces exactly 4 choices", () => {
     const rng = createSeededRandom(2);
     for (let i = 0; i < 50; i++) {
       const han = 1 + Math.floor(rng() * 6);
@@ -28,8 +28,7 @@ describe("generateChoices", () => {
       const ctx: DistractorContext = { han, fu, isDealer, winType };
       const { payment: correct } = calculatePayment(han, fu, isDealer, winType);
       const choices = generateChoices(correct, ctx, rng);
-      expect(choices.length).toBeGreaterThanOrEqual(4);
-      expect(choices.length).toBeLessThanOrEqual(8);
+      expect(choices.length).toBe(4);
     }
   });
 

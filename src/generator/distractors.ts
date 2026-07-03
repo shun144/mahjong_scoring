@@ -1,6 +1,6 @@
 import type { WinType } from "../engine/model";
 import { calculatePayment, type Payment } from "../engine/score";
-import { randomInt, shuffle, type RandomSource } from "./random";
+import { shuffle, type RandomSource } from "./random";
 
 export interface DistractorContext {
   han: number;
@@ -74,12 +74,12 @@ function buildCandidatePool(ctx: DistractorContext, correctKind: Payment["kind"]
   return pool;
 }
 
-const MIN_CHOICES = 4;
-const MAX_CHOICES = 8;
+const CHOICE_COUNT = 4;
 
 /**
- * 正解を含む4〜8択の選択肢（シャッフル済み）を生成する。
+ * 正解を含む4択の選択肢（シャッフル済み）を生成する。
  * 全ての候補は正解と同じ支払い形式（ron / tsumo-ko / tsumo-oya）に揃える。
+ * 誤答候補が足りない稀なケースでは4択未満に縮退する。
  */
 export function generateChoices(
   correctPayment: Payment,
@@ -97,9 +97,7 @@ export function generateChoices(
     distractors.push(candidate);
   }
 
-  const maxPossible = Math.min(MAX_CHOICES, distractors.length + 1);
-  const targetTotal = maxPossible <= MIN_CHOICES ? maxPossible : randomInt(MIN_CHOICES, maxPossible, rng);
-  const shuffledDistractors = shuffle(distractors, rng).slice(0, targetTotal - 1);
+  const shuffledDistractors = shuffle(distractors, rng).slice(0, CHOICE_COUNT - 1);
 
   return shuffle([correctPayment, ...shuffledDistractors], rng);
 }

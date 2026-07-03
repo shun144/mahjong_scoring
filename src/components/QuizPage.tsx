@@ -26,11 +26,7 @@ export function QuizPage() {
       ),
     [problem],
   );
-  const [selectedIndex, setSelectedIndex] = useState<number | "">("");
-
-  function handleSubmit() {
-    if (selectedIndex === "") return;
-    const selected = choices[selectedIndex];
+  function handleAnswer(selected: Payment) {
     const isCorrect = paymentKey(selected) === paymentKey(problem.answer.payment);
     recordAnswer(problem, isCorrect);
     navigate("/result", { state: { problem, selected, isCorrect } });
@@ -83,29 +79,19 @@ export function QuizPage() {
       </section>
 
       <section className="quiz-answer">
-        <label htmlFor="answer-select">点数を選択してください</label>
-        <select
-          id="answer-select"
-          value={selectedIndex}
-          onChange={(e) =>
-            setSelectedIndex(e.target.value === "" ? "" : Number(e.target.value))
-          }
-        >
-          <option value="">選択してください</option>
-          {choices.map((choice, index) => (
-            <option key={paymentKey(choice)} value={index}>
+        <p className="quiz-answer-label">点数を選んでください</p>
+        <div className="quiz-choices">
+          {choices.map((choice) => (
+            <button
+              key={paymentKey(choice)}
+              type="button"
+              className="quiz-choice-btn"
+              onClick={() => handleAnswer(choice)}
+            >
               {formatPayment(choice)}
-            </option>
+            </button>
           ))}
-        </select>
-        <button
-          type="button"
-          className="btn-primary"
-          onClick={handleSubmit}
-          disabled={selectedIndex === ""}
-        >
-          回答する
-        </button>
+        </div>
       </section>
     </main>
   );
