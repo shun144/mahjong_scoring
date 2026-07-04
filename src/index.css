@@ -52,9 +52,12 @@ body {
   flex-direction: column;
 }
 
-/* ルーティングされる各ページ（main）が伸びてフッターを下端へ押し出す。 */
+/* ルーティングされる各ページ（main）が伸びてフッターを下端へ押し出す。
+   page-shell は margin:0 auto を持ち flex の stretch が効かないため、
+   width:100% を明示して横幅を親いっぱい（PC は max-width で中央寄せ）に保つ。 */
 .app-layout > main {
   flex: 1 0 auto;
+  width: 100%;
 }
 
 h1 {

@@ -1,11 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { problemToScoreHandInput, type Problem } from "../data/problem";
-import { doraFromIndicator } from "../engine/dora";
 import type { FuBreakdown, Payment } from "../engine/score";
 import { scoreHand } from "../engine/scoreHand";
-import type { Tile } from "../engine/model";
 import { formatCalculationLine, formatPayment } from "./format";
-import { TileFace } from "./tiles/TileFace";
 import "./result.css";
 
 interface ResultLocationState {
@@ -16,21 +13,6 @@ interface ResultLocationState {
 
 function isResultLocationState(state: unknown): state is ResultLocationState {
   return !!state && typeof state === "object" && "problem" in state && "selected" in state;
-}
-
-function DoraRow({ label, indicators }: { label: string; indicators: readonly Tile[] }) {
-  return (
-    <div className="dora-reveal-row">
-      <span>{label}:</span>
-      {indicators.length === 0 ? (
-        <span>なし</span>
-      ) : (
-        indicators.map((indicator, i) => (
-          <TileFace key={i} tile={doraFromIndicator(indicator)} size="sm" />
-        ))
-      )}
-    </div>
-  );
 }
 
 function formatFuItem(fu: number, isBase: boolean): string {
@@ -110,13 +92,6 @@ export function ResultPage() {
         <p className="calculation-line">
           {formatCalculationLine(answer, problem.conditions.isDealer, problem.hand.winType)}
         </p>
-      </section>
-
-      <section className="dora-reveal" aria-label="ドラ・裏ドラ">
-        <DoraRow label="ドラ" indicators={problem.doraIndicators} />
-        {problem.conditions.riichi ? (
-          <DoraRow label="裏ドラ" indicators={problem.uraDoraIndicators} />
-        ) : null}
       </section>
 
       {answer.interpretationNote ? (

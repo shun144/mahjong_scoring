@@ -98,24 +98,13 @@ describe("ResultPage", () => {
     expect(screen.queryByText("高点法の別解")).not.toBeInTheDocument();
   });
 
-  it("shows the actual dora (not the indicator) derived from the dora indicator", () => {
+  it("解説にドラ・裏ドラを表示しない", () => {
     const problem = baseProblem();
     renderResult({ problem, selected: problem.answer.payment, isCorrect: true });
 
-    // doraIndicators: 4索 -> ドラは5索。表示牌(四索)は表示せず、実ドラ(五索)のみ表示する。
-    expect(screen.getByRole("img", { name: "五索" })).toBeInTheDocument();
-    expect(screen.queryByRole("img", { name: "四索" })).not.toBeInTheDocument();
-    // uraDoraIndicators: 6筒 -> 裏ドラは7筒 (riichi=trueなので表示される)。表示牌(六筒)は非表示。
-    expect(screen.getByRole("img", { name: "七筒" })).toBeInTheDocument();
-    expect(screen.queryByRole("img", { name: "六筒" })).not.toBeInTheDocument();
-  });
-
-  it("hides the ura-dora reveal when the hand was not riichi", () => {
-    const problem = baseProblem();
-    problem.conditions.riichi = false;
-    renderResult({ problem, selected: problem.answer.payment, isCorrect: true });
-
-    expect(screen.queryByText(/裏ドラ表示牌/)).not.toBeInTheDocument();
+    // ドラ表示は解説から撤去済み。実ドラ(五索)・裏ドラ(七筒)のいずれの牌画像も出さない。
+    expect(screen.queryByRole("img", { name: "五索" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "七筒" })).not.toBeInTheDocument();
   });
 
   it("provides a link to the next question", () => {
