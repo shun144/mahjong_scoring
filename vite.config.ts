@@ -3,8 +3,6 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
-  // GitHub Pages のプロジェクトページ配下（/mahjong_scoring/）で配信するため base を指定
-  base: "/mahjong_scoring/",
   plugins: [react()],
   test: {
     environment: "jsdom",
