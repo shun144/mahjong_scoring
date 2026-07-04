@@ -38,29 +38,21 @@ function formatFuItem(fu: number, isBase: boolean): string {
   return isBase ? `${fu}符` : `+${fu}符`;
 }
 
-function FuBreakdownSection({ detail }: { detail: FuBreakdown }) {
+function FuBreakdownContent({ detail }: { detail: FuBreakdown }) {
   return (
-    <section className="card result-fu" aria-label="符の内訳">
-      <h2>符の計算</h2>
+    <>
       <ul className="fu-list">
         {detail.items.map((item, i) => (
           <li key={i}>
-            <span>{item.count && item.count > 1 ? `${item.label} × ${item.count}` : item.label}</span>
+            <span>
+              {item.count && item.count > 1 ? `${item.label} × ${item.count}` : item.label}
+            </span>
             <span>{formatFuItem(item.fu, i === 0)}</span>
           </li>
         ))}
       </ul>
-      {detail.fixed ? (
-        <p className="fu-total">
-          合計 <strong>{detail.total}符</strong>（固定）
-        </p>
-      ) : (
-        <p className="fu-total">
-          小計 {detail.subtotal}符 → 切り上げ <strong>{detail.total}符</strong>
-        </p>
-      )}
       {detail.note ? <p className="fu-note">{detail.note}</p> : null}
-    </section>
+    </>
   );
 }
 
@@ -105,8 +97,8 @@ export function ResultPage() {
       ) : null}
       <p className="result-answer">正解: {formatPayment(answer.payment)}</p>
 
-      <section className="card result-breakdown" aria-label="内訳">
-        <h2>成立役</h2>
+      <section className="card result-breakdown" aria-label="点数計算">
+        {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}
         <ul className="yaku-list">
           {answer.yaku.map((y, i) => (
             <li key={i}>
@@ -119,8 +111,6 @@ export function ResultPage() {
           {formatCalculationLine(answer, problem.conditions.isDealer, problem.hand.winType)}
         </p>
       </section>
-
-      {fuDetail ? <FuBreakdownSection detail={fuDetail} /> : null}
 
       <section className="dora-reveal" aria-label="ドラ・裏ドラ">
         <DoraRow label="ドラ" indicators={problem.doraIndicators} />

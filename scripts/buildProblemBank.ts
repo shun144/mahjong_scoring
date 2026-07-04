@@ -442,13 +442,14 @@ const specs: HandSpec[] = [
   // --- 数え役満 ---
   {
     id: "kazoe-yakuman",
-    label: "数え役満(13翻以上、役満扱い)",
-    concealed: "123m123p123s44z678s",
-    winningTile: "8s",
-    winType: "ron",
+    label: "数え役満(清一色+一気通貫+リーチ+ツモ+ドラ、役満扱い)",
+    // 役で13翻超を作る（ドラ表示牌の積み上げに頼らない）。清一色6+一通2+門前ツモ1+リーチ1+ドラ4+裏3=17翻。
+    concealed: "123456789m11m444m",
+    winningTile: "4m",
+    winType: "tsumo",
     riichi: true,
-    dora: ["1m", "2m", "3m", "1p", "2p", "3p", "4z"],
-    uraDora: ["1s", "2s", "3s"],
+    dora: ["4m"], // 表示牌3m→ドラ4m。手牌に4mが4枚→ドラ4
+    uraDora: ["1m"], // 表示牌9m→裏1m。手牌に1mが3枚→裏3（表示牌はドラと同じ1枚で整合）
   },
 
   // --- 高点法（複数解釈） ---

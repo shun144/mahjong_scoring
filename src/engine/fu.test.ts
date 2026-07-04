@@ -88,7 +88,7 @@ describe("calculateFuBreakdown - itemised breakdown", () => {
     // 各要素の合計が subtotal と一致する
     expect(breakdown.items.reduce((s, i) => s + i.fu, 0)).toBe(breakdown.subtotal);
     const labels = breakdown.items.map((i) => i.label);
-    expect(labels).toContain("副底");
+    expect(labels).toContain("基本符");
     expect(labels).toContain("門前ロン");
     expect(labels).toContain("暗刻(幺九)");
     // 待ちのラベルにはふりがなを添える。

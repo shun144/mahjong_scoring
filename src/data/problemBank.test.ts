@@ -67,4 +67,19 @@ describe("problemBank", () => {
     expect(problemBank.some((p) => p.answer.yaku.some((y) => y.name === "赤ドラ"))).toBe(true);
     expect(problemBank.some((p) => p.answer.yaku.some((y) => y.name === "裏ドラ"))).toBe(true);
   });
+
+  it("ドラ/裏ドラ表示牌は実戦準拠の上限5枚以内", () => {
+    // 実戦では表示牌は基本1枚＋槓ごとに1枚で最大5枚。数え役満をドラ表示牌の積み上げで
+    // 作ると不正な盤面（例: 表示牌7枚）になるため、上限を担保する。
+    for (const p of problemBank) {
+      expect(p.doraIndicators.length).toBeLessThanOrEqual(5);
+      expect(p.uraDoraIndicators.length).toBeLessThanOrEqual(5);
+    }
+  });
+
+  it("非リーチ問題は裏ドラ表示牌を持たない", () => {
+    for (const p of problemBank) {
+      if (!p.conditions.riichi) expect(p.uraDoraIndicators.length).toBe(0);
+    }
+  });
 });

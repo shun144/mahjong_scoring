@@ -100,7 +100,7 @@ export function calculateFuBreakdown(
     }
     return {
       items: [
-        { label: "副底", fu: 20 },
+        { label: "基本符", fu: 20 },
         { label: "門前ロン", fu: 10 },
       ],
       subtotal: 30,
@@ -109,7 +109,7 @@ export function calculateFuBreakdown(
     };
   }
 
-  const items: FuItem[] = [{ label: "副底", fu: 20 }];
+  const items: FuItem[] = [{ label: "基本符", fu: 20 }];
 
   if (ctx.isMenzen && ctx.winType === "ron") items.push({ label: "門前ロン", fu: 10 });
   if (ctx.winType === "tsumo") items.push({ label: "ツモ", fu: 2 });

@@ -20,7 +20,8 @@ test.describe("麻雀点数計算ドリル - 一連の学習フロー", () => {
     await expect(page).toHaveURL(/\/result$/);
     await expect(page.getByRole("heading", { name: "解説" })).toBeVisible();
     await expect(page.getByText(/^正解:/)).toBeVisible();
-    await expect(page.getByText("成立役")).toBeVisible();
+    // 点数計算カードは見出しテキストを持たず aria-label で識別する（region ロール）。
+    await expect(page.getByRole("region", { name: "点数計算" })).toBeVisible();
 
     await page.getByRole("link", { name: "次の問題へ" }).click();
     await expect(page).toHaveURL(/\/quiz$/);
