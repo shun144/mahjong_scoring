@@ -1,0 +1,28 @@
+.privacy-page {
+  gap: 16px;
+}
+
+.privacy-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.privacy-section h2 {
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+.privacy-section ul {
+  margin: 0;
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: 1.6;
+}
+
+.privacy-date {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}

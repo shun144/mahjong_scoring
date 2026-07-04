@@ -1,5 +1,6 @@
 .home-page {
-  min-height: 100svh;
+  /* 高さは .app-layout（flex）から与えられるため min-height は持たせない。
+     余った縦スペースの中央にコンテンツを寄せる。 */
   display: flex;
   flex-direction: column;
   align-items: center;

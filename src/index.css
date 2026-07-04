@@ -45,6 +45,18 @@ body {
   min-height: 100svh;
 }
 
+/* --- アプリ全体の縦レイアウト（本文＋フッターを常に画面下端に配置） --- */
+.app-layout {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ルーティングされる各ページ（main）が伸びてフッターを下端へ押し出す。 */
+.app-layout > main {
+  flex: 1 0 auto;
+}
+
 h1 {
   font-size: 22px;
   font-weight: 700;

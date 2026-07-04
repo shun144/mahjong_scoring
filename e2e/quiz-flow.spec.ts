@@ -84,4 +84,25 @@ test.describe("麻雀点数計算ドリル - 一連の学習フロー", () => {
 
     expect(errors).toEqual([]);
   });
+
+  test("フッターのプライバシーポリシーへどの画面からも遷移できる", async ({ page }) => {
+    const footer = page.getByRole("contentinfo");
+
+    // ホーム画面にフッターとリンクが出る
+    await page.goto("");
+    const privacyLink = footer.getByRole("link", { name: "プライバシーポリシー" });
+    await expect(privacyLink).toBeVisible();
+
+    // 出題画面にもフッターが出る（全画面共通）
+    await page.goto("quiz");
+    await expect(footer.getByRole("link", { name: "プライバシーポリシー" })).toBeVisible();
+
+    // クリックでプライバシーポリシーページへ遷移する
+    await footer.getByRole("link", { name: "プライバシーポリシー" }).click();
+    await expect(page).toHaveURL(/\/privacy$/);
+    await expect(
+      page.getByRole("heading", { name: "プライバシーポリシー", exact: true, level: 1 }),
+    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /広告の配信について/ })).toBeVisible();
+  });
 });
