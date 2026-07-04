@@ -1,0 +1,45 @@
+- generic [ref=f2e3]:
+  - main [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - heading "出題" [level=1] [ref=f2e6]
+      - link "成績を見る" [ref=f2e7] [cursor=pointer]:
+        - /url: /stats
+    - region "局条件" [ref=f2e8]:
+      - generic [ref=f2e9]: "場風: 東"
+      - generic [ref=f2e10]: "自風: 東"
+      - generic [ref=f2e11]: 子
+    - generic [ref=f2e13]:
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]: ツモ
+        - img "八索" [ref=f2e17]
+      - generic [ref=f2e20]:
+        - img "二索" [ref=f2e21]
+        - img "二索" [ref=f2e23]
+        - img "二索" [ref=f2e25]
+        - img "三索" [ref=f2e27]
+        - img "三索" [ref=f2e29]
+        - img "三索" [ref=f2e31]
+        - img "四索" [ref=f2e33]
+        - img "四索" [ref=f2e35]
+        - img "四索" [ref=f2e37]
+        - img "八索" [ref=f2e39]
+        - img "八索" [ref=f2e41]
+        - img "發" [ref=f2e43]
+        - img "發" [ref=f2e45]
+    - region "ドラ表示牌" [ref=f2e47]:
+      - generic [ref=f2e48]:
+        - generic [ref=f2e49]: ドラ表示牌
+        - img "九萬" [ref=f2e51]
+    - generic [ref=f2e53]:
+      - paragraph [ref=f2e54]: 点数を選んでください
+      - generic [ref=f2e55]:
+        - button "子8000 / 親16000" [ref=f2e56] [cursor=pointer]
+        - button "子48000 / 親96000" [ref=f2e57] [cursor=pointer]
+        - button "子6000 / 親12000" [ref=f2e58] [cursor=pointer]
+        - button "子32000 / 親64000" [ref=f2e59] [cursor=pointer]
+    - button "次の問題へ" [ref=f2e61] [cursor=pointer]
+  - contentinfo [ref=f2e62]:
+    - navigation "フッター" [ref=f2e63]:
+      - link "プライバシーポリシー" [ref=f2e64] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=f2e65]: © 2026 麻雀 点数計算ドリル

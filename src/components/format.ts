@@ -28,7 +28,7 @@ export const RANK_LABELS: Record<ScoreRank, string> = {
 export function formatPayment(payment: Payment): string {
   if (payment.kind === "ron") return `${payment.total}`;
   if (payment.kind === "tsumo-oya") return `${payment.each}オール`;
-  return `子${payment.nonDealer} / 親${payment.dealer}`;
+  return `${payment.nonDealer} / ${payment.dealer}`;
 }
 
 /**
@@ -44,5 +44,5 @@ export function formatCalculationLine(
     ? `${answer.han}翻 ${RANK_LABELS[answer.rank]}`
     : `${answer.fu}符${answer.han}翻`;
   const dealerLabel = isDealer ? "親" : "子";
-  return `${scoreBasis} → ${dealerLabel}${WIN_TYPE_LABELS[winType]} ${formatPayment(answer.payment)}`;
+  return `${scoreBasis} (${dealerLabel}${WIN_TYPE_LABELS[winType]}) → ${formatPayment(answer.payment)}`;
 }

@@ -1,5 +1,5 @@
 import { countAkaDora, countDoraFromIndicators } from "./dora";
-import { calculateFuBreakdown, type FuBreakdown } from "./fu";
+import { calculateFuBreakdown, chiitoitsuFuBreakdown, type FuBreakdown } from "./fu";
 import { buildStandardInterpretations, type StandardInterpretation } from "./interpretation";
 import { decomposeChiitoitsu, decomposeKokushi } from "./decompose";
 import type { Meld, Tile, Wind, WinType } from "./model";
@@ -153,12 +153,7 @@ export function scoreHand(input: ScoreHandInput): ScoreResult | null {
         han: chiitoiHan,
         fu: 25,
         isYakuman: false,
-        fuDetail: {
-          items: [{ label: "七対子(固定)", fu: 25 }],
-          subtotal: 25,
-          total: 25,
-          fixed: true,
-        },
+        fuDetail: chiitoitsuFuBreakdown(),
       });
     }
   }

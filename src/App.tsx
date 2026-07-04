@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import { TileGalleryPage } from "./components/dev/TileGalleryPage";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Footer } from "./components/Footer";
+import { FuQuizPage } from "./components/FuQuizPage";
+import { FuResultPage } from "./components/FuResultPage";
 import { HomePage } from "./components/HomePage";
 import { PrivacyPolicyPage } from "./components/PrivacyPolicyPage";
 import { QuizPage } from "./components/QuizPage";
@@ -17,6 +19,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/result" element={<ResultPage />} />
+          <Route path="/fu/quiz" element={<FuQuizPage />} />
+          <Route path="/fu/result" element={<FuResultPage />} />
           <Route path="/stats" element={<StatsPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
           {/* 開発用: 牌表示コンポーネントの目視確認ページ。本番導線にはリンクしない。 */}

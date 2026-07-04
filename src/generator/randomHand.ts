@@ -2,7 +2,7 @@ import { indicatorForDora } from "../engine/dora";
 import type { Meld, Tile, Wind, WinType } from "../engine/model";
 import { scoreHand, type ScoreHandInput } from "../engine/scoreHand";
 import type { ScoreResult } from "../engine/score";
-import { typeToTile } from "../engine/tileType";
+import { tilesToCounts, typeToTile } from "../engine/tileType";
 import { chance, pickOne, randomInt, type RandomSource } from "./random";
 
 const WINDS: Wind[] = ["east", "south", "west", "north"];
@@ -119,9 +119,15 @@ function applyRedFive(concealed: Tile[], melds: Meld[], rng: RandomSource): void
   }
 }
 
+/** 手牌中の槓（明槓・暗槓）の数。ドラ表示牌の枚数決定に使う（SPEC.md §5.4）。 */
+function countKans(melds: Meld[]): number {
+  return melds.filter((m) => m.type === "minkan" || m.type === "ankan").length;
+}
+
 /**
  * ドラ表示牌をランダムに生成する。狙いの実際のドラ（時々手牌と一致させる）を決めてから
  * indicatorForDora で表示牌に変換する（学習用に「たまにドラが乗る」変化を持たせるため）。
+ * 枚数は実戦準拠で「1＋槓の数」に固定する（SPEC.md §5.4）。
  */
 function buildDoraIndicators(
   concealed: Tile[],
@@ -140,9 +146,11 @@ function buildDoraIndicators(
     }
     return indicatorForDora(targetDora);
   };
-  const doraIndicators = Array.from({ length: randomInt(0, 2, rng) }, pickIndicatorTile);
+  // ドラ表示牌の枚数は「1＋槓の数」（基本1枚＋槓ごとに1枚めくられる槓ドラ表示牌。SPEC.md §5.4）。
+  const indicatorCount = 1 + countKans(melds);
+  const doraIndicators = Array.from({ length: indicatorCount }, pickIndicatorTile);
   const uraDoraIndicators = riichi
-    ? Array.from({ length: randomInt(0, 2, rng) }, pickIndicatorTile)
+    ? Array.from({ length: indicatorCount }, pickIndicatorTile)
     : [];
   return { doraIndicators, uraDoraIndicators };
 }
@@ -272,14 +280,25 @@ export interface GeneratedHand extends RandomHandResult {
 const MAX_ATTEMPTS = 200;
 
 /**
+ * 同一牌が5枚以上使われていないか（牌は各4枚までのため。SPEC.md §4.1）。
+ * 槓が既存の順子・刻子・雀頭と同じ牌を占有した場合に起こり得る不正な手を検出する。
+ */
+function isTileCountValid(concealed: Tile[], melds: Meld[]): boolean {
+  const counts = tilesToCounts([...concealed, ...melds.flatMap((m) => m.tiles)]);
+  return counts.every((count) => count <= 4);
+}
+
+/**
  * ランダムな和了形を生成し、点数計算エンジンで採点する。
- * 役が一つも成立しない手は破棄して最大MAX_ATTEMPTS回までリトライする。
+ * 役が一つも成立しない手、または同一牌が5枚以上になる不正な手は破棄して
+ * 最大MAX_ATTEMPTS回までリトライする。
  */
 export function generateRandomHand(rng: RandomSource = Math.random): GeneratedHand | null {
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     const useChiitoi = chance(0.12, rng);
     const built = useChiitoi ? buildRandomChiitoiHand(rng) : buildRandomStandardHand(rng);
     if (!built) continue;
+    if (!isTileCountValid(built.concealed, built.melds)) continue;
 
     const input: ScoreHandInput = {
       concealed: built.concealed,

@@ -155,3 +155,13 @@ export function calculateFuBreakdown(
 export function calculateFu(interp: StandardInterpretation, ctx: FuContext): number {
   return calculateFuBreakdown(interp, ctx).total;
 }
+
+/** 七対子の符内訳（25符固定・SPEC.md §5.2）。標準形とは別扱いのためここに集約する。 */
+export function chiitoitsuFuBreakdown(): FuBreakdown {
+  return {
+    items: [{ label: "七対子(固定)", fu: 25 }],
+    subtotal: 25,
+    total: 25,
+    fixed: true,
+  };
+}

@@ -14,6 +14,7 @@ import { indicatorForDora } from "../src/engine/dora";
 import type { Meld, MeldType, Tile, Wind, WinType } from "../src/engine/model";
 import { scoreHand, type ScoreHandInput } from "../src/engine/scoreHand";
 import { parseTileNotation } from "../src/engine/tiles";
+import { tileToType, typeToTile } from "../src/engine/tileType";
 import type { Problem } from "../src/data/problem";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -59,18 +60,59 @@ interface HandSpec {
   riichi?: boolean;
 }
 
+/** 槓（明槓・暗槓）の数。ドラ表示牌の枚数決定に使う（SPEC.md §5.4: 枚数=1+槓の数）。 */
+function countKans(melds: MeldSpec[]): number {
+  return melds.filter((m) => m.type === "minkan" || m.type === "ankan").length;
+}
+
+/**
+ * ドラ表示牌を明示しない問題に対し、手牌に「乗らない」ドラ（＝手牌に無い牌をドラとする）
+ * の表示牌を count 枚与える。麻雀ルール上ドラ表示牌の枚数は「1＋槓の数」であるため
+ * （SPEC.md §5.4）、手牌に含まれないドラを選ぶことで、既存問題の正解（符・翻・役）を
+ * 一切変えずに正しい枚数へ揃える。
+ */
+function nonLandingDoraIndicators(handTiles: Tile[], count: number): Tile[] {
+  const handTypes = new Set(handTiles.map(tileToType));
+  const nonLandingTypes: number[] = [];
+  for (let type = 0; type < 34; type++) {
+    if (!handTypes.has(type)) nonLandingTypes.push(type);
+  }
+  return Array.from({ length: count }, (_, i) => {
+    // 非当たり牌が足りない（現実にはあり得ない）場合は循環させて保険とする。
+    const type = nonLandingTypes[i % Math.max(nonLandingTypes.length, 1)] ?? 0;
+    return indicatorForDora(typeToTile(type));
+  });
+}
+
 function toScoreHandInput(spec: HandSpec): ScoreHandInput {
+  const concealed = notationsToTiles(spec.concealed);
+  const meldSpecs = spec.melds ?? [];
+  const melds = meldSpecs.map(buildMeld);
+  const explicitDora = (spec.dora ?? []).map(parseTileNotation).map(indicatorForDora);
+  const explicitUra = (spec.uraDora ?? []).map(parseTileNotation).map(indicatorForDora);
+  const allHandTiles = [...concealed, ...melds.flatMap((m) => m.tiles)];
+  const riichi = spec.riichi ?? false;
+  // ドラ表示牌の枚数は「1＋槓の数」（SPEC.md §5.4）。未指定なら手牌に乗らないドラで揃える。
+  const indicatorCount = 1 + countKans(meldSpecs);
+  const doraIndicators =
+    explicitDora.length > 0 ? explicitDora : nonLandingDoraIndicators(allHandTiles, indicatorCount);
+  // 裏ドラ表示牌はリーチ時のみ、その場合も表と同数（SPEC.md §5.4）。未指定なら乗らない裏ドラで揃える。
+  const uraDoraIndicators = !riichi
+    ? []
+    : explicitUra.length > 0
+      ? explicitUra
+      : nonLandingDoraIndicators(allHandTiles, indicatorCount);
   return {
-    concealed: notationsToTiles(spec.concealed),
-    melds: (spec.melds ?? []).map(buildMeld),
+    concealed,
+    melds,
     winningTile: parseTileNotation(spec.winningTile),
     winType: spec.winType,
-    doraIndicators: (spec.dora ?? []).map(parseTileNotation).map(indicatorForDora),
-    uraDoraIndicators: (spec.uraDora ?? []).map(parseTileNotation).map(indicatorForDora),
+    doraIndicators,
+    uraDoraIndicators,
     seatWind: spec.seatWind ?? "east",
     roundWind: spec.roundWind ?? "east",
     isDealer: spec.isDealer ?? false,
-    riichi: spec.riichi ?? false,
+    riichi,
   };
 }
 
@@ -108,12 +150,15 @@ const specs: HandSpec[] = [
     winningTile: "8m",
     winType: "ron",
     riichi: true,
-    dora: ["2m", "3p"],
+    // 表示牌2s→ドラ3s。雀頭33sの2枚がドラ→ドラ2（表示牌1枚で実戦準拠。SPEC §5.4）。
+    dora: ["3s"],
   },
   {
     id: "yakuhai-haku-tsumo",
     label: "役牌(白)のみ ツモ",
-    concealed: "234m567p789s55z555z",
+    // 雀頭は白(5z)と別の牌(3z)にする。同一牌が555z(刻子3)+55z(雀頭2)=5枚は
+    // 麻雀のルール上あり得ない（牌は各4枚まで。SPEC.md §4.1）。
+    concealed: "234m567p789s33z555z",
     winningTile: "5z",
     winType: "tsumo",
   },
@@ -482,24 +527,29 @@ const specs: HandSpec[] = [
 
   // --- 親のツモ・ロン ---
   {
-    id: "dealer-tsumo-mangan",
-    label: "親ツモ 満貫",
+    id: "dealer-tsumo-haneman",
+    label: "親ツモ 跳満",
     concealed: "123m123p123s44z678s",
     winningTile: "8s",
     winType: "tsumo",
     isDealer: true,
     riichi: true,
-    dora: ["1m", "1p"],
+    // 表示牌3z→ドラ4z。雀頭44zの2枚がドラ→ドラ2（表示牌1枚で実戦準拠。SPEC §5.4）。
+    dora: ["4z"],
   },
   {
     id: "dealer-ron-haneman",
     label: "親ロン 跳満",
-    concealed: "123m123p123s44z678s",
-    winningTile: "8s",
+    // 678sの代わりに5s暗槓を持つ（槓は幺九牌を含まないためチャンタ非成立、役牌でもない）。
+    // 槓が1つあるためドラ表示牌は2枚（1+槓数。SPEC §5.4）で正当化できる。
+    concealed: "123m123p123s44z",
+    melds: [{ type: "ankan", tiles: ["5s", "5s", "5s", "5s"] }],
+    winningTile: "3s",
     winType: "ron",
     isDealer: true,
     riichi: true,
-    dora: ["1m", "1p", "1s"],
+    // 表示牌9m→ドラ1m(1枚)、表示牌3z→ドラ4z(雀頭2枚)。ドラ合計3（表示牌2枚=1+槓1）。
+    dora: ["1m", "4z"],
   },
 ];
 

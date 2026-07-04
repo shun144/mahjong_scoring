@@ -1,0 +1,26 @@
+- generic [ref=f1e3]:
+  - main [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - heading "成績" [level=1] [ref=f1e6]
+      - link "練習に戻る" [ref=f1e7] [cursor=pointer]:
+        - /url: /quiz
+    - region "累計成績" [ref=f1e8]:
+      - generic [ref=f1e9]:
+        - generic [ref=f1e10]: 累計正答率
+        - strong [ref=f1e11]: 0%
+        - generic [ref=f1e12]: 0/0問
+      - generic [ref=f1e13]:
+        - generic [ref=f1e14]: 連続正解
+        - strong [ref=f1e15]: "0"
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: 最高連続正解
+        - strong [ref=f1e18]: "0"
+    - paragraph [ref=f1e19]:
+      - text: まだ回答履歴がありません。
+      - link "練習を始める" [ref=f1e20] [cursor=pointer]:
+        - /url: /quiz
+  - contentinfo [ref=f1e21]:
+    - navigation "フッター" [ref=f1e22]:
+      - link "プライバシーポリシー" [ref=f1e23] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=f1e24]: © 2026 麻雀 点数計算ドリル

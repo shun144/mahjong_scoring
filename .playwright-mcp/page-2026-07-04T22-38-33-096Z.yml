@@ -1,0 +1,30 @@
+- generic [ref=e3]:
+  - main [ref=e76]:
+    - generic [ref=e77]:
+      - heading "解説" [level=1] [ref=e78]
+      - link "成績を見る" [ref=e79] [cursor=pointer]:
+        - /url: /stats
+    - paragraph [ref=e80]: ○ 正解
+    - paragraph [ref=e81]: "正解: 25符"
+    - region "符計算" [ref=e82]:
+      - list [ref=e83]:
+        - listitem [ref=e84]:
+          - generic [ref=e85]: 七対子(固定)
+          - generic [ref=e86]: 25符
+      - list [ref=e87]:
+        - listitem [ref=e88]:
+          - generic [ref=e89]: 七対子
+          - generic [ref=e90]: 2翻
+        - listitem [ref=e91]:
+          - generic [ref=e92]: リーチ
+          - generic [ref=e93]: 1翻
+    - generic [ref=e94]:
+      - link "問題に戻る" [ref=e95] [cursor=pointer]:
+        - /url: /fu/quiz
+      - link "次の問題へ" [ref=e96] [cursor=pointer]:
+        - /url: /fu/quiz
+  - contentinfo [ref=e11]:
+    - navigation "フッター" [ref=e12]:
+      - link "プライバシーポリシー" [ref=e13] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=e14]: © 2026 麻雀 点数計算ドリル

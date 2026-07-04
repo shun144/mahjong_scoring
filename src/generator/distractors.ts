@@ -1,3 +1,4 @@
+import type { FuBreakdown } from "../engine/fu";
 import type { WinType } from "../engine/model";
 import { calculatePayment, type Payment } from "../engine/score";
 import { shuffle, type RandomSource } from "./random";
@@ -100,4 +101,56 @@ export function generateChoices(
   const shuffledDistractors = shuffle(distractors, rng).slice(0, CHOICE_COUNT - 1);
 
   return shuffle([correctPayment, ...shuffledDistractors], rng);
+}
+
+/** 符計算モードで妥当な符の値（誤答の補完に使う）。 */
+const FU_POOL = [20, 25, 30, 40, 50, 60, 70];
+
+/**
+ * 符計算モードの誤答候補を、正解の符内訳から生成する（SPEC.md §7）。
+ * - 切り上げ忘れ（subtotal そのまま）
+ * - 1段階のずれ（±10符）
+ * - 待ち符・ツモ符の付け忘れ/数え過ぎ（±2符の近似）
+ * 固定符（七対子25・平和20）は ±10 系を避け、混同しやすい他符（FU_POOL）で補う。
+ */
+function buildFuCandidatePool(detail: FuBreakdown): number[] {
+  const { total, subtotal, fixed } = detail;
+  const pool: number[] = [];
+
+  if (!fixed) {
+    // 切り上げ忘れ（丸め前の値が丸め後と異なる場合）
+    if (subtotal !== total) pool.push(subtotal);
+    // 1段階のずれ
+    if (total - 10 >= 20) pool.push(total - 10);
+    pool.push(total + 10);
+    // 待ち符・ツモ符の付け忘れ/数え過ぎ（切り上げ前後に効く近似）
+    pool.push(Math.ceil((subtotal - 2) / 10) * 10);
+    pool.push(Math.ceil((subtotal + 2) / 10) * 10);
+  }
+
+  // 妥当な符プールで補完（固定符ケースの主たる誤答源でもある）
+  pool.push(...FU_POOL);
+
+  return pool.filter((fu) => fu >= 20);
+}
+
+/**
+ * 正解の符を含む4択（シャッフル済み）を生成する。
+ * 誤答候補が足りない稀なケースでは4択未満に縮退する。
+ */
+export function generateFuChoices(detail: FuBreakdown, rng: RandomSource): number[] {
+  const correct = detail.total;
+  const pool = buildFuCandidatePool(detail);
+
+  const seen = new Set<number>([correct]);
+  const distractors: number[] = [];
+  for (const candidate of pool) {
+    if (seen.has(candidate)) continue;
+    seen.add(candidate);
+    distractors.push(candidate);
+  }
+
+  const shuffledDistractors = shuffle(distractors, rng).slice(0, CHOICE_COUNT - 1);
+
+  return shuffle([correct, ...shuffledDistractors], rng);
 }

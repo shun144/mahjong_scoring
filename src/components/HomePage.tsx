@@ -5,10 +5,13 @@ export function HomePage() {
   return (
     <main className="home-page">
       <h1>麻雀 点数計算ドリル</h1>
-      <p>ランダムに出題される和了形の最終点数を当てて、点数計算を練習しよう。</p>
+      <p>ランダムに出題される和了形を見て、最終点数または符を当てて練習しよう。</p>
       <nav className="home-nav">
         <Link to="/quiz" className="btn-primary">
-          練習を始める
+          点数計算を始める
+        </Link>
+        <Link to="/fu/quiz" className="btn-primary">
+          符計算を始める
         </Link>
         <Link to="/stats" className="btn-secondary">
           成績を見る

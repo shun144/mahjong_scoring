@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { calculateFu, calculateFuBreakdown, type FuContext } from "./fu";
+import {
+  calculateFu,
+  calculateFuBreakdown,
+  chiitoitsuFuBreakdown,
+  type FuContext,
+} from "./fu";
 import { buildStandardInterpretations } from "./interpretation";
 import { tileToType, tilesToCounts } from "./tileType";
 import { parseTileNotation } from "./tiles";
@@ -144,5 +149,35 @@ describe("calculateFuBreakdown - itemised breakdown", () => {
     expect(breakdown.subtotal).toBe(20);
     expect(breakdown.total).toBe(30);
     expect(breakdown.note).toBeTruthy();
+  });
+
+  it("counts a concealed kan (暗槓) at its full fu value", () => {
+    // 1m暗槓(老頭暗槓32符) 456p 789s 234s + 5z雀頭(白,役牌)単騎ロン
+    // 20(副底)+10(門前ロン)+32(老頭暗槓)+2(役牌雀頭)+2(単騎) = 66 -> 70符
+    const counts = countsFromCompact("456p789s234s5z5z");
+    const winType = tileToType(parseTileNotation("5z"));
+    const [interp] = buildStandardInterpretations(
+      counts,
+      3,
+      [{ type: "ankan", tiles: ["1m", "1m", "1m", "1m"].map(parseTileNotation) }],
+      winType,
+      "ron",
+    );
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "ron" }));
+
+    expect(breakdown.items.map((i) => i.label)).toContain("暗槓(幺九)");
+    expect(breakdown.subtotal).toBe(66);
+    expect(breakdown.total).toBe(70);
+  });
+});
+
+describe("chiitoitsuFuBreakdown", () => {
+  it("is a fixed 25 fu single item", () => {
+    const breakdown = chiitoitsuFuBreakdown();
+    expect(breakdown.total).toBe(25);
+    expect(breakdown.subtotal).toBe(25);
+    expect(breakdown.fixed).toBe(true);
+    expect(breakdown.items).toHaveLength(1);
+    expect(breakdown.items[0].fu).toBe(25);
   });
 });

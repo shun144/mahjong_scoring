@@ -93,3 +93,8 @@
 .quiz-choice-btn:active {
   transform: translateY(1px);
 }
+
+.quiz-skip {
+  display: flex;
+  justify-content: center;
+}

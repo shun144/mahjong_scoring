@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { problemToScoreHandInput, type Problem } from "../data/problem";
-import type { FuBreakdown, Payment } from "../engine/score";
+import type { Payment } from "../engine/score";
 import { scoreHand } from "../engine/scoreHand";
+import { FuBreakdownContent } from "./FuBreakdown";
 import { formatCalculationLine, formatPayment } from "./format";
 import "./result.css";
 
@@ -13,29 +14,6 @@ interface ResultLocationState {
 
 function isResultLocationState(state: unknown): state is ResultLocationState {
   return !!state && typeof state === "object" && "problem" in state && "selected" in state;
-}
-
-function formatFuItem(fu: number, isBase: boolean): string {
-  // 先頭の基本値（副底・固定符）は素の値、それ以外は加符として「+」を付ける。
-  return isBase ? `${fu}符` : `+${fu}符`;
-}
-
-function FuBreakdownContent({ detail }: { detail: FuBreakdown }) {
-  return (
-    <>
-      <ul className="fu-list">
-        {detail.items.map((item, i) => (
-          <li key={i}>
-            <span>
-              {item.count && item.count > 1 ? `${item.label} × ${item.count}` : item.label}
-            </span>
-            <span>{formatFuItem(item.fu, i === 0)}</span>
-          </li>
-        ))}
-      </ul>
-      {detail.note ? <p className="fu-note">{detail.note}</p> : null}
-    </>
-  );
 }
 
 export function ResultPage() {

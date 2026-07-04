@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { scoreHand } from "../engine/scoreHand";
+import { tilesToCounts } from "../engine/tileType";
 import { problemToScoreHandInput } from "../data/problem";
 import { generateProblem } from "./generateProblem";
 import { createSeededRandom } from "./random";
@@ -72,6 +73,34 @@ describe("generateProblem", () => {
       if (!p.conditions.riichi) {
         expect(p.uraDoraIndicators).toHaveLength(0);
       }
+    }
+  });
+
+  it("dora indicator count is exactly 1 + the number of kans in the hand (SPEC.md §5.4)", () => {
+    const problems = generateMany(SAMPLE_SIZE, 12);
+    for (const p of problems) {
+      const kanCount = p.hand.melds.filter(
+        (m) => m.type === "minkan" || m.type === "ankan",
+      ).length;
+      expect(p.doraIndicators.length).toBe(1 + kanCount);
+      expect(p.doraIndicators.length).toBeLessThanOrEqual(5);
+      // リーチ時は裏ドラ表示牌も表と同数（1+槓の数）出す。非リーチは0枚。
+      if (p.conditions.riichi) {
+        expect(p.uraDoraIndicators.length).toBe(1 + kanCount);
+      } else {
+        expect(p.uraDoraIndicators.length).toBe(0);
+      }
+    }
+  });
+
+  it("同一牌は手牌全体で最大4枚（麻雀の牌山は各牌4枚まで・SPEC §4.1/§6）", () => {
+    // 槓が既存の順子・刻子・雀頭と同じ牌を占有すると5枚以上になり得るため、
+    // 槓を含む手が十分出るよう複数シードにわたって検証する。
+    const problems = [1, 2, 3, 4, 5].flatMap((seed) => generateMany(SAMPLE_SIZE, seed * 100));
+    for (const p of problems) {
+      const tiles = [...p.hand.concealed, ...p.hand.melds.flatMap((m) => m.tiles)];
+      const counts = tilesToCounts(tiles);
+      expect(counts.every((count) => count <= 4)).toBe(true);
     }
   });
 

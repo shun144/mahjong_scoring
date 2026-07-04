@@ -1,0 +1,16 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - heading "麻雀 点数計算ドリル" [level=1] [ref=e5]
+    - paragraph [ref=e6]: ランダムに出題される和了形を見て、最終点数または符を当てて練習しよう。
+    - navigation [ref=e7]:
+      - link "点数計算を始める" [ref=e8] [cursor=pointer]:
+        - /url: /quiz
+      - link "符計算を始める" [ref=e9] [cursor=pointer]:
+        - /url: /fu/quiz
+      - link "成績を見る" [ref=e10] [cursor=pointer]:
+        - /url: /stats
+  - contentinfo [ref=e11]:
+    - navigation "フッター" [ref=e12]:
+      - link "プライバシーポリシー" [ref=e13] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=e14]: © 2026 麻雀 点数計算ドリル

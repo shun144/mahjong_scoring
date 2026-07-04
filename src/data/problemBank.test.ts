@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { scoreHand } from "../engine/scoreHand";
+import { tilesToCounts } from "../engine/tileType";
 import problemBankRaw from "./problemBank.json";
 import { problemToScoreHandInput, type Problem } from "./problem";
 
@@ -62,10 +63,27 @@ describe("problemBank", () => {
     expect(problemBank.some((p) => p.answer.rank === "yakuman")).toBe(true);
   });
 
+  it("同一牌は手牌全体で最大4枚（麻雀の牌山は各牌4枚まで・SPEC §4.1/§6）", () => {
+    for (const p of problemBank) {
+      const tiles = [...p.hand.concealed, ...p.hand.melds.flatMap((m) => m.tiles)];
+      const counts = tilesToCounts(tiles);
+      expect(counts.every((count) => count <= 4)).toBe(true);
+    }
+  });
+
   it("covers dora, aka dora, and ura dora", () => {
     expect(problemBank.some((p) => p.answer.yaku.some((y) => y.name === "ドラ"))).toBe(true);
     expect(problemBank.some((p) => p.answer.yaku.some((y) => y.name === "赤ドラ"))).toBe(true);
     expect(problemBank.some((p) => p.answer.yaku.some((y) => y.name === "裏ドラ"))).toBe(true);
+  });
+
+  it("ドラ表示牌の枚数は「1+槓の数」に一致する（麻雀ルール上「なし」はあり得ない・SPEC §5.4）", () => {
+    for (const p of problemBank) {
+      const kanCount = p.hand.melds.filter(
+        (m) => m.type === "minkan" || m.type === "ankan",
+      ).length;
+      expect(p.doraIndicators.length).toBe(1 + kanCount);
+    }
   });
 
   it("ドラ/裏ドラ表示牌は実戦準拠の上限5枚以内", () => {
@@ -80,6 +98,14 @@ describe("problemBank", () => {
   it("非リーチ問題は裏ドラ表示牌を持たない", () => {
     for (const p of problemBank) {
       if (!p.conditions.riichi) expect(p.uraDoraIndicators.length).toBe(0);
+    }
+  });
+
+  it("リーチ問題の裏ドラ表示牌は表ドラ表示牌と同数（1+槓の数・SPEC §5.4）", () => {
+    for (const p of problemBank) {
+      if (p.conditions.riichi) {
+        expect(p.uraDoraIndicators.length).toBe(p.doraIndicators.length);
+      }
     }
   });
 });

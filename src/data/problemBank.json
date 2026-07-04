@@ -68,8 +68,18 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
-    "uraDoraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -186,7 +196,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -301,7 +316,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -423,15 +443,16 @@
     },
     "doraIndicators": [
       {
-        "suit": "m",
-        "rank": 1
-      },
-      {
-        "suit": "p",
+        "suit": "s",
         "rank": 2
       }
     ],
-    "uraDoraIndicators": [],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -533,11 +554,11 @@
         },
         {
           "suit": "z",
-          "rank": 5
+          "rank": 3
         },
         {
           "suit": "z",
-          "rank": 5
+          "rank": 3
         },
         {
           "suit": "z",
@@ -559,7 +580,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -579,11 +605,11 @@
         }
       ],
       "han": 2,
-      "fu": 40,
+      "fu": 30,
       "payment": {
         "kind": "tsumo-ko",
-        "nonDealer": 700,
-        "dealer": 1300
+        "nonDealer": 500,
+        "dealer": 1000
       },
       "fuDetail": {
         "items": [
@@ -599,19 +625,15 @@
             "label": "暗刻(幺九)",
             "fu": 8,
             "count": 1
-          },
-          {
-            "label": "雀頭(役牌)",
-            "fu": 2
           }
         ],
-        "subtotal": 32,
-        "total": 40,
+        "subtotal": 30,
+        "total": 30,
         "fixed": false
       }
     },
     "tags": {
-      "fuType": 40,
+      "fuType": 30,
       "yakuCategories": [
         "門前清自摸和",
         "役牌(白)"
@@ -687,7 +709,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -810,7 +837,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "south",
@@ -933,7 +965,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -1064,8 +1101,18 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
-    "uraDoraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -1186,8 +1233,18 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
-    "uraDoraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -1309,7 +1366,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -1442,7 +1504,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -1560,7 +1627,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -1679,7 +1751,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -1803,7 +1880,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -1913,7 +1995,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "p",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2037,7 +2124,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "p",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2147,7 +2239,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2264,7 +2361,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2382,7 +2484,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2521,7 +2628,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2654,7 +2766,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2825,7 +2942,24 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      },
+      {
+        "suit": "m",
+        "rank": 4
+      },
+      {
+        "suit": "m",
+        "rank": 5
+      },
+      {
+        "suit": "m",
+        "rank": 6
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -2953,7 +3087,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -3096,7 +3235,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -3244,7 +3388,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "p",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -3384,7 +3533,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 4
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -3523,7 +3677,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "p",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -3664,7 +3823,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "p",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -3789,8 +3953,18 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
-    "uraDoraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -3903,7 +4077,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4017,7 +4196,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4132,7 +4316,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4264,7 +4453,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4389,7 +4583,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 4
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4512,7 +4711,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4641,7 +4845,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4741,7 +4950,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4870,7 +5084,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -4999,7 +5218,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -5129,7 +5353,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -5303,7 +5532,28 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 4
+      },
+      {
+        "suit": "m",
+        "rank": 5
+      },
+      {
+        "suit": "m",
+        "rank": 6
+      },
+      {
+        "suit": "m",
+        "rank": 7
+      },
+      {
+        "suit": "m",
+        "rank": 8
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -5432,7 +5682,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "p",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -5556,7 +5811,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -5655,7 +5915,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 1
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -5910,7 +6175,12 @@
       },
       "winType": "tsumo"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [],
     "conditions": {
       "seatWind": "east",
@@ -6036,8 +6306,18 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
-    "uraDoraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -6159,7 +6439,12 @@
       },
       "winType": "ron"
     },
-    "doraIndicators": [],
+    "doraIndicators": [
+      {
+        "suit": "m",
+        "rank": 9
+      }
+    ],
     "uraDoraIndicators": [
       {
         "suit": "m",
@@ -6224,7 +6509,7 @@
     }
   },
   {
-    "id": "dealer-tsumo-mangan",
+    "id": "dealer-tsumo-haneman",
     "source": "bank",
     "hand": {
       "concealed": [
@@ -6294,15 +6579,16 @@
     },
     "doraIndicators": [
       {
-        "suit": "m",
-        "rank": 9
-      },
-      {
-        "suit": "p",
-        "rank": 9
+        "suit": "z",
+        "rank": 3
       }
     ],
-    "uraDoraIndicators": [],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -6410,24 +6696,34 @@
         {
           "suit": "z",
           "rank": 4
-        },
-        {
-          "suit": "s",
-          "rank": 6
-        },
-        {
-          "suit": "s",
-          "rank": 7
-        },
-        {
-          "suit": "s",
-          "rank": 8
         }
       ],
-      "melds": [],
+      "melds": [
+        {
+          "type": "ankan",
+          "tiles": [
+            {
+              "suit": "s",
+              "rank": 5
+            },
+            {
+              "suit": "s",
+              "rank": 5
+            },
+            {
+              "suit": "s",
+              "rank": 5
+            },
+            {
+              "suit": "s",
+              "rank": 5
+            }
+          ]
+        }
+      ],
       "winningTile": {
         "suit": "s",
-        "rank": 8
+        "rank": 3
       },
       "winType": "ron"
     },
@@ -6437,15 +6733,20 @@
         "rank": 9
       },
       {
-        "suit": "p",
-        "rank": 9
-      },
-      {
-        "suit": "s",
-        "rank": 9
+        "suit": "z",
+        "rank": 3
       }
     ],
-    "uraDoraIndicators": [],
+    "uraDoraIndicators": [
+      {
+        "suit": "m",
+        "rank": 3
+      },
+      {
+        "suit": "m",
+        "rank": 4
+      }
+    ],
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
@@ -6459,10 +6760,6 @@
           "han": 1
         },
         {
-          "name": "平和",
-          "han": 1
-        },
-        {
           "name": "三色同順",
           "han": 2
         },
@@ -6471,8 +6768,8 @@
           "han": 3
         }
       ],
-      "han": 7,
-      "fu": 30,
+      "han": 6,
+      "fu": 50,
       "payment": {
         "kind": "ron",
         "total": 18000
@@ -6487,18 +6784,26 @@
           {
             "label": "門前ロン",
             "fu": 10
+          },
+          {
+            "label": "暗槓(中張)",
+            "fu": 16,
+            "count": 1
+          },
+          {
+            "label": "待ち: 辺張(ペンチャン)",
+            "fu": 2
           }
         ],
-        "subtotal": 30,
-        "total": 30,
+        "subtotal": 48,
+        "total": 50,
         "fixed": false
       }
     },
     "tags": {
-      "fuType": 30,
+      "fuType": 50,
       "yakuCategories": [
         "リーチ",
-        "平和",
         "三色同順",
         "ドラ"
       ]

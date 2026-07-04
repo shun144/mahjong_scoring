@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import type { FuBreakdown } from "../engine/fu";
 import { calculatePayment, type Payment } from "../engine/score";
-import { generateChoices, type DistractorContext } from "./distractors";
+import { generateChoices, generateFuChoices, type DistractorContext } from "./distractors";
 import { createSeededRandom } from "./random";
 
 function paymentKey(payment: Payment): string {
@@ -85,5 +86,60 @@ describe("generateChoices", () => {
     const choices = generateChoices(correct, ctx, rng);
     expect(choices.length).toBeGreaterThanOrEqual(2); // 少なくとも正解+1つは出せる
     expect(choices.some((c) => paymentKey(c) === paymentKey(correct))).toBe(true);
+  });
+});
+
+describe("generateFuChoices", () => {
+  // 30符（切り上げあり: subtotal 26 -> total 30）の内訳。
+  const fu30: FuBreakdown = {
+    items: [{ label: "基本符", fu: 20 }],
+    subtotal: 26,
+    total: 30,
+    fixed: false,
+  };
+  // 七対子25符（固定）の内訳。
+  const fu25: FuBreakdown = {
+    items: [{ label: "七対子(固定)", fu: 25 }],
+    subtotal: 25,
+    total: 25,
+    fixed: true,
+  };
+
+  it("always includes the correct fu", () => {
+    const rng = createSeededRandom(1);
+    const choices = generateFuChoices(fu30, rng);
+    expect(choices).toContain(30);
+  });
+
+  it("produces exactly 4 distinct choices", () => {
+    const rng = createSeededRandom(2);
+    const choices = generateFuChoices(fu30, rng);
+    expect(choices.length).toBe(4);
+    expect(new Set(choices).size).toBe(choices.length);
+  });
+
+  it("offers the pre-rounding value (切り上げ忘れ) as a candidate distractor", () => {
+    // subtotal 26 は誤答候補の一つ。シャッフルで常に選ばれるとは限らないため、
+    // 複数シードで少なくとも一度は出現することを確認する（シードは広く散らす）。
+    const appeared = Array.from({ length: 40 }, (_, i) =>
+      generateFuChoices(fu30, createSeededRandom((i + 1) * 104729)),
+    ).some((choices) => choices.includes(26));
+    expect(appeared).toBe(true);
+  });
+
+  it("handles the fixed 25 fu (七対子) case with plausible near-values", () => {
+    const rng = createSeededRandom(4);
+    const choices = generateFuChoices(fu25, rng);
+    expect(choices).toContain(25);
+    expect(choices.length).toBe(4);
+    expect(new Set(choices).size).toBe(choices.length);
+    // すべて妥当な符（20以上）である。
+    for (const fu of choices) expect(fu).toBeGreaterThanOrEqual(20);
+  });
+
+  it("is deterministic for a given seed", () => {
+    const a = generateFuChoices(fu30, createSeededRandom(42));
+    const b = generateFuChoices(fu30, createSeededRandom(42));
+    expect(a).toEqual(b);
   });
 });
