@@ -32,11 +32,10 @@ export function QuizTileHeader({ problem }: { problem: Problem }) {
   return (
     <section className="quiz-tile-header" aria-label="アガリ牌・ドラ表示牌">
       <LabeledTiles label="アガリ牌" tiles={[problem.hand.winningTile]} keyPrefix="winning" />
-      <LabeledTiles label="ドラ表示牌" tiles={problem.doraIndicators} keyPrefix="dora" />
-      <LabeledTiles label="裏ドラ表示牌" tiles={problem.uraDoraIndicators} keyPrefix="uradora" />
-      {/* {problem.conditions.riichi ? (
-        <LabeledTiles label="裏ドラ表示牌" tiles={problem.uraDoraIndicators} keyPrefix="uradora" />
-      ) : null} */}
+      <div className="quiz-tile-header-dora-group" style={{ display: "flex" }}>
+        <LabeledTiles label="ドラ表" tiles={problem.doraIndicators} keyPrefix="dora" />
+        <LabeledTiles label="裏ドラ表" tiles={problem.uraDoraIndicators} keyPrefix="uradora" />
+      </div>
     </section>
   );
 }

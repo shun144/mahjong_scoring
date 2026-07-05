@@ -73,7 +73,12 @@
 .quiz-tile-header {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   align-items: flex-start;
+}
+
+.quiz-tile-header-dora-group {
+  display: flex;
   gap: var(--space-4) var(--space-5);
 }
 
@@ -131,7 +136,8 @@
   color: var(--color-text);
   cursor: pointer;
   /* Airbnb 流：静止面は影なし・border 主体、hover のみ 1 段 */
-  transition: border-color var(--duration) var(--ease-standard),
+  transition:
+    border-color var(--duration) var(--ease-standard),
     background var(--duration) var(--ease-standard),
     box-shadow var(--duration) var(--ease-standard),
     transform var(--duration-fast) var(--ease-standard);

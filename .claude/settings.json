@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/vite-node/package.json'\\).version\\)\")",
+      "mcp__plugin_playwright_playwright__browser_select_option",
+      "mcp__plugin_playwright_playwright__browser_run_code_unsafe",
+      "Bash(cd \"c:/work/20260702_mahjong_scoring\" && rm -f *.png && rm -rf .playwright-mcp)",
+      "Bash(git init *)"
+    ],
+    "additionalDirectories": [
+      "C:\\work\\20260702_mahjong_scoring"
+    ]
+  }
+}
