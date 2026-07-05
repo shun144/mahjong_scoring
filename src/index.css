@@ -124,13 +124,18 @@ select:focus-visible {
 }
 
 .page-header-link {
+  display: flex;
+  gap: 10px;
+}
+
+.page-header-link-item {
   font-size: 14px;
   color: var(--color-text-secondary);
   text-decoration: none;
   white-space: nowrap;
 }
 
-.page-header-link:hover {
+.page-header-link-item:hover {
   text-decoration: underline;
 }
 

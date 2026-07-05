@@ -5,6 +5,7 @@ import { scoreHand } from "../engine/scoreHand";
 import { FuBreakdownContent } from "./FuBreakdown";
 import { formatCalculationLine, formatPayment } from "./format";
 import "./result.css";
+import { PageHeader } from "./PageHeader";
 
 interface ResultLocationState {
   problem: Problem;
@@ -43,12 +44,7 @@ export function ResultPage() {
 
   return (
     <main className="page-shell">
-      <div className="page-header">
-        <h1>解説</h1>
-        <Link to="/stats" className="page-header-link">
-          成績を見る
-        </Link>
-      </div>
+      <PageHeader title="解説" />
       <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
         {isCorrect ? "○ 正解" : "✕ 不正解"}
       </p>

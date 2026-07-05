@@ -12,7 +12,7 @@ export function PrivacyPolicyPage() {
     <main className="page-shell privacy-page">
       <div className="page-header">
         <h1>プライバシーポリシー</h1>
-        <Link to="/" className="page-header-link">
+        <Link to="/" className="page-header-link-item">
           ホームに戻る
         </Link>
       </div>
@@ -40,8 +40,8 @@ export function PrivacyPolicyPage() {
         </p>
         <ul>
           <li>
-            Google
-            などの第三者配信事業者は、Cookie を使用して、ユーザーが当サイトや他のサイトに過去にアクセスした際の情報に基づいて広告を配信します。
+            Google などの第三者配信事業者は、Cookie
+            を使用して、ユーザーが当サイトや他のサイトに過去にアクセスした際の情報に基づいて広告を配信します。
           </li>
           <li>
             ユーザーは、Google の
@@ -55,8 +55,8 @@ export function PrivacyPolicyPage() {
             <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">
               aboutads.info
             </a>
-            のページにアクセスすることで、パーソナライズ広告に使用される第三者配信事業者の
-            Cookie を無効にできます。
+            のページにアクセスすることで、パーソナライズ広告に使用される第三者配信事業者の Cookie
+            を無効にできます。
           </li>
           <li>
             Google の広告における Cookie の取り扱いの詳細については、Google の
@@ -75,13 +75,11 @@ export function PrivacyPolicyPage() {
       <section className="privacy-section" aria-label="第3条 アクセス解析ツールについて">
         <h2>第3条（アクセス解析ツールについて）</h2>
         <p>
-          当サイトでは、サイトの利用状況を把握するためにアクセス解析ツール（Google
-          Analytics など）を導入する場合があります。これらのツールはデータ収集のために
-          Cookie を使用することがあります。このデータは匿名で収集されており、個人を特定するものではありません。
+          当サイトでは、サイトの利用状況を把握するためにアクセス解析ツール（Google Analytics
+          など）を導入する場合があります。これらのツールはデータ収集のために Cookie
+          を使用することがあります。このデータは匿名で収集されており、個人を特定するものではありません。
         </p>
-        <p>
-          アクセス解析ツールを導入する際は、本ポリシーを改定のうえ、その旨を明記します。
-        </p>
+        <p>アクセス解析ツールを導入する際は、本ポリシーを改定のうえ、その旨を明記します。</p>
       </section>
 
       <section className="privacy-section" aria-label="第4条 個人情報を収集・利用する目的">

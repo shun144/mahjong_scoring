@@ -11,6 +11,7 @@ import { formatPayment } from "./format";
 import { QuizConditions } from "./QuizConditions";
 import { HandDisplay } from "./tiles/HandDisplay";
 import "./quiz.css";
+import { PageHeader } from "./PageHeader";
 
 /** 解説画面から「問題に戻る」で渡される復習用の遷移 state。 */
 function isReviewState(state: unknown): state is { problem: Problem; review: boolean } {
@@ -53,12 +54,7 @@ export function QuizPage() {
 
   return (
     <main className="page-shell">
-      <div className="page-header">
-        <h1>出題</h1>
-        <Link to="/stats" className="page-header-link">
-          成績を見る
-        </Link>
-      </div>
+      <PageHeader title="出題" />
       <QuizConditions conditions={problem.conditions} />
 
       <section className="quiz-hand">
