@@ -69,9 +69,9 @@ generous whitespace（大セクション 48〜64px のリズム）。
 見出し（h1/h2）は Airbnb 流に控えめウェイト（600 基調）とし、タイポで叫ばない。
 唯一の大型タイポは点数（L1・700）＝Airbnb の rating-display に対応させ、最重要数値だけを突出させる。
 
-- レベル1／最強調 = 点数
+- レベル1／最強調 = 点数（各ドリルの正解表示。符計算モードの「正解: XX符」も L1 に含める）
   - font-size: --fs-score（3rem目安）、font-weight 700、色 --color-accent（Rausch）、数字専用フォント
-- レベル2／中 = 翻・符・役名
+- レベル2／中 = 翻・符・役名（内訳・計算式に現れる符。各ドリルの「正解」表示は上記 L1）
   - font-size: --fs-emphasis（1.5rem目安）、font-weight 600、色 --color-text（数字は専用フォント）
 - レベル3／通常 = その他ラベル・説明
   - font-size: --fs-base（1rem目安）、色 --color-text / 補助は --color-text-sub

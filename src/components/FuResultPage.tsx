@@ -45,7 +45,7 @@ export function FuResultPage() {
         </p>
         {!isCorrect ? <p className="result-your-answer">あなたの回答: {selected}符</p> : null}
       </div>
-      <p className="result-fu-answer">正解: {answer.fu}符</p>
+      <p className="result-answer">正解: {answer.fu}符</p>
 
       <section className="card result-breakdown" aria-label="符計算">
         {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}
