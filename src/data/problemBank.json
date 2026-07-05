@@ -81,7 +81,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true
@@ -204,7 +204,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -324,7 +324,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -454,7 +454,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true
@@ -588,7 +588,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -719,7 +719,7 @@
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
-      "isDealer": false,
+      "isDealer": true,
       "riichi": false
     },
     "answer": {
@@ -737,7 +737,7 @@
       "fu": 40,
       "payment": {
         "kind": "ron",
-        "total": 2600
+        "total": 3900
       },
       "fuDetail": {
         "items": [
@@ -975,7 +975,7 @@
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
-      "isDealer": false,
+      "isDealer": true,
       "riichi": false
     },
     "answer": {
@@ -993,7 +993,7 @@
       "fu": 50,
       "payment": {
         "kind": "ron",
-        "total": 3200
+        "total": 4800
       },
       "fuDetail": {
         "items": [
@@ -1114,7 +1114,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true
@@ -1246,7 +1246,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true
@@ -1374,7 +1374,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -1382,11 +1382,11 @@
     "answer": {
       "yaku": [
         {
-          "name": "役牌(自風・東)",
+          "name": "役牌(場風・東)",
           "han": 1
         },
         {
-          "name": "役牌(場風・東)",
+          "name": "役牌(自風・南)",
           "han": 1
         },
         {
@@ -1429,8 +1429,8 @@
     "tags": {
       "fuType": 60,
       "yakuCategories": [
-        "役牌(自風・東)",
         "役牌(場風・東)",
+        "役牌(自風・南)",
         "三暗刻"
       ]
     }
@@ -1512,7 +1512,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -1635,7 +1635,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -1759,7 +1759,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -1888,7 +1888,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2003,7 +2003,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2132,7 +2132,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2247,7 +2247,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2369,7 +2369,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2492,7 +2492,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2636,7 +2636,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2774,7 +2774,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -2962,7 +2962,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -3095,7 +3095,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -3243,7 +3243,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -3396,7 +3396,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -3417,7 +3417,7 @@
         }
       ],
       "han": 6,
-      "fu": 30,
+      "fu": 40,
       "payment": {
         "kind": "tsumo-ko",
         "nonDealer": 3000,
@@ -3438,15 +3438,19 @@
             "label": "暗刻(幺九)",
             "fu": 8,
             "count": 1
+          },
+          {
+            "label": "雀頭(役牌)",
+            "fu": 2
           }
         ],
-        "subtotal": 30,
-        "total": 30,
+        "subtotal": 32,
+        "total": 40,
         "fixed": false
       }
     },
     "tags": {
-      "fuType": 30,
+      "fuType": 40,
       "yakuCategories": [
         "門前清自摸和",
         "一気通貫",
@@ -3543,7 +3547,7 @@
     "conditions": {
       "seatWind": "east",
       "roundWind": "east",
-      "isDealer": false,
+      "isDealer": true,
       "riichi": false
     },
     "answer": {
@@ -3564,9 +3568,8 @@
       "han": 4,
       "fu": 40,
       "payment": {
-        "kind": "tsumo-ko",
-        "nonDealer": 2000,
-        "dealer": 4000
+        "kind": "tsumo-oya",
+        "each": 4000
       },
       "rank": "mangan",
       "fuDetail": {
@@ -3685,7 +3688,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -3831,7 +3834,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -3966,7 +3969,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true
@@ -4085,7 +4088,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -4204,7 +4207,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -4324,7 +4327,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -4461,7 +4464,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -4719,7 +4722,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -4853,7 +4856,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -4958,7 +4961,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -5092,7 +5095,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -5226,7 +5229,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -5361,7 +5364,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -5556,7 +5559,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -5690,7 +5693,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -5819,7 +5822,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -5923,7 +5926,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -6033,7 +6036,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true
@@ -6183,7 +6186,7 @@
     ],
     "uraDoraIndicators": [],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": false
@@ -6319,7 +6322,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true
@@ -6452,7 +6455,7 @@
       }
     ],
     "conditions": {
-      "seatWind": "east",
+      "seatWind": "south",
       "roundWind": "east",
       "isDealer": false,
       "riichi": true

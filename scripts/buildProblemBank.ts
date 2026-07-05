@@ -56,7 +56,6 @@ interface HandSpec {
   uraDora?: string[];
   seatWind?: Wind;
   roundWind?: Wind;
-  isDealer?: boolean;
   riichi?: boolean;
 }
 
@@ -102,6 +101,8 @@ function toScoreHandInput(spec: HandSpec): ScoreHandInput {
     : explicitUra.length > 0
       ? explicitUra
       : nonLandingDoraIndicators(allHandTiles, indicatorCount);
+  // 既定の自風は「子」の風(南)にする。東は親専用のため既定にしない。
+  const seatWind = spec.seatWind ?? "south";
   return {
     concealed,
     melds,
@@ -109,9 +110,10 @@ function toScoreHandInput(spec: HandSpec): ScoreHandInput {
     winType: spec.winType,
     doraIndicators,
     uraDoraIndicators,
-    seatWind: spec.seatWind ?? "east",
+    seatWind,
     roundWind: spec.roundWind ?? "east",
-    isDealer: spec.isDealer ?? false,
+    // 東家＝親（自風=東 ⟺ 親。生成器 pickConditions と同じルール）。
+    isDealer: seatWind === "east",
     riichi,
   };
 }
@@ -188,6 +190,7 @@ const specs: HandSpec[] = [
     concealed: "123m789s55z46p5p111z",
     winningTile: "5p",
     winType: "ron",
+    seatWind: "east", // ダブル東（自風=東）が成立する親の手
   },
   {
     id: "fu-40-ankou-tanki",
@@ -343,6 +346,7 @@ const specs: HandSpec[] = [
     melds: [{ type: "pon", tiles: ["4m", "4m", "4m"], calledIndex: 0 }],
     winningTile: "2z",
     winType: "tsumo",
+    seatWind: "east", // 自風=東（111zが自風牌）が成立する親の手
   },
   {
     id: "chinitsu-menzen",
@@ -405,7 +409,7 @@ const specs: HandSpec[] = [
     concealed: "555z666z777z123m44m",
     winningTile: "4m",
     winType: "tsumo",
-    isDealer: true,
+    seatWind: "east", // 親（東家）
   },
   {
     id: "yakuman-tsuuiisou",
@@ -532,7 +536,7 @@ const specs: HandSpec[] = [
     concealed: "123m123p123s44z678s",
     winningTile: "8s",
     winType: "tsumo",
-    isDealer: true,
+    seatWind: "east", // 親（東家）
     riichi: true,
     // 表示牌3z→ドラ4z。雀頭44zの2枚がドラ→ドラ2（表示牌1枚で実戦準拠。SPEC §5.4）。
     dora: ["4z"],
@@ -546,7 +550,7 @@ const specs: HandSpec[] = [
     melds: [{ type: "ankan", tiles: ["5s", "5s", "5s", "5s"] }],
     winningTile: "3s",
     winType: "ron",
-    isDealer: true,
+    seatWind: "east", // 親（東家）
     riichi: true,
     // 表示牌9m→ドラ1m(1枚)、表示牌3z→ドラ4z(雀頭2枚)。ドラ合計3（表示牌2枚=1+槓1）。
     dora: ["1m", "4z"],

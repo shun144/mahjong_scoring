@@ -76,7 +76,7 @@ describe("ResultPage", () => {
     expect(screen.getByText("リーチ")).toBeInTheDocument();
     expect(screen.getByText("平和")).toBeInTheDocument();
     expect(screen.getAllByText("1翻")).toHaveLength(2);
-    expect(screen.getByText("30符2翻 → 子ロン 2000")).toBeInTheDocument();
+    expect(screen.getByText("30符2翻 (子ロン) → 2000")).toBeInTheDocument();
   });
 
   it("shows the alternative (高点法) interpretation note when present", () => {

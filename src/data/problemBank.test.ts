@@ -58,6 +58,17 @@ describe("problemBank", () => {
     expect(problemBank.some((p) => p.hand.winType === "tsumo")).toBe(true);
   });
 
+  it("自風=東 ⟺ 親（東家は必ず親・SPEC §4.1）", () => {
+    for (const p of problemBank) {
+      expect(p.conditions.isDealer).toBe(p.conditions.seatWind === "east");
+    }
+  });
+
+  it("covers both 親（東家）and 子", () => {
+    expect(problemBank.some((p) => p.conditions.isDealer)).toBe(true);
+    expect(problemBank.some((p) => !p.conditions.isDealer)).toBe(true);
+  });
+
   it("covers 七対子 and 役満 problems", () => {
     expect(problemBank.some((p) => p.answer.yaku.some((y) => y.name === "七対子"))).toBe(true);
     expect(problemBank.some((p) => p.answer.rank === "yakuman")).toBe(true);
