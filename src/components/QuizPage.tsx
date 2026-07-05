@@ -55,14 +55,13 @@ export function QuizPage() {
   return (
     <main className="page-shell">
       <PageHeader title="出題" />
-      <QuizConditions conditions={problem.conditions} />
+      <QuizConditions conditions={problem.conditions} winType={problem.hand.winType} />
 
       <section className="quiz-hand">
         <HandDisplay
           concealed={problem.hand.concealed}
           melds={problem.hand.melds}
           winningTile={problem.hand.winningTile}
-          winType={problem.hand.winType}
         />
       </section>
 

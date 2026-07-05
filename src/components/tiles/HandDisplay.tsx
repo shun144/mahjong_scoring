@@ -1,6 +1,5 @@
-import type { Meld, Tile, WinType } from "../../engine/model";
+import type { Meld, Tile } from "../../engine/model";
 import { removeOneMatchingTile, sortTiles } from "../../engine/tiles";
-import { WIN_TYPE_LABELS } from "../format";
 import { MeldGroup } from "./MeldGroup";
 import { TileFace, type TileSize } from "./TileFace";
 import { TileRow } from "./TileRow";
@@ -13,23 +12,14 @@ export interface HandDisplayProps {
   melds?: readonly Meld[];
   /** 上がり牌。手牌の上に区切って強調表示する（concealed内の1枚を差し替えて表示する）。 */
   winningTile: Tile;
-  /** 上がり方（ツモ/ロン）。指定時は上がり牌の上にラベルを表示する。 */
-  winType?: WinType;
   size?: TileSize;
 }
 
 /**
  * 手牌全体（純手牌＋上がり牌＋副露）を表示するコンポーネント。
  * SPEC.md §4.1 の出題情報のうち手牌部分に対応。
- * 上がり牌はツモ/ロンのラベルを添えて手牌の上段に配置する。
  */
-export function HandDisplay({
-  concealed,
-  melds = [],
-  winningTile,
-  winType,
-  size = "md",
-}: HandDisplayProps) {
+export function HandDisplay({ concealed, melds = [], winningTile, size = "md" }: HandDisplayProps) {
   // concealed には上がり牌が既に含まれているため、強調表示の1枚と重複しないよう取り除く。
   const restTiles = removeOneMatchingTile(concealed, winningTile);
   const sortedConcealed = sortTiles(restTiles);
@@ -37,7 +27,6 @@ export function HandDisplay({
   return (
     <div className="mj-hand-display">
       <div className="mj-winning-area">
-        {winType ? <span className="mj-winning-label">{WIN_TYPE_LABELS[winType]}</span> : null}
         <span className="mj-winning-tile">
           <TileFace tile={winningTile} size={size} />
         </span>

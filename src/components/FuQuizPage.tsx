@@ -54,7 +54,7 @@ export function FuQuizPage() {
   return (
     <main className="page-shell">
       <PageHeader title="符計算" />
-      <QuizConditions conditions={problem.conditions} />
+      <QuizConditions conditions={problem.conditions} winType={problem.hand.winType} />
 
       <section className="quiz-hand">
         <h2>手牌</h2>
@@ -62,7 +62,6 @@ export function FuQuizPage() {
           concealed={problem.hand.concealed}
           melds={problem.hand.melds}
           winningTile={problem.hand.winningTile}
-          winType={problem.hand.winType}
         />
       </section>
 

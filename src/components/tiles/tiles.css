@@ -76,19 +76,12 @@
   gap: 12px;
 }
 
-/* 上がり牌はツモ/ロンのラベルを添えて手牌の上段に置く。 */
+/* 上がり牌を手牌の上段に置く。 */
 .mj-winning-area {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-}
-
-.mj-winning-label {
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--color-text-secondary);
 }
 
 /* 純手牌＋副露の並び（横方向、幅が足りなければ副露が折り返す）。 */
