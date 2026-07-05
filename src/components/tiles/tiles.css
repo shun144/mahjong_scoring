@@ -10,6 +10,18 @@
   vertical-align: bottom;
 }
 
+/* --- 手牌の基準サイズ(md)は常時フルイド ---
+   手牌・上がり牌・ドラ表示牌はすべて md。本文幅(page-shell: 最大640px − 左右
+   パディング16px、加えて13枚並びの行gapや副露の余白)を超えないよう、牌幅を
+   「本文に13枚＋余白が収まる値」に流動化し、上限は実寸基準の42pxに張り付かせる。
+   これで広いPCは現行どおり(42px)・狭幅や副露入りは自動縮小して1画面に収まる。
+   -78px は 左右パディング(32)+行/牌gap+副露padding(最大4副露の圧縮後余白 約46)を
+   見込んだ安全域（下の狭幅メディアクエリの gap/padding 圧縮と対応）。 */
+.mj-tile-wrap.mj-tile-size-md {
+  --mj-tile-w: min(42px, calc((min(100vw, 640px) - 78px) / 13));
+  --mj-tile-h: calc(var(--mj-tile-w) * 4 / 3);
+}
+
 .mj-tile-wrap.mj-tile-size-sm {
   --mj-tile-h: 40px;
   --mj-tile-w: 30px;
@@ -92,17 +104,19 @@
   gap: 10px;
 }
 
-/* --- スマホ表示: 純手牌(md)を横スクロールなしで1画面に収める ---
-   上がり牌は上段へ移したので、下段の純手牌は最大13枚。牌の実寸比(3:4)を
-   保ったまま、viewport 幅から1枚あたりの幅を算出し1行に収める。
-   -52px は shell余白(32)+行gap(12)+安全域(8)。 */
-@media (max-width: 480px) {
-  .mj-tile-wrap.mj-tile-size-md {
-    --mj-tile-w: calc((100vw - 52px) / 13);
-    --mj-tile-h: calc((100vw - 52px) / 13 * 4 / 3);
-  }
+/* --- サブ640px表示: 副露込みでも手牌を1行に収めるため余白を詰める ---
+   牌サイズ(md)は viewport<~624px で縮み始めるので、シェル最大幅(640px)未満の
+   全域で牌間・副露・行の gap/padding を圧縮し、鳴き入り手牌のオーバーヘッドを
+   上の -78px 想定内に抑える（PC全幅は既定の余白のまま）。 */
+@media (max-width: 639px) {
   .mj-tile-row {
     gap: 1px;
+  }
+  .mj-hand-row {
+    gap: 4px;
+  }
+  .mj-meld-group {
+    padding: 0 2px;
   }
   .mj-hand-display {
     gap: 8px;

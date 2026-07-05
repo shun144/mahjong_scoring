@@ -11,7 +11,7 @@ export function DoraSection({ problem }: { problem: Problem }) {
       <div>
         <span className="dora-label">ドラ表示牌</span>
         {problem.doraIndicators.length > 0 ? (
-          <TileRow tiles={problem.doraIndicators} size="sm" keyPrefix="dora" />
+          <TileRow tiles={problem.doraIndicators} keyPrefix="dora" />
         ) : (
           <span>なし</span>
         )}
@@ -20,7 +20,7 @@ export function DoraSection({ problem }: { problem: Problem }) {
         <div>
           <span className="dora-label">裏ドラ表示牌</span>
           {problem.uraDoraIndicators.length > 0 ? (
-            <TileRow tiles={problem.uraDoraIndicators} size="sm" keyPrefix="uradora" />
+            <TileRow tiles={problem.uraDoraIndicators} keyPrefix="uradora" />
           ) : (
             <span>なし</span>
           )}
