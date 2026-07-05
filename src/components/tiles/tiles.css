@@ -42,7 +42,7 @@
   position: relative;
   width: var(--mj-tile-w);
   height: var(--mj-tile-h);
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.18));
+  filter: drop-shadow(var(--shadow-tile));
 }
 
 .mj-tile-layer {

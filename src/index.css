@@ -1,36 +1,171 @@
 :root {
   color-scheme: light;
 
-  /* --- カラー（モダン・ニュートラル） --- */
+  /* --- 配色トークン（design-spec.md 正典：ライト） --- */
   --color-bg: #ffffff;
-  --color-surface: #fdfcf8;
-  --color-surface-alt: #f4f3ec;
-  --color-border: #e5e4e7;
-  --color-border-strong: #d6d3cb;
-  --color-text: #08060d;
-  --color-text-secondary: #6b6375;
-  --color-accent: #9333ea;
+  --color-surface: #f5f5f7;
+  --color-text: #1a1a1a;
+  --color-text-sub: #6b7280;
+  --color-accent: #4f46e5;
+  --color-border: #e5e7eb;
   --color-accent-contrast: #ffffff;
-  --color-success: #15803d;
-  --color-success-bg: #f0fdf4;
-  --color-danger: #b91c1c;
-  --color-danger-bg: #fff1f1;
-  --color-warning-bg: #fff8e6;
-  --color-warning-border: #f3d98b;
-  --color-warning-text: #8a6d1f;
 
-  /* --- 形状 --- */
-  --radius-md: 8px;
-  --radius-lg: 10px;
-  --radius-pill: 999px;
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  /* 一段浮いた面（カード本体等。bg より僅かに白寄りでトーン差を作る） */
+  --color-surface-2: #fbfbfd;
+  /* 主役専用グラデ（インディゴ→バイオレット。主ボタン・進捗バーのみ） */
+  --gradient-accent: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+
+  /* --- 拡張色（spec非定義・自前補完：ライト） --- */
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #86efac;
+  --color-success-text: #15803d;
+  --color-danger-bg: #fef2f2;
+  --color-danger-border: #fca5a5;
+  --color-danger-text: #b91c1c;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #fde68a;
+  --color-warning-text: #92400e;
+
+  /* --- アクセント淡色（バッジ等の淡塗り。単色インディゴの範囲内：ライト） --- */
+  --color-accent-bg: #eef0fe; /* 淡いインディゴ背景 */
+  --color-accent-border: #c7ccfa;
+  --color-accent-text: #4338ca; /* 淡背景上で AA(4.5:1) を満たすインディゴ */
+
+  /* --- 後方互換エイリアス（旧変数名→新トークン。漏れ防止用） --- */
+  --color-text-secondary: var(--color-text-sub);
+  --color-surface-alt: var(--color-surface);
+  --color-border-strong: var(--color-border);
+  --color-success: var(--color-success-text);
+  --color-danger: var(--color-danger-text);
 
   /* --- タイポグラフィ --- */
   --font-sans: system-ui, "Hiragino Sans", "Segoe UI", Meiryo, sans-serif;
+  /* 数字専用フォント（外部Webフォント不使用・システムフォールバックのみ） */
+  --font-numeric: "SF Pro Display", "Helvetica Neue", "Roboto Condensed",
+    "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+
+  /* --- サイズ（3段階強調＋補助） --- */
+  --fs-score: 3rem; /* L1: 点数 */
+  --fs-emphasis: 1.5rem; /* L2: 翻・符・役名 */
+  --fs-base: 1rem; /* L3: 本文 */
+  --fs-sm: 0.875rem; /* ラベル・キャプション */
+
+  /* --- 字間・行間（見出し/スコアの引き締め用） --- */
+  --tracking-tight: -0.02em;
+  --leading-tight: 1.15;
+  --leading-normal: 1.6;
+
+  /* --- 余白（4/8/12/16/24/32px） --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* --- 形状（角丸スケール） --- */
+  --radius-sm: 8px; /* 小要素 */
+  --radius: 14px; /* ボタン等の中間 */
+  --radius-lg: 20px; /* カード・パネル */
+  --radius-pill: 999px;
+  /* 旧 md は中間へ集約（互換エイリアス） */
+  --radius-md: var(--radius);
+
+  /* --- エレベーション（多層シャドウ・低不透明度：ライト） --- */
+  --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06), 0 1px 3px rgba(17, 24, 39, 0.05);
+  --shadow-md: 0 2px 6px rgba(17, 24, 39, 0.08),
+    0 6px 16px rgba(17, 24, 39, 0.08);
+  --shadow-lg: 0 6px 16px rgba(17, 24, 39, 0.1),
+    0 16px 32px rgba(17, 24, 39, 0.12);
+  /* 後方互換エイリアス（旧 --shadow-card → sm） */
+  --shadow-card: var(--shadow-sm);
+  --shadow-tile: 0 1px 1px rgba(0, 0, 0, 0.16), 0 2px 3px rgba(0, 0, 0, 0.12);
+
+  /* --- モーション --- */
+  --duration-fast: 120ms;
+  --duration: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
   font-family: var(--font-sans);
   color: var(--color-text);
   background: var(--color-bg);
+}
+
+/* --- ダークモード（OS設定・手動切替の両対応で同一トークン群を再定義） --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --color-bg: #15171c;
+    --color-surface: #20232b;
+    --color-text: #f5f5f7;
+    --color-text-sub: #9ca3af;
+    --color-accent: #818cf8;
+    --color-border: #333842;
+    --color-accent-contrast: #ffffff;
+
+    --color-surface-2: #272b35;
+    --gradient-accent: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+
+    --color-success-bg: #14311f;
+    --color-success-border: #2f6b43;
+    --color-success-text: #4ade80;
+    --color-danger-bg: #3a1a1d;
+    --color-danger-border: #7f3237;
+    --color-danger-text: #f87171;
+    --color-warning-bg: #332a12;
+    --color-warning-border: #6b5a25;
+    --color-warning-text: #fbbf24;
+
+    /* アクセント淡色（暗背景で沈まない淡インディゴ：ダーク） */
+    --color-accent-bg: #2b2f4a;
+    --color-accent-border: #4a52a8;
+    --color-accent-text: #a5b4fc; /* 淡い暗背景上で AA を満たす明るいインディゴ */
+
+    /* ダークは影を強め、階層は境界線でも補強する */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 6px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.5), 0 16px 32px rgba(0, 0, 0, 0.5);
+    --shadow-card: var(--shadow-sm);
+    --shadow-tile: 0 1px 1px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: #15171c;
+  --color-surface: #20232b;
+  --color-text: #f5f5f7;
+  --color-text-sub: #9ca3af;
+  --color-accent: #818cf8;
+  --color-border: #333842;
+  --color-accent-contrast: #ffffff;
+
+  --color-surface-2: #272b35;
+  --gradient-accent: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+
+  --color-success-bg: #14311f;
+  --color-success-border: #2f6b43;
+  --color-success-text: #4ade80;
+  --color-danger-bg: #3a1a1d;
+  --color-danger-border: #7f3237;
+  --color-danger-text: #f87171;
+  --color-warning-bg: #332a12;
+  --color-warning-border: #6b5a25;
+  --color-warning-text: #fbbf24;
+
+  /* アクセント淡色（暗背景で沈まない淡インディゴ：ダーク） */
+  --color-accent-bg: #2b2f4a;
+  --color-accent-border: #4a52a8;
+  --color-accent-text: #a5b4fc; /* 淡い暗背景上で AA を満たす明るいインディゴ */
+
+  /* ダークは影を強め、階層は境界線でも補強する */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 6px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.5), 0 16px 32px rgba(0, 0, 0, 0.5);
+  --shadow-card: var(--shadow-sm);
+  --shadow-tile: 0 1px 1px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -61,82 +196,109 @@ body {
 }
 
 h1 {
-  font-size: 22px;
+  font-size: var(--fs-emphasis);
   font-weight: 700;
   margin: 0;
   color: var(--color-text);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
 }
 
 h2 {
-  font-size: 15px;
+  font-size: var(--fs-sm);
   font-weight: 600;
   margin: 0;
-  color: var(--color-text-secondary);
+  color: var(--color-text-sub);
 }
 
 p {
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--leading-normal);
 }
 
 a {
   color: var(--color-accent);
 }
 
+/* グロー付き focus リング（outline は残し、accent ベースの淡いリングを重ねる） */
 a:focus-visible,
 button:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 25%, transparent);
 }
 
-/* --- 共通カード --- */
+/* --- 共通カード（一段浮いた面＋大きめ角丸＋静止影） --- */
 .card {
-  padding: 16px;
+  padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-sm);
 }
 
 /* --- 各ページ共通の外枠（スマホ最優先、PCは中央寄せカード幅） --- */
 .page-shell {
   max-width: 640px;
   margin: 0 auto;
-  padding: 16px;
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 @media (min-width: 640px) {
   .page-shell {
-    padding: 32px 16px;
+    padding: var(--space-6) var(--space-4);
   }
 }
 
-/* --- 各ページ見出し行（h1＋ナビリンク） --- */
+/* --- 各ページ見出し行（h1＋ナビリンク。グラス化＝半透明＋ぼかし） --- */
 .page-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  /* backdrop-filter 非対応時のフォールバック（不透明寄りの surface） */
+  background: var(--color-surface);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .page-header {
+    background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    backdrop-filter: saturate(180%) blur(12px);
+  }
 }
 
 .page-header-link {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
 .page-header-link-item {
-  font-size: 14px;
-  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
   text-decoration: none;
   white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
-.page-header-link-item:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .page-header-link-item:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
 }
 
 /* --- ページ共通のボタン --- */
@@ -144,19 +306,38 @@ select:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  min-height: 48px;
+  font-size: var(--fs-base);
   font-weight: 600;
-  padding: 12px 20px;
+  padding: var(--space-3) var(--space-5);
   border: none;
-  border-radius: var(--radius-md);
-  background: var(--color-accent);
+  border-radius: var(--radius);
+  background: var(--gradient-accent);
   color: var(--color-accent-contrast);
   text-decoration: none;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration) var(--ease-standard),
+    transform var(--duration) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .btn-primary:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:disabled {
-  background: var(--color-border-strong);
+  background: var(--color-border);
+  color: var(--color-text-sub);
+  box-shadow: none;
+  transform: none;
   cursor: not-allowed;
 }
 
@@ -164,13 +345,43 @@ select:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  min-height: 48px;
+  font-size: var(--fs-base);
   font-weight: 600;
-  padding: 12px 20px;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
   background: var(--color-bg);
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
+  transition: border-color var(--duration) var(--ease-standard),
+    background var(--duration) var(--ease-standard),
+    transform var(--duration) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-bg));
+  }
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+/* モーションを抑える設定では遷移・移動を無効化する */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .btn-primary,
+  .btn-secondary,
+  .quiz-choice-btn {
+    transform: none !important;
+  }
 }

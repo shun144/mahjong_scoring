@@ -1,34 +1,72 @@
 .quiz-conditions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  /* バッジの塊感を出すため gap をやや広げる */
+  gap: var(--space-3);
 }
 
+/* 局条件バッジ：ラベル（小）＋値（強調）の2段構造。中立ベース。 */
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-pill);
-  background: var(--color-surface-alt);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
-  font-size: 14px;
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* ラベル（「場風」「自風」）：補助色で小さく。 */
+.badge-label {
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+}
+
+/* 値（風牌・親/子・ロン/ツモ・リーチ）：強調は L3 の範囲内（L2 には上げない）。 */
+.badge-value {
+  font-weight: 700;
   color: var(--color-text);
 }
 
+/* 自風：アクセント淡塗り（filled）で場風と一目で区別。単色インディゴの範囲内。 */
+.badge--seat {
+  background: var(--color-accent-bg);
+  border-color: var(--color-accent-border);
+}
+
+.badge--seat .badge-value {
+  color: var(--color-accent-text);
+}
+
+/* 自風の淡塗り背景上でラベルも AA(4.5:1) を満たすよう accent-text に揃える
+   （text-sub のままでは #6b7280 on #eef0fe ≈ 4.26:1 で未達）。
+   階層はラベル=--fs-sm／値=700 のサイズ・太さ差で保つ。 */
+.badge--seat .badge-label {
+  color: var(--color-accent-text);
+}
+
+/* 場風・親子・上がり方は中立ベース（.badge の既定）を踏襲し、値のみ強調。 */
+
 .badge-riichi {
   background: var(--color-danger-bg);
-  border-color: #f3b4b4;
-  color: var(--color-danger);
-  font-weight: 600;
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
+}
+
+.badge-riichi .badge-value {
+  color: var(--color-danger-text);
 }
 
 .quiz-hand {
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: var(--space-1);
 }
 
 .quiz-hand h2 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
 }
 
 /* アガリ牌・ドラ表示牌・裏ドラ表示牌をラベル上／牌下で横並びにするヘッダー。 */
@@ -36,45 +74,45 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 16px 24px;
+  gap: var(--space-4) var(--space-5);
 }
 
 .tile-info-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .tile-info-label {
-  font-size: 14px;
-  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
   white-space: nowrap;
 }
 
 .tile-info-none {
-  font-size: 14px;
-  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
 }
 
 .quiz-answer {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 8px;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
   border-top: 1px solid var(--color-border);
 }
 
 .quiz-answer-label {
   margin: 0;
-  font-size: 14px;
-  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
 }
 
 .quiz-choices {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .quiz-choice-btn {
@@ -82,23 +120,34 @@
   align-items: center;
   justify-content: center;
   min-height: 56px;
-  padding: 12px 16px;
-  font-size: 16px;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-base);
   font-weight: 600;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
   background: var(--color-bg);
   color: var(--color-text);
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration) var(--ease-standard),
+    background var(--duration) var(--ease-standard),
+    box-shadow var(--duration) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
 
-.quiz-choice-btn:hover {
-  border-color: var(--color-accent);
-  background: var(--color-surface-alt);
+@media (hover: hover) {
+  .quiz-choice-btn:hover {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 10%, var(--color-bg));
+    box-shadow: var(--shadow-md);
+  }
 }
 
 .quiz-choice-btn:active {
   transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .quiz-skip {

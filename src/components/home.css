@@ -5,45 +5,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: var(--space-5);
   text-align: center;
-  padding: 32px 16px;
+  padding: var(--space-6) var(--space-4);
 }
 
 .home-page h1 {
-  font-size: 28px;
+  font-size: var(--fs-emphasis);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
 }
 
 .home-page p {
   max-width: 32em;
-  color: var(--color-text-secondary);
+  color: var(--color-text-sub);
 }
 
 .home-nav {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   width: 100%;
   max-width: 280px;
 }
 
-.home-nav .btn-primary {
-  width: 100%;
-}
-
+/* ボタンの見た目は index.css の共通 .btn-primary / .btn-secondary に委譲し、
+   ここではレイアウト（横幅いっぱい）のみを指定する。 */
+.home-nav .btn-primary,
 .home-nav .btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 12px 20px;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  color: var(--color-text);
-  text-decoration: none;
 }
 
 @media (min-width: 480px) {
