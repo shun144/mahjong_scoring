@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { Problem } from "../data/problem";
 import type { Payment } from "../engine/score";
 import { generateChoices, paymentKey } from "../generator/distractors";
@@ -8,10 +8,10 @@ import { recordAnswer } from "../store/statsStore";
 import { ChoiceGrid } from "./ChoiceGrid";
 import { DoraSection } from "./DoraSection";
 import { formatPayment } from "./format";
+import { PageHeader } from "./PageHeader";
+import "./quiz.css";
 import { QuizConditions } from "./QuizConditions";
 import { HandDisplay } from "./tiles/HandDisplay";
-import "./quiz.css";
-import { PageHeader } from "./PageHeader";
 
 /** 解説画面から「問題に戻る」で渡される復習用の遷移 state。 */
 function isReviewState(state: unknown): state is { problem: Problem; review: boolean } {
