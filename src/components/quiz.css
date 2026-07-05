@@ -27,27 +27,34 @@
   padding-bottom: 4px;
 }
 
-.quiz-hand h2,
-.quiz-dora h2 {
+.quiz-hand h2 {
   margin: 0 0 8px;
 }
 
-.quiz-dora {
+/* アガリ牌・ドラ表示牌・裏ドラ表示牌をラベル上／牌下で横並びにするヘッダー。 */
+.quiz-tile-header {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  align-items: flex-start;
+  gap: 16px 24px;
 }
 
-.quiz-dora > div {
+.tile-info-group {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
-.dora-label {
+.tile-info-label {
   font-size: 14px;
   color: var(--color-text-secondary);
   white-space: nowrap;
+}
+
+.tile-info-none {
+  font-size: 14px;
+  color: var(--color-text-secondary);
 }
 
 .quiz-answer {

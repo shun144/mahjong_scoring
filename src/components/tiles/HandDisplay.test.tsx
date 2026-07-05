@@ -9,7 +9,7 @@ function countRenderedTiles() {
 }
 
 describe("HandDisplay", () => {
-  it("renders exactly concealed.length tiles when the winning tile is a simple, non-duplicated tile", () => {
+  it("excludes the winning tile from the hand row (shown separately in the header)", () => {
     const concealed: Tile[] = [
       { suit: "m", rank: 2 },
       { suit: "m", rank: 3 },
@@ -30,11 +30,11 @@ describe("HandDisplay", () => {
 
     render(<HandDisplay concealed={concealed} winningTile={winningTile} />);
 
-    expect(countRenderedTiles()).toBe(concealed.length);
+    // アガリ牌はヘッダーで別途表示するため、手牌の並びからは1枚除外される。
+    expect(countRenderedTiles()).toBe(concealed.length - 1);
   });
 
-  it("does not double-count the winning tile when it is part of a pair (regression for the double-tile bug)", () => {
-    // P1のギャラリーページと同条件: 上がり牌が対子の一部と一致するケース。
+  it("removes exactly one winning tile even when it is part of a pair (no over/under removal)", () => {
     const concealed: Tile[] = [
       { suit: "m", rank: 2 },
       { suit: "m", rank: 3 },
@@ -49,12 +49,12 @@ describe("HandDisplay", () => {
 
     render(<HandDisplay concealed={concealed} winningTile={winningTile} />);
 
-    // 合計は8枚のまま（9枚に増えてはいけない）。うち「白」は2枚のみ。
-    expect(countRenderedTiles()).toBe(concealed.length);
-    expect(screen.getAllByRole("img", { name: "白" })).toHaveLength(2);
+    // 対子の片割れだけが除外され、残る「白」は1枚。
+    expect(countRenderedTiles()).toBe(concealed.length - 1);
+    expect(screen.getAllByRole("img", { name: "白" })).toHaveLength(1);
   });
 
-  it("includes meld tiles in addition to the concealed count", () => {
+  it("includes meld tiles in addition to the concealed hand (minus the winning tile)", () => {
     const concealed: Tile[] = [
       { suit: "m", rank: 2 },
       { suit: "m", rank: 3 },
@@ -75,6 +75,6 @@ describe("HandDisplay", () => {
 
     render(<HandDisplay concealed={concealed} winningTile={winningTile} melds={[meld]} />);
 
-    expect(countRenderedTiles()).toBe(concealed.length + meld.tiles.length);
+    expect(countRenderedTiles()).toBe(concealed.length - 1 + meld.tiles.length);
   });
 });

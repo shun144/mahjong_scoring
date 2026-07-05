@@ -1,7 +1,7 @@
 import type { Meld, Tile } from "../../engine/model";
 import { removeOneMatchingTile, sortTiles } from "../../engine/tiles";
 import { MeldGroup } from "./MeldGroup";
-import { TileFace, type TileSize } from "./TileFace";
+import type { TileSize } from "./TileFace";
 import { TileRow } from "./TileRow";
 import "./tiles.css";
 
@@ -10,27 +10,22 @@ export interface HandDisplayProps {
   concealed: readonly Tile[];
   /** 副露（あれば横向きで表示）。 */
   melds?: readonly Meld[];
-  /** 上がり牌。手牌の上に区切って強調表示する（concealed内の1枚を差し替えて表示する）。 */
+  /** 上がり牌。並びからは1枚除外する（アガリ牌は上部ヘッダーで別途表示するため重複させない）。 */
   winningTile: Tile;
   size?: TileSize;
 }
 
 /**
- * 手牌全体（純手牌＋上がり牌＋副露）を表示するコンポーネント。
- * SPEC.md §4.1 の出題情報のうち手牌部分に対応。
+ * 手牌（純手牌＋副露）を表示するコンポーネント。SPEC.md §4.1 の出題情報のうち手牌部分に対応。
+ * 上がり牌は QuizTileHeader 側で表示するため、ここでは concealed から1枚除外して並べる。
  */
 export function HandDisplay({ concealed, melds = [], winningTile, size = "md" }: HandDisplayProps) {
-  // concealed には上がり牌が既に含まれているため、強調表示の1枚と重複しないよう取り除く。
+  // concealed には上がり牌が含まれるため、ヘッダーのアガリ牌表示と重複しないよう1枚取り除く。
   const restTiles = removeOneMatchingTile(concealed, winningTile);
   const sortedConcealed = sortTiles(restTiles);
 
   return (
     <div className="mj-hand-display">
-      <div className="mj-winning-area">
-        <span className="mj-winning-tile">
-          <TileFace tile={winningTile} size={size} />
-        </span>
-      </div>
       <div className="mj-hand-row">
         <TileRow tiles={sortedConcealed} size={size} keyPrefix="concealed" />
         {melds.map((meld, i) => (
