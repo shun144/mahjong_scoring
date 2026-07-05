@@ -20,6 +20,14 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* 正誤見出しと「あなたの回答」を横並びにする（位置のみ移動、文字スタイルは各要素側のまま） */
+.result-verdict-row {
+  display: flex;
+  align-items: baseline; /* 大きい見出しと小さい注記のベースラインを揃える */
+  flex-wrap: wrap; /* 狭幅で溢れる場合は折り返し（横スクロール防止の保険） */
+  gap: var(--space-3); /* 12px。「不正解」と「あなたの回答」の間隔 */
+}
+
 /* L1: 点数（最強調・数字専用フォント・アクセント色。単色維持） */
 .result-answer {
   margin: 0;
