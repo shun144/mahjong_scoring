@@ -18,9 +18,6 @@ dist-ssr
 /blob-report/
 /playwright/.cache/
 
-# Claude Code local settings
-/.claude/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
