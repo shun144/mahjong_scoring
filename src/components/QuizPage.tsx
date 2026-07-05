@@ -6,11 +6,11 @@ import { generateChoices, paymentKey } from "../generator/distractors";
 import { nextProblem } from "../store/nextProblem";
 import { recordAnswer } from "../store/statsStore";
 import { ChoiceGrid } from "./ChoiceGrid";
-import { DoraSection } from "./DoraSection";
 import { formatPayment } from "./format";
 import { PageHeader } from "./PageHeader";
 import "./quiz.css";
 import { QuizConditions } from "./QuizConditions";
+import { QuizTileHeader } from "./QuizTileHeader";
 import { HandDisplay } from "./tiles/HandDisplay";
 
 /** 解説画面から「問題に戻る」で渡される復習用の遷移 state。 */
@@ -55,18 +55,17 @@ export function QuizPage() {
   return (
     <main className="page-shell">
       <PageHeader title="出題" />
-      <QuizConditions conditions={problem.conditions} />
+      <QuizConditions conditions={problem.conditions} winType={problem.hand.winType} />
+
+      <QuizTileHeader problem={problem} />
 
       <section className="quiz-hand">
         <HandDisplay
           concealed={problem.hand.concealed}
           melds={problem.hand.melds}
           winningTile={problem.hand.winningTile}
-          winType={problem.hand.winType}
         />
       </section>
-
-      <DoraSection problem={problem} />
 
       <section className="quiz-answer">
         <p className="quiz-answer-label">点数を選んでください</p>
