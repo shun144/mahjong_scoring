@@ -138,11 +138,16 @@ export function scoreHand(input: ScoreHandInput): ScoreResult | null {
       }
 
       const chiitoiYaku: YakuResult[] = [{ name: "七対子", han: 2 }];
+      if (isMenzen && input.winType === "tsumo") {
+        chiitoiYaku.push({ name: "門前清自摸和", han: 1 });
+      }
       if (input.riichi) chiitoiYaku.push({ name: "リーチ", han: 1 });
       if (pairTypes.every((t) => !isTerminalOrHonor(t))) {
         chiitoiYaku.push({ name: "断幺九", han: 1 });
       }
-      const suitsUsed = new Set(pairTypes.filter((t) => !isHonorType(t)).map((t) => Math.floor(t / 9)));
+      const suitsUsed = new Set(
+        pairTypes.filter((t) => !isHonorType(t)).map((t) => Math.floor(t / 9)),
+      );
       const hasHonor = pairTypes.some(isHonorType);
       if (suitsUsed.size === 1) {
         chiitoiYaku.push(hasHonor ? { name: "混一色", han: 3 } : { name: "清一色", han: 6 });

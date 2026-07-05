@@ -176,6 +176,23 @@ describe("scoreHand - representative hands", () => {
     );
     expect(result?.fu).toBe(25);
     expect(result?.yaku.some((y) => y.name === "七対子")).toBe(true);
+    // ロンでは門前清自摸和は付かない（回帰: ツモ判定が誤ってロンにも付かないことの保証）。
+    expect(result?.yaku.some((y) => y.name === "門前清自摸和")).toBe(false);
+  });
+
+  it("七対子: ツモ時は門前清自摸和が計上される（七対子2+門前清自摸和1=3翻）", () => {
+    const result = scoreHand(
+      baseInput({
+        concealed: tiles("22m44m66m88p11s33s5z5z"),
+        winningTile: parseTileNotation("5z"),
+        winType: "tsumo",
+      }),
+    );
+    expect(result).not.toBeNull();
+    expect(result?.fu).toBe(25);
+    expect(result?.yaku.some((y) => y.name === "七対子")).toBe(true);
+    expect(result?.yaku.some((y) => y.name === "門前清自摸和")).toBe(true);
+    expect(result?.han).toBe(3);
   });
 
   it("鳴きあり(喰いタン)は門前役が付かないが断幺九は成立する", () => {

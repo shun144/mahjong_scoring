@@ -562,7 +562,9 @@ const problems: Problem[] = specs.map((spec) => {
   const input = toScoreHandInput(spec);
   const answer = scoreHand(input);
   if (!answer) {
-    throw new Error(`問題 "${spec.id}" (${spec.label}) は役なしで不成立です。定義を見直してください。`);
+    throw new Error(
+      `問題 "${spec.id}" (${spec.label}) は役なしで不成立です。定義を見直してください。`,
+    );
   }
   return {
     id: spec.id,
