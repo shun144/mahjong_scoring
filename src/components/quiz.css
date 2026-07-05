@@ -31,7 +31,7 @@
   color: var(--color-text);
 }
 
-/* 自風：アクセント淡塗り（filled）で場風と一目で区別。単色インディゴの範囲内。 */
+/* 自風：Rausch 淡塗り（filled）で場風と一目で区別。単色 Rausch の範囲内。 */
 .badge--seat {
   background: var(--color-accent-bg);
   border-color: var(--color-accent-border);
@@ -41,8 +41,8 @@
   color: var(--color-accent-text);
 }
 
-/* 自風の淡塗り背景上でラベルも AA(4.5:1) を満たすよう accent-text に揃える
-   （text-sub のままでは #6b7280 on #eef0fe ≈ 4.26:1 で未達）。
+/* 自風の淡塗り背景（Rausch 淡ピンク）上でラベルも AA(4.5:1) を満たすよう
+   accent-text（濃赤 #c13515）に揃える。
    階層はラベル=--fs-sm／値=700 のサイズ・太さ差で保つ。 */
 .badge--seat .badge-label {
   color: var(--color-accent-text);
@@ -126,11 +126,11 @@
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: var(--color-bg);
   color: var(--color-text);
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
+  /* Airbnb 流：静止面は影なし・border 主体、hover のみ 1 段 */
   transition: border-color var(--duration) var(--ease-standard),
     background var(--duration) var(--ease-standard),
     box-shadow var(--duration) var(--ease-standard),
@@ -140,14 +140,13 @@
 @media (hover: hover) {
   .quiz-choice-btn:hover {
     border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 10%, var(--color-bg));
-    box-shadow: var(--shadow-md);
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-bg));
+    box-shadow: var(--shadow-sm);
   }
 }
 
 .quiz-choice-btn:active {
   transform: translateY(1px);
-  box-shadow: var(--shadow-sm);
 }
 
 .quiz-skip {

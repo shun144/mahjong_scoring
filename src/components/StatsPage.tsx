@@ -50,9 +50,11 @@ export function StatsPage() {
     <main className="page-shell stats-page">
       <div className="page-header">
         <h1>成績</h1>
-        <Link to="/quiz" className="page-header-link-item">
-          練習に戻る
-        </Link>
+        <div className="page-header-link">
+          <Link to="/quiz" className="page-header-link-item">
+            練習に戻る
+          </Link>
+        </div>
       </div>
 
       <section className="stats-summary" aria-label="累計成績">

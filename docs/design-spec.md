@@ -2,60 +2,59 @@
 
 ## コンセプト
 
-明るくポップ。白基調＋ビビッドなインディゴの差し色。スマホ縦画面を最優先。
-柔らかな奥行き（多層シャドウ）と機敏なモーションを伴うモダンUI。
-ただし白基調・単色インディゴ基調・スマホ縦最優先は不変。
-ダークモード対応（ライト/ダーク切替）。直値の色・pxは禁止し、必ずトークン（CSS変数）を参照する。
+Airbnb のデザイン言語を参照。純白キャンバス＋Rausch（#ff385c）単色アクセント。
+スマホ縦画面を最優先。控えめな見出しウェイト（500〜600）で叫ばず、最重要数値
+（点数）だけを突出させる（Airbnb の rating-display に対応）。柔らかい角丸と
+「余白＋境界線＋角丸」で奥行きを作り、影は 1 段運用に絞る（Airbnb 1-tier）。
+generous whitespace（大セクション 48〜64px のリズム）。
+**ダークモードなし（ライト単一・color-scheme: light 固定）**。
+白キャンバス・単色 Rausch 基調・スマホ縦最優先は不変。
+直値の色・pxは禁止し、必ずトークン（CSS変数）を参照する。
 
 ## カラートークン
 
-### ライト（デフォルト）
+### ライト（唯一のテーマ）
 
-- --color-bg: #FFFFFF /_ 背景（白基調） _/
-- --color-surface: #F5F5F7 /_ カード・パネル _/
-- --color-text: #1A1A1A /_ 通常テキスト _/
-- --color-text-sub: #6B7280 /_ 補助テキスト _/
-- --color-accent: #4F46E5 /_ 主役の差し色（ビビッドなインディゴ） _/
-- --color-border: #E5E7EB
-- --color-accent-bg /_ アクセント淡色の背景（バッジ等の淡塗り。単色インディゴの範囲内） _/
+ダークモードは廃止。テーマは常にライト。
+
+- --color-bg: #FFFFFF /_ 背景（純白キャンバス。Airbnb canvas） _/
+- --color-surface: #F7F7F7 /_ 基準の面（Airbnb surface-soft） _/
+- --color-surface-2: #FFFFFF /_ カード面。border で bg から分離（影に頼らない） _/
+- --color-text: #222222 /_ 通常テキスト（Airbnb ink。純黒にしない） _/
+- --color-text-sub: #6A6A6A /_ 補助テキスト（Airbnb muted） _/
+- --color-accent: #FF385C /_ 主役の差し色（Rausch 単色） _/
+- --color-accent-active: #E00B41 /_ 押下/hover のより濃い Rausch _/
+- --color-border: #DDDDDD /_ 既定の 1px 境界（Airbnb hairline） _/
+- --color-border-soft: #EBEBEB /_ 補助の淡い境界（Airbnb hairline-soft） _/
+- --color-accent-contrast: #FFFFFF /_ Rausch 上の文字（on-primary） _/
+- --gradient-accent /_ Rausch グラデ（#ff385c→#e00b41）。主ボタン・進捗バーのみ _/
+- --color-accent-bg /_ アクセント淡色の背景（Rausch のごく淡いピンク。自風バッジ等） _/
 - --color-accent-border /_ アクセント淡色の境界線 _/
-- --color-accent-text /_ アクセント淡背景上で読める文字色（AA 4.5:1 を満たす） _/
-
-### ダーク
-
-- --color-bg: #15171C
-- --color-surface: #20232B
-- --color-text: #F5F5F7
-- --color-text-sub: #9CA3AF
-- --color-accent: #818CF8 /_ 暗背景で沈まないよう1段明るいインディゴ _/
-- --color-border: #333842
-- --color-accent-bg /_ アクセント淡色の背景（暗背景で沈まない淡インディゴ） _/
-- --color-accent-border /_ アクセント淡色の境界線 _/
-- --color-accent-text /_ アクセント淡背景上で読める文字色（AA 4.5:1 を満たす） _/
+- --color-accent-text /_ アクセント淡背景上で読める濃赤（AA 4.5:1 を満たす） _/
 
 ## サーフェス（面の階層）
 
-- --color-surface: 基準の面（カード・パネルの下地）。
-- --color-surface-2: 一段浮いた面（カード本体・stat-card・内訳ボックス等）。
-  背景 bg との間にトーン差を作り、多層シャドウと合わせて奥行きを表現する。
-  ライトは surface より僅かに白寄り、ダークは僅かに明るいグレーで浮かせる。
+- --color-surface: 基準の面（Airbnb surface-soft #f7f7f7）。
+- --color-surface-2: カード本体・stat-card・内訳ボックス等の面（#ffffff）。
+  影ではなく境界線（--color-border）＋余白＋角丸で bg から分離する（Airbnb 流）。
 
 ## アクセント運用（グラデーション）
 
-- --gradient-accent: インディゴ→バイオレットの線形グラデ（ダークは1段明るい版）。
+- --gradient-accent: Rausch グラデ（#ff385c→#e00b41 の線形グラデ）。
 - 適用は「主役」のみに限定する＝主ボタン（.btn-primary）と進捗バーの fill。
   スコア・面・本文・バッジ・見出しはグラデを使わず単色（--color-accent / --color-text）を維持する。
-  ※バッジの淡色塗り（局条件バッジ等）は単色インディゴの淡色トークン（--color-accent-bg 系）に限り可。グラデは使わない。
-- セカンダリ（第2の）アクセント色は導入しない。差し色は単色インディゴ基調で統一する。
+  ※バッジの淡色塗り（局条件バッジ等）は単色 Rausch の淡色トークン（--color-accent-bg 系）に限り可。グラデは使わない。
+- セカンダリ（第2の）アクセント色は導入しない。差し色は単色 Rausch 基調で統一する。
   役ごと・風ごとに異なる色相で塗り分ける多色パレットは導入しない。
 
-## エレベーション（多層シャドウ）
+## エレベーション（1段運用／Airbnb 1-tier）
 
-- --shadow-sm / --shadow-md / --shadow-lg の3段階。いずれも低不透明度を重ねた
-  多層シャドウ（環境光＋接地影）で柔らかい奥行きを出す。
-- ダークは影を強め、境界線（--color-border）で階層を補強する。
+- 静止面（カード・stat-card・内訳ボックス・result-alt 等）は**影を持たない**。
+  奥行きは「余白＋境界線（--color-border）＋角丸」で表現する（Airbnb 流）。
+- 影は hover / 最前面（モーダル）に限り 1 段だけ使う（--shadow-sm 相当）。
+- --shadow-sm / --shadow-md / --shadow-lg のトークンは後方互換のため残すが、
+  運用は上記 1 段に絞る（多層の段階付けは行わない）。
 - 既存 --shadow-card は --shadow-sm へのエイリアスとして維持（後方互換）。
-- 使い分け: カード等の静止面=sm、hover 時=md、モーダル/最前面=lg。
 
 ## モーション
 
@@ -67,10 +66,13 @@
 
 ## 強調レベル（3段階・サイズと色の両方で強弱）
 
+見出し（h1/h2）は Airbnb 流に控えめウェイト（600 基調）とし、タイポで叫ばない。
+唯一の大型タイポは点数（L1・700）＝Airbnb の rating-display に対応させ、最重要数値だけを突出させる。
+
 - レベル1／最強調 = 点数
-  - font-size: --fs-score（3rem目安）、太字、色 --color-accent、数字専用フォント
+  - font-size: --fs-score（3rem目安）、font-weight 700、色 --color-accent（Rausch）、数字専用フォント
 - レベル2／中 = 翻・符・役名
-  - font-size: --fs-emphasis（1.5rem目安）、太字、色 --color-text（数字は専用フォント）
+  - font-size: --fs-emphasis（1.5rem目安）、font-weight 600、色 --color-text（数字は専用フォント）
 - レベル3／通常 = その他ラベル・説明
   - font-size: --fs-base（1rem目安）、色 --color-text / 補助は --color-text-sub
   - 補助ラベル・キャプション（バッジ・注記・フッター等）は --fs-sm（0.875rem目安）＋ --color-text-sub
@@ -81,7 +83,7 @@
   - ラベル（「場風」「自風」）: --fs-sm ＋ --color-text-sub。
   - 値（風牌・親/子・ロン/ツモ・リーチ）: font-weight 700 ＋ --color-text。強調は L3 の範囲内に留め、L2（--fs-emphasis）までは上げない（点数・選択肢より目立たせない）。
 - 場風と自風を一目で区別するため、役割で塗りを変える（多色パレットは使わない）:
-  - 自風（seat）: アクセント淡塗り（--color-accent-bg / --color-accent-border、値は --color-accent-text）。自分に関わる情報を強調。
+  - 自風（seat）: Rausch 淡塗り（--color-accent-bg / --color-accent-border、値は --color-accent-text）。自分に関わる情報を強調。
   - 場風（round）: 中立の輪郭（--color-surface ＋ --color-border）。値のみ強調。
   - 親子（dealer）・上がり方（wintype）: 中立ベース。値のみ強調（色は足さない）。
   - リーチ: danger トーン（--color-danger-bg 系）を維持。
@@ -90,21 +92,37 @@
 
 ## タイポグラフィ
 
-- 数字（点数・翻・符）: インパクトのある数字専用フォント（例: Bebas Neue / Oswald 等）。
+- **外部Webフォントは使用しない**（Inter/Cereal 等を @import しない）。システムフォールバックのみ。
+- 数字（点数・翻・符）: 数字専用フォント（システムのコンデンス系フォールバック）。
   桁揃えのため font-variant-numeric: tabular-nums を必須とする。
 - 日本語テキスト: システム標準の sans-serif。
+- 見出しウェイトは Airbnb 流に控えめ（600 基調）。本文 400。点数のみ 700。
 - サイズトークン: --fs-score / --fs-emphasis / --fs-base / --fs-sm（補助ラベル・キャプション用）を定義し、直値pxを使わない。
 - 字間・行間トークン: --tracking-tight（-0.01〜-0.02em。見出し・スコアの引き締め用）、
   --leading-tight（見出し・スコア）／--leading-normal（本文）を定義する。
 
+## 余白（4px ベース／Airbnb 余白哲学）
+
+- --space-0: 2px（マイクロ）
+- --space-1: 4px / --space-2: 8px / --space-3: 12px / --space-4: 16px / --space-5: 24px / --space-6: 32px
+- --space-7: 48px / --space-8: 64px（section）
+- リズム: 大セクション間は 48〜64px（section）で開ける。カード内の余白は 16〜24px。
+  密なガター（バッジ間・牌間）は 4〜8px。「開けた見出し／密なカード」の対比を作る。
+
 ## 形状
 
-- 角丸はスケール化してトークン参照する（役割でリズムを付ける）。
-  - --radius-sm: 8px（小要素）
-  - --radius: 14px（ボタン等の中間）
-  - --radius-lg: 20px（カード・パネル寄り）
+- 角丸はスケール化してトークン参照する（Airbnb の役割分担に合わせる）。
+  - --radius-xs: 4px（極小の区切り）
+  - --radius-sm: 8px（ボタン＝btn-primary/secondary/quiz-choice-btn）
+  - --radius: 14px（カード＝.card / .stat-card / .result-alt）
+  - --radius-lg: 20px（大きめパネル。必要時のみ）
   - --radius-pill: 999px（バッジ・進捗バー）
   - 牌（tiles）の角丸・寸法は画像の幾何に依存するため据え置き。
+
+## ヘッダー／フッター（Airbnb 帯化）
+
+- ヘッダー（.page-header）: 白キャンバス＋下 1px hairline の帯。角丸なし・グラス（backdrop-filter／半透明）なし。sticky は維持。
+- フッター（.app-footer）: 白キャンバス＋上 1px hairline。角丸なし・グラスなし。
 
 ## 操作性（スマホ縦最優先）
 
@@ -115,3 +133,12 @@
 
 - 色・サイズ・角丸の直値書き（#RRGGBB / px / rem直書き）。必ずトークン参照。
 - 同じ役割の要素を画面ごとに違う規則でスタイルすること（統一を最優先）。
+
+### 機能寸法の直値例外
+
+以下は「見た目のトークン」ではなく機能・レイアウト上の寸法要件であり、直値禁止の対象外とする（トークン化しなくてよい）:
+
+- タップ/ボタンの最小寸法（44px / 48px / 56px 等の min-height）。
+- 牌（tiles）の幾何寸法および牌間の gap / padding。
+- メディアクエリのブレークポイント。
+- hairline としての境界線の幅 1px（例: `1px solid var(--color-border)`。色はトークン参照、幅の 1px は対象外）。

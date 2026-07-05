@@ -1,6 +1,6 @@
 .stats-summary {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
   flex-wrap: wrap;
 }
 
@@ -17,10 +17,10 @@
   color: var(--color-text-sub);
 }
 
-/* L2: 集計数値（数字専用フォント） */
+/* L2: 集計数値（数字専用フォント。L2=600 に統一） */
 .stat-card-value {
   font-size: var(--fs-emphasis);
-  font-weight: 700;
+  font-weight: 600;
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
   color: var(--color-text);

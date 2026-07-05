@@ -12,9 +12,11 @@ export function PrivacyPolicyPage() {
     <main className="page-shell privacy-page">
       <div className="page-header">
         <h1>プライバシーポリシー</h1>
-        <Link to="/" className="page-header-link-item">
-          ホームに戻る
-        </Link>
+        <div className="page-header-link">
+          <Link to="/" className="page-header-link-item">
+            ホームに戻る
+          </Link>
+        </div>
       </div>
 
       <p>

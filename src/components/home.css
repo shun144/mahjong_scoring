@@ -1,13 +1,14 @@
 .home-page {
   /* 高さは .app-layout（flex）から与えられるため min-height は持たせない。
-     余った縦スペースの中央にコンテンツを寄せる。 */
+     余った縦スペースの中央にコンテンツを寄せる。
+     Airbnb 流の generous whitespace で開けたヒーローにする。 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-5);
+  gap: var(--space-6);
   text-align: center;
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-8) var(--space-4);
 }
 
 .home-page h1 {

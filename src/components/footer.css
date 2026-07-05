@@ -1,4 +1,4 @@
-/* グラス化（半透明 surface＋ぼかし）。非対応時は不透明 surface にフォールバック */
+/* Airbnb 帯化：白キャンバス＋上 1px hairline（角丸/グラスなし） */
 .app-footer {
   flex-shrink: 0;
   display: flex;
@@ -7,15 +7,7 @@
   gap: var(--space-1);
   padding: var(--space-4);
   border-top: 1px solid var(--color-border);
-  background: var(--color-surface);
-}
-
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .app-footer {
-    background: color-mix(in srgb, var(--color-surface) 72%, transparent);
-    -webkit-backdrop-filter: saturate(180%) blur(12px);
-    backdrop-filter: saturate(180%) blur(12px);
-  }
+  background: var(--color-bg);
 }
 
 .app-footer-nav {

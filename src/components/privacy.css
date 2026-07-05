@@ -8,14 +8,8 @@
   gap: var(--space-2);
 }
 
-/* L2: セクション見出し */
-.privacy-section h2 {
-  font-size: var(--fs-emphasis);
-  font-weight: 600;
-  color: var(--color-text);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
-}
+/* セクション見出しは全画面共通の h2 既定ルール（index.css）を継承する。
+   同一役割を画面ごとに変えないため font-size/color/weight は上書きしない。 */
 
 .privacy-section ul {
   margin: 0;

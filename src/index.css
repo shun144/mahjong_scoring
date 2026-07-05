@@ -1,35 +1,37 @@
 :root {
   color-scheme: light;
 
-  /* --- 配色トークン（design-spec.md 正典：ライト） --- */
-  --color-bg: #ffffff;
-  --color-surface: #f5f5f7;
-  --color-text: #1a1a1a;
-  --color-text-sub: #6b7280;
-  --color-accent: #4f46e5;
-  --color-border: #e5e7eb;
-  --color-accent-contrast: #ffffff;
+  /* --- 配色トークン（design-spec.md 正典：Airbnb 準拠・ライト単一） --- */
+  --color-bg: #ffffff; /* canvas */
+  --color-surface: #f7f7f7; /* surface-soft */
+  --color-text: #222222; /* ink（純黒にしない） */
+  --color-text-sub: #6a6a6a; /* muted */
+  --color-accent: #ff385c; /* Rausch */
+  --color-accent-active: #e00b41; /* 押下/hover のより濃い Rausch */
+  --color-border: #dddddd; /* hairline */
+  --color-border-soft: #ebebeb; /* hairline-soft（補助境界） */
+  --color-accent-contrast: #ffffff; /* on-primary */
 
-  /* 一段浮いた面（カード本体等。bg より僅かに白寄りでトーン差を作る） */
-  --color-surface-2: #fbfbfd;
-  /* 主役専用グラデ（インディゴ→バイオレット。主ボタン・進捗バーのみ） */
-  --gradient-accent: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  /* カード面。影ではなく border＋余白＋角丸で bg から分離する（Airbnb 流） */
+  --color-surface-2: #ffffff;
+  /* 主役専用グラデ（Rausch。主ボタン・進捗バーのみ） */
+  --gradient-accent: linear-gradient(135deg, #ff385c 0%, #e00b41 100%);
 
-  /* --- 拡張色（spec非定義・自前補完：ライト） --- */
-  --color-success-bg: #f0fdf4;
-  --color-success-border: #86efac;
-  --color-success-text: #15803d;
-  --color-danger-bg: #fef2f2;
-  --color-danger-border: #fca5a5;
-  --color-danger-text: #b91c1c;
-  --color-warning-bg: #fffbeb;
-  --color-warning-border: #fde68a;
-  --color-warning-text: #92400e;
+  /* --- 拡張色（spec非定義・自前補完。Rausch/ink/hairline と調和・ライト） --- */
+  --color-success-bg: #eef7f0;
+  --color-success-border: #b7dcc0;
+  --color-success-text: #1c7a43;
+  --color-danger-bg: #fdeeea;
+  --color-danger-border: #f3c2b5;
+  --color-danger-text: #c13515; /* Airbnb error text */
+  --color-warning-bg: #fbf6ea;
+  --color-warning-border: #ecd9a6;
+  --color-warning-text: #8a6d1a;
 
-  /* --- アクセント淡色（バッジ等の淡塗り。単色インディゴの範囲内：ライト） --- */
-  --color-accent-bg: #eef0fe; /* 淡いインディゴ背景 */
-  --color-accent-border: #c7ccfa;
-  --color-accent-text: #4338ca; /* 淡背景上で AA(4.5:1) を満たすインディゴ */
+  /* --- アクセント淡色（バッジ等の淡塗り。単色 Rausch の範囲内：ライト） --- */
+  --color-accent-bg: #ffe9ee; /* 淡い Rausch ピンク背景 */
+  --color-accent-border: #ffd1da;
+  --color-accent-text: #c13515; /* 淡背景上で AA(4.5:1) を満たす濃赤 */
 
   /* --- 後方互換エイリアス（旧変数名→新トークン。漏れ防止用） --- */
   --color-text-secondary: var(--color-text-sub);
@@ -55,28 +57,32 @@
   --leading-tight: 1.15;
   --leading-normal: 1.6;
 
-  /* --- 余白（4/8/12/16/24/32px） --- */
+  /* --- 余白（4px ベース／Airbnb 余白哲学。section=48-64px） --- */
+  --space-0: 2px; /* マイクロ */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 24px;
   --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px; /* section */
 
-  /* --- 形状（角丸スケール） --- */
-  --radius-sm: 8px; /* 小要素 */
-  --radius: 14px; /* ボタン等の中間 */
-  --radius-lg: 20px; /* カード・パネル */
+  /* --- 形状（角丸スケール／Airbnb の役割分担） --- */
+  --radius-xs: 4px; /* 極小の区切り */
+  --radius-sm: 8px; /* ボタン */
+  --radius: 14px; /* カード */
+  --radius-lg: 20px; /* 大きめパネル（必要時のみ） */
   --radius-pill: 999px;
   /* 旧 md は中間へ集約（互換エイリアス） */
   --radius-md: var(--radius);
 
-  /* --- エレベーション（多層シャドウ・低不透明度：ライト） --- */
-  --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06), 0 1px 3px rgba(17, 24, 39, 0.05);
-  --shadow-md: 0 2px 6px rgba(17, 24, 39, 0.08),
-    0 6px 16px rgba(17, 24, 39, 0.08);
-  --shadow-lg: 0 6px 16px rgba(17, 24, 39, 0.1),
-    0 16px 32px rgba(17, 24, 39, 0.12);
+  /* --- エレベーション（Airbnb 1-tier。静止面は影なし・border 主体。
+     影は hover/最前面の 1 段のみ。sm/md/lg は後方互換で残す） --- */
+  --shadow-sm: 0 0 0 1px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.04),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: var(--shadow-sm);
+  --shadow-lg: var(--shadow-sm);
   /* 後方互換エイリアス（旧 --shadow-card → sm） */
   --shadow-card: var(--shadow-sm);
   --shadow-tile: 0 1px 1px rgba(0, 0, 0, 0.16), 0 2px 3px rgba(0, 0, 0, 0.12);
@@ -91,82 +97,7 @@
   background: var(--color-bg);
 }
 
-/* --- ダークモード（OS設定・手動切替の両対応で同一トークン群を再定義） --- */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-
-    --color-bg: #15171c;
-    --color-surface: #20232b;
-    --color-text: #f5f5f7;
-    --color-text-sub: #9ca3af;
-    --color-accent: #818cf8;
-    --color-border: #333842;
-    --color-accent-contrast: #ffffff;
-
-    --color-surface-2: #272b35;
-    --gradient-accent: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-
-    --color-success-bg: #14311f;
-    --color-success-border: #2f6b43;
-    --color-success-text: #4ade80;
-    --color-danger-bg: #3a1a1d;
-    --color-danger-border: #7f3237;
-    --color-danger-text: #f87171;
-    --color-warning-bg: #332a12;
-    --color-warning-border: #6b5a25;
-    --color-warning-text: #fbbf24;
-
-    /* アクセント淡色（暗背景で沈まない淡インディゴ：ダーク） */
-    --color-accent-bg: #2b2f4a;
-    --color-accent-border: #4a52a8;
-    --color-accent-text: #a5b4fc; /* 淡い暗背景上で AA を満たす明るいインディゴ */
-
-    /* ダークは影を強め、階層は境界線でも補強する */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 6px 16px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.5), 0 16px 32px rgba(0, 0, 0, 0.5);
-    --shadow-card: var(--shadow-sm);
-    --shadow-tile: 0 1px 1px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
-  }
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-
-  --color-bg: #15171c;
-  --color-surface: #20232b;
-  --color-text: #f5f5f7;
-  --color-text-sub: #9ca3af;
-  --color-accent: #818cf8;
-  --color-border: #333842;
-  --color-accent-contrast: #ffffff;
-
-  --color-surface-2: #272b35;
-  --gradient-accent: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-
-  --color-success-bg: #14311f;
-  --color-success-border: #2f6b43;
-  --color-success-text: #4ade80;
-  --color-danger-bg: #3a1a1d;
-  --color-danger-border: #7f3237;
-  --color-danger-text: #f87171;
-  --color-warning-bg: #332a12;
-  --color-warning-border: #6b5a25;
-  --color-warning-text: #fbbf24;
-
-  /* アクセント淡色（暗背景で沈まない淡インディゴ：ダーク） */
-  --color-accent-bg: #2b2f4a;
-  --color-accent-border: #4a52a8;
-  --color-accent-text: #a5b4fc; /* 淡い暗背景上で AA を満たす明るいインディゴ */
-
-  /* ダークは影を強め、階層は境界線でも補強する */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 6px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.5), 0 16px 32px rgba(0, 0, 0, 0.5);
-  --shadow-card: var(--shadow-sm);
-  --shadow-tile: 0 1px 1px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
-}
+/* ダークモードは廃止（Airbnb 準拠・ライト単一）。テーマは常にライト。 */
 
 * {
   box-sizing: border-box;
@@ -197,18 +128,21 @@ body {
 
 h1 {
   font-size: var(--fs-emphasis);
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
   color: var(--color-text);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
 }
 
+/* h2 は全画面共通の「セクション見出し」（Airbnb の modest section head 準拠）。
+   控えめだが見出しとして成立する単一ルール。各ページ固有の余白 margin 以外の
+   font-size/color/weight 上書きは行わない（同一役割を画面ごとに変えない）。 */
 h2 {
-  font-size: var(--fs-sm);
+  font-size: var(--fs-base);
   font-weight: 600;
   margin: 0;
-  color: var(--color-text-sub);
+  color: var(--color-text);
 }
 
 p {
@@ -220,22 +154,21 @@ a {
   color: var(--color-accent);
 }
 
-/* グロー付き focus リング（outline は残し、accent ベースの淡いリングを重ねる） */
+/* focus リング（Rausch ベース。グローは控えめ） */
 a:focus-visible,
 button:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);
 }
 
-/* --- 共通カード（一段浮いた面＋大きめ角丸＋静止影） --- */
+/* --- 共通カード（Airbnb 流：影なし・border＋角丸＋余白で分離） --- */
 .card {
   padding: var(--space-5);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   background: var(--color-surface-2);
-  box-shadow: var(--shadow-sm);
 }
 
 /* --- 各ページ共通の外枠（スマホ最優先、PCは中央寄せカード幅） --- */
@@ -254,7 +187,7 @@ select:focus-visible {
   }
 }
 
-/* --- 各ページ見出し行（h1＋ナビリンク。グラス化＝半透明＋ぼかし） --- */
+/* --- 各ページ見出し行（Airbnb 帯化：白キャンバス＋下 1px hairline・角丸/グラスなし・sticky維持） --- */
 .page-header {
   position: sticky;
   top: 0;
@@ -263,18 +196,9 @@ select:focus-visible {
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-3);
-  border-radius: var(--radius-lg);
-  /* backdrop-filter 非対応時のフォールバック（不透明寄りの surface） */
-  background: var(--color-surface);
-}
-
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .page-header {
-    background: color-mix(in srgb, var(--color-bg) 72%, transparent);
-    -webkit-backdrop-filter: saturate(180%) blur(12px);
-    backdrop-filter: saturate(180%) blur(12px);
-  }
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
 }
 
 .page-header-link {
@@ -308,29 +232,30 @@ select:focus-visible {
   justify-content: center;
   min-height: 48px;
   font-size: var(--fs-base);
-  font-weight: 600;
+  font-weight: 500;
   padding: var(--space-3) var(--space-5);
   border: none;
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: var(--gradient-accent);
   color: var(--color-accent-contrast);
   text-decoration: none;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
   transition: box-shadow var(--duration) var(--ease-standard),
+    background var(--duration) var(--ease-standard),
     transform var(--duration) var(--ease-standard);
 }
 
 @media (hover: hover) {
   .btn-primary:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    /* Airbnb 流：hover で押下色に寄せ、1 段だけ浮かせる */
+    background: var(--color-accent-active);
+    box-shadow: var(--shadow-sm);
   }
 }
 
 .btn-primary:active {
+  background: var(--color-accent-active);
   transform: translateY(1px);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:disabled {
@@ -347,10 +272,10 @@ select:focus-visible {
   justify-content: center;
   min-height: 48px;
   font-size: var(--fs-base);
-  font-weight: 600;
+  font-weight: 500;
   padding: var(--space-3) var(--space-5);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: var(--color-bg);
   color: var(--color-text);
   text-decoration: none;
@@ -363,7 +288,7 @@ select:focus-visible {
 @media (hover: hover) {
   .btn-secondary:hover {
     border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-bg));
+    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
   }
 }
 
