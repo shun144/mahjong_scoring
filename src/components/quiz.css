@@ -19,7 +19,7 @@
   letter-spacing: var(--tracking-tight);
 }
 
-/* ラベル（「場風」「自風」）：補助色で小さく。 */
+/* 役割を示す1文字（例: 場・家）：補助色で小さく。 */
 .badge-label {
   font-size: var(--fs-sm);
   color: var(--color-text-sub);
@@ -31,24 +31,24 @@
   color: var(--color-text);
 }
 
-/* 自風：Rausch 淡塗り（filled）で場風と一目で区別。単色 Rausch の範囲内。 */
-.badge--seat {
-  background: var(--color-accent-bg);
-  border-color: var(--color-accent-border);
+/* 場風＋自風を1タグ（「東場南家」）に統合。自風(自分)を含むため Rausch 淡塗りを継承。
+   場風/自風の区別は色ではなく「場」「家」の文字で担保（色覚多様性対応）。 */
+.badge--windset {
+  /* background: var(--color-accent-bg);
+  border-color: var(--color-accent-border); */
+  /* 「東場南家」を詰めた複合語として見せる */
+  gap: var(--space-0);
+  /* 大小の文字を地の文のようにベースライン揃え */
+  align-items: baseline;
 }
 
-.badge--seat .badge-value {
-  color: var(--color-accent-text);
+/* 風文字（東・南）：役割文字より一段大きく（L3 内・L2 には上げない）。
+   淡塗り背景上で AA(4.5:1) を満たす accent-text。太さは .badge-value 既定(700)を継承。 */
+.badge--windset .badge-value {
+  font-size: var(--fs-base);
 }
 
-/* 自風の淡塗り背景（Rausch 淡ピンク）上でラベルも AA(4.5:1) を満たすよう
-   accent-text（濃赤 #c13515）に揃える。
-   階層はラベル=--fs-sm／値=700 のサイズ・太さ差で保つ。 */
-.badge--seat .badge-label {
-  color: var(--color-accent-text);
-}
-
-/* 場風・親子・上がり方は中立ベース（.badge の既定）を踏襲し、値のみ強調。 */
+/* 親子・上がり方は中立ベース（.badge の既定）を踏襲し、値のみ強調。 */
 
 .badge-riichi {
   background: var(--color-danger-bg);
@@ -56,7 +56,7 @@
   color: var(--color-danger-text);
 }
 
-.badge-riichi .badge-value {
+.badge-riichi {
   color: var(--color-danger-text);
 }
 

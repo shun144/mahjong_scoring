@@ -45,12 +45,14 @@ export function ResultPage() {
   return (
     <main className="page-shell">
       <PageHeader title="解説" />
-      <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
-        {isCorrect ? "○ 正解" : "✕ 不正解"}
-      </p>
-      {!isCorrect ? (
-        <p className="result-your-answer">あなたの回答: {formatPayment(selected)}</p>
-      ) : null}
+      <div className="result-verdict-row">
+        <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
+          {isCorrect ? "○ 正解" : "✕ 不正解"}
+        </p>
+        {!isCorrect ? (
+          <p className="result-your-answer">あなたの回答: {formatPayment(selected)}</p>
+        ) : null}
+      </div>
       <p className="result-answer">正解: {formatPayment(answer.payment)}</p>
 
       <section className="card result-breakdown" aria-label="点数計算">

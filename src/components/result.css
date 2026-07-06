@@ -20,7 +20,15 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* L1: 点数（最強調・数字専用フォント・アクセント色。単色維持） */
+/* 正誤見出しと「あなたの回答」を横並びにする（位置のみ移動、文字スタイルは各要素側のまま） */
+.result-verdict-row {
+  display: flex;
+  align-items: baseline; /* 大きい見出しと小さい注記のベースラインを揃える */
+  flex-wrap: wrap; /* 狭幅で溢れる場合は折り返し（横スクロール防止の保険） */
+  gap: var(--space-3); /* 12px。「不正解」と「あなたの回答」の間隔 */
+}
+
+/* L1: 正解表示（点数計算・符計算とも最強調で統一。数字専用フォント・アクセント色・単色維持） */
 .result-answer {
   margin: 0;
   font-size: var(--fs-score);
@@ -30,16 +38,6 @@
   color: var(--color-accent);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
-}
-
-/* L2: 符計算モードの正解表示（点数=L1とは別物。L2=600 に統一） */
-.result-fu-answer {
-  margin: 0;
-  font-size: var(--fs-emphasis);
-  font-weight: 600;
-  font-family: var(--font-numeric);
-  font-variant-numeric: tabular-nums;
-  color: var(--color-text);
 }
 
 .result-breakdown {
