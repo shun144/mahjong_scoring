@@ -3,7 +3,7 @@ import type { Problem } from "../data/problem";
 import { generateProblem } from "../generator/generateProblem";
 import { chance, type RandomSource } from "../generator/random";
 import { loadStats } from "./statsStore";
-import { problemWeight, weightedPick } from "./weighting";
+import { categoryBias, problemWeight, weightedPick } from "./weighting";
 
 const problemBank = problemBankRaw as unknown as Problem[];
 /** 生成問題は事前にタグが分からないため、複数候補を作ってから重み付けで選ぶ。 */
@@ -39,7 +39,7 @@ export function nextProblem(
       if (generated && isEligible(generated, opts)) candidates.push(generated);
     }
     if (candidates.length > 0) {
-      const weights = candidates.map((p) => problemWeight(p, stats));
+      const weights = candidates.map((p) => problemWeight(p, stats) * categoryBias(p));
       return weightedPick(candidates, weights, rng);
     }
   }
@@ -47,6 +47,6 @@ export function nextProblem(
   const eligibleBank = problemBank.filter((p) => isEligible(p, opts));
   // 除外の結果バンクが空になる稀ケースは、絞り込まない全体から選ぶ（フォールバック）。
   const pool = eligibleBank.length > 0 ? eligibleBank : problemBank;
-  const weights = pool.map((p) => problemWeight(p, stats));
+  const weights = pool.map((p) => problemWeight(p, stats) * categoryBias(p));
   return weightedPick(pool, weights, rng);
 }

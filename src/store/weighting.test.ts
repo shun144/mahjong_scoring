@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { Problem } from "../data/problem";
+import type { ScoreRank } from "../engine/score";
 import { createSeededRandom } from "../generator/random";
 import { createEmptyStats, type StatsState } from "./statsStore";
-import { problemWeight, weightedPick } from "./weighting";
+import { categoryBias, problemWeight, weightedPick } from "./weighting";
 
 function fakeProblem(fuType: number, yakuCategories: string[]): Problem {
   return {
@@ -15,6 +16,20 @@ function fakeProblem(fuType: number, yakuCategories: string[]): Problem {
     answer: { yaku: [], han: 1, fu: fuType, payment: { kind: "ron", total: 1000 } },
     tags: { fuType, yakuCategories },
   };
+}
+
+/** categoryBias 検証用に answer の rank/fu/役名を差し替えた問題を作る。 */
+function biasProblem(over: { rank?: ScoreRank; fu?: number; yaku?: string[] }): Problem {
+  const fu = over.fu ?? 40;
+  const p = fakeProblem(fu, over.yaku ?? []);
+  p.answer = {
+    yaku: (over.yaku ?? []).map((name) => ({ name, han: 1 })),
+    han: 5,
+    fu,
+    payment: { kind: "ron", total: 8000 },
+    rank: over.rank,
+  };
+  return p;
 }
 
 describe("problemWeight", () => {
@@ -52,6 +67,30 @@ describe("problemWeight", () => {
     // fuType 999は未挑戦(中立0.5)だが、三色同順(0付近)の方がさらに低いはずなので
     // 両者の重みはほぼ同じ(三色同順のaccuracyが支配的)になる
     expect(weight).toBeCloseTo(soloWeakWeight, 1);
+  });
+});
+
+describe("categoryBias", () => {
+  it("suppresses 役満 (bias < 1)", () => {
+    expect(categoryBias(biasProblem({ rank: "yakuman", fu: 40 }))).toBeLessThan(1);
+  });
+
+  it("suppresses 七対子 (bias < 1)", () => {
+    expect(categoryBias(biasProblem({ yaku: ["七対子"], fu: 25 }))).toBeLessThan(1);
+  });
+
+  it("boosts 満貫以上かつ50符以上 (bias > 1)", () => {
+    expect(categoryBias(biasProblem({ rank: "mangan", fu: 50 }))).toBeGreaterThan(1);
+  });
+
+  it("is neutral (=1) for a normal 40符 hand and for 満貫未満の50符", () => {
+    expect(categoryBias(biasProblem({ fu: 40 }))).toBe(1);
+    expect(categoryBias(biasProblem({ rank: undefined, fu: 50 }))).toBe(1);
+  });
+
+  it("prioritises 役満 suppression over the 50符 boost when both apply", () => {
+    // 役満かつ50符+ でも役満抑制（<1）が優先される
+    expect(categoryBias(biasProblem({ rank: "yakuman", fu: 60 }))).toBeLessThan(1);
   });
 });
 
