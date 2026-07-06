@@ -171,6 +171,87 @@ describe("calculateFuBreakdown - itemised breakdown", () => {
   });
 });
 
+describe("calculateFuBreakdown - includeZeroFu (符計算モードの全内訳)", () => {
+  // 234m(順子) 567p(順子) 345s(順子) 222m(中張暗刻) + 99p(非役牌雀頭)、両面ロン。
+  // 20(基本)+10(門前ロン)+4(中張暗刻)=34 -> 40符。順子・雀頭・待ちは全て+0符。
+  function build() {
+    const counts = countsFromCompact("234m567p345s222m");
+    counts[9 + 8] += 2; // 99p(非役牌)雀頭
+    const winType = tileToType(parseTileNotation("2m")); // 234mの両面上がり
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const ctx = baseCtx({ winType: "ron" });
+    return { interp, ctx };
+  }
+
+  it("includes a 0符 (非役牌) pair as 雀頭 and a 0符 wait", () => {
+    const { interp, ctx } = build();
+    const breakdown = calculateFuBreakdown(interp, ctx, { includeZeroFu: true });
+    const pair = breakdown.items.find((i) => i.label === "雀頭");
+    expect(pair).toBeDefined();
+    expect(pair?.fu).toBe(0);
+    const wait = breakdown.items.find((i) => i.label.startsWith("待ち"));
+    expect(wait).toBeDefined();
+    expect(wait?.fu).toBe(0);
+  });
+
+  it("does NOT list 0符 sequences (順子) even with includeZeroFu", () => {
+    // 順子は内訳に出さない（要件により除外）。
+    const { interp, ctx } = build();
+    const breakdown = calculateFuBreakdown(interp, ctx, { includeZeroFu: true });
+    expect(breakdown.items.some((i) => i.label === "順子")).toBe(false);
+  });
+
+  it("shows open-hand ron as ロン(鳴き) 0符 (includeZeroFu)", () => {
+    // 234m 456m 567p 345s + 99p(非役牌雀頭)。全順子・両面・非門前ロン(喰い平和形)。
+    const counts = countsFromCompact("234m456m567p345s");
+    counts[9 + 8] += 2; // 99p雀頭
+    const winType = tileToType(parseTileNotation("6m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "ron", isMenzen: false }), {
+      includeZeroFu: true,
+    });
+    const ron = breakdown.items.find((i) => i.label === "ロン(鳴き)");
+    expect(ron).toBeDefined();
+    expect(ron?.fu).toBe(0);
+    expect(breakdown.items.some((i) => i.label === "門前ロン")).toBe(false);
+    // 喰い平和形の20符→30符切り上げは維持。
+    expect(breakdown.subtotal).toBe(20);
+    expect(breakdown.total).toBe(30);
+  });
+
+  it("still omits 0符 elements by default", () => {
+    const { interp, ctx } = build();
+    const breakdown = calculateFuBreakdown(interp, ctx);
+    expect(breakdown.items.some((i) => i.label === "順子")).toBe(false);
+    expect(breakdown.items.some((i) => i.label === "雀頭")).toBe(false);
+    expect(breakdown.items.some((i) => i.label.startsWith("待ち"))).toBe(false);
+  });
+
+  it("does not change subtotal/total (0符要素は合計に影響しない)", () => {
+    const { interp, ctx } = build();
+    const def = calculateFuBreakdown(interp, ctx);
+    const withZero = calculateFuBreakdown(interp, ctx, { includeZeroFu: true });
+    expect(withZero.subtotal).toBe(def.subtotal);
+    expect(withZero.total).toBe(def.total);
+    expect(withZero.total).toBe(40);
+    // 各要素の合計は依然 subtotal と一致する。
+    expect(withZero.items.reduce((s, i) => s + i.fu, 0)).toBe(withZero.subtotal);
+  });
+
+  it("keeps 固定符(平和) as a single line even with includeZeroFu", () => {
+    // 平和ツモは固定20符。全て0符要素だが分解せず1行を維持する。
+    const counts = countsFromCompact("234m567p33z345s789m");
+    const winType = tileToType(parseTileNotation("9m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "tsumo");
+    const breakdown = calculateFuBreakdown(interp, baseCtx({ winType: "tsumo" }), {
+      includeZeroFu: true,
+    });
+    expect(breakdown.fixed).toBe(true);
+    expect(breakdown.items).toHaveLength(1);
+    expect(breakdown.total).toBe(20);
+  });
+});
+
 describe("chiitoitsuFuBreakdown", () => {
   it("is a fixed 25 fu single item", () => {
     const breakdown = chiitoitsuFuBreakdown();

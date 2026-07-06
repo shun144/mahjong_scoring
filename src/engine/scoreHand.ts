@@ -1,5 +1,10 @@
 import { countAkaDora, countDoraFromIndicators } from "./dora";
-import { calculateFuBreakdown, chiitoitsuFuBreakdown, type FuBreakdown } from "./fu";
+import {
+  calculateFuBreakdown,
+  chiitoitsuFuBreakdown,
+  type FuBreakdown,
+  type FuBreakdownOptions,
+} from "./fu";
 import { buildStandardInterpretations, type StandardInterpretation } from "./interpretation";
 import { decomposeChiitoitsu, decomposeKokushi } from "./decompose";
 import type { Meld, Tile, Wind, WinType } from "./model";
@@ -56,8 +61,14 @@ function buildCandidateResult(
  * 和了形を採点する。高点法により最高得点の解釈を選び、
  * 次点の解釈があれば interpretationNote に記す。
  * 有効な役が一つも無い場合は null を返す（本来は出題側で防ぐべき不正な手）。
+ *
+ * opts.includeZeroFu を渡すと fuDetail に0符要素も含める（符計算モードの解説表示用）。
+ * 0符要素は点数に影響しないため、採点結果(han/fu/payment)は opts の有無で変わらない。
  */
-export function scoreHand(input: ScoreHandInput): ScoreResult | null {
+export function scoreHand(
+  input: ScoreHandInput,
+  opts: FuBreakdownOptions = {},
+): ScoreResult | null {
   const isMenzen = isMenzenHand(input.melds);
   const concealedCounts = tilesToCounts(input.concealed);
   const winTileType = tileToType(input.winningTile);
@@ -93,7 +104,7 @@ export function scoreHand(input: ScoreHandInput): ScoreResult | null {
   };
 
   for (const interp of interpretations) {
-    const fuDetail = calculateFuBreakdown(interp, yakuCtx);
+    const fuDetail = calculateFuBreakdown(interp, yakuCtx, opts);
     const yakumanResults = detectYakuman(interp, { isMenzen }, concealedCounts);
     if (yakumanResults.length > 0) {
       candidates.push({

@@ -33,8 +33,11 @@ export function FuResultPage() {
   const { problem, selected, isCorrect } = state;
   const { answer } = problem;
 
-  // バンク問題の保存済み answer には符内訳が無いため、無ければエンジンで再計算する（決定的）。
-  const fuDetail = answer.fuDetail ?? scoreHand(problemToScoreHandInput(problem))?.fuDetail;
+  // 符計算モードの解説では0符要素も含めた全内訳を見せる。保存済み answer.fuDetail には
+  // 0符要素が無いため、常にエンジンで再計算する（scoreHand は決定的で保存値と一致する）。
+  const fuDetail =
+    scoreHand(problemToScoreHandInput(problem), { includeZeroFu: true })?.fuDetail ??
+    answer.fuDetail;
 
   return (
     <main className="page-shell">
@@ -45,16 +48,8 @@ export function FuResultPage() {
       {!isCorrect ? <p className="result-your-answer">あなたの回答: {selected}符</p> : null}
       <p className="result-fu-answer">正解: {answer.fu}符</p>
 
-      <section className="card result-breakdown" aria-label="符計算">
+      <section className="card result-breakdown result-breakdown--primary" aria-label="符計算">
         {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}
-        <ul className="yaku-list">
-          {answer.yaku.map((y, i) => (
-            <li key={i}>
-              <span>{y.name}</span>
-              <span>{y.han}翻</span>
-            </li>
-          ))}
-        </ul>
       </section>
 
       <div className="result-actions">
