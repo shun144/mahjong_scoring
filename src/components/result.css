@@ -1,7 +1,17 @@
-/* L2: 正誤見出し */
+/* 正誤見出しと答えを横一列に並べる（狭幅では折り返して横スクロールを防ぐ）。 */
+.result-verdict-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+}
+
+/* 正誤見出し。点数（L1）と並ぶ大型タイポで結果を突出させる。正解=緑／不正解=Rausch。 */
 .result-verdict {
-  font-size: var(--fs-emphasis);
+  font-size: var(--fs-score);
   font-weight: 700;
+  line-height: var(--leading-tight);
   margin: 0;
 }
 
@@ -9,26 +19,12 @@
   color: var(--color-success-text);
 }
 
+/* 不正解は答え（Rausch）と紛れないよう danger の濃い赤で区別する。 */
 .result-verdict.incorrect {
   color: var(--color-danger-text);
 }
 
-.result-your-answer {
-  margin: 0;
-  color: var(--color-text-sub);
-  font-family: var(--font-numeric);
-  font-variant-numeric: tabular-nums;
-}
-
-/* 正誤見出しと「あなたの回答」を横並びにする（位置のみ移動、文字スタイルは各要素側のまま） */
-.result-verdict-row {
-  display: flex;
-  align-items: baseline; /* 大きい見出しと小さい注記のベースラインを揃える */
-  flex-wrap: wrap; /* 狭幅で溢れる場合は折り返し（横スクロール防止の保険） */
-  gap: var(--space-3); /* 12px。「不正解」と「あなたの回答」の間隔 */
-}
-
-/* L1: 正解表示（点数計算・符計算とも最強調で統一。数字専用フォント・アクセント色・単色維持） */
+/* L1: 答え表示（点数計算・符計算とも最強調で統一。数字専用フォント・アクセント色・単色維持） */
 .result-answer {
   margin: 0;
   font-size: var(--fs-score);

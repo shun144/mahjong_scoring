@@ -30,7 +30,7 @@ export function FuResultPage() {
     );
   }
 
-  const { problem, selected, isCorrect } = state;
+  const { problem, isCorrect } = state;
   const { answer } = problem;
 
   // 符計算モードの解説では0符要素も含めた全内訳を見せる。保存済み answer.fuDetail には
@@ -46,9 +46,8 @@ export function FuResultPage() {
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
           {isCorrect ? "○ 正解" : "✕ 不正解"}
         </p>
-        {!isCorrect ? <p className="result-your-answer">あなたの回答: {selected}符</p> : null}
+        <p className="result-answer">答え: {answer.fu}符</p>
       </div>
-      <p className="result-answer">正解: {answer.fu}符</p>
 
       <section className="card result-breakdown result-breakdown--primary" aria-label="符計算">
         {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}

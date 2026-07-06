@@ -67,9 +67,9 @@ generous whitespace（大セクション 48〜64px のリズム）。
 ## 強調レベル（3段階・サイズと色の両方で強弱）
 
 見出し（h1/h2）は Airbnb 流に控えめウェイト（600 基調）とし、タイポで叫ばない。
-唯一の大型タイポは点数（L1・700）＝Airbnb の rating-display に対応させ、最重要数値だけを突出させる。
+大型タイポ（L1・700）は点数と、解説画面の正誤見出し（○正解＝緑／✕不正解＝danger の濃赤）に限り、最重要情報だけを突出させる。答え（点数）は Rausch のため、不正解見出しは danger 色で区別する。
 
-- レベル1／最強調 = 点数（各ドリルの正解表示。符計算モードの「正解: XX符」も L1 に含める）
+- レベル1／最強調 = 点数（各ドリルの答え表示。符計算モードの「答え: XX符」も L1 に含める。色は --color-accent）と、解説画面の正誤見出し（正解＝--color-success-text／不正解＝--color-danger-text）
   - font-size: --fs-score（3rem目安）、font-weight 700、色 --color-accent（Rausch）、数字専用フォント
 - レベル2／中 = 翻・符・役名（内訳・計算式に現れる符。各ドリルの「正解」表示は上記 L1）
   - font-size: --fs-emphasis（1.5rem目安）、font-weight 600、色 --color-text（数字は専用フォント）

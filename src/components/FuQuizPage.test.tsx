@@ -33,7 +33,7 @@ describe("FuQuizPage", () => {
     fireEvent.click(choiceButtons[0]);
 
     expect(screen.getByRole("heading", { name: "解説" })).toBeInTheDocument();
-    expect(screen.getByText(/正解:/)).toBeInTheDocument();
+    expect(screen.getByText(/答え:/)).toBeInTheDocument();
   });
 
   it("skipping stays on the fu quiz page without recording an answer", () => {

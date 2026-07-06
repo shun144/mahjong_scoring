@@ -53,10 +53,10 @@ describe("ResultPage", () => {
 
     expect(screen.getByText("○ 正解")).toBeInTheDocument();
     expect(screen.queryByText(/あなたの回答/)).not.toBeInTheDocument();
-    expect(screen.getByText("正解: 2000")).toBeInTheDocument();
+    expect(screen.getByText("答え: 2000")).toBeInTheDocument();
   });
 
-  it("shows ✕ 不正解 with both the user's answer and the correct answer when wrong", () => {
+  it("shows ✕ 不正解 and only the correct answer (not the user's answer) when wrong", () => {
     const problem = baseProblem();
     renderResult({
       problem,
@@ -65,8 +65,10 @@ describe("ResultPage", () => {
     });
 
     expect(screen.getByText("✕ 不正解")).toBeInTheDocument();
-    expect(screen.getByText("あなたの回答: 3900")).toBeInTheDocument();
-    expect(screen.getByText("正解: 2000")).toBeInTheDocument();
+    // 誤答（あなたの回答）は表示しない
+    expect(screen.queryByText(/あなたの回答/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/3900/)).not.toBeInTheDocument();
+    expect(screen.getByText("答え: 2000")).toBeInTheDocument();
   });
 
   it("lists every yaku with its han and shows the calculation line", () => {

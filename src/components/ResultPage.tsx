@@ -32,7 +32,7 @@ export function ResultPage() {
     );
   }
 
-  const { problem, selected, isCorrect } = state;
+  const { problem, isCorrect } = state;
   const { answer } = problem;
 
   // バンク問題の保存済み answer には符内訳が無いため、無ければエンジンで再計算する
@@ -49,11 +49,8 @@ export function ResultPage() {
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
           {isCorrect ? "○ 正解" : "✕ 不正解"}
         </p>
-        {!isCorrect ? (
-          <p className="result-your-answer">あなたの回答: {formatPayment(selected)}</p>
-        ) : null}
+        <p className="result-answer">答え: {formatPayment(answer.payment)}</p>
       </div>
-      <p className="result-answer">正解: {formatPayment(answer.payment)}</p>
 
       <section className="card result-breakdown" aria-label="点数計算">
         {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}

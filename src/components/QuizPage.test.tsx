@@ -31,10 +31,9 @@ describe("QuizPage", () => {
     const choiceButtons = screen.getAllByRole("button");
     fireEvent.click(choiceButtons[0]);
 
-    // 選んだ選択肢がたまたま正解の場合「あなたの回答」は表示されないため、
-    // 常に表示される要素のみを検証する（正誤ごとの詳細はResultPage.test.tsxで検証）。
+    // 正誤に依らず常に表示される要素のみを検証する（正誤ごとの詳細はResultPage.test.tsxで検証）。
     expect(screen.getByRole("heading", { name: "解説" })).toBeInTheDocument();
-    expect(screen.getByText(/正解:/)).toBeInTheDocument();
+    expect(screen.getByText(/答え:/)).toBeInTheDocument();
   });
 
   it("skipping stays on the quiz page without recording an answer", () => {

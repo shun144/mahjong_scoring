@@ -19,7 +19,7 @@ test.describe("麻雀点数トレーニング - 一連の学習フロー", () =>
 
     await expect(page).toHaveURL(/\/result$/);
     await expect(page.getByRole("heading", { name: "解説" })).toBeVisible();
-    await expect(page.getByText(/^正解:/)).toBeVisible();
+    await expect(page.getByText(/^答え:/)).toBeVisible();
     // 点数計算カードは見出しテキストを持たず aria-label で識別する（region ロール）。
     await expect(page.getByRole("region", { name: "点数計算" })).toBeVisible();
 
