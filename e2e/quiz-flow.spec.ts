@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("麻雀点数計算ドリル - 一連の学習フロー", () => {
+test.describe("麻雀点数トレーニング - 一連の学習フロー", () => {
   test("ホーム→出題→回答→解説→次の問題→成績、の一連が動作する", async ({ page }) => {
     await page.goto("");
-    await expect(page.getByRole("heading", { name: "麻雀 点数計算ドリル" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "麻雀点数トレーニング" })).toBeVisible();
 
     await page.getByRole("link", { name: "練習を始める" }).click();
     await expect(page).toHaveURL(/\/quiz$/);

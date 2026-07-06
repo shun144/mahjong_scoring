@@ -11,7 +11,7 @@ describe("App routing", () => {
       </MemoryRouter>,
     );
     expect(
-      screen.getByRole("heading", { name: "麻雀 点数計算ドリル" }),
+      screen.getByRole("heading", { name: "麻雀点数トレーニング" }),
     ).toBeInTheDocument();
   });
 

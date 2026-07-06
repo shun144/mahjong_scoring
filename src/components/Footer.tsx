@@ -11,7 +11,7 @@ export function Footer() {
       <nav className="app-footer-nav" aria-label="フッター">
         <Link to="/privacy">プライバシーポリシー</Link>
       </nav>
-      <p className="app-footer-copy">© 2026 麻雀 点数計算ドリル</p>
+      <p className="app-footer-copy">© 2026 麻雀点数トレーニング</p>
     </footer>
   );
 }
