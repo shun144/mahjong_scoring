@@ -43,9 +43,8 @@ export function QuizTileHeader({ problem }: { problem: Problem }) {
   const winType = problem.hand.winType;
   return (
     <section className="quiz-tile-header" aria-label="アガリ牌・ドラ表示牌">
-      {/* 「アガリ牌」ラベルは色付き枠の外（上）に置き、枠内にツモ/ロンの牌を収める。 */}
+      {/* ツモ/ロンの色付き枠にアガリ牌を収める。 */}
       <div className="win-indicator-section">
-        <span className="win-indicator-title">アガリ牌</span>
         <LabeledTiles
           label={WIN_TYPE_LABELS[winType]}
           tiles={[problem.hand.winningTile]}
@@ -54,9 +53,8 @@ export function QuizTileHeader({ problem }: { problem: Problem }) {
           labelClassName="mj-winning-label"
         />
       </div>
-      {/* 「ドラ表示牌」ラベルはグレー枠の外（上）に置き、枠内に表ドラ・裏ドラをまとめる。 */}
+      {/* グレー枠に表ドラ・裏ドラをまとめる。 */}
       <div className="dora-indicator-section">
-        <span className="dora-indicator-title">ドラ表示牌</span>
         <div className="dora-indicator-group">
           <div className="dora-indicator-tiles">
             <LabeledTiles label="表" tiles={problem.doraIndicators} keyPrefix="dora" />
