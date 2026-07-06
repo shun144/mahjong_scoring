@@ -26,8 +26,13 @@ export function HandDisplay({ concealed, melds = [], winningTile, size = "md" }:
 
   return (
     <div className="mj-hand-display">
+      {/* 純手牌の行。 */}
       <div className="mj-hand-row">
         <TileRow tiles={sortedConcealed} size={size} keyPrefix="concealed" />
+      </div>
+      {/* 副露は手牌の下の行に横1列で並べる。鳴きが無くても行自体は残し、
+          min-height でスペースを確保して手牌ブロックの高さを揃える。 */}
+      <div className="mj-meld-row">
         {melds.map((meld, i) => (
           <MeldGroup key={`meld-${i}`} meld={meld} size={size} keyPrefix={`meld-${i}`} />
         ))}

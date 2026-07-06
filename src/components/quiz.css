@@ -191,13 +191,13 @@
 /* アガリ牌そのものにも上がり方の色でリングを添え、牌単体でも識別できるようにする。
    SVGアセットは変更せず、外側から outline とドロップシャドウで縁取る。 */
 .tile-info-group--tsumo .mj-tile-inner {
-  outline: 1.5px solid #2f6fd0;
+  outline: 2px solid #2f6fd0;
   outline-offset: 1px;
   border-radius: 3px;
 }
 
 .tile-info-group--ron .mj-tile-inner {
-  outline: 1.5px solid var(--color-accent);
+  outline: 2px solid var(--color-accent);
   outline-offset: 1px;
   border-radius: 3px;
 }

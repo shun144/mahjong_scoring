@@ -53,14 +53,16 @@
 .dora-indicator-tiles .mj-tile-inner {
   /* Front.svg の角丸(ry=40 / 400)に合わせた比率の角丸で淵をなじませる。 */
   border-radius: 6px;
+}
+
+/* ドラ表示牌の縁（従来どおりの濃さ）。 */
+.dora-indicator-tiles .mj-tile-inner {
   box-shadow: 0 0 0 1.5px rgba(90, 74, 58, 0.35);
 }
 
-/* スマホ幅では手牌の縁だけ消して素のSVGに戻す（ドラ表示牌は縁を残す）。 */
-@media (max-width: 639px) {
-  .mj-hand-display .mj-tile-inner {
-    box-shadow: none;
-  }
+/* 手牌・鳴きメンツの縁は「すごく薄め」に。PC/スマホ共通で表示する。 */
+.mj-hand-display .mj-tile-inner {
+  box-shadow: 0 0 0 1px rgba(90, 74, 58, 0.15);
 }
 
 .mj-tile-layer {
@@ -99,18 +101,64 @@
   padding: 0 4px;
 }
 
+/* 純手牌の行と副露の行を1つの囲い（＝手牌エリア）にまとめる。枠線スタイル
+   （1.5px solid・角丸・内側余白）はアガリ牌の枠（quiz.css の .tile-info-group--tsumo/ron）
+   に揃え、背景は主張の弱い中立サーフェスにする。 */
 .mj-hand-display {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  /* 子（手牌行・副露行）を囲い幅いっぱいに伸ばし、行間の点線が全幅に渡るようにする。 */
+  align-items: stretch;
+  /* 純手牌の行と副露の行の間に上下の余白を作る（PC既定）。狭幅では下の
+     メディアクエリで詰める。 */
+  gap: var(--space-3);
+  /* 囲い（手牌エリア）は牌の数によらず一定サイズ。コンテナ幅いっぱいに広げ、
+     横幅（page-shell の max-width 640px＋狭幅）に応じてレスポンシブに縮む。 */
+  width: 100%;
+  /* 4副露など内容が稀に囲い内寸を超える場合は、枠線を保ったまま囲い内で横スクロールさせる。 */
+  overflow-x: auto;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
 }
 
-/* 純手牌＋副露の並び（横方向、幅が足りなければ副露が折り返す）。 */
+/* 囲いの中の md 牌は、囲いの padding(左右) + 枠線分だけ本文幅から余計に引き、
+   13枚＋牌間gapが囲い内に収まるようにする（基準の -78px に約32pxを上乗せ）。
+   specificity が基準の .mj-tile-size-md より高いので囲い内だけ上書きされ、
+   囲い外のドラ表示牌・アガリ牌（-78px のまま）には影響しない。 */
+.mj-hand-display .mj-tile-wrap.mj-tile-size-md {
+  --mj-tile-w: min(42px, calc((min(100vw, 640px) - 110px) / 13));
+  --mj-tile-h: calc(var(--mj-tile-w) * 4 / 3);
+}
+
+/* 純手牌の行（横方向）。副露は下の .mj-meld-row に分離した。 */
 .mj-hand-row {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-end;
   gap: 10px;
+}
+
+/* 副露の行：手牌の下に横1列で並べる（折り返さない）。
+   鳴きが無くても行を残し、min-height で牌1枚分の高さを確保することで、
+   副露の有無に関わらず手牌ブロックの高さを一定に保つ。
+   min-height の算出は quiz.css の .dora-indicator-tiles .tile-info-slot と同じ
+   md 牌サイズの式（幅 min(42px, ...) の 4/3 倍 = 高さ）に揃える。 */
+.mj-meld-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 10px;
+  /* border-box なので min-height に牌1枚分の高さ＋padding-top＋border を足し、
+     鳴きの有無で囲い全体の高さが変わらないようにする。牌高さは囲い内の md 牌
+     （-110px）と揃える。 */
+  min-height: calc(
+    min(42px, calc((min(100vw, 640px) - 110px) / 13)) * 4 / 3 + var(--space-3) + 1px
+  );
+  /* 手牌エリアと副露エリアの境目に薄い点線を入れる。線の上側は .mj-hand-display の
+     gap が、下側は padding-top が余白を作る。 */
+  border-top: 1px dotted var(--color-border);
+  padding-top: var(--space-3);
 }
 
 /* --- サブ640px表示: 副露込みでも手牌を1行に収めるため余白を詰める ---
@@ -122,6 +170,9 @@
     gap: 1px;
   }
   .mj-hand-row {
+    gap: 4px;
+  }
+  .mj-meld-row {
     gap: 4px;
   }
   .mj-meld-group {
