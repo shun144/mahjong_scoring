@@ -45,6 +45,17 @@
   filter: drop-shadow(var(--shadow-tile));
 }
 
+/* 手牌（純手牌＋副露）とドラ表示牌に、SVGにない外周ボーダーを足して淵を少し太く見せる。
+   アガリ牌（色付きリングで別途強調）には適用しない。
+   box-sizing: border-box でボーダー分を内側に収め、並びの寸法は変えない。 */
+.mj-hand-display .mj-tile-inner,
+.dora-indicator-tiles .mj-tile-inner {
+  box-sizing: border-box;
+  /* Front.svg の角丸(ry=40 / 400)に合わせた比率の角丸で淵をなじませる。 */
+  border: 1.5px solid rgba(90, 74, 58, 0.35);
+  border-radius: 6px;
+}
+
 .mj-tile-layer {
   position: absolute;
   inset: 0;

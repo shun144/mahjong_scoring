@@ -1,14 +1,12 @@
-import type { WinType } from "../engine/model";
 import type { Problem } from "../data/problem";
-import { WIN_TYPE_LABELS, WIND_LABELS } from "./format";
+import { WIND_LABELS } from "./format";
 
-/** 局条件（場風・自風・親子・リーチ・上がり方）のバッジ表示。最終点数モード・符計算モードで共有する。 */
+/** 局条件（場風・自風・親子・リーチ）のバッジ表示。最終点数モード・符計算モードで共有する。
+    上がり方（ツモ/ロン）はアガリ牌のラベルと背景色で示すため、ここには表示しない。 */
 export function QuizConditions({
   conditions,
-  winType,
 }: {
   conditions: Problem["conditions"];
-  winType: WinType;
 }) {
   return (
     <section className="quiz-conditions" aria-label="局条件">
@@ -23,9 +21,6 @@ export function QuizConditions({
       </span>
       <span className="badge badge--dealer">
         <span className="badge-value">{conditions.isDealer ? "親" : "子"}</span>
-      </span>
-      <span className="badge badge--wintype">
-        <span className="badge-value">{WIN_TYPE_LABELS[winType]}</span>
       </span>
       {conditions.riichi ? (
         <span className="badge badge-riichi">
