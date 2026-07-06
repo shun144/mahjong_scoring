@@ -204,16 +204,16 @@ function buildRandomStandardHand(rng: RandomSource): RandomHandResult | null {
       concealedTiles.push(...groupToTiles(group));
     } else if (transform === "chi") {
       const tiles = groupToTiles(group);
-      melds.push({ type: "chi", tiles, calledTile: tiles[randomInt(0, 2, rng)] });
+      melds.push({ type: "chi", tiles });
     } else if (transform === "pon") {
       const tiles = groupToTiles(group);
-      melds.push({ type: "pon", tiles, calledTile: tiles[0] });
+      melds.push({ type: "pon", tiles });
     } else {
       // minkan / ankan: 4枚目を追加する
       const tileType = group.types[0];
       const tiles = [...groupToTiles(group), typeToTile(tileType)];
       if (transform === "minkan") {
-        melds.push({ type: "minkan", tiles, calledTile: tiles[0] });
+        melds.push({ type: "minkan", tiles });
       } else {
         melds.push({ type: "ankan", tiles });
       }

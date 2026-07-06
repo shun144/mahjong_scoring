@@ -12,7 +12,6 @@ describe("MeldGroup", () => {
         { suit: "s", rank: 9 },
         { suit: "s", rank: 9 },
       ],
-      calledTile: { suit: "s", rank: 9 },
     };
     render(<MeldGroup meld={meld} />);
     expect(screen.getAllByRole("img", { name: "九索" })).toHaveLength(3);

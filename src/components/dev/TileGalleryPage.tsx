@@ -25,7 +25,6 @@ const samplePon: Meld = {
     { suit: "s", rank: 9 },
     { suit: "s", rank: 9 },
   ],
-  calledTile: { suit: "s", rank: 9 },
 };
 
 const sampleAnkan: Meld = {

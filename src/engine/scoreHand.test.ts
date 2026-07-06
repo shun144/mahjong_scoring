@@ -203,7 +203,6 @@ describe("scoreHand - representative hands", () => {
         { suit: "s", rank: 3 },
         { suit: "s", rank: 3 },
       ],
-      calledTile: { suit: "s", rank: 3 },
     };
     const result = scoreHand(
       baseInput({

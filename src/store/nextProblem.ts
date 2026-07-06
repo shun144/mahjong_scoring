@@ -21,7 +21,7 @@ function isEligible(problem: Problem, opts: NextProblemOptions): boolean {
 }
 
 /**
- * ランダムに次の出題を1つ選ぶ。バンクからのシャッフルとジェネレータ生成を半々で混ぜ
+ * ランダムに次の出題を1つ選ぶ。ジェネレータ生成75%・バンクからのシャッフル25%で混ぜ
  * （SPEC.md §4.1）、成績（正答率の低いタグ）に基づいて苦手分野を重点的に出題する
  * （SPEC.md §4.5 苦手復習）。ジェネレータが失敗した場合はバンクにフォールバックする。
  * 符計算モードでは opts.excludeMangan で満貫以上を除外する（SPEC.md §4.0）。
@@ -32,7 +32,8 @@ export function nextProblem(
 ): Problem {
   const stats = loadStats();
 
-  if (chance(0.5, rng)) {
+  // 生成75% / バンク25%（chance が true のとき生成側）。
+  if (chance(0.75, rng)) {
     const candidates: Problem[] = [];
     for (let i = 0; i < GENERATED_CANDIDATE_COUNT; i++) {
       const generated = generateProblem(rng);

@@ -185,7 +185,6 @@ describe("yaku catalogue via scoreHand", () => {
         { suit: "m", rank: 4 },
         { suit: "m", rank: 4 },
       ],
-      calledTile: { suit: "m", rank: 4 },
     };
     const openHonitsu = scoreHand(
       baseInput({

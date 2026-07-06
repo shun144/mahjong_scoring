@@ -33,14 +33,11 @@ interface MeldSpec {
   type: MeldType;
   /** 個々の牌記法（例: ["3s","3s","3s"]）。 */
   tiles: string[];
-  /** 鳴いた牌のインデックス（chi/pon/minkanで指定。ankanは不要）。 */
-  calledIndex?: number;
 }
 
 function buildMeld(spec: MeldSpec): Meld {
   const tiles = spec.tiles.map(parseTileNotation);
-  const calledTile = spec.calledIndex !== undefined ? tiles[spec.calledIndex] : undefined;
-  return { type: spec.type, tiles, calledTile };
+  return { type: spec.type, tiles };
 }
 
 interface HandSpec {
@@ -309,7 +306,7 @@ const specs: HandSpec[] = [
     melds: [
       { type: "ankan", tiles: ["1m", "1m", "1m", "1m"] },
       { type: "ankan", tiles: ["2m", "2m", "2m", "2m"] },
-      { type: "minkan", tiles: ["3m", "3m", "3m", "3m"], calledIndex: 0 },
+      { type: "minkan", tiles: ["3m", "3m", "3m", "3m"] },
     ],
     winningTile: "5p",
     winType: "ron",
@@ -343,7 +340,7 @@ const specs: HandSpec[] = [
     id: "honitsu-open",
     label: "混一色(鳴き2翻)",
     concealed: "123m789m111z22z",
-    melds: [{ type: "pon", tiles: ["4m", "4m", "4m"], calledIndex: 0 }],
+    melds: [{ type: "pon", tiles: ["4m", "4m", "4m"] }],
     winningTile: "2z",
     winType: "tsumo",
     seatWind: "east", // 自風=東（111zが自風牌）が成立する親の手
@@ -359,7 +356,7 @@ const specs: HandSpec[] = [
     id: "chinitsu-open",
     label: "清一色(鳴き5翻)",
     concealed: "123456789m11m",
-    melds: [{ type: "pon", tiles: ["4m", "4m", "4m"], calledIndex: 0 }],
+    melds: [{ type: "pon", tiles: ["4m", "4m", "4m"] }],
     winningTile: "4m",
     winType: "tsumo",
   },
@@ -460,8 +457,8 @@ const specs: HandSpec[] = [
     melds: [
       { type: "ankan", tiles: ["1m", "1m", "1m", "1m"] },
       { type: "ankan", tiles: ["2m", "2m", "2m", "2m"] },
-      { type: "minkan", tiles: ["3m", "3m", "3m", "3m"], calledIndex: 0 },
-      { type: "minkan", tiles: ["4m", "4m", "4m", "4m"], calledIndex: 0 },
+      { type: "minkan", tiles: ["3m", "3m", "3m", "3m"] },
+      { type: "minkan", tiles: ["4m", "4m", "4m", "4m"] },
     ],
     winningTile: "5p",
     winType: "ron",

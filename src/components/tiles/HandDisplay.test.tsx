@@ -70,7 +70,6 @@ describe("HandDisplay", () => {
         { suit: "s", rank: 9 },
         { suit: "s", rank: 9 },
       ],
-      calledTile: { suit: "s", rank: 9 },
     };
 
     render(<HandDisplay concealed={concealed} winningTile={winningTile} melds={[meld]} />);

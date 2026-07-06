@@ -2929,11 +2929,7 @@
               "suit": "m",
               "rank": 3
             }
-          ],
-          "calledTile": {
-            "suit": "m",
-            "rank": 3
-          }
+          ]
         }
       ],
       "winningTile": {
@@ -3524,11 +3520,7 @@
               "suit": "m",
               "rank": 4
             }
-          ],
-          "calledTile": {
-            "suit": "m",
-            "rank": 4
-          }
+          ]
         }
       ],
       "winningTile": {
@@ -3813,11 +3805,7 @@
               "suit": "m",
               "rank": 4
             }
-          ],
-          "calledTile": {
-            "suit": "m",
-            "rank": 4
-          }
+          ]
         }
       ],
       "winningTile": {
@@ -5497,11 +5485,7 @@
               "suit": "m",
               "rank": 3
             }
-          ],
-          "calledTile": {
-            "suit": "m",
-            "rank": 3
-          }
+          ]
         },
         {
           "type": "minkan",
@@ -5522,11 +5506,7 @@
               "suit": "m",
               "rank": 4
             }
-          ],
-          "calledTile": {
-            "suit": "m",
-            "rank": 4
-          }
+          ]
         }
       ],
       "winningTile": {

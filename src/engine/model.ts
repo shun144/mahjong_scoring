@@ -19,13 +19,13 @@ export interface Tile {
 export type MeldType = "chi" | "pon" | "minkan" | "ankan";
 
 /**
- * 副露（鳴き）。calledTile は他家から鳴いた牌（表示用、横向きにする対象）。
- * ankan（暗槓）は鳴きではないため calledTile を持たない。
+ * 副露（鳴き）。type がチー/ポン/明槓なら鳴いた面子（表示上は1枚を横向きにする）、
+ * ankan（暗槓）は両端を伏せ牌で表示する。鳴いた牌の位置は本アプリの採点・学習に
+ * 影響しないため、どの牌を横向きにするかは表示側で type から決める（データには持たない）。
  */
 export interface Meld {
   type: MeldType;
   tiles: Tile[];
-  calledTile?: Tile;
 }
 
 export type Wind = "east" | "south" | "west" | "north";

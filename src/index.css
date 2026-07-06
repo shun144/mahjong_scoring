@@ -43,12 +43,13 @@
   /* --- タイポグラフィ --- */
   --font-sans: system-ui, "Hiragino Sans", "Segoe UI", Meiryo, sans-serif;
   /* 数字専用フォント（外部Webフォント不使用・システムフォールバックのみ） */
-  --font-numeric: "SF Pro Display", "Helvetica Neue", "Roboto Condensed",
-    "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  --font-numeric:
+    "SF Pro Display", "Helvetica Neue", "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui,
+    sans-serif;
 
   /* --- サイズ（3段階強調＋補助） --- */
-  --fs-score: 3rem; /* L1: 点数 */
-  --fs-emphasis: 1.5rem; /* L2: 翻・符・役名 */
+  --fs-score: 2.2rem; /* L1: 点数 */
+  --fs-emphasis: 1.2rem; /* L2: 翻・符・役名 */
   --fs-base: 1rem; /* L3: 本文 */
   --fs-sm: 0.875rem; /* ラベル・キャプション */
 
@@ -79,8 +80,8 @@
 
   /* --- エレベーション（Airbnb 1-tier。静止面は影なし・border 主体。
      影は hover/最前面の 1 段のみ。sm/md/lg は後方互換で残す） --- */
-  --shadow-sm: 0 0 0 1px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.04),
-    0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-sm:
+    0 0 0 1px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.1);
   --shadow-md: var(--shadow-sm);
   --shadow-lg: var(--shadow-sm);
   /* 後方互換エイリアス（旧 --shadow-card → sm） */
@@ -241,7 +242,8 @@ select:focus-visible {
   color: var(--color-accent-contrast);
   text-decoration: none;
   cursor: pointer;
-  transition: box-shadow var(--duration) var(--ease-standard),
+  transition:
+    box-shadow var(--duration) var(--ease-standard),
     background var(--duration) var(--ease-standard),
     transform var(--duration) var(--ease-standard);
 }
@@ -281,7 +283,8 @@ select:focus-visible {
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
-  transition: border-color var(--duration) var(--ease-standard),
+  transition:
+    border-color var(--duration) var(--ease-standard),
     background var(--duration) var(--ease-standard),
     transform var(--duration) var(--ease-standard);
 }

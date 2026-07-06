@@ -10,12 +10,10 @@ const ankan = (suit: Tile["suit"], rank: number): Meld => ({
 const minkan = (suit: Tile["suit"], rank: number): Meld => ({
   type: "minkan",
   tiles: [t(suit, rank), t(suit, rank), t(suit, rank), t(suit, rank)],
-  calledTile: t(suit, rank),
 });
 const pon = (suit: Tile["suit"], rank: number): Meld => ({
   type: "pon",
   tiles: [t(suit, rank), t(suit, rank), t(suit, rank)],
-  calledTile: t(suit, rank),
 });
 
 describe("allowsRiichi", () => {
