@@ -69,3 +69,21 @@
   border-radius: var(--radius-pill);
   transition: width var(--duration) var(--ease-standard);
 }
+
+/* --- 成績のリセット（クリックで即時消去。破壊的操作のため danger 色で示す） --- */
+.stats-reset {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+.stats-reset-trigger {
+  color: var(--color-danger-text);
+}
+
+@media (hover: hover) {
+  .stats-reset-trigger:hover {
+    border-color: var(--color-danger-border);
+    background: var(--color-danger-bg);
+  }
+}

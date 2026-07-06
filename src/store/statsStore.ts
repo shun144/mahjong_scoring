@@ -75,6 +75,21 @@ export function saveStats(stats: StatsState): void {
   }
 }
 
+/**
+ * 保存済みの成績をすべて消去する（localStorageのキーを削除）。
+ * 取り消せない操作のため、呼び出し側（UI）で確認を挟むこと。
+ * 集計・苦手復習の重み付けは history から導出されるため、このキー削除で成績は完全に初期化される。
+ * 空の成績を返し、呼び出し側の状態更新に使えるようにする。
+ */
+export function clearStats(): StatsState {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // localStorageが使えない環境では何もしない。
+  }
+  return createEmptyStats();
+}
+
 function bumpTag(map: Record<string, TagStat>, key: string, isCorrect: boolean): void {
   const current = map[key] ?? { correct: 0, total: 0 };
   map[key] = {

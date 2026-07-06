@@ -1,8 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it } from "vitest";
 import type { Problem } from "../data/problem";
-import { recordAnswer } from "../store/statsStore";
+import { loadStats, recordAnswer } from "../store/statsStore";
 import { StatsPage } from "./StatsPage";
 
 function fakeProblem(fuType: number, yakuCategories: string[]): Problem {
@@ -73,5 +73,27 @@ describe("StatsPage", () => {
     renderStats();
     const link = screen.getByRole("link", { name: "練習に戻る" });
     expect(link).toHaveAttribute("href", "/quiz");
+  });
+
+  it("does not show the reset control when there is no history", () => {
+    renderStats();
+    expect(screen.queryByRole("button", { name: "成績をリセット" })).not.toBeInTheDocument();
+  });
+
+  it("clears the stats immediately when the reset button is clicked", () => {
+    recordAnswer(fakeProblem(30, ["リーチ"]), true);
+    recordAnswer(fakeProblem(40, ["平和"]), false);
+    renderStats();
+
+    // 集計が出ている
+    expect(screen.getByText("1/2問")).toBeInTheDocument();
+
+    // クリックで即座に消去され、空状態になる（確認は挟まない）
+    fireEvent.click(screen.getByRole("button", { name: "成績をリセット" }));
+
+    expect(screen.getByText(/まだ回答履歴がありません/)).toBeInTheDocument();
+    expect(screen.getByText("0%")).toBeInTheDocument();
+    // 消去は永続化されている
+    expect(loadStats().totalAnswered).toBe(0);
   });
 });

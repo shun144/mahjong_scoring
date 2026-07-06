@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { loadStats, type TagStat } from "../store/statsStore";
+import { clearStats, loadStats, type TagStat } from "../store/statsStore";
 import "./stats.css";
 
 interface TagRow {
@@ -39,9 +39,13 @@ function TagBar({ row }: { row: TagRow }) {
 }
 
 export function StatsPage() {
-  const [stats] = useState(() => loadStats());
+  const [stats, setStats] = useState(() => loadStats());
   const accuracyPct =
     stats.totalAnswered > 0 ? Math.round((stats.totalCorrect / stats.totalAnswered) * 100) : 0;
+
+  function handleReset() {
+    setStats(clearStats());
+  }
 
   const fuRows = toTagRows(stats.byFuType).map((r) => ({ ...r, label: `${r.label}符` }));
   const yakuRows = toTagRows(stats.byYakuCategory);
@@ -76,9 +80,7 @@ export function StatsPage() {
       </section>
 
       {stats.totalAnswered === 0 ? (
-        <p>
-          まだ回答履歴がありません。<Link to="/quiz">練習を始める</Link>
-        </p>
+        <p>まだ回答履歴がありません。</p>
       ) : (
         <>
           <section aria-label="符の型別正答率">
@@ -97,6 +99,16 @@ export function StatsPage() {
                 <TagBar key={row.label} row={row} />
               ))}
             </ul>
+          </section>
+
+          <section className="stats-reset" aria-label="成績のリセット">
+            <button
+              type="button"
+              className="btn-secondary stats-reset-trigger"
+              onClick={handleReset}
+            >
+              成績をリセット
+            </button>
           </section>
         </>
       )}

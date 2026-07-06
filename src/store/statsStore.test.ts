@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import type { Problem } from "../data/problem";
-import { createEmptyStats, loadStats, recordAnswer, saveStats } from "./statsStore";
+import { clearStats, createEmptyStats, loadStats, recordAnswer, saveStats } from "./statsStore";
 
 function fakeProblem(fuType: number, yakuCategories: string[]): Problem {
   return {
@@ -49,6 +49,24 @@ describe("loadStats", () => {
     stats.totalAnswered = 5;
     saveStats(stats);
     expect(loadStats()).toEqual(stats);
+  });
+});
+
+describe("clearStats", () => {
+  it("removes saved stats so a subsequent load returns empty stats", () => {
+    recordAnswer(fakeProblem(30, ["リーチ"]), true);
+    recordAnswer(fakeProblem(40, ["平和"]), false);
+    expect(loadStats().totalAnswered).toBe(2);
+
+    clearStats();
+
+    expect(loadStats()).toEqual(createEmptyStats());
+    expect(localStorage.getItem("mahjong-scoring:stats:v1")).toBeNull();
+  });
+
+  it("returns an empty stats object", () => {
+    recordAnswer(fakeProblem(30, ["リーチ"]), true);
+    expect(clearStats()).toEqual(createEmptyStats());
   });
 });
 
