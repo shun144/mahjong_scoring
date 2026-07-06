@@ -12,13 +12,14 @@ export function QuizConditions({
 }) {
   return (
     <section className="quiz-conditions" aria-label="局条件">
-      <span className="badge badge--round">
-        <span className="badge-label">場風</span>
+      <span
+        className="badge badge--windset"
+        aria-label={`場風${WIND_LABELS[conditions.roundWind]} 自風${WIND_LABELS[conditions.seatWind]}`}
+      >
         <span className="badge-value">{WIND_LABELS[conditions.roundWind]}</span>
-      </span>
-      <span className="badge badge--seat">
-        <span className="badge-label">自風</span>
+        <span className="badge-label">場</span>
         <span className="badge-value">{WIND_LABELS[conditions.seatWind]}</span>
+        <span className="badge-label">家</span>
       </span>
       <span className="badge badge--dealer">
         <span className="badge-value">{conditions.isDealer ? "親" : "子"}</span>
