@@ -55,7 +55,7 @@ export function QuizPage() {
   return (
     <main className="page-shell">
       <PageHeader title="出題" />
-      <QuizConditions conditions={problem.conditions} winType={problem.hand.winType} />
+      <QuizConditions conditions={problem.conditions} />
 
       <QuizTileHeader problem={problem} />
 
