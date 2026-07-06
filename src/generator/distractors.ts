@@ -26,8 +26,9 @@ function representativeAmount(payment: Payment): number {
 
 /**
  * 代表額を指定の支払い形式に組み直す。
- * tsumo-ko は実在の支払い表と同じく「親は子の2倍」の関係を保つため、
- * 見た目は自然だが数値としては誤っている選択肢になる。
+ * tsumo-ko は実在の支払い表と同じく「親は子の2倍」の関係を保つ。
+ * 別条件由来の代表額を流用すると採点上あり得ない額になり得るが、
+ * generateChoices 側で実在点数のみに絞り込むため、非実在の額は選択肢に残らない。
  */
 function reformatAs(kind: Payment["kind"], amount: number): Payment {
   if (kind === "ron") return { kind: "ron", total: amount };
@@ -77,25 +78,80 @@ function buildCandidatePool(ctx: DistractorContext, correctKind: Payment["kind"]
 
 const CHOICE_COUNT = 4;
 
+/** 誤答検証・補完に使う探索範囲（1〜13翻＝数え役満まで）。 */
+const DISTRACTOR_HAN_RANGE = Array.from({ length: 13 }, (_, i) => i + 1);
+/** ロンで実在する符（20符ロンは無い。25符は七対子）。 */
+const RON_FU_LIST = [25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
+/** ツモで実在する符（20符ツモは平和ツモ等で有り得る）。 */
+const TSUMO_FU_LIST = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
+
+/** 正解と同じ表示形式（kind）に対応する計算条件と探索する符の一覧を返す。 */
+function realConfigForKind(
+  kind: Payment["kind"],
+  ctxIsDealer: boolean,
+): { isDealer: boolean; winType: WinType; fuList: number[] } {
+  if (kind === "ron") return { isDealer: ctxIsDealer, winType: "ron", fuList: RON_FU_LIST };
+  if (kind === "tsumo-oya") return { isDealer: true, winType: "tsumo", fuList: TSUMO_FU_LIST };
+  return { isDealer: false, winType: "tsumo", fuList: TSUMO_FU_LIST };
+}
+
+/**
+ * 正解と同じ表示形式で「実在する」点数の一覧（キー重複排除済み）を列挙する。
+ * 翻×符の全組み合わせを実際に採点して得られる値のみなので、
+ * ここに無い点数（例: ロンの点をツモ表記に流用した値）は実在しない誤答として除外できる。
+ */
+function realPaymentsForKind(kind: Payment["kind"], ctxIsDealer: boolean): Payment[] {
+  const { isDealer, winType, fuList } = realConfigForKind(kind, ctxIsDealer);
+  const byKey = new Map<string, Payment>();
+  for (const han of DISTRACTOR_HAN_RANGE) {
+    for (const fu of fuList) {
+      const { payment } = calculatePayment(han, fu, isDealer, winType);
+      byKey.set(paymentKey(payment), payment);
+    }
+  }
+  return [...byKey.values()];
+}
+
 /**
  * 正解を含む4択の選択肢（シャッフル済み）を生成する。
  * 全ての候補は正解と同じ支払い形式（ron / tsumo-ko / tsumo-oya）に揃える。
- * 誤答候補が足りない稀なケースでは4択未満に縮退する。
+ * **実在しない点数は選択肢に含めない**（ありがちな誤りパターンでも、採点上あり得ない額は除外し、
+ * 不足分は正解額に近い実在点数で補完する）。
  */
 export function generateChoices(
   correctPayment: Payment,
   ctx: DistractorContext,
   rng: RandomSource,
 ): Payment[] {
-  const pool = buildCandidatePool(ctx, correctPayment.kind);
+  const realPayments = realPaymentsForKind(correctPayment.kind, ctx.isDealer);
+  const realKeys = new Set(realPayments.map(paymentKey));
 
   const seen = new Set<string>([paymentKey(correctPayment)]);
   const distractors: Payment[] = [];
-  for (const candidate of pool) {
+
+  // 1) ありがちな誤りパターンのうち、実在する点数だけを誤答として採用する。
+  for (const candidate of buildCandidatePool(ctx, correctPayment.kind)) {
     const key = paymentKey(candidate);
-    if (seen.has(key)) continue;
+    if (seen.has(key) || !realKeys.has(key)) continue;
     seen.add(key);
     distractors.push(candidate);
+  }
+
+  // 2) 誤答が足りない場合は、正解額に近い実在点数で補完する（すべて実在・同一表示形式）。
+  if (distractors.length < CHOICE_COUNT - 1) {
+    const correctAmount = representativeAmount(correctPayment);
+    const backfill = realPayments
+      .filter((p) => !seen.has(paymentKey(p)))
+      .sort(
+        (a, b) =>
+          Math.abs(representativeAmount(a) - correctAmount) -
+          Math.abs(representativeAmount(b) - correctAmount),
+      );
+    for (const p of backfill) {
+      if (distractors.length >= CHOICE_COUNT - 1) break;
+      seen.add(paymentKey(p));
+      distractors.push(p);
+    }
   }
 
   const shuffledDistractors = shuffle(distractors, rng).slice(0, CHOICE_COUNT - 1);

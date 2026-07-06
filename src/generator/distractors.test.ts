@@ -71,6 +71,42 @@ describe("generateChoices", () => {
     }
   });
 
+  it("never offers a non-existent score (all choices are real payments of the correct kind)", () => {
+    // 正解と同じ表示形式で実在する点数のキー集合を、翻×符の総当りから作る。
+    const buildRealKeys = (kind: Payment["kind"], isDealer: boolean): Set<string> => {
+      const winType = kind === "ron" ? "ron" : "tsumo";
+      const dealer = kind === "tsumo-oya" ? true : kind === "tsumo-ko" ? false : isDealer;
+      const fuList =
+        winType === "ron"
+          ? [25, 30, 40, 50, 60, 70, 80, 90, 100, 110]
+          : [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
+      const keys = new Set<string>();
+      for (let han = 1; han <= 13; han++) {
+        for (const fu of fuList) {
+          keys.add(paymentKey(calculatePayment(han, fu, dealer, winType).payment));
+        }
+      }
+      return keys;
+    };
+
+    const rng = createSeededRandom(777);
+    for (let i = 0; i < 200; i++) {
+      const han = 1 + Math.floor(rng() * 6);
+      const isDealer = rng() < 0.5;
+      const winType = rng() < 0.5 ? "ron" : "tsumo";
+      // ロンに20符は実在しないため、winType に応じて実在する符から選ぶ。
+      const fuChoices = winType === "ron" ? [25, 30, 40, 50, 60] : [20, 25, 30, 40, 50, 60];
+      const fu = fuChoices[Math.floor(rng() * fuChoices.length)];
+      const ctx: DistractorContext = { han, fu, isDealer, winType };
+      const { payment: correct } = calculatePayment(han, fu, isDealer, winType);
+      const realKeys = buildRealKeys(correct.kind, isDealer);
+      const choices = generateChoices(correct, ctx, rng);
+      for (const c of choices) {
+        expect(realKeys.has(paymentKey(c))).toBe(true);
+      }
+    }
+  });
+
   it("is deterministic for a given seed", () => {
     const ctx: DistractorContext = { han: 3, fu: 40, isDealer: false, winType: "ron" };
     const { payment: correct } = calculatePayment(ctx.han, ctx.fu, ctx.isDealer, ctx.winType);
