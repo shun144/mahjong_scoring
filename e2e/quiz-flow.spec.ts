@@ -5,7 +5,7 @@ test.describe("麻雀点数トレーニング - 一連の学習フロー", () =>
     await page.goto("");
     await expect(page.getByRole("heading", { name: "麻雀点数トレーニング" })).toBeVisible();
 
-    await page.getByRole("link", { name: "練習を始める" }).click();
+    await page.getByRole("link", { name: "点数計算" }).click();
     await expect(page).toHaveURL(/\/quiz$/);
     await expect(page.getByRole("heading", { name: "出題" })).toBeVisible();
 
@@ -78,7 +78,7 @@ test.describe("麻雀点数トレーニング - 一連の学習フロー", () =>
     page.on("pageerror", (err) => errors.push(err.message));
 
     await page.goto("");
-    await page.getByRole("link", { name: "練習を始める" }).click();
+    await page.getByRole("link", { name: "点数計算" }).click();
     await page.locator(".quiz-choice-btn").first().click();
     await page.getByRole("link", { name: "次の問題へ" }).click();
 

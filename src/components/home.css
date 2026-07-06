@@ -11,34 +11,111 @@
   padding: var(--space-8) var(--space-4);
 }
 
-.home-page h1 {
+/* ヒーロー（見出し＋説明文） */
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.home-hero h1 {
   font-size: var(--fs-emphasis);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
 }
 
-.home-page p {
+.home-hero p {
   max-width: 32em;
   color: var(--color-text-sub);
 }
 
-.home-nav {
-  display: flex;
-  flex-direction: column;
+/* モード選択カードグリッド。スマホは1列、480px以上でドリル2枚を横並びにし、
+   成績カードは全幅（下段）に置く。 */
+.home-modes {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-3);
   width: 100%;
-  max-width: 280px;
+  max-width: 520px;
 }
 
-/* ボタンの見た目は index.css の共通 .btn-primary / .btn-secondary に委譲し、
-   ここではレイアウト（横幅いっぱい）のみを指定する。 */
-.home-nav .btn-primary,
-.home-nav .btn-secondary {
-  width: 100%;
+/* 各モードカード（Airbnb 1-tier：影なし・border＋角丸＋余白で分離）。
+   ボタンではなくカードとして、ホーム専用に定義する（共通 .btn-* は流用しない）。 */
+.home-mode-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  text-decoration: none;
+  text-align: center;
+  transition:
+    border-color var(--duration) var(--ease-standard),
+    box-shadow var(--duration) var(--ease-standard);
+}
+
+/* hover はポインタ環境のみ。1段だけ浮かせ、枠線を Rausch に寄せる（design-spec 準拠）。 */
+@media (hover: hover) {
+  .home-mode-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.home-mode-icon {
+  /* 牌サイズは TileFace の size prop と tiles.css が決めるため、ここは間隔のみ。 */
+  margin-bottom: var(--space-1);
+}
+
+.home-mode-title {
+  font-size: var(--fs-emphasis);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.home-mode-desc {
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+}
+
+/* ドリルの主導線を示す差し色（単色 Rausch）。 */
+.home-mode-cta {
+  margin-top: var(--space-1);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* 成績カード：横並び（アイコン左・本文中央・矢印右）で副次導線として全幅に。 */
+.home-mode-card--wide {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: left;
+}
+
+.home-mode-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-0);
+}
+
+.home-mode-arrow {
+  font-size: var(--fs-emphasis);
+  color: var(--color-text-sub);
 }
 
 @media (min-width: 480px) {
-  .home-nav {
-    flex-direction: row;
+  .home-modes {
+    grid-template-columns: 1fr 1fr;
+  }
+  .home-mode-card--wide {
+    grid-column: 1 / -1;
   }
 }
