@@ -85,6 +85,16 @@ function waitFu(waitKind: WaitKind | undefined): number {
   return 0; // ryanmen, shanpon
 }
 
+/** 符計算の内訳計算オプション。 */
+export interface FuBreakdownOptions {
+  /**
+   * +0符の要素（順子・非役牌の雀頭・両面/双碰待ち）も内訳に含めるか。
+   * 符計算モードの解説で「全手順」を見せるための表示専用フラグ。
+   * 0符要素は subtotal/total を変えないため、既定(false)の出力は不変。
+   */
+  includeZeroFu?: boolean;
+}
+
 /**
  * 4面子1雀頭形の符を計算し、内訳付きで返す（SPEC.md §5.2）。
  * 七対子は固定25符のためこの関数の対象外（呼び出し側で分岐する）。
@@ -92,6 +102,7 @@ function waitFu(waitKind: WaitKind | undefined): number {
 export function calculateFuBreakdown(
   interp: StandardInterpretation,
   ctx: FuContext,
+  opts: FuBreakdownOptions = {},
 ): FuBreakdown {
   // 平和形は固定符（ツモ20／ロン30）。
   if (isPinfuShape(interp, ctx)) {
@@ -111,10 +122,19 @@ export function calculateFuBreakdown(
 
   const items: FuItem[] = [{ label: "基本符", fu: 20 }];
 
-  if (ctx.isMenzen && ctx.winType === "ron") items.push({ label: "門前ロン", fu: 10 });
+  if (ctx.winType === "ron") {
+    // 門前ロンは+10符。鳴き手のロンは門前加符が付かない(0符)ため、
+    // includeZeroFu 時のみ「ロン(鳴き)」として明示する。
+    if (ctx.isMenzen) {
+      items.push({ label: "門前ロン", fu: 10 });
+    } else if (opts.includeZeroFu) {
+      items.push({ label: "ロン(鳴き)", fu: 0 });
+    }
+  }
   if (ctx.winType === "tsumo") items.push({ label: "ツモ", fu: 2 });
 
   // 面子の符は同種（同じラベル）をまとめて「... ×N」で表示する。
+  // 順子(0符)は内訳に出さない（includeZeroFu でも表示しない）。
   for (const set of interp.sets) {
     const setValue = setFu(set);
     if (setValue === 0) continue;
@@ -128,13 +148,18 @@ export function calculateFuBreakdown(
     }
   }
 
-  if (isYakuhaiPairType(interp.pair.tileType, ctx)) items.push({ label: "雀頭(役牌)", fu: 2 });
+  // 役牌雀頭は+2符。非役牌の雀頭(0符)は includeZeroFu 時のみ「雀頭 +0符」で表示する。
+  if (isYakuhaiPairType(interp.pair.tileType, ctx)) {
+    items.push({ label: "雀頭(役牌)", fu: 2 });
+  } else if (opts.includeZeroFu) {
+    items.push({ label: "雀頭", fu: 0 });
+  }
 
   const winningSet = interp.sets.find((s) => s.isWinningGroup);
   const waitKind: WaitKind | undefined =
     winningSet?.waitKind ?? (interp.pair.isWinningGroup ? "tanki" : undefined);
-  // +0符の待ち（両面・双碰）は表示しない。加符のある待ち（嵌張・辺張・単騎）のみ表示する。
-  if (waitKind && waitFu(waitKind) > 0) {
+  // 加符のある待ち（嵌張・辺張・単騎）を表示する。両面・双碰(0符)は includeZeroFu 時のみ表示する。
+  if (waitKind && (waitFu(waitKind) > 0 || opts.includeZeroFu)) {
     items.push({ label: `待ち: ${WAIT_LABELS[waitKind]}`, fu: waitFu(waitKind) });
   }
 

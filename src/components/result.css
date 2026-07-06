@@ -107,6 +107,58 @@
   color: var(--color-text-sub);
 }
 
+/* 符計算モードでは符内訳が主役。役名相当(L2)に強調する。
+   最終点数モードの .fu-list（補助情報）はこの限定クラスが付かないため据え置き。 */
+.result-breakdown--primary .fu-list li {
+  font-size: var(--fs-emphasis);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* 面子種別の色ドット：明刻/暗刻/明槓/暗槓は漢字が似て見分けにくいため、
+   文字自体は他の行と同じ表示のまま、先頭に小さな色ドットのアクセントを添える。
+   色相=刻(緑)/槓(琥珀)、塗り●=暗 / 枠○=明。ドットは左の余白に置き、
+   文字位置は他の行と揃える。符計算モード（--primary）でのみ表示する。 */
+.result-breakdown--primary .meld-mark {
+  position: relative;
+}
+
+.result-breakdown--primary .meld-mark::before {
+  content: "";
+  position: absolute;
+  left: -0.9em;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2px solid var(--meld-dot-color);
+  background: var(--meld-dot-fill, transparent);
+}
+
+.result-breakdown--primary .meld-mark--ankou {
+  /* 暗刻：緑・塗り */
+  --meld-dot-color: var(--color-success-text);
+  --meld-dot-fill: var(--color-success-text);
+}
+
+.result-breakdown--primary .meld-mark--minkou {
+  /* 明刻：緑・枠のみ */
+  --meld-dot-color: var(--color-success-text);
+}
+
+.result-breakdown--primary .meld-mark--ankan {
+  /* 暗槓：琥珀・塗り */
+  --meld-dot-color: var(--color-warning-text);
+  --meld-dot-fill: var(--color-warning-text);
+}
+
+.result-breakdown--primary .meld-mark--minkan {
+  /* 明槓：琥珀・枠のみ */
+  --meld-dot-color: var(--color-warning-text);
+}
+
 .fu-note {
   margin: 0;
   font-size: var(--fs-sm);
