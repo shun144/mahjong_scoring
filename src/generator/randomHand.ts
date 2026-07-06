@@ -125,6 +125,16 @@ function countKans(melds: Meld[]): number {
 }
 
 /**
+ * リーチを許可してよい手か（問題生成ルール）。
+ * 門前（副露が暗槓のみ）であり、かつ四槓子（槓が4つ）でないこと。
+ * 四槓子は必ずリーチ無しとする。
+ */
+export function allowsRiichi(melds: Meld[]): boolean {
+  const isMenzen = !melds.some((m) => m.type !== "ankan");
+  return isMenzen && countKans(melds) < 4;
+}
+
+/**
  * ドラ表示牌をランダムに生成する。狙いの実際のドラ（時々手牌と一致させる）を決めてから
  * indicatorForDora で表示牌に変換する（学習用に「たまにドラが乗る」変化を持たせるため）。
  * 枚数は実戦準拠で「1＋槓の数」に固定する（SPEC.md §5.4）。
@@ -211,8 +221,8 @@ function buildRandomStandardHand(rng: RandomSource): RandomHandResult | null {
   });
 
   const concealed = [...concealedTiles, typeToTile(pairType), typeToTile(pairType)];
-  const isMenzen = !melds.some((m) => m.type !== "ankan");
-  const riichi = isMenzen && chance(0.5, rng);
+  // 四槓子は必ずリーチ無し（allowsRiichi 内で判定）。
+  const riichi = allowsRiichi(melds) && chance(0.5, rng);
   const { seatWind, roundWind, isDealer, winType } = pickConditions(rng);
 
   applyRedFive(concealed, melds, rng);
