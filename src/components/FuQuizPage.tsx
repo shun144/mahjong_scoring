@@ -59,7 +59,6 @@ export function FuQuizPage() {
       <QuizTileHeader problem={problem} />
 
       <section className="quiz-hand">
-        <h2>手牌</h2>
         <HandDisplay
           concealed={problem.hand.concealed}
           melds={problem.hand.melds}

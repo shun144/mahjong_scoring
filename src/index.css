@@ -196,7 +196,8 @@ select:focus-visible {
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-3) 0;
+  /* ヘッダーは低めに（上下の余白は少しだけ残す）。PC・スマホ共通。 */
+  padding: var(--space-1) 0;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg);
 }
@@ -209,7 +210,7 @@ select:focus-visible {
 .page-header-link-item {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
+  min-height: 32px;
   padding: 0 var(--space-2);
   font-size: var(--fs-sm);
   color: var(--color-text-sub);
