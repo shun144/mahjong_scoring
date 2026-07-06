@@ -77,7 +77,7 @@
     "uraDoraIndicators": [
       {
         "suit": "m",
-        "rank": 9
+        "rank": 4
       }
     ],
     "conditions": {
@@ -1110,7 +1110,7 @@
     "uraDoraIndicators": [
       {
         "suit": "m",
-        "rank": 1
+        "rank": 2
       }
     ],
     "conditions": {
@@ -1242,7 +1242,7 @@
     "uraDoraIndicators": [
       {
         "suit": "m",
-        "rank": 1
+        "rank": 2
       }
     ],
     "conditions": {
@@ -2941,10 +2941,6 @@
     "doraIndicators": [
       {
         "suit": "m",
-        "rank": 3
-      },
-      {
-        "suit": "m",
         "rank": 4
       },
       {
@@ -2954,6 +2950,10 @@
       {
         "suit": "m",
         "rank": 6
+      },
+      {
+        "suit": "m",
+        "rank": 7
       }
     ],
     "uraDoraIndicators": [],
@@ -3953,7 +3953,7 @@
     "uraDoraIndicators": [
       {
         "suit": "m",
-        "rank": 9
+        "rank": 2
       }
     ],
     "conditions": {
@@ -5518,10 +5518,6 @@
     "doraIndicators": [
       {
         "suit": "m",
-        "rank": 4
-      },
-      {
-        "suit": "m",
         "rank": 5
       },
       {
@@ -5535,6 +5531,10 @@
       {
         "suit": "m",
         "rank": 8
+      },
+      {
+        "suit": "p",
+        "rank": 9
       }
     ],
     "uraDoraIndicators": [],
@@ -6298,7 +6298,7 @@
     "uraDoraIndicators": [
       {
         "suit": "m",
-        "rank": 9
+        "rank": 4
       }
     ],
     "conditions": {

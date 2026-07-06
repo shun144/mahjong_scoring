@@ -14,7 +14,7 @@ import { indicatorForDora } from "../src/engine/dora";
 import type { Meld, MeldType, Tile, Wind, WinType } from "../src/engine/model";
 import { scoreHand, type ScoreHandInput } from "../src/engine/scoreHand";
 import { parseTileNotation } from "../src/engine/tiles";
-import { tileToType, typeToTile } from "../src/engine/tileType";
+import { tileToType, tilesToCounts, typeToTile } from "../src/engine/tileType";
 import type { Problem } from "../src/data/problem";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -66,18 +66,44 @@ function countKans(melds: MeldSpec[]): number {
  * の表示牌を count 枚与える。麻雀ルール上ドラ表示牌の枚数は「1＋槓の数」であるため
  * （SPEC.md §5.4）、手牌に含まれないドラを選ぶことで、既存問題の正解（符・翻・役）を
  * 一切変えずに正しい枚数へ揃える。
+ *
+ * ドラ表示牌も牌山の実牌なので、表示牌自体が「手牌＋既に選んだ表示牌(alreadyChosen)」と
+ * 合わせて同一牌4枚を超えてはいけない。候補ドラ型を走査し、①ドラが手牌に乗らない
+ * （答え不変）②表示牌が4枚上限を超えない、を満たす表示牌を選ぶ。表示牌が重複しないことを
+ * 優先し、他に選べない場合のみ重複を許す（それでも4枚上限は必ず守る）。
  */
-function nonLandingDoraIndicators(handTiles: Tile[], count: number): Tile[] {
+function nonLandingDoraIndicators(
+  handTiles: Tile[],
+  count: number,
+  alreadyChosen: Tile[] = [],
+): Tile[] {
   const handTypes = new Set(handTiles.map(tileToType));
-  const nonLandingTypes: number[] = [];
-  for (let type = 0; type < 34; type++) {
-    if (!handTypes.has(type)) nonLandingTypes.push(type);
+  // 実牌の使用枚数（手牌＋既に確定した表示牌）。表示牌を足しても4枚を超えないか判定する。
+  const counts = tilesToCounts([...handTiles, ...alreadyChosen]);
+  const usedIndicatorTypes = new Set(alreadyChosen.map(tileToType));
+
+  const pick = (avoidDuplicate: boolean): Tile | null => {
+    for (let doraType = 0; doraType < 34; doraType++) {
+      if (handTypes.has(doraType)) continue; // ドラが手牌に乗ると答えが変わるため除外
+      const indicator = indicatorForDora(typeToTile(doraType));
+      const indType = tileToType(indicator);
+      if (counts[indType] >= 4) continue; // 実牌4枚上限（必須）
+      if (avoidDuplicate && usedIndicatorTypes.has(indType)) continue; // 表示牌の重複回避（見た目）
+      return indicator;
+    }
+    return null;
+  };
+
+  const chosen: Tile[] = [];
+  for (let n = 0; n < count; n++) {
+    // まず重複しない表示牌を探し、無ければ重複を許して（ただし4枚上限は守って）選ぶ。
+    const indicator = pick(true) ?? pick(false) ?? indicatorForDora(typeToTile(0));
+    const indType = tileToType(indicator);
+    counts[indType] += 1;
+    usedIndicatorTypes.add(indType);
+    chosen.push(indicator);
   }
-  return Array.from({ length: count }, (_, i) => {
-    // 非当たり牌が足りない（現実にはあり得ない）場合は循環させて保険とする。
-    const type = nonLandingTypes[i % Math.max(nonLandingTypes.length, 1)] ?? 0;
-    return indicatorForDora(typeToTile(type));
-  });
+  return chosen;
 }
 
 function toScoreHandInput(spec: HandSpec): ScoreHandInput {
@@ -97,7 +123,9 @@ function toScoreHandInput(spec: HandSpec): ScoreHandInput {
     ? []
     : explicitUra.length > 0
       ? explicitUra
-      : nonLandingDoraIndicators(allHandTiles, indicatorCount);
+      : // 裏ドラ表示牌は、表ドラ表示牌と手牌を「既に選んだ牌」として渡し、
+        // 表裏＋手牌で同一牌が4枚を超えないようにする。
+        nonLandingDoraIndicators(allHandTiles, indicatorCount, doraIndicators);
   // 既定の自風は「子」の風(南)にする。東は親専用のため既定にしない。
   const seatWind = spec.seatWind ?? "south";
   return {
@@ -591,6 +619,24 @@ const problems: Problem[] = specs.map((spec) => {
     },
   } satisfies Problem;
 });
+
+// 牌の実在性チェック: ドラ表示牌も実牌なので、同一牌は「手牌＋表ドラ＋裏ドラ表示牌」の
+// 総数で4枚以下でなければならない（SPEC.md §5.4）。明示ドラ指定分も含めて再発を検知する。
+for (const p of problems) {
+  const allTiles: Tile[] = [
+    ...p.hand.concealed,
+    ...p.hand.melds.flatMap((m) => m.tiles),
+    ...p.doraIndicators,
+    ...p.uraDoraIndicators,
+  ];
+  const overType = tilesToCounts(allTiles).findIndex((count) => count > 4);
+  if (overType >= 0) {
+    const t = typeToTile(overType);
+    throw new Error(
+      `問題 "${p.id}" は牌 ${t.rank}${t.suit} が5枚以上（手牌＋ドラ/裏ドラ表示牌）。定義または表示牌選択を見直してください。`,
+    );
+  }
+}
 
 const outPath = resolve(__dirname, "../src/data/problemBank.json");
 writeFileSync(outPath, JSON.stringify(problems, null, 2) + "\n", "utf-8");

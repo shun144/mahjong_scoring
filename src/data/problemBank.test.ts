@@ -74,9 +74,15 @@ describe("problemBank", () => {
     expect(problemBank.some((p) => p.answer.rank === "yakuman")).toBe(true);
   });
 
-  it("同一牌は手牌全体で最大4枚（麻雀の牌山は各牌4枚まで・SPEC §4.1/§6）", () => {
+  it("同一牌は手牌＋ドラ/裏ドラ表示牌の合計で最大4枚（表示牌も牌山の実牌・SPEC §4.1/§5.4）", () => {
     for (const p of problemBank) {
-      const tiles = [...p.hand.concealed, ...p.hand.melds.flatMap((m) => m.tiles)];
+      // ドラ表示牌・裏ドラ表示牌も牌山から取る実牌なので、手牌と合算して4枚を超えてはならない。
+      const tiles = [
+        ...p.hand.concealed,
+        ...p.hand.melds.flatMap((m) => m.tiles),
+        ...p.doraIndicators,
+        ...p.uraDoraIndicators,
+      ];
       const counts = tilesToCounts(tiles);
       expect(counts.every((count) => count <= 4)).toBe(true);
     }

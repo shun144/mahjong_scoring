@@ -2,7 +2,7 @@ import { indicatorForDora } from "../engine/dora";
 import type { Meld, Tile, Wind, WinType } from "../engine/model";
 import { scoreHand, type ScoreHandInput } from "../engine/scoreHand";
 import type { ScoreResult } from "../engine/score";
-import { tilesToCounts, typeToTile } from "../engine/tileType";
+import { tileToType, tilesToCounts, typeToTile } from "../engine/tileType";
 import { chance, pickOne, randomInt, type RandomSource } from "./random";
 
 const WINDS: Wind[] = ["east", "south", "west", "north"];
@@ -146,15 +146,34 @@ function buildDoraIndicators(
   rng: RandomSource,
 ): { doraIndicators: Tile[]; uraDoraIndicators: Tile[] } {
   const allHandTiles = [...concealed, ...melds.flatMap((m) => m.tiles)];
+  // 実牌の使用枚数（手牌＋これまでに選んだ表示牌）。ドラ表示牌も牌山の実牌なので、
+  // 表示牌を足しても同一牌が4枚を超えないようにする（SPEC.md §5.4）。
+  const counts = tilesToCounts(allHandTiles);
   const pickIndicatorTile = (): Tile => {
-    let targetDora: Tile;
-    if (allHandTiles.length > 0 && chance(0.5, rng)) {
-      const source = pickOne(allHandTiles, rng);
-      targetDora = { suit: source.suit, rank: source.rank };
-    } else {
-      targetDora = typeToTile(randomInt(0, 33, rng));
+    // 「たまにドラが手牌に乗る」変化を出しつつ、表示牌が4枚上限に達していたら選び直す。
+    const attempt = (): Tile => {
+      if (allHandTiles.length > 0 && chance(0.5, rng)) {
+        const source = pickOne(allHandTiles, rng);
+        return indicatorForDora({ suit: source.suit, rank: source.rank });
+      }
+      return indicatorForDora(typeToTile(randomInt(0, 33, rng)));
+    };
+    for (let i = 0; i < 20; i++) {
+      const indicator = attempt();
+      if (counts[tileToType(indicator)] < 4) {
+        counts[tileToType(indicator)] += 1;
+        return indicator;
+      }
     }
-    return indicatorForDora(targetDora);
+    // 稀に上限で埋まった場合は、上限未満の牌を全型から探す（必ず存在する）。
+    for (let type = 0; type < 34; type++) {
+      if (counts[type] < 4) {
+        counts[type] += 1;
+        return typeToTile(type);
+      }
+    }
+    // 理論上到達しない（手牌＋表示牌は牌総数より遥かに少ない）。
+    return typeToTile(0);
   };
   // ドラ表示牌の枚数は「1＋槓の数」（基本1枚＋槓ごとに1枚めくられる槓ドラ表示牌。SPEC.md §5.4）。
   const indicatorCount = 1 + countKans(melds);
@@ -290,11 +309,23 @@ export interface GeneratedHand extends RandomHandResult {
 const MAX_ATTEMPTS = 200;
 
 /**
- * 同一牌が5枚以上使われていないか（牌は各4枚までのため。SPEC.md §4.1）。
- * 槓が既存の順子・刻子・雀頭と同じ牌を占有した場合に起こり得る不正な手を検出する。
+ * 同一牌が5枚以上使われていないか（牌は各4枚までのため。SPEC.md §4.1・§5.4）。
+ * 槓が既存の順子・刻子・雀頭と同じ牌を占有した場合や、ドラ/裏ドラ表示牌が手牌の牌と
+ * 衝突して4枚を超える場合に起こり得る不正な手を検出する。表示牌も牌山の実牌なので、
+ * 手牌＋表ドラ＋裏ドラ表示牌の総数で判定する。
  */
-function isTileCountValid(concealed: Tile[], melds: Meld[]): boolean {
-  const counts = tilesToCounts([...concealed, ...melds.flatMap((m) => m.tiles)]);
+function isTileCountValid(
+  concealed: Tile[],
+  melds: Meld[],
+  doraIndicators: Tile[] = [],
+  uraDoraIndicators: Tile[] = [],
+): boolean {
+  const counts = tilesToCounts([
+    ...concealed,
+    ...melds.flatMap((m) => m.tiles),
+    ...doraIndicators,
+    ...uraDoraIndicators,
+  ]);
   return counts.every((count) => count <= 4);
 }
 
@@ -308,7 +339,15 @@ export function generateRandomHand(rng: RandomSource = Math.random): GeneratedHa
     const useChiitoi = chance(0.12, rng);
     const built = useChiitoi ? buildRandomChiitoiHand(rng) : buildRandomStandardHand(rng);
     if (!built) continue;
-    if (!isTileCountValid(built.concealed, built.melds)) continue;
+    if (
+      !isTileCountValid(
+        built.concealed,
+        built.melds,
+        built.doraIndicators,
+        built.uraDoraIndicators,
+      )
+    )
+      continue;
 
     const input: ScoreHandInput = {
       concealed: built.concealed,
