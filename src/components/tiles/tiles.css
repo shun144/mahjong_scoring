@@ -121,15 +121,19 @@
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--color-border);
   background: var(--color-surface);
+  /* 囲い内 md 牌の1枚幅。囲いの padding(左右) + 枠線 + 牌間gap を本文幅から差し引いて
+     13枚が囲い内に収まる値。PC は牌間gap=4px 前提で -110px。狭幅ではgapが1pxに縮むため
+     下のメディアクエリで定数を詰め、牌を少し大きくして右余白を減らす。
+     牌サイズ・副露行の高さ確保で共有するため変数化する。 */
+  --mj-hand-tile-w: min(42px, calc((min(100vw, 640px) - 110px) / 13));
 }
 
-/* 囲いの中の md 牌は、囲いの padding(左右) + 枠線分だけ本文幅から余計に引き、
-   13枚＋牌間gapが囲い内に収まるようにする（基準の -78px に約32pxを上乗せ）。
-   specificity が基準の .mj-tile-size-md より高いので囲い内だけ上書きされ、
-   囲い外のドラ表示牌・アガリ牌（-78px のまま）には影響しない。 */
+/* 囲いの中の md 牌だけ、上の --mj-hand-tile-w を使う。specificity が基準の
+   .mj-tile-size-md より高いので囲い内だけ上書きされ、囲い外のドラ表示牌・
+   アガリ牌（-78px のまま）には影響しない。 */
 .mj-hand-display .mj-tile-wrap.mj-tile-size-md {
-  --mj-tile-w: min(42px, calc((min(100vw, 640px) - 110px) / 13));
-  --mj-tile-h: calc(var(--mj-tile-w) * 4 / 3);
+  --mj-tile-w: var(--mj-hand-tile-w);
+  --mj-tile-h: calc(var(--mj-hand-tile-w) * 4 / 3);
 }
 
 /* 純手牌の行（横方向）。副露は下の .mj-meld-row に分離した。 */
@@ -151,10 +155,8 @@
   gap: 10px;
   /* border-box なので min-height に牌1枚分の高さ＋padding-top＋border を足し、
      鳴きの有無で囲い全体の高さが変わらないようにする。牌高さは囲い内の md 牌
-     （-110px）と揃える。 */
-  min-height: calc(
-    min(42px, calc((min(100vw, 640px) - 110px) / 13)) * 4 / 3 + var(--space-3) + 1px
-  );
+     （--mj-hand-tile-w）と揃える。 */
+  min-height: calc(var(--mj-hand-tile-w) * 4 / 3 + var(--space-3) + 1px);
   /* 手牌エリアと副露エリアの境目に薄い点線を入れる。線の上側は .mj-hand-display の
      gap が、下側は padding-top が余白を作る。 */
   border-top: 1px dotted var(--color-border);
@@ -180,5 +182,8 @@
   }
   .mj-hand-display {
     gap: 8px;
+    /* 狭幅では牌間gapが1pxに縮む分、定数を -110px → -76px に詰めて牌を少し大きくし、
+       13枚を囲い内いっぱいに広げて右余白を減らす（数px の安全域を残して見切れ防止）。 */
+    --mj-hand-tile-w: min(42px, calc((min(100vw, 640px) - 76px) / 13));
   }
 }
