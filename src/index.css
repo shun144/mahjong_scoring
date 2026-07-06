@@ -310,7 +310,8 @@ select:focus-visible {
   }
   .btn-primary,
   .btn-secondary,
-  .quiz-choice-btn {
+  .quiz-choice-btn,
+  .home-mode-card {
     transform: none !important;
   }
 }

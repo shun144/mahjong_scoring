@@ -19,32 +19,31 @@ export function HomePage() {
       <nav className="home-modes" aria-label="練習モード">
         <Link to="/quiz" className="home-mode-card home-mode-card--drill">
           <span className="home-mode-icon" aria-hidden="true">
-            <TileFace tile={SCORE_TILE} size="lg" />
+            <TileFace tile={SCORE_TILE} size="sm" />
           </span>
-          <span className="home-mode-title">点数計算</span>
-          <span className="home-mode-desc">最終点数を当てる</span>
-          <span className="home-mode-cta">始める →</span>
+          <span className="home-mode-body">
+            <span className="home-mode-title">点数計算モード</span>
+            <span className="home-mode-desc">最終点数を当てる</span>
+          </span>
         </Link>
 
         <Link to="/fu/quiz" className="home-mode-card home-mode-card--drill">
           <span className="home-mode-icon" aria-hidden="true">
-            <TileFace tile={FU_TILE} size="lg" />
+            <TileFace tile={FU_TILE} size="sm" />
           </span>
-          <span className="home-mode-title">符計算</span>
-          <span className="home-mode-desc">符を答える</span>
-          <span className="home-mode-cta">始める →</span>
+          <span className="home-mode-body">
+            <span className="home-mode-title">符計算モード</span>
+            <span className="home-mode-desc">符を答える</span>
+          </span>
         </Link>
 
         <Link to="/stats" className="home-mode-card home-mode-card--wide">
           <span className="home-mode-icon" aria-hidden="true">
-            <TileFace tile={STATS_TILE} size="md" />
+            <TileFace tile={STATS_TILE} size="sm" />
           </span>
           <span className="home-mode-body">
             <span className="home-mode-title">成績を見る</span>
             <span className="home-mode-desc">正答率・苦手分野を確認</span>
-          </span>
-          <span className="home-mode-arrow" aria-hidden="true">
-            →
           </span>
         </Link>
       </nav>

@@ -30,7 +30,7 @@
   color: var(--color-text-sub);
 }
 
-/* モード選択カードグリッド。スマホは1列、480px以上でドリル2枚を横並びにし、
+/* モード選択グリッド。スマホは1列、480px以上でドリル2枚を横並びにし、
    成績カードは全幅（下段）に置く。 */
 .home-modes {
   display: grid;
@@ -40,74 +40,62 @@
   max-width: 520px;
 }
 
-/* 各モードカード（Airbnb 1-tier：影なし・border＋角丸＋余白で分離）。
-   ボタンではなくカードとして、ホーム専用に定義する（共通 .btn-* は流用しない）。 */
+/* 各モードは「アイコン＋見出し」を横並びにしたボタン風カード。
+   Airbnb 1-tier（影なし・border＋角丸）を基調に、ボタンらしい小さめ角丸（--radius-sm）と
+   hover の淡い Rausch 塗り・押下の手応え（translateY）を添える。 */
 .home-mode-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-5);
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: var(--color-surface-2);
   color: var(--color-text);
   text-decoration: none;
-  text-align: center;
+  text-align: left;
   transition:
     border-color var(--duration) var(--ease-standard),
-    box-shadow var(--duration) var(--ease-standard);
+    background var(--duration) var(--ease-standard),
+    box-shadow var(--duration) var(--ease-standard),
+    transform var(--duration) var(--ease-standard);
 }
 
-/* hover はポインタ環境のみ。1段だけ浮かせ、枠線を Rausch に寄せる（design-spec 準拠）。 */
+/* hover はポインタ環境のみ。ボタン同様に淡い Rausch を敷き、枠線を Rausch に寄せ、1段だけ浮かせる。 */
 @media (hover: hover) {
   .home-mode-card:hover {
     border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
     box-shadow: var(--shadow-sm);
   }
 }
 
+.home-mode-card:active {
+  transform: translateY(1px);
+}
+
 .home-mode-icon {
-  /* 牌サイズは TileFace の size prop と tiles.css が決めるため、ここは間隔のみ。 */
-  margin-bottom: var(--space-1);
+  /* 牌サイズは TileFace の size prop（sm）と tiles.css が決める。ここは収縮させないだけ。 */
+  display: inline-flex;
+  flex: none;
+}
+
+.home-mode-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
 }
 
 .home-mode-title {
-  font-size: var(--fs-emphasis);
+  font-size: var(--fs-base);
   font-weight: 600;
   line-height: var(--leading-tight);
 }
 
 .home-mode-desc {
   font-size: var(--fs-sm);
-  color: var(--color-text-sub);
-}
-
-/* ドリルの主導線を示す差し色（単色 Rausch）。 */
-.home-mode-cta {
-  margin-top: var(--space-1);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  color: var(--color-accent);
-}
-
-/* 成績カード：横並び（アイコン左・本文中央・矢印右）で副次導線として全幅に。 */
-.home-mode-card--wide {
-  flex-direction: row;
-  align-items: center;
-  gap: var(--space-4);
-  text-align: left;
-}
-
-.home-mode-body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: var(--space-0);
-}
-
-.home-mode-arrow {
-  font-size: var(--fs-emphasis);
   color: var(--color-text-sub);
 }
 
