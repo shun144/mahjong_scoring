@@ -56,6 +56,13 @@
   border-radius: 6px;
 }
 
+/* スマホ幅では手牌の縁だけ消して素のSVGに戻す（ドラ表示牌は縁を残す）。 */
+@media (max-width: 639px) {
+  .mj-hand-display .mj-tile-inner {
+    border: none;
+  }
+}
+
 .mj-tile-layer {
   position: absolute;
   inset: 0;
