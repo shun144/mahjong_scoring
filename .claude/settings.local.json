@@ -3,7 +3,10 @@
     "allow": [
       "PowerShell(npm test -- --run 2>&1)",
       "Bash(node -e \"console.log\\(require\\('react-markdown/package.json'\\).version\\)\")",
-      "Bash(node -p \"JSON.stringify\\(require\\('./node_modules/react-markdown/package.json'\\).exports, null, 2\\)\")"
+      "Bash(node -p \"JSON.stringify\\(require\\('./node_modules/react-markdown/package.json'\\).exports, null, 2\\)\")",
+      "Bash(curl *)",
+      "Bash(taskkill //F //IM node.exe //FI \"WINDOWTITLE eq *5183*\")",
+      "Bash(taskkill *)"
     ]
   }
 }

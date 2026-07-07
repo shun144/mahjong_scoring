@@ -10,9 +10,7 @@ describe("App routing", () => {
         <App />
       </MemoryRouter>,
     );
-    expect(
-      screen.getByRole("heading", { name: "麻雀点数トレーニング" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "麻雀点数トレーニング" })).toBeInTheDocument();
   });
 
   it("renders the quiz page at /quiz", () => {
@@ -35,12 +33,10 @@ describe("App routing", () => {
 
   it("renders an article at /articles/:slug", () => {
     render(
-      <MemoryRouter initialEntries={["/articles/tensu-keisan-kanzen-guide"]}>
+      <MemoryRouter initialEntries={["/articles/tensu-keisan-guide"]}>
         <App />
       </MemoryRouter>,
     );
-    expect(
-      screen.getByRole("heading", { name: /麻雀の点数計算 完全ガイド/ }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /麻雀の点数計算ガイド/ })).toBeInTheDocument();
   });
 });

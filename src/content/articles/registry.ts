@@ -29,12 +29,20 @@ function bodyFor(slug: string): string {
 
 const ARTICLE_META: ArticleMeta[] = [
   {
-    slug: "tensu-keisan-kanzen-guide",
-    title: "麻雀の点数計算 完全ガイド｜符・翻から点数を出す流れ",
+    slug: "tensu-keisan-guide",
+    title: "麻雀の点数計算ガイド｜符・翻から点数を出す流れ",
     description:
       "符・翻・点数の関係を3ステップで解説。符の数え方、翻の数え方、点数への変換、満貫以上の区切りまで一気に把握できる麻雀点数計算の入門ガイド。",
     publishedAt: "2026-07-07",
     order: 1,
+  },
+  {
+    slug: "mahjong-yougoshu",
+    title: "麻雀 基本用語集｜牌・進行・役でよく出てくる言葉",
+    description:
+      "麻雀でよく出てくる牌・手牌・進行・役・点数の基本用語をやさしく解説。初心者がまず覚えたい言葉を分野別の表で整理した用語集です。",
+    publishedAt: "2026-07-08",
+    order: 2,
   },
 ];
 

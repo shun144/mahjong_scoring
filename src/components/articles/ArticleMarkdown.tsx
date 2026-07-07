@@ -32,25 +32,20 @@ export function ArticleMarkdown({ markdown, articleSlugs }: ArticleMarkdownProps
       return (
         <span className="article-image-placeholder" role="img" aria-label={alt ?? "画像"}>
           <img className="article-image-placeholder-img" src={src} alt={alt} />
-          {/* <span className="article-image-placeholder-icon" aria-hidden="true">
-            🖼
-          </span>
-          {alt ? <span className="article-image-placeholder-alt">{alt}</span> : null} */}
         </span>
       );
-      // return (
-      //   <span className="article-image-placeholder" role="img" aria-label={alt ?? "画像"}>
-      //     <span className="article-image-placeholder-icon" aria-hidden="true">
-      //       🖼
-      //     </span>
-      //     {alt ? <span className="article-image-placeholder-alt">{alt}</span> : null}
-      //   </span>
-      // );
     },
     p({ node, children }) {
       const soleChild = node?.children.length === 1 ? node.children[0] : undefined;
       const isImageCaption = soleChild?.type === "element" && soleChild.tagName === "em";
       return <p className={isImageCaption ? "article-image-caption" : undefined}>{children}</p>;
+    },
+    table({ children }) {
+      return (
+        <div className="article-table-wrap">
+          <table>{children}</table>
+        </div>
+      );
     },
     a({ href, children }) {
       const kind = href ? resolveLinkKind(href, articleSlugs) : "text";

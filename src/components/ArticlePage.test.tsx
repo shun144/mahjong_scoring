@@ -17,10 +17,10 @@ function renderAt(path: string) {
 
 describe("ArticlePage", () => {
   it("既存記事の本文とタイトルを表示する", () => {
-    renderAt("/articles/tensu-keisan-kanzen-guide");
+    renderAt("/articles/tensu-keisan-guide");
     expect(
       screen.getByRole("heading", {
-        name: "麻雀の点数計算 完全ガイド｜符・翻から点数を出す流れ",
+        name: "麻雀の点数計算ガイド｜符・翻から点数を出す流れ",
         level: 1,
       }),
     ).toBeInTheDocument();
@@ -28,17 +28,17 @@ describe("ArticlePage", () => {
   });
 
   it("document.titleを記事タイトルベースに設定する", () => {
-    renderAt("/articles/tensu-keisan-kanzen-guide");
-    expect(document.title).toContain("麻雀の点数計算 完全ガイド");
+    renderAt("/articles/tensu-keisan-guide");
+    expect(document.title).toContain("麻雀の点数計算ガイド");
   });
 
   it("記事内の画像はすべてプレースホルダ枠として表示する", () => {
-    renderAt("/articles/tensu-keisan-kanzen-guide");
+    renderAt("/articles/tensu-keisan-guide");
     expect(screen.getAllByRole("img").length).toBe(5);
   });
 
   it("末尾にクイズへ戻るCTAを表示する", () => {
-    renderAt("/articles/tensu-keisan-kanzen-guide");
+    renderAt("/articles/tensu-keisan-guide");
     expect(screen.getByRole("link", { name: "点数計算モードを試す" })).toHaveAttribute(
       "href",
       "/quiz",

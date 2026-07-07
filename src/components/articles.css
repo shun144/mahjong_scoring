@@ -160,6 +160,36 @@
   text-align: center;
 }
 
+/* 用語集などの表。スマホ幅(640px)を超える表は横スクロールで逃がす。 */
+.article-table-wrap {
+  overflow-x: auto;
+}
+
+.article-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.article-table-wrap th,
+.article-table-wrap td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-table-wrap th {
+  background: var(--color-surface);
+  white-space: nowrap;
+}
+
+/* 画像は補足列のため、未挿入時に表が間延びしないよう狭めておく */
+.article-table-wrap th:last-child,
+.article-table-wrap td:last-child {
+  width: 4.5em;
+}
+
 .article-end-cta {
   display: flex;
   justify-content: center;

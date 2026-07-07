@@ -18,11 +18,11 @@ describe("ArticleListPage", () => {
     expect(screen.getByRole("link", { name: "ホームに戻る" })).toHaveAttribute("href", "/");
   });
 
-  it("記事一覧に完全ガイドへのリンクを表示する", () => {
+  it("記事一覧にガイドへのリンクを表示する", () => {
     renderPage();
     const link = screen.getByRole("link", {
-      name: /麻雀の点数計算 完全ガイド/,
+      name: /麻雀の点数計算ガイド/,
     });
-    expect(link).toHaveAttribute("href", "/articles/tensu-keisan-kanzen-guide");
+    expect(link).toHaveAttribute("href", "/articles/tensu-keisan-guide");
   });
 });
