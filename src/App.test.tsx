@@ -23,4 +23,24 @@ describe("App routing", () => {
     );
     expect(screen.getByRole("heading", { name: "出題" })).toBeInTheDocument();
   });
+
+  it("renders the article list page at /articles", () => {
+    render(
+      <MemoryRouter initialEntries={["/articles"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole("heading", { name: "学習ガイド" })).toBeInTheDocument();
+  });
+
+  it("renders an article at /articles/:slug", () => {
+    render(
+      <MemoryRouter initialEntries={["/articles/tensu-keisan-kanzen-guide"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(
+      screen.getByRole("heading", { name: /麻雀の点数計算 完全ガイド/ }),
+    ).toBeInTheDocument();
+  });
 });

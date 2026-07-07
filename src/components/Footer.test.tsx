@@ -14,6 +14,16 @@ describe("Footer", () => {
     expect(link).toHaveAttribute("href", "/privacy");
   });
 
+  it("学習ガイドへのリンクを表示する", () => {
+    render(
+      <MemoryRouter>
+        <Footer />
+      </MemoryRouter>,
+    );
+    const link = screen.getByRole("link", { name: "学習ガイド" });
+    expect(link).toHaveAttribute("href", "/articles");
+  });
+
   it("contentinfo ランドマーク(footer)として提供される", () => {
     render(
       <MemoryRouter>

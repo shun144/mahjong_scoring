@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import { ArticleListPage } from "./components/ArticleListPage";
+import { ArticlePage } from "./components/ArticlePage";
 import { TileGalleryPage } from "./components/dev/TileGalleryPage";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Footer } from "./components/Footer";
@@ -22,6 +24,8 @@ function App() {
           <Route path="/fu/quiz" element={<FuQuizPage />} />
           <Route path="/fu/result" element={<FuResultPage />} />
           <Route path="/stats" element={<StatsPage />} />
+          <Route path="/articles" element={<ArticleListPage />} />
+          <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
           {/* 開発用: 牌表示コンポーネントの目視確認ページ。本番導線にはリンクしない。 */}
           <Route path="/dev/tiles" element={<TileGalleryPage />} />

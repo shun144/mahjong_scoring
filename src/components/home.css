@@ -107,3 +107,12 @@
     grid-column: 1 / -1;
   }
 }
+
+.home-articles-link {
+  font-size: var(--fs-sm);
+}
+
+.home-articles-link a {
+  color: var(--color-text-sub);
+  text-decoration: underline;
+}

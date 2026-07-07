@@ -9,6 +9,7 @@ export function Footer() {
   return (
     <footer className="app-footer">
       <nav className="app-footer-nav" aria-label="フッター">
+        <Link to="/articles">学習ガイド</Link>
         <Link to="/privacy">プライバシーポリシー</Link>
       </nav>
       <p className="app-footer-copy">© 2026 麻雀点数トレーニング</p>
