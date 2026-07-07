@@ -28,15 +28,24 @@ interface ArticleMarkdownProps {
  */
 export function ArticleMarkdown({ markdown, articleSlugs }: ArticleMarkdownProps) {
   const components: Components = {
-    img({ alt }) {
+    img({ alt, src }) {
       return (
         <span className="article-image-placeholder" role="img" aria-label={alt ?? "画像"}>
-          <span className="article-image-placeholder-icon" aria-hidden="true">
+          <img className="article-image-placeholder-img" src={src} alt={alt} />
+          {/* <span className="article-image-placeholder-icon" aria-hidden="true">
             🖼
           </span>
-          {alt ? <span className="article-image-placeholder-alt">{alt}</span> : null}
+          {alt ? <span className="article-image-placeholder-alt">{alt}</span> : null} */}
         </span>
       );
+      // return (
+      //   <span className="article-image-placeholder" role="img" aria-label={alt ?? "画像"}>
+      //     <span className="article-image-placeholder-icon" aria-hidden="true">
+      //       🖼
+      //     </span>
+      //     {alt ? <span className="article-image-placeholder-alt">{alt}</span> : null}
+      //   </span>
+      // );
     },
     p({ node, children }) {
       const soleChild = node?.children.length === 1 ? node.children[0] : undefined;

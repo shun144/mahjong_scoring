@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans CJK JP','Noto Sans JP',sans-serif;background:#fff;color:#3f4854;}
+  .card{background:#fff;}
+  .seclabel{display:inline-block;background:#eef2f7;color:#3f4854;font-weight:700;
+    font-size:17px;padding:7px 16px;border-radius:20px;margin-bottom:20px;}
+  .seclabel .num{color:#4f86e8;margin-right:6px;}
+  .note{font-size:12.5px;color:#98a1ac;margin-top:18px;line-height:1.6;}
+
+  .card{width:1000px;padding:36px 40px 40px;}
+  .formula{text-align:center;background:#2c3440;color:#fff;border-radius:14px;
+    padding:20px;font-size:26px;font-weight:800;letter-spacing:.5px;margin-bottom:26px;}
+  .formula .u{color:#ffd479;} .formula sup{font-size:16px;}
+  .panels{white-space:nowrap;text-align:center;}
+  .panel{display:inline-block;vertical-align:top;width:448px;margin:0 8px;
+    border:2px solid #e9edf2;border-radius:16px;padding:22px 24px;text-align:left;}
+  .panel h3{font-size:19px;font-weight:800;margin-bottom:16px;padding-bottom:12px;
+    border-bottom:2px solid #f0f3f6;}
+  .ph-ko h3{color:#3a6fd0;} .ph-oya h3{color:#d5732f;}
+  .line{margin-bottom:14px;}
+  .line .lb{display:inline-block;width:58px;font-weight:800;font-size:15px;
+    color:#fff;text-align:center;border-radius:8px;padding:5px 0;margin-right:12px;
+    vertical-align:middle;}
+  .lb-ron{background:#4f86e8;} .lb-tsumo{background:#2fa96b;}
+  .lb-ron.oya,.lb-tsumo.oya{}
+  .pay{display:inline-block;vertical-align:middle;font-size:15px;color:#5a636e;font-weight:600;}
+  .mult{display:inline-block;background:#eef2f7;color:#3f4854;font-weight:800;
+    border-radius:8px;padding:3px 9px;margin:0 2px;font-size:14px;}
+  .mult.big{background:#fdeadd;color:#d5732f;}
+  .foot{margin-top:24px;text-align:center;background:#f6f8fb;border-radius:12px;
+    padding:14px;font-size:15px;font-weight:700;color:#5a636e;}
+  .foot .ex{color:#98a1ac;font-weight:600;font-size:13px;margin-top:4px;display:block;}
+</style></head><body><div class="card">
+  <div class="seclabel">符と翻を点数に変換する</div>
+  <div class="formula">基本点 = <span class="u">符</span> × 2<sup>(2 + <span class="u">翻</span>)</sup></div>
+  <div class="panels">
+    <div class="panel ph-ko"><h3>子（非親）のあがり</h3>
+      <div class="line"><span class="lb lb-ron">ロン</span>
+        <span class="pay">放銃した1人が <span class="mult big">×4</span></span></div>
+      <div class="line"><span class="lb lb-tsumo">ツモ</span>
+        <span class="pay">親 <span class="mult">×2</span> ＋ 子 <span class="mult">×1</span> ×2人</span></div>
+    </div>
+    <div class="panel ph-oya"><h3>親のあがり</h3>
+      <div class="line"><span class="lb lb-ron oya" style="background:#ef8a4b">ロン</span>
+        <span class="pay">放銃した1人が <span class="mult big">×6</span></span></div>
+      <div class="line"><span class="lb lb-tsumo oya" style="background:#e0a24b">ツモ</span>
+        <span class="pay">子 <span class="mult">×2</span> ×3人</span></div>
+    </div>
+  </div>
+  <div class="foot">最後に100点単位で切り上げ
+    <span class="ex">例）40符3翻 → 基本点1280 → 子ロン ×4 = 5120 → 切り上げ 5200点</span>
+  </div>
+</div></body></html>
