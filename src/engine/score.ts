@@ -47,14 +47,37 @@ const RANK_TABLE: Record<
   yakuman: { ronKo: 32000, ronOya: 48000, tsumoKoFromKo: 8000, tsumoKoFromOya: 16000, tsumoOyaEach: 16000 },
 };
 
+/** 満貫とみなす基本点のしきい値（通常ルール）。 */
+const MANGAN_BASIC_POINTS = 2000;
+/**
+ * 切り上げ満貫ルールのしきい値。4翻30符・3翻60符（基本点1920）も満貫に切り上げる。
+ * これを満貫扱いにすると 子ロン7700→8000／親ロン11600→12000／
+ * 子ツモ2000-3900→2000-4000／親ツモ3900オール→4000オール となる。
+ */
+const ROUNDED_UP_MANGAN_BASIC_POINTS = 1920;
+
+export interface RankOptions {
+  /**
+   * 切り上げ満貫を適用するか。
+   * 既定は false（現行の「切り上げない」ルール。CLAUDE.md/SPEC の既定に準拠）。
+   * true にすると 4翻30符・3翻60符 を満貫へ切り上げる。
+   *
+   * 注意: 既定の計算経路（scoreHand 等）はこのオプションを渡さないため、
+   * 追加しても実際の採点結果は変わらない。将来ルールを切り替える際の受け口。
+   */
+  roundUpMangan?: boolean;
+}
+
 /** 翻数から満貫以上の区分を判定する。区分なし(null)の場合は符×翻の通常計算を使う。 */
-export function determineRank(han: number, fu: number): ScoreRank | null {
+export function determineRank(han: number, fu: number, options: RankOptions = {}): ScoreRank | null {
   if (han >= 13) return "yakuman";
   if (han >= 11) return "sanbaiman";
   if (han >= 8) return "baiman";
   if (han >= 6) return "haneman";
-  const basicPoints = fu * Math.pow(2, 2 + han);
-  if (basicPoints >= 2000) return "mangan";
+  const manganThreshold = options.roundUpMangan
+    ? ROUNDED_UP_MANGAN_BASIC_POINTS
+    : MANGAN_BASIC_POINTS;
+  if (basicPoints(han, fu) >= manganThreshold) return "mangan";
   return null;
 }
 
@@ -69,8 +92,9 @@ export function calculatePayment(
   fu: number,
   isDealer: boolean,
   winType: WinType,
+  options: RankOptions = {},
 ): { payment: Payment; rank: ScoreRank | null } {
-  const rank = determineRank(han, fu);
+  const rank = determineRank(han, fu, options);
 
   if (rank) {
     const t = RANK_TABLE[rank];

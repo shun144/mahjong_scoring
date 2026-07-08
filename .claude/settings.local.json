@@ -6,7 +6,9 @@
       "Bash(node -p \"JSON.stringify\\(require\\('./node_modules/react-markdown/package.json'\\).exports, null, 2\\)\")",
       "Bash(curl *)",
       "Bash(taskkill //F //IM node.exe //FI \"WINDOWTITLE eq *5183*\")",
-      "Bash(taskkill *)"
+      "Bash(taskkill *)",
+      "Bash(echo \"---exit:$?---\")",
+      "Bash(npx eslint *)"
     ]
   }
 }

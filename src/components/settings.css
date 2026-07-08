@@ -1,0 +1,43 @@
+.settings-page {
+  gap: var(--space-4);
+}
+
+.settings-loading {
+  color: var(--color-text-sub);
+}
+
+.settings-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  cursor: pointer;
+}
+
+.settings-toggle-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.settings-toggle-title {
+  font-weight: 600;
+}
+
+.settings-toggle-desc {
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+}
+
+.settings-toggle-row input[type="checkbox"] {
+  flex: none;
+  width: 44px;
+  height: 24px;
+  accent-color: var(--color-accent);
+}

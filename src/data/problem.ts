@@ -1,5 +1,5 @@
 import type { Meld, Tile, Wind, WinType } from "../engine/model";
-import type { ScoreHandInput } from "../engine/scoreHand";
+import { scoreHand, type ScoreHandInput } from "../engine/scoreHand";
 import type { ScoreResult } from "../engine/score";
 
 export interface ProblemHand {
@@ -51,4 +51,19 @@ export function problemToScoreHandInput(problem: Problem): ScoreHandInput {
     isDealer: problem.conditions.isDealer,
     riichi: problem.conditions.riichi,
   };
+}
+
+/**
+ * 切り上げ満貫設定を反映した実効Problemを返す（点数計算モード専用）。
+ * scoreHandをroundUpManganオプション付きで再実行し、answer（payment/rank/interpretationNote）
+ * を差し替える。scoreHandは決定的なため、roundUpMangan=falseでの再計算は元のproblem.answer
+ * と一致する（バンク問題もこの一致をフィクスチャで担保済み）。
+ * 高点法の勝ち解釈は切り上げ満貫の有無で不変のため、han/fu/yaku/fuDetailは変わらない。
+ * problem.answer側の状態(前回の設定値等)に依存させず、常に再計算して一貫性を保つ。
+ * 再スコアに失敗した場合（本来起こり得ないが防御的に）は元のproblemを返す。
+ */
+export function resolveAnswer(problem: Problem, roundUpMangan: boolean): Problem {
+  const rescored = scoreHand(problemToScoreHandInput(problem), { roundUpMangan });
+  if (!rescored) return problem;
+  return { ...problem, answer: rescored };
 }

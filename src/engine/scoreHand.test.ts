@@ -233,3 +233,77 @@ describe("scoreHand - representative hands", () => {
     expect(result?.interpretationNote).toMatch(/別解/);
   });
 });
+
+describe("scoreHand - roundUpMangan option", () => {
+  // リーチ+平和+ドラ2(表示牌2s→3s, 6p→7pで各1) = 4翻30符（基本点1920）のロン境界手。
+  function ronBoundaryInput(overrides: Partial<ScoreHandInput> = {}): ScoreHandInput {
+    return baseInput({
+      concealed: tiles("234m567p33z345s789m"),
+      winningTile: parseTileNotation("9m"),
+      winType: "ron",
+      riichi: true,
+      doraIndicators: [parseTileNotation("2s"), parseTileNotation("6p")],
+      ...overrides,
+    });
+  }
+
+  // リーチ+門前清自摸和+暗刻(555s)+ドラ2(表示牌3m→4m, 2p→3pで各1) = 4翻30符のツモ境界手。
+  // 平和ロンの手と違い暗刻を含むためpinfu対象外(平和ツモの20符固定にならない)。
+  function tsumoBoundaryInput(overrides: Partial<ScoreHandInput> = {}): ScoreHandInput {
+    return baseInput({
+      concealed: tiles("234m345p555s678m99p"),
+      winningTile: parseTileNotation("4m"),
+      winType: "tsumo",
+      riichi: true,
+      doraIndicators: [parseTileNotation("3m"), parseTileNotation("2p")],
+      ...overrides,
+    });
+  }
+
+  it("既定(オプション無し)では4翻30符は満貫未満のまま(子ロン7700)", () => {
+    const result = scoreHand(ronBoundaryInput());
+    expect(result?.han).toBe(4);
+    expect(result?.fu).toBe(30);
+    expect(result?.rank).toBeUndefined();
+    expect(result?.payment).toEqual({ kind: "ron", total: 7700 });
+  });
+
+  it("roundUpMangan:trueで4翻30符が満貫に切り上がる(子ロン8000)。han/fu/yakuは不変", () => {
+    const standard = scoreHand(ronBoundaryInput());
+    const rounded = scoreHand(ronBoundaryInput(), { roundUpMangan: true });
+
+    expect(rounded?.han).toBe(standard?.han);
+    expect(rounded?.fu).toBe(standard?.fu);
+    expect(rounded?.yaku).toEqual(standard?.yaku);
+    expect(rounded?.rank).toBe("mangan");
+    expect(rounded?.payment).toEqual({ kind: "ron", total: 8000 });
+  });
+
+  it("roundUpMangan:trueで親ロン4翻30符は12000になる", () => {
+    const oyaRon = scoreHand(ronBoundaryInput({ isDealer: true }), { roundUpMangan: true });
+    expect(oyaRon?.han).toBe(4);
+    expect(oyaRon?.fu).toBe(30);
+    expect(oyaRon?.rank).toBe("mangan");
+    expect(oyaRon?.payment).toEqual({ kind: "ron", total: 12000 });
+  });
+
+  it("既定(オプション無し)では4翻30符ツモは満貫未満のまま(子2000/親3900)", () => {
+    const result = scoreHand(tsumoBoundaryInput());
+    expect(result?.han).toBe(4);
+    expect(result?.fu).toBe(30);
+    expect(result?.rank).toBeUndefined();
+    expect(result?.payment).toEqual({ kind: "tsumo-ko", nonDealer: 2000, dealer: 3900 });
+  });
+
+  it("roundUpMangan:trueで4翻30符ツモが満貫に切り上がる(子2000-4000/親4000オール)", () => {
+    const koTsumo = scoreHand(tsumoBoundaryInput(), { roundUpMangan: true });
+    expect(koTsumo?.han).toBe(4);
+    expect(koTsumo?.fu).toBe(30);
+    expect(koTsumo?.rank).toBe("mangan");
+    expect(koTsumo?.payment).toEqual({ kind: "tsumo-ko", nonDealer: 2000, dealer: 4000 });
+
+    const oyaTsumo = scoreHand(tsumoBoundaryInput({ isDealer: true }), { roundUpMangan: true });
+    expect(oyaTsumo?.rank).toBe("mangan");
+    expect(oyaTsumo?.payment).toEqual({ kind: "tsumo-oya", each: 4000 });
+  });
+});

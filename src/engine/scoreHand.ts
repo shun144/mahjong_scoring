@@ -37,6 +37,14 @@ interface Candidate {
   fuDetail?: FuBreakdown;
 }
 
+export interface ScoreHandOptions extends FuBreakdownOptions {
+  /**
+   * 切り上げ満貫ルールを適用するか（既定false）。
+   * trueにすると4翻30符・3翻60符等も満貫として採点する（score.tsのcalculatePaymentへ伝播）。
+   */
+  roundUpMangan?: boolean;
+}
+
 function isMenzenHand(melds: readonly Meld[]): boolean {
   return !melds.some((m) => m.type !== "ankan");
 }
@@ -45,8 +53,11 @@ function buildCandidateResult(
   candidate: Candidate,
   isDealer: boolean,
   winType: WinType,
+  options: ScoreHandOptions,
 ): ScoreResult {
-  const { payment, rank } = calculatePayment(candidate.han, candidate.fu, isDealer, winType);
+  const { payment, rank } = calculatePayment(candidate.han, candidate.fu, isDealer, winType, {
+    roundUpMangan: options.roundUpMangan,
+  });
   return {
     yaku: candidate.yaku,
     han: candidate.han,
@@ -64,10 +75,11 @@ function buildCandidateResult(
  *
  * opts.includeZeroFu を渡すと fuDetail に0符要素も含める（符計算モードの解説表示用）。
  * 0符要素は点数に影響しないため、採点結果(han/fu/payment)は opts の有無で変わらない。
+ * opts.roundUpMangan を渡すと切り上げ満貫ルールで採点する（既定false。score.ts参照）。
  */
 export function scoreHand(
   input: ScoreHandInput,
-  opts: FuBreakdownOptions = {},
+  opts: ScoreHandOptions = {},
 ): ScoreResult | null {
   const isMenzen = isMenzenHand(input.melds);
   const concealedCounts = tilesToCounts(input.concealed);
@@ -178,7 +190,7 @@ export function scoreHand(
 
   const scored = candidates.map((c) => ({
     candidate: c,
-    result: buildCandidateResult(c, input.isDealer, input.winType),
+    result: buildCandidateResult(c, input.isDealer, input.winType, opts),
   }));
   scored.sort((a, b) => paymentTotal(b.result.payment) - paymentTotal(a.result.payment));
 

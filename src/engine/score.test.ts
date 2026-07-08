@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculatePayment } from "./score";
+import { calculatePayment, determineRank } from "./score";
 
 describe("calculatePayment - representative non-mangan combinations (SPEC.md §5.3)", () => {
   it("子ロン 30符1翻 = 1000", () => {
@@ -80,5 +80,51 @@ describe("calculatePayment - mangan and above (fixed tables)", () => {
   it("役満 親ツモ = 16000オール", () => {
     const { payment } = calculatePayment(13, 30, true, "tsumo");
     expect(payment).toEqual({ kind: "tsumo-oya", each: 16000 });
+  });
+});
+
+// 切り上げ満貫ルール（オプション）。既定の計算経路では未使用のため、
+// roundUpMangan を明示的に渡した場合のみ 4翻30符・3翻60符 を満貫へ切り上げる。
+describe("calculatePayment - 切り上げ満貫 (roundUpMangan option)", () => {
+  it("既定(オプション無し)では 4翻30符 は満貫未満のまま = 7700", () => {
+    const { rank, payment } = calculatePayment(4, 30, false, "ron");
+    expect(rank).toBeNull();
+    expect(payment).toEqual({ kind: "ron", total: 7700 });
+  });
+
+  it("子ロン 4翻30符 = 7700→8000(満貫)", () => {
+    const { rank, payment } = calculatePayment(4, 30, false, "ron", { roundUpMangan: true });
+    expect(rank).toBe("mangan");
+    expect(payment).toEqual({ kind: "ron", total: 8000 });
+  });
+
+  it("子ロン 3翻60符 = 7700→8000(満貫)", () => {
+    const { rank, payment } = calculatePayment(3, 60, false, "ron", { roundUpMangan: true });
+    expect(rank).toBe("mangan");
+    expect(payment).toEqual({ kind: "ron", total: 8000 });
+  });
+
+  it("親ロン 4翻30符 = 11600→12000(満貫)", () => {
+    const { rank, payment } = calculatePayment(4, 30, true, "ron", { roundUpMangan: true });
+    expect(rank).toBe("mangan");
+    expect(payment).toEqual({ kind: "ron", total: 12000 });
+  });
+
+  it("子ツモ 4翻30符 = 2000-3900→2000-4000(満貫)", () => {
+    const { rank, payment } = calculatePayment(4, 30, false, "tsumo", { roundUpMangan: true });
+    expect(rank).toBe("mangan");
+    expect(payment).toEqual({ kind: "tsumo-ko", nonDealer: 2000, dealer: 4000 });
+  });
+
+  it("親ツモ 4翻30符 = 3900オール→4000オール(満貫)", () => {
+    const { rank, payment } = calculatePayment(4, 30, true, "tsumo", { roundUpMangan: true });
+    expect(rank).toBe("mangan");
+    expect(payment).toEqual({ kind: "tsumo-oya", each: 4000 });
+  });
+
+  it("基本点1920未満(3翻40符=1280)は切り上げ満貫でも満貫にしない", () => {
+    expect(determineRank(3, 40, { roundUpMangan: true })).toBeNull();
+    const { payment } = calculatePayment(3, 40, false, "ron", { roundUpMangan: true });
+    expect(payment).toEqual({ kind: "ron", total: 5200 });
   });
 });

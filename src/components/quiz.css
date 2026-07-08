@@ -60,6 +60,13 @@
   color: var(--color-danger-text);
 }
 
+/* 切り上げ満貫が有効な時のみ表示するタグ。文言で識別（色覚多様性対応）。 */
+.badge--roundup {
+  background: var(--color-accent-bg);
+  border-color: var(--color-accent-border);
+  color: var(--color-accent-text);
+}
+
 .quiz-hand {
   overflow-x: auto;
   padding-bottom: var(--space-1);

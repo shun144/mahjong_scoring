@@ -210,6 +210,125 @@
 
 ---
 
+## P13. 設定画面 & 設定永続化基盤（切り上げ満貫 ON/OFF）
+
+**目的**: ユーザーが**切り上げ満貫ルールの有効/無効**を切り替えられる**設定画面**を新設し、設定内容を**IndexedDB**に永続化する。マイページが無いため、まず単一の設定画面を設ける。**将来 IndexedDB から本格DB（サーバDB等）へ差し替える際の変更を局所化できる構成**にする。
+
+> 方針決定（2026-07-08）: **① 永続層はリポジトリ・インターフェースで抽象化し IndexedDB 実装をその裏に隠す（差し替えは合成ルート1点）／② 設定ドメインは純粋モジュール（`schemaVersion` 付き・既定OFF）／③ React 連携は Provider + フックで非同期ロードを吸収／④ 設定値の採点への反映は本フェーズ対象外（前回タスクの「採点に反映させない」方針を踏襲。将来フェーズで `useSettings → scoreHand` を配線）**。
+>
+> 確定事項（2026-07-08）: **⑤ IndexedDB アクセスは `idb` ライブラリを採用（dependency 追加）／⑥ リポジトリのテスト用 IndexedDB 代替として `fake-indexeddb` を採用（devDependency 追加）／⑦ 設定画面への導線は**ホーム**に置く（フッターには追加しない）**。
+
+### スコープ
+
+**含む**: 設定画面（`/settings`）・切り上げ満貫トグル・IndexedDB 永続化・永続層の抽象化・設定の読込/保存/初期値/マイグレーション・導線・テスト。
+**含まない（本フェーズ）**: 設定値を実際の点数計算・問題生成・出題に反映すること（`calculatePayment` の `roundUpMangan` は実装済みだが未配線のまま維持）。他の設定項目（将来拡張の受け皿だけ用意し、項目は切り上げ満貫のみ）。
+
+### 作業項目
+
+- **仕様追記（先行）**: ドキュメント方針に従い**実装前に `SPEC.md` を更新**する。
+  - 「§4.8 設定」（設定画面の目的・URL・項目・永続化先・既定値）を新設。
+  - 「§8.1 画面一覧」に **設定画面（`/settings`）** を追加。
+  - **スコープ境界の見直し**: 現状 §（含まない）で「切り上げ満貫」を**ハウスルールとして除外**しているため、「**任意設定（既定OFF）として提供。ただし本フェーズでは採点には未反映**」と整合を取る注記を入れる（`CLAUDE.md` のスコープ境界とも矛盾しないよう補足）。
+
+- **依存追加**: `idb`（dependency）と `fake-indexeddb`（devDependency）を導入する。
+
+- **設定ドメイン（純粋・ストア非依存）** `src/settings/appSettings.ts`:
+  - `AppSettings` 型（`schemaVersion: number` ＋ `roundUpMangan: boolean` 等）。
+  - `DEFAULT_SETTINGS`（`roundUpMangan: false`）。
+  - `parseSettings(unknown): AppSettings`（不正/欠損は既定で補完）と `migrateSettings`（`schemaVersion` に基づく将来移行の受け口）。永続層に一切依存しない。
+
+- **永続層の抽象（差し替えの要）** `src/settings/settingsRepository.ts`:
+  - `interface SettingsRepository { load(): Promise<AppSettings>; save(next: AppSettings): Promise<void>; }`。
+  - UI・フックはこのインターフェースにのみ依存させる（IndexedDB を直接触らない）。
+
+- **IndexedDB 実装** `src/settings/indexedDbSettingsRepository.ts`:
+  - DB名/ストア名/固定キーを定数化。単一オブジェクトストア `settings` に固定キーで1レコード保存。
+  - `load` は未保存/破損/IndexedDB 不可（プライベートモード等）で `DEFAULT_SETTINGS` にフォールバック（`statsStore` の耐障害方針に倣う）。
+  - IndexedDB アクセスは **`idb` ライブラリ**（dependency 追加）で包む。DBオープン/取得/保存を薄くラップする。
+
+- **合成ルート（差し替え1点）** `src/settings/settingsRepository.instance.ts`:
+  - 既定リポジトリ実装（IndexedDB 版）をここで1回だけ生成・エクスポート。**将来のDB移行はこのファイルの実装差し替えのみ**で完了する構成にする。
+
+- **React 連携（非同期ロードの吸収）** `src/settings/SettingsContext.tsx`:
+  - `SettingsProvider`: マウント時に `repository.load()`（`loading` 状態を持つ）、結果をインメモリにキャッシュ。
+  - `useSettings()`: `{ settings, loading, updateSettings(patch) }` を返す。更新は**楽観的にメモリを更新**しつつ `repository.save()` を呼ぶ（保存失敗時の扱いも定義）。
+  - Provider にリポジトリを注入可能にし（既定は合成ルートの実装）、テストでインメモリ実装へ差し替えられるようにする。
+
+- **設定画面** `src/components/SettingsPage.tsx` ＋ `settings.css`:
+  - `/settings`。見出し「設定」＋ホーム/練習への戻り導線（既存 `page-header` 流用）。
+  - 「切り上げ満貫」トグル（ON/OFF）。1行説明（子7700→8000／親11600→12000／ツモ2000-3900→2000-4000／親3900オール→4000オール、既定OFF）。
+  - `loading` 中はプレースホルダ表示。変更で即 `updateSettings`。既存のニュートラル基調・スマホ最優先に合わせる。
+
+- **配線/導線**:
+  - `App.tsx`: 全体を `SettingsProvider` で包み、`<Route path="/settings">` を追加。
+  - **ホーム**に「設定」導線を1つ追加（フッターには追加しない）。
+
+- **テスト**:
+  - 純粋層: `parseSettings`/`migrateSettings`/既定値のユニットテスト。
+  - リポジトリ: IndexedDB 実装を **`fake-indexeddb`（devDependency 追加）** で load/save 往復・空DB時の既定フォールバックを検証。
+  - フック/画面: インメモリ・リポジトリを注入し、トグル操作で保存が呼ばれ再ロードで値が復元されることを確認。
+  - 回帰: 既存の採点・出題・成績に変化がないこと（`roundUpMangan` 未配線の担保）。
+
+**DoD**: `/settings` で切り上げ満貫を ON/OFF でき、リロード後も IndexedDB から復元される。永続層は `SettingsRepository` 抽象の背後に隠れ、合成ルート1ファイルの差し替えでDB実装を交換できる。`SPEC.md` に §4.8 設定と §8.1 の画面追加、スコープ境界の見直しが反映済み。**採点結果は本フェーズでは不変**（設定は保持のみ）。既存画面に回帰なし。
+**リスク**: 中（IndexedDB の非同期ロードと React 状態の整合、プライベートモード等での永続化不可時のフォールバック、テスト用の IndexedDB 代替）。
+
+---
+
+## P14. 切り上げ満貫の採点反映＋「満貫切上」条件タグ表示
+
+**目的**: 切り上げ満貫設定（P13）が**有効な場合**、**点数計算モード（`/quiz`）の採点を切り上げ満貫ルールで行い**（正解点数・4択・解説の点数をすべて切り上げ後に揃える）、同時に問題画面上部の局条件タグリスト（`QuizConditions`）の**一番左**に「満貫切上」タグを表示する。タグと実際の点数が常に整合する状態（前回検討の案B）で実装する。
+
+> 方針決定（2026-07-08）: **① 設定ON時は採点も切り上げ満貫で行い、タグと点数を整合させる（案B）／② `QuizConditions` は表示専用を維持し `roundUpMangan?: boolean` prop で受け取る／③ 対象は点数計算モード（`/quiz`）のみ。符計算モードは満貫以上を出題せず切り上げ満貫は無関係のため、採点反映もタグも行わない（`FuQuizPage`・`nextProblem`・問題生成は不変）／④ タグ位置は windset バッジより前（先頭）。**
+
+### 設計の要点（採点反映の仕組み）
+
+- 問題の `answer: ScoreResult` は**標準ルール（`roundUpMangan=false`）で事前計算**され、バンク／生成に埋まっている。設定ON時はこれを**表示層（`QuizPage`）で切り上げ後の値に差し替える**。生成・バンク・`nextProblem` は標準ルールのまま保つ（符モードや出題分布の前提を壊さない）。
+- **高点法の勝ち解釈は切り上げ満貫で不変**（切り上げは基本点1920帯の点数を引き上げるだけで、解釈間の順位を反転させ得ない）。したがって差し替えは `answer` の再スコアで安全に行え、`han/fu/yaku/fuDetail` は一致し、**`payment`・`rank`・`interpretationNote`（別解の点差）だけ**が切り上げ後の値に変わる。
+- 差し替えは `scoreHand` に採点オプションを渡して**再スコア**する方式を採る（`payment`・`rank` に加え別解メモの点差まで一貫して更新できるため）。
+
+### スコープ
+
+**含む**: `scoreHand` への切り上げ満貫オプション追加（`calculatePayment` は P13 で実装済みの `roundUpMangan` を利用）／`QuizPage` での設定取得・再スコア・4択/正誤/解説への反映／「満貫切上」タグ表示／バッジのスタイル／`SPEC.md` 更新／テスト。
+**含まない（本フェーズ）**: 符計算モード（`/fu/quiz`）への反映・タグ。問題生成・バンク・`nextProblem` の変更（標準ルールのまま）。他の設定項目。
+
+### 作業項目
+
+- **仕様更新（先行）**: ドキュメント方針に従い**実装前に `SPEC.md` を更新**する。
+  - §4.8 の「設定値は保持のみ・採点には未反映」の記述を、「**点数計算モードでは切り上げ満貫を採点に反映する**（符計算モードは対象外）」に改める。
+  - §2.2 の切り上げ満貫の注記（「保持のみ・未反映」）も同様に、点数計算モードで反映される旨へ更新。
+- **エンジン（`src/engine/scoreHand.ts`）**:
+  - `scoreHand` の第2引数（現 `FuBreakdownOptions`）を拡張し、`roundUpMangan?: boolean` を受けられるようにする（例: `ScoreHandOptions = FuBreakdownOptions & { roundUpMangan?: boolean }`）。
+  - `buildCandidateResult` 内の `calculatePayment(...)` 呼び出しに `{ roundUpMangan }` を渡す。高点法のソート（`paymentTotal`）は勝ち解釈不変のため挙動不変。既定（未指定）は `false` で現行と完全一致。
+- **表示層のヘルパ**（`QuizPage` 内 or `src/data/problem.ts` に小関数）:
+  - `resolveAnswer(problem, roundUpMangan)`: OFF なら `problem` をそのまま、ON なら `scoreHand(problemToScoreHandInput(problem), { roundUpMangan: true })` で再スコアした `answer` に差し替えた `Problem` を返す（再スコア失敗時は防御的に元の `problem`）。
+- **`QuizPage`（`src/components/QuizPage.tsx`）**:
+  - `useSettings()` の `settings.roundUpMangan` を取得。`resolveAnswer` で得た**実効 problem** を `useMemo([problem, roundUpMangan])` で算出し、以降の 4択生成（`generateChoices`）・正誤判定（`handleAnswer`）・解説への `navigate` state を**実効 problem** に統一する。
+  - `<QuizConditions roundUpMangan={roundUpMangan} />` を渡す。ロード中は既定 `false`（標準採点・タグ非表示）で、ロード完了後に反映（`problem` は据え置き、実効値のみ再計算）。
+- **`QuizConditions`（`src/components/QuizConditions.tsx`）**:
+  - `roundUpMangan?: boolean` prop を追加。`true` のとき windset バッジより**前（先頭）**に `満貫切上` バッジを描画（`aria-label` 付与）。表示専用の性質を保つ（`useSettings` を直接呼ばない）。
+- **解説（`src/components/ResultPage.tsx`）**:
+  - 実効 problem を state で受け取るため、`answer.payment`／`formatCalculationLine`／別解メモは自然に切り上げ後の値で表示される（満貫化した場合は `rank` により「N翻 満貫 → 8000」と表示）。**追加改修は原則不要**だが、満貫化ケースの表示（符内訳非表示・区分名表示）が正しいことを確認する。
+- **スタイル（`src/components/quiz.css`）**:
+  - `.badge--roundup` を新設（既存 `.badge-riichi` 同様の淡塗りモディファイア。色覚多様性に配慮し文言で識別）。
+- **テスト**:
+  - エンジン: `scoreHand({ roundUpMangan: true })` で 4翻30符・3翻60符 が満貫（子8000／親12000、ツモ 2000-4000／4000オール）になり、`rank==="mangan"`／`han・fu・yaku` は標準時と一致すること。オプション無しは現行不変。
+  - `QuizConditions.test.tsx`（新規）: `roundUpMangan` true で「満貫切上」が**先頭**に表示、false（未指定）で非表示。
+  - `QuizPage`: `SettingsProvider`（インメモリ・リポジトリ注入）で ON のとき、境界問題で 4択の正解が切り上げ後（8000 等）になり、タグも表示されること。OFF では 7700 等・タグ非表示。
+  - 回帰: `FuQuizPage`・`nextProblem`・問題バンク回帰・既存の局条件タグに変化がないこと。
+
+**DoD**: 設定ON→点数計算モードで、境界手（4翻30符・3翻60符）の正解・誤答・解説の点数がすべて切り上げ後（子8000／親12000 等）になり、条件タグ左端に「満貫切上」が表示される。設定OFF→従来通り（7700 等・タグ非表示）。符計算モード・問題生成・バンク・既存タグに回帰なし。`SPEC.md` 反映済み。
+
+**リスク／要確認**:
+- **表示層で再スコアする設計の一貫性**: 生成・バンクは標準ルールのまま、`QuizPage`／`ResultPage` の描画時のみ切り上げレンズをかける。両画面が**同一の実効 problem** を共有するよう state 受け渡しを徹底する（解説だけ標準値に戻る不整合を防ぐ）。
+- **成績記録**: `recordAnswer` は正誤（`isCorrect`）と `problem.tags` を記録する。タグ（`fuType`／`yakuCategories`）は切り上げで不変、正誤は実効 problem の payment で判定するため、成績集計は破綻しない（要テスト確認）。
+- **ロード中のちらつき**: 設定ロード完了前は標準採点・タグ非表示 → 完了後に切替。境界問題では 4択が一瞬 7700 → 8000 に変わり得る。許容範囲だが必要なら `loading` 中は出題を保留する案も検討。
+
+### 追記（2026-07-08）: 切り上げ満貫の既定値をONに変更
+
+P13 実装時点では既定OFFとしていたが、**`DEFAULT_SETTINGS.roundUpMangan` の既定値をONに変更**した。IndexedDB未保存（初回起動・読み込み不可時含む）のフォールバック値もONになる。既定を変えただけで、設定の抽象化（`SettingsRepository`）・採点反映の配線（`resolveAnswer`/`scoreHand`のオプション）・タグ表示のロジック自体に変更はない。`SPEC.md` §2.2・§4.8、`SettingsPage` の説明文、関連テストの期待値（`appSettings.test.ts`／`SettingsContext.test.tsx`／`SettingsPage.test.tsx`）を既定ONに合わせて更新済み。上記本文中の「既定OFF」表記は変更当時の記録として残す。
+
+---
+
 ## 全体のマイルストーン
 
 1. **M1（エンジン確立）**: P0〜P3 完了。CLIやテストで任意の手を正しく採点でき、バンクと一致。
@@ -218,6 +337,7 @@
 4. **M4（リリース）**: P10 完了。E2E 緑、デプロイ。
 5. **M5（符計算モード）**: P11 完了。ドラ表示牌必須化＋符モードが通しで動作。
 6. **M6（コンテンツ記事）**: P12 完了。記事セクションが動作し、学習ガイド1本を公開。
+7. **M7（設定基盤）**: P13 完了。設定画面で切り上げ満貫を切替でき、IndexedDB に永続化（永続層は差し替え可能な抽象の背後）。採点への反映は次フェーズ。
 
 ## 未確定・要確認（実装前に潰す）
 

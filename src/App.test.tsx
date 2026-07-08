@@ -39,4 +39,13 @@ describe("App routing", () => {
     );
     expect(screen.getByRole("heading", { name: /麻雀の点数計算ガイド/ })).toBeInTheDocument();
   });
+
+  it("renders the settings page at /settings", () => {
+    render(
+      <MemoryRouter initialEntries={["/settings"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole("heading", { name: "設定" })).toBeInTheDocument();
+  });
 });

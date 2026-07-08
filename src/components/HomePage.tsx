@@ -51,6 +51,9 @@ export function HomePage() {
       <p className="home-articles-link">
         <Link to="/articles">点数計算の学習ガイドを読む</Link>
       </p>
+      <p className="home-articles-link">
+        <Link to="/settings">設定</Link>
+      </p>
     </main>
   );
 }

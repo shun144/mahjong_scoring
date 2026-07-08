@@ -2,14 +2,22 @@ import type { Problem } from "../data/problem";
 import { WIND_LABELS } from "./format";
 
 /** 局条件（場風・自風・親子・リーチ）のバッジ表示。最終点数モード・符計算モードで共有する。
-    上がり方（ツモ/ロン）はアガリ牌のラベルと背景色で示すため、ここには表示しない。 */
+    上がり方（ツモ/ロン）はアガリ牌のラベルと背景色で示すため、ここには表示しない。
+    roundUpMangan（切り上げ満貫設定）は点数計算モードのみ渡され、有効時は先頭にタグを出す。 */
 export function QuizConditions({
   conditions,
+  roundUpMangan,
 }: {
   conditions: Problem["conditions"];
+  roundUpMangan?: boolean;
 }) {
   return (
     <section className="quiz-conditions" aria-label="局条件">
+      {roundUpMangan ? (
+        <span className="badge badge--roundup">
+          <span className="badge-value">満貫切上</span>
+        </span>
+      ) : null}
       <span
         className="badge badge--windset"
         aria-label={`場風${WIND_LABELS[conditions.roundWind]} 自風${WIND_LABELS[conditions.seatWind]}`}
