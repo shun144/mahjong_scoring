@@ -399,35 +399,61 @@
   color: inherit;
 }
 
-/* 画像プレースホルダ（実画像は未調達のため枠のみ表示）。ティール枠の丸カードに。 */
-.article-page .article-image-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  min-height: 140px;
+/* 記事画像。クリックで拡大表示(ライトボックス)できるボタンとして描画する。 */
+.article-page .article-image-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
   border: 2px solid rgba(43, 168, 162, 0.28);
   border-radius: var(--fl-r-md);
   background: var(--fl-teal-bg);
-  color: var(--fl-muted);
-  text-align: center;
+  cursor: zoom-in;
+  line-height: 0;
 }
 .article-page .article-image-placeholder-img {
+  display: block;
   max-width: 100%;
   height: auto;
   border-radius: inherit;
-}
-.article-page .article-image-placeholder-icon {
-  font-size: 1.8rem;
-}
-.article-page .article-image-placeholder-alt {
-  font-size: var(--fs-sm);
 }
 .article-page .article-image-caption {
   font-size: var(--fs-sm);
   color: var(--fl-muted);
   text-align: center;
+}
+
+/* 画像拡大表示(ライトボックス)。背景は半透明の暗いグレー。 */
+.article-image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(30, 30, 30, 0.75);
+  cursor: zoom-out;
+}
+.article-image-lightbox-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: var(--fl-r-md, 16px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  cursor: default;
+}
+.article-image-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--fl-r-pill, 999px);
+  background: rgba(255, 255, 255, 0.92);
+  color: #123f3c;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
 /* 用語集などの表。スマホ幅(640px)を超える表は横スクロールで逃がす。 */

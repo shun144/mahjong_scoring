@@ -12,7 +12,8 @@
       "Bash(xargs tail -5)",
       "Bash(pkill -f vite)",
       "Bash(cp /tmp/QuizPage.tsx.bak src/components/QuizPage.tsx)",
-      "Bash(rm /tmp/QuizPage.tsx.bak)"
+      "Bash(rm /tmp/QuizPage.tsx.bak)",
+      "Bash(node -e \"console.log\\(require\\('./package.json'\\).devDependencies['@testing-library/user-event'] || require\\('./package.json'\\).dependencies?.['@testing-library/user-event'] || 'NOT FOUND'\\)\")"
     ]
   }
 }

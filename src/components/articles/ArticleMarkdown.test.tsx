@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { ArticleMarkdown } from "./ArticleMarkdown";
@@ -37,11 +37,40 @@ describe("ArticleMarkdown", () => {
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 
-  it("画像は実画像を読み込まずプレースホルダ枠(altをaccessible nameに持つ)として描画する", () => {
-    const { container } = renderMarkdown("![符→翻→点数の3ステップ図](images/three-steps.png)");
-    expect(
-      screen.getByRole("img", { name: "符→翻→点数の3ステップ図" }),
-    ).toBeInTheDocument();
-    expect(container.querySelector("img")).toBeNull();
+  it("画像はクリック可能なボタンとして描画する", () => {
+    renderMarkdown("![符→翻→点数の3ステップ図](images/three-steps.png)");
+    const image = screen.getByRole("img", { name: "符→翻→点数の3ステップ図" });
+    expect(image).toHaveAttribute("src", "images/three-steps.png");
+    expect(image.closest("button")).toHaveClass("article-image-trigger");
+  });
+
+  it("画像をクリックすると拡大表示(ライトボックス)が開き、背景クリックで閉じる", () => {
+    renderMarkdown("![符→翻→点数の3ステップ図](images/three-steps.png)");
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("img", { name: "符→翻→点数の3ステップ図" }));
+
+    const dialog = screen.getByRole("dialog", { name: "符→翻→点数の3ステップ図" });
+    expect(dialog).toBeInTheDocument();
+
+    fireEvent.click(dialog);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("拡大表示は閉じるボタンでも閉じられる", () => {
+    renderMarkdown("![符→翻→点数の3ステップ図](images/three-steps.png)");
+    fireEvent.click(screen.getByRole("img", { name: "符→翻→点数の3ステップ図" }));
+
+    fireEvent.click(screen.getByRole("button", { name: "閉じる" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("拡大表示はEscキーでも閉じられる", () => {
+    renderMarkdown("![符→翻→点数の3ステップ図](images/three-steps.png)");
+    fireEvent.click(screen.getByRole("img", { name: "符→翻→点数の3ステップ図" }));
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });
