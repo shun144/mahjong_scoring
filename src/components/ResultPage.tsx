@@ -5,6 +5,7 @@ import { scoreHand } from "../engine/scoreHand";
 import { FuBreakdownContent } from "./FuBreakdown";
 import { formatCalculationLine, formatPayment } from "./format";
 import "./result.css";
+import "./resultFlip7.css";
 import { PageHeader } from "./PageHeader";
 
 interface ResultLocationState {
@@ -23,7 +24,7 @@ export function ResultPage() {
 
   if (!state) {
     return (
-      <main className="page-shell">
+      <main className="page-shell result-page">
         <h1>解説</h1>
         <p>
           問題データがありません。<Link to="/quiz">出題画面</Link>から回答してください。
@@ -43,7 +44,7 @@ export function ResultPage() {
     : (answer.fuDetail ?? scoreHand(problemToScoreHandInput(problem))?.fuDetail);
 
   return (
-    <main className="page-shell">
+    <main className="page-shell result-page">
       <PageHeader title="解説" />
       <div className="result-verdict-row">
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
@@ -53,6 +54,7 @@ export function ResultPage() {
       </div>
 
       <section className="card result-breakdown" aria-label="点数計算">
+        <span className="rp-section-label">内訳</span>
         {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}
         <ul className="yaku-list">
           {answer.yaku.map((y, i) => (
@@ -69,7 +71,12 @@ export function ResultPage() {
 
       {answer.interpretationNote ? (
         <section className="result-alt" aria-label="高点法の別解">
-          <h2>高点法の別解</h2>
+          <h2>
+            <span className="rp-alt-icon" aria-hidden="true">
+              💡
+            </span>
+            高点法の別解
+          </h2>
           <p>{answer.interpretationNote}</p>
         </section>
       ) : null}
@@ -80,6 +87,9 @@ export function ResultPage() {
         </Link>
         <Link to="/quiz" className="btn-primary">
           次の問題へ
+          <span className="rp-cta-arrow" aria-hidden="true">
+            →
+          </span>
         </Link>
       </div>
     </main>

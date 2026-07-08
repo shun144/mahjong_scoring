@@ -3,6 +3,7 @@ import { problemToScoreHandInput, type Problem } from "../data/problem";
 import { scoreHand } from "../engine/scoreHand";
 import { FuBreakdownContent } from "./FuBreakdown";
 import "./result.css";
+import "./resultFlip7.css";
 import { PageHeader } from "./PageHeader";
 
 interface FuResultLocationState {
@@ -21,7 +22,7 @@ export function FuResultPage() {
 
   if (!state) {
     return (
-      <main className="page-shell">
+      <main className="page-shell result-page">
         <h1>解説</h1>
         <p>
           問題データがありません。<Link to="/fu/quiz">符計算の出題画面</Link>から回答してください。
@@ -40,7 +41,7 @@ export function FuResultPage() {
     answer.fuDetail;
 
   return (
-    <main className="page-shell">
+    <main className="page-shell result-page">
       <PageHeader title="解説" />
       <div className="result-verdict-row">
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
@@ -50,6 +51,7 @@ export function FuResultPage() {
       </div>
 
       <section className="card result-breakdown result-breakdown--primary" aria-label="符計算">
+        <span className="rp-section-label">符の内訳</span>
         {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}
       </section>
 
@@ -59,6 +61,9 @@ export function FuResultPage() {
         </Link>
         <Link to="/fu/quiz" className="btn-primary">
           次の問題へ
+          <span className="rp-cta-arrow" aria-hidden="true">
+            →
+          </span>
         </Link>
       </div>
     </main>

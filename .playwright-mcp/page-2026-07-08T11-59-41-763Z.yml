@@ -1,0 +1,46 @@
+- generic [ref=e3]:
+  - main [ref=e90]:
+    - generic [ref=e91]:
+      - heading "解説" [level=1] [ref=e92]
+      - generic [ref=e93]:
+        - link "ホームに戻る" [ref=e94] [cursor=pointer]:
+          - /url: /
+        - link "成績を見る" [ref=e95] [cursor=pointer]:
+          - /url: /stats
+    - generic [ref=e96]:
+      - paragraph [ref=e97]: ✕ 不正解
+      - paragraph [ref=e98]: "答え: 1300"
+    - region "点数計算" [ref=e99]:
+      - generic [ref=e100]: 内訳
+      - list [ref=e101]:
+        - listitem [ref=e102]:
+          - generic [ref=e103]: 基本符
+          - generic [ref=e104]: 20符
+        - listitem [ref=e105]:
+          - generic [ref=e106]: 門前ロン
+          - generic [ref=e107]: +10符
+        - listitem [ref=e108]:
+          - generic [ref=e109]: 暗刻(中張)
+          - generic [ref=e110]: +4符
+        - listitem [ref=e111]:
+          - generic [ref=e112]: "待ち: 嵌張(カンチャン)"
+          - generic [ref=e113]: +2符
+      - list [ref=e114]:
+        - listitem [ref=e115]:
+          - generic [ref=e116]: 断幺九
+          - generic [ref=e117]: 1翻
+      - paragraph [ref=e118]: 40符1翻 (子ロン) → 1300
+    - generic [ref=e119]:
+      - link "問題に戻る" [ref=e120] [cursor=pointer]:
+        - /url: /quiz
+      - link "次の問題へ" [ref=e121] [cursor=pointer]:
+        - /url: /quiz
+        - text: 次の問題へ
+        - generic [ref=e122]: →
+  - contentinfo [ref=e85]:
+    - navigation "フッター" [ref=e86]:
+      - link "学習ガイド" [ref=e87] [cursor=pointer]:
+        - /url: /articles
+      - link "プライバシーポリシー" [ref=e88] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=e89]: © 2026 麻雀点数トレーニング
