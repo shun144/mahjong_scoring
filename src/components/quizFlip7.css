@@ -253,6 +253,7 @@
   letter-spacing: 0.08em;
   color: var(--fl-teal-dark);
   border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
+  margin-left: 16px;
 }
 
 /* 手牌の囲い：白カード＋ティール枠＋グロー。SVG 牌自体は不変。
