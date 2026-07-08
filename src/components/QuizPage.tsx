@@ -62,7 +62,7 @@ export function QuizPage() {
 
   return (
     <main className="page-shell quiz-page">
-      <PageHeader title="出題" />
+      <PageHeader title="点数計算" backTo="/quiz" />
       <QuizConditions
         conditions={effectiveProblem.conditions}
         roundUpMangan={settings.roundUpMangan}

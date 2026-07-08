@@ -1,7 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { clearStats, loadStats, type TagStat } from "../store/statsStore";
 import "./stats.css";
+
+/** PageHeader の「成績を見る」から渡される、戻り先の出題パス。 */
+function resolveBackTo(state: unknown): string {
+  const fallback = "/quiz";
+  if (!state || typeof state !== "object" || !("backTo" in state)) return fallback;
+  const backTo = (state as { backTo: unknown }).backTo;
+  return backTo === "/quiz" || backTo === "/fu/quiz" ? backTo : fallback;
+}
 
 interface TagRow {
   label: string;
@@ -39,6 +47,8 @@ function TagBar({ row }: { row: TagRow }) {
 }
 
 export function StatsPage() {
+  const location = useLocation();
+  const backTo = resolveBackTo(location.state);
   const [stats, setStats] = useState(() => loadStats());
   const accuracyPct =
     stats.totalAnswered > 0 ? Math.round((stats.totalCorrect / stats.totalAnswered) * 100) : 0;
@@ -55,7 +65,7 @@ export function StatsPage() {
       <div className="page-header">
         <h1>成績</h1>
         <div className="page-header-link">
-          <Link to="/quiz" className="page-header-link-item">
+          <Link to={backTo} className="page-header-link-item">
             練習に戻る
           </Link>
         </div>

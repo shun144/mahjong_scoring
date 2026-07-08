@@ -1,0 +1,19 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - heading "設定" [level=1] [ref=e6]
+      - link "ホームに戻る" [ref=e8] [cursor=pointer]:
+        - /url: /
+    - region "切り上げ満貫" [ref=e15]:
+      - generic [ref=e16] [cursor=pointer]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: 切り上げ満貫
+          - generic [ref=e19]: 子7700→8000／親11600→12000／子ツモ2000-3900→2000-4000／親ツモ3900オール→4000オール に切り上げます（既定ON）。
+        - switch "切り上げ満貫 子7700→8000／親11600→12000／子ツモ2000-3900→2000-4000／親ツモ3900オール→4000オール に切り上げます（既定ON）。" [active] [ref=e20]
+  - contentinfo [ref=e10]:
+    - navigation "フッター" [ref=e11]:
+      - link "学習ガイド" [ref=e12] [cursor=pointer]:
+        - /url: /articles
+      - link "プライバシーポリシー" [ref=e13] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=e14]: © 2026 麻雀点数トレーニング

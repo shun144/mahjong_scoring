@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { loadStats } from "../store/statsStore";
 import { FuQuizPage } from "./FuQuizPage";
 import { FuResultPage } from "./FuResultPage";
+import { StatsPage } from "./StatsPage";
 
 function renderFuQuiz() {
   return render(
@@ -11,6 +12,7 @@ function renderFuQuiz() {
       <Routes>
         <Route path="/fu/quiz" element={<FuQuizPage />} />
         <Route path="/fu/result" element={<FuResultPage />} />
+        <Route path="/stats" element={<StatsPage />} />
       </Routes>
     </MemoryRouter>,
   );
@@ -51,5 +53,14 @@ describe("FuQuizPage", () => {
     renderFuQuiz();
     fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
     expect(screen.getAllByRole("button")).toHaveLength(5);
+  });
+
+  it("returns to the fu quiz page (not the score quiz page) after viewing stats", () => {
+    renderFuQuiz();
+    fireEvent.click(screen.getByRole("link", { name: "成績を見る" }));
+    expect(screen.getByRole("heading", { name: "成績" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
+    expect(screen.getByRole("heading", { name: "符計算" })).toBeInTheDocument();
   });
 });

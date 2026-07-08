@@ -1,0 +1,64 @@
+- generic [ref=f6e3]:
+  - main [ref=f6e4]:
+    - generic [ref=f6e5]:
+      - heading "出題" [level=1] [ref=f6e6]
+      - generic [ref=f6e7]:
+        - link "ホームに戻る" [ref=f6e8] [cursor=pointer]:
+          - /url: /
+        - link "成績を見る" [ref=f6e9] [cursor=pointer]:
+          - /url: /stats
+    - region "局条件" [ref=f6e10]:
+      - generic [ref=f6e12]: 満貫切上
+      - generic "場風東 自風東" [ref=f6e13]:
+        - generic [ref=f6e14]: 東
+        - generic [ref=f6e15]: 場
+        - generic [ref=f6e16]: 東
+        - generic [ref=f6e17]: 家
+      - generic [ref=f6e19]: 親
+    - region "問題" [ref=f6e20]:
+      - region "アガリ牌・ドラ表示牌" [ref=f6e21]:
+        - generic [ref=f6e23]:
+          - generic [ref=f6e24]: ツモ
+          - img "一索" [ref=f6e27]
+        - generic [ref=f6e31]:
+          - generic [ref=f6e32]:
+            - generic [ref=f6e33]: 表
+            - img "三索" [ref=f6e36]
+          - generic [ref=f6e38]:
+            - generic [ref=f6e39]: 裏
+            - generic [ref=f6e41]: なし
+      - generic [ref=f6e42]:
+        - generic [ref=f6e43]: 手牌
+        - generic [ref=f6e46]:
+          - img "一筒" [ref=f6e47]
+          - img "二筒" [ref=f6e49]
+          - img "三筒" [ref=f6e51]
+          - img "一索" [ref=f6e53]
+          - img "一索" [ref=f6e55]
+          - img "三索" [ref=f6e57]
+          - img "三索" [ref=f6e59]
+          - img "四索" [ref=f6e61]
+          - img "四索" [ref=f6e63]
+          - img "五索" [ref=f6e65]
+          - img "五索" [ref=f6e67]
+          - img "南" [ref=f6e69]
+          - img "南" [ref=f6e71]
+    - generic [ref=f6e74]:
+      - paragraph [ref=f6e75]:
+        - generic [ref=f6e76]: 🎯
+        - text: 点数を選んでください
+      - generic [ref=f6e77]:
+        - button "1000オール" [ref=f6e78] [cursor=pointer]
+        - button "2600オール" [ref=f6e79] [cursor=pointer]
+        - button "2000オール" [ref=f6e80] [cursor=pointer]
+        - button "4000オール" [ref=f6e81] [cursor=pointer]
+    - button "次の問題へ" [ref=f6e83] [cursor=pointer]:
+      - text: 次の問題へ
+      - generic [ref=f6e84]: ↻
+  - contentinfo [ref=f6e85]:
+    - navigation "フッター" [ref=f6e86]:
+      - link "学習ガイド" [ref=f6e87] [cursor=pointer]:
+        - /url: /articles
+      - link "プライバシーポリシー" [ref=f6e88] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=f6e89]: © 2026 麻雀点数トレーニング

@@ -117,7 +117,6 @@ export function PrivacyPolicyPage() {
         <h2>第7条（お問い合わせ窓口）</h2>
         <p>本ポリシーに関するお問い合わせは、下記の窓口までお願いいたします。</p>
         <p className="privacy-contact">
-          お問い合わせフォーム:{" "}
           <a href={CONTACT_FORM_URL} target="_blank" rel="noopener noreferrer">
             お問い合わせフォームを開く
           </a>

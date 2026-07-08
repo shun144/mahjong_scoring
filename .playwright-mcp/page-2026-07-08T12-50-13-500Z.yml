@@ -1,0 +1,45 @@
+- generic [ref=e3]:
+  - main [ref=e91]:
+    - generic [ref=e92]:
+      - heading "解説" [level=1] [ref=e93]
+      - generic [ref=e94]:
+        - link "ホームに戻る" [ref=e95] [cursor=pointer]:
+          - /url: /
+        - link "成績を見る" [ref=e96] [cursor=pointer]:
+          - /url: /stats
+    - generic [ref=e97]:
+      - paragraph [ref=e98]: ✕ 不正解
+      - paragraph [ref=e99]: "答え: 16000"
+    - region "点数計算" [ref=e100]:
+      - generic [ref=e101]: 内訳
+      - list [ref=e102]:
+        - listitem [ref=e103]:
+          - generic [ref=e104]: 役牌(白)
+          - generic [ref=e105]: 1翻
+        - listitem [ref=e106]:
+          - generic [ref=e107]: 役牌(自風・北)
+          - generic [ref=e108]: 1翻
+        - listitem [ref=e109]:
+          - generic [ref=e110]: 対々和
+          - generic [ref=e111]: 2翻
+        - listitem [ref=e112]:
+          - generic [ref=e113]: ドラ
+          - generic [ref=e114]: 3翻
+        - listitem [ref=e115]:
+          - generic [ref=e116]: 赤ドラ
+          - generic [ref=e117]: 1翻
+      - paragraph [ref=e118]: 8翻 倍満 (子ロン) → 16000
+    - generic [ref=e119]:
+      - link "問題に戻る" [ref=e120] [cursor=pointer]:
+        - /url: /quiz
+      - link "次の問題へ" [ref=e121] [cursor=pointer]:
+        - /url: /quiz
+        - text: 次の問題へ
+        - generic [ref=e122]: →
+  - contentinfo [ref=e86]:
+    - navigation "フッター" [ref=e87]:
+      - link "学習ガイド" [ref=e88] [cursor=pointer]:
+        - /url: /articles
+      - link "プライバシーポリシー" [ref=e89] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=e90]: © 2026 麻雀点数トレーニング

@@ -1,0 +1,52 @@
+- generic [ref=f24e3]:
+  - main [ref=f24e90]:
+    - generic [ref=f24e91]:
+      - heading "解説" [level=1] [ref=f24e92]
+      - generic [ref=f24e93]:
+        - link "ホームに戻る" [ref=f24e94] [cursor=pointer]:
+          - /url: /
+        - link "成績を見る" [ref=f24e95] [cursor=pointer]:
+          - /url: /stats
+    - generic [ref=f24e96]:
+      - paragraph [ref=f24e97]: ✕ 不正解
+      - paragraph [ref=f24e98]: "答え: 700 / 1300"
+    - region "点数計算" [ref=f24e99]:
+      - generic [ref=f24e100]: 内訳
+      - list [ref=f24e101]:
+        - listitem [ref=f24e102]:
+          - generic [ref=f24e103]: 基本符
+          - generic [ref=f24e104]: 20符
+        - listitem [ref=f24e105]:
+          - generic [ref=f24e106]: ツモ
+          - generic [ref=f24e107]: +2符
+        - listitem [ref=f24e108]:
+          - generic [ref=f24e109]: 暗刻(幺九)
+          - generic [ref=f24e110]: +8符
+        - listitem [ref=f24e111]:
+          - generic [ref=f24e112]: 暗刻(中張)
+          - generic [ref=f24e113]: +4符
+        - listitem [ref=f24e114]:
+          - generic [ref=f24e115]: "待ち: 嵌張(カンチャン)"
+          - generic [ref=f24e116]: +2符
+      - list [ref=f24e117]:
+        - listitem [ref=f24e118]:
+          - generic [ref=f24e119]: 門前清自摸和
+          - generic [ref=f24e120]: 1翻
+        - listitem [ref=f24e121]:
+          - generic [ref=f24e122]: 赤ドラ
+          - generic [ref=f24e123]: 1翻
+      - paragraph [ref=f24e124]: 40符2翻 (子ツモ) → 700 / 1300
+    - generic [ref=f24e125]:
+      - link "問題に戻る" [ref=f24e126] [cursor=pointer]:
+        - /url: /quiz
+      - link "次の問題へ" [ref=f24e127] [cursor=pointer]:
+        - /url: /quiz
+        - text: 次の問題へ
+        - generic [ref=f24e128]: →
+  - contentinfo [ref=f24e85]:
+    - navigation "フッター" [ref=f24e86]:
+      - link "学習ガイド" [ref=f24e87] [cursor=pointer]:
+        - /url: /articles
+      - link "プライバシーポリシー" [ref=f24e88] [cursor=pointer]:
+        - /url: /privacy
+    - paragraph [ref=f24e89]: © 2026 麻雀点数トレーニング

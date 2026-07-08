@@ -10,6 +10,7 @@ import type { SettingsRepository } from "../settings/settingsRepository";
 import { loadStats } from "../store/statsStore";
 import { QuizPage } from "./QuizPage";
 import { ResultPage } from "./ResultPage";
+import { StatsPage } from "./StatsPage";
 
 function tiles(compact: string) {
   const parts = compact.match(/\d+[mpsz]/g) ?? [];
@@ -75,6 +76,7 @@ function renderQuiz(repository: SettingsRepository = createInMemoryRepository())
         <Routes>
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/result" element={<ResultPage />} />
+          <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </SettingsProvider>
     </MemoryRouter>,
@@ -160,5 +162,12 @@ describe("QuizPage", () => {
 
     expect(await screen.findByRole("heading", { name: "解説" })).toBeInTheDocument();
     expect(screen.getByText(/答え: 8000/)).toBeInTheDocument();
+  });
+
+  it("returns to the score quiz page (not the fu quiz page) after viewing stats", () => {
+    renderQuiz();
+    fireEvent.click(screen.getByRole("link", { name: "成績を見る" }));
+    expect(screen.getByRole("heading", { name: "成績" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "練習に戻る" })).toHaveAttribute("href", "/quiz");
   });
 });

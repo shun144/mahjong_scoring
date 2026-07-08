@@ -1,40 +1,178 @@
+/* =====================================================================
+   統計画面（StatsPage）— Flip7 デザインシステム（docs/DESIGN.md）で再構築。
+   stats.css はこのページ専用。共有の .page-header / .card / .btn-secondary / h2 も
+   .stats-page 配下にスコープして他画面へ波及させない。マークアップ・DOM は無改変。
+   ===================================================================== */
+.stats-page {
+  /* --- 配色トークン（他画面と同一の Flip7 パレット） --- */
+  --fl-teal: #2ba8a2;
+  --fl-teal-light: #3cc4bd;
+  --fl-teal-dark: #1e8c86;
+  --fl-teal-bg: #e8f6f5;
+  --fl-gold: #ffd23f;
+  --fl-gold-ink: #8a6d00;
+  --fl-coral: #ef6c4a;
+  --fl-coral-dark: #d45233;
+  --fl-cream: #fff8e7;
+  --fl-surface: #eff8f7;
+  --fl-card: #ffffff;
+  --fl-ink: #123f3c;
+  --fl-body: #34514f;
+  --fl-muted: #566d6b;
+
+  --fl-r-md: 16px;
+  --fl-r-lg: 24px;
+  --fl-r-pill: 999px;
+
+  --fl-glow-teal-soft: 0 4px 14px rgba(43, 168, 162, 0.18);
+
+  --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fl-dur: 220ms;
+
+  gap: 24px;
+  color: var(--fl-body);
+  background:
+    radial-gradient(130% 55% at 50% -10%, rgba(255, 226, 138, 0.5) 0%, rgba(255, 226, 138, 0) 60%),
+    var(--fl-surface);
+}
+
+/* ヘッダー — 他画面と同じ浮遊 sticky カード。 */
+.stats-page .page-header {
+  position: sticky;
+  top: 8px;
+  z-index: 10;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(255, 248, 231, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(43, 168, 162, 0.22);
+  border-radius: var(--fl-r-md);
+  box-shadow: var(--fl-glow-teal-soft);
+}
+.stats-page .page-header h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--fl-teal-dark);
+}
+.stats-page .page-header-link {
+  gap: 8px;
+}
+.stats-page .page-header-link-item {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--fl-teal-dark);
+  background: var(--fl-cream);
+  border: 2px solid var(--fl-teal);
+  border-radius: var(--fl-r-pill);
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    background var(--fl-dur) var(--fl-bounce),
+    color var(--fl-dur) var(--fl-bounce);
+}
+@media (hover: hover) {
+  .stats-page .page-header-link-item:hover {
+    color: var(--fl-cream);
+    background: var(--fl-teal);
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+}
+.stats-page .page-header-link-item:active {
+  transform: scale(0.95);
+}
+
+/* =====================================================================
+   累計指標カード（正答率＝ティール／連続正解＝コーラル／最高＝ゴールド）
+   ===================================================================== */
 .stats-summary {
   display: flex;
-  gap: var(--space-4);
+  gap: 14px;
   flex-wrap: wrap;
 }
 
-.stat-card {
+.stats-page .stat-card {
+  --accent: var(--fl-teal);
+  --accent-ink: var(--fl-teal-dark);
   flex: 1 1 120px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--space-4);
+  align-items: center;
+  gap: 4px;
+  padding: 16px 14px;
+  text-align: center;
+  background: var(--fl-card);
+  border: 2px solid color-mix(in srgb, var(--accent) 26%, #fff);
+  border-radius: var(--fl-r-lg);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 24%, transparent);
+  animation: stats-pop 400ms var(--fl-bounce) both;
+}
+/* 累計正答率＝主役 KPI。全幅で大きく。 */
+.stats-page .stat-card:nth-child(1) {
+  --accent: var(--fl-teal);
+  --accent-ink: var(--fl-teal-dark);
+  flex-basis: 100%;
+}
+.stats-page .stat-card:nth-child(2) {
+  --accent: var(--fl-coral);
+  --accent-ink: var(--fl-coral-dark);
+  animation-delay: 60ms;
+}
+.stats-page .stat-card:nth-child(3) {
+  --accent: var(--fl-gold);
+  --accent-ink: var(--fl-gold-ink);
+  animation-delay: 120ms;
 }
 
 .stat-card-label {
   font-size: var(--fs-sm);
-  color: var(--color-text-sub);
+  font-weight: 700;
+  color: var(--fl-muted);
 }
-
-/* L2: 集計数値（数字専用フォント。L2=600 に統一） */
 .stat-card-value {
-  font-size: var(--fs-emphasis);
-  font-weight: 600;
+  font-size: 1.9rem;
+  font-weight: 800;
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
-  color: var(--color-text);
+  line-height: 1.1;
+  color: var(--accent-ink);
 }
-
+.stats-page .stat-card:nth-child(1) .stat-card-value {
+  font-size: 2.8rem;
+}
 .stat-card-sub {
   font-size: var(--fs-sm);
-  color: var(--color-text-sub);
+  color: var(--fl-muted);
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
 }
 
+/* 空状態 */
+.stats-page > p {
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--fl-muted);
+  background: var(--fl-card);
+  border: 2px dashed rgba(43, 168, 162, 0.35);
+  border-radius: var(--fl-r-lg);
+}
+
+/* =====================================================================
+   タグ別 正答率バー
+   ===================================================================== */
 .stats-page h2 {
-  margin: 0 0 var(--space-3);
+  margin: 0 0 14px;
+  padding-bottom: 6px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--fl-teal-dark);
+  border-bottom: 3px dashed rgba(43, 168, 162, 0.4);
 }
 
 .tag-row-list {
@@ -43,47 +181,94 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 14px;
 }
 
 .tag-row-label {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
   font-size: var(--fs-sm);
-  margin-bottom: var(--space-1);
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
 }
+.tag-row-label > span:first-child {
+  font-weight: 800;
+  color: var(--fl-ink);
+}
+.tag-row-label > span:last-child {
+  color: var(--fl-muted);
+}
 
+/* 進捗トラック＝淡ティール、フィル＝ティールのグラデ（DESIGN.md: progress bars=teal）。 */
 .tag-row-bar-track {
-  height: var(--space-2);
-  border-radius: var(--radius-pill);
-  background: var(--color-border);
+  height: 12px;
+  border-radius: var(--fl-r-pill);
+  background: var(--fl-teal-bg);
+  border: 1px solid rgba(43, 168, 162, 0.18);
   overflow: hidden;
 }
-
-/* 進捗バーは「主役」としてグラデ適用。幅変化はトランジションで演出 */
 .tag-row-bar-fill {
   height: 100%;
-  background: var(--gradient-accent);
-  border-radius: var(--radius-pill);
-  transition: width var(--duration) var(--ease-standard);
+  background: linear-gradient(90deg, var(--fl-teal) 0%, var(--fl-teal-light) 100%);
+  border-radius: var(--fl-r-pill);
+  transition: width var(--fl-dur) var(--fl-bounce);
 }
 
-/* --- 成績のリセット（クリックで即時消去。破壊的操作のため danger 色で示す） --- */
+/* =====================================================================
+   成績のリセット（破壊的操作＝コーラルのアウトラインピル）
+   ===================================================================== */
 .stats-reset {
   display: flex;
   justify-content: center;
-  margin-top: var(--space-4);
+  margin-top: 8px;
 }
-
-.stats-reset-trigger {
-  color: var(--color-danger-text);
+.stats-page .stats-reset-trigger {
+  min-height: 48px;
+  padding: 0 24px;
+  font-weight: 700;
+  color: var(--fl-coral-dark);
+  background: var(--fl-cream);
+  border: 2px solid var(--fl-coral);
+  border-radius: var(--fl-r-pill);
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    background var(--fl-dur) var(--fl-bounce),
+    color var(--fl-dur) var(--fl-bounce),
+    box-shadow var(--fl-dur) var(--fl-bounce);
 }
-
 @media (hover: hover) {
-  .stats-reset-trigger:hover {
-    border-color: var(--color-danger-border);
-    background: var(--color-danger-bg);
+  .stats-page .stats-reset-trigger:hover {
+    color: var(--fl-cream);
+    background: var(--fl-coral);
+    border-color: var(--fl-coral);
+    box-shadow: 0 8px 22px rgba(239, 108, 74, 0.32);
+    transform: translateY(-2px);
+  }
+}
+.stats-page .stats-reset-trigger:active {
+  transform: scale(0.96);
+}
+
+@keyframes stats-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats-page .stat-card {
+    animation: none;
+  }
+  .stats-page .page-header-link-item,
+  .stats-page .stats-reset-trigger,
+  .tag-row-bar-fill {
+    transition: none;
   }
 }

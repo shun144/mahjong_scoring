@@ -1,197 +1,509 @@
-/* 記事一覧 */
+/* =====================================================================
+   記事一覧（ArticleListPage）— Flip7 デザインシステム（docs/DESIGN.md）レイヤー。
+   一覧専用クラス（.articles-page / .article-list*）のみ Flip7 化し、すべて
+   .articles-page 配下にスコープする。共有の .page-header と、同ファイル後半の
+   記事詳細（.article-page 系）には一切影響させない。
+   ===================================================================== */
 .articles-page {
-  gap: var(--space-4);
+  /* --- 配色トークン（他画面と同一の Flip7 パレット） --- */
+  --fl-teal: #2ba8a2;
+  --fl-teal-dark: #1e8c86;
+  --fl-teal-bg: #e8f6f5;
+  --fl-gold-dark: #e6b800;
+  --fl-coral: #ef6c4a;
+  --fl-sky: #5dade2;
+  --fl-cream: #fff8e7;
+  --fl-surface: #eff8f7;
+  --fl-card: #ffffff;
+  --fl-ink: #123f3c;
+  --fl-body: #34514f;
+  --fl-muted: #566d6b;
+
+  --fl-r-md: 16px;
+  --fl-r-lg: 24px;
+  --fl-r-pill: 999px;
+
+  --fl-glow-teal-soft: 0 4px 14px rgba(43, 168, 162, 0.18);
+
+  --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fl-dur: 220ms;
+
+  gap: 24px;
+  color: var(--fl-body);
+  background:
+    radial-gradient(130% 55% at 50% -10%, rgba(255, 226, 138, 0.5) 0%, rgba(255, 226, 138, 0) 60%),
+    var(--fl-surface);
 }
 
-.article-list {
+/* ヘッダー — 他画面と同じ浮遊 sticky カード。 */
+.articles-page .page-header {
+  position: sticky;
+  top: 8px;
+  z-index: 10;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(255, 248, 231, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(43, 168, 162, 0.22);
+  border-radius: var(--fl-r-md);
+  box-shadow: var(--fl-glow-teal-soft);
+}
+.articles-page .page-header h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--fl-teal-dark);
+}
+.articles-page .page-header-link {
+  gap: 8px;
+}
+.articles-page .page-header-link-item {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--fl-teal-dark);
+  background: var(--fl-cream);
+  border: 2px solid var(--fl-teal);
+  border-radius: var(--fl-r-pill);
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    background var(--fl-dur) var(--fl-bounce),
+    color var(--fl-dur) var(--fl-bounce);
+}
+@media (hover: hover) {
+  .articles-page .page-header-link-item:hover {
+    color: var(--fl-cream);
+    background: var(--fl-teal);
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+}
+.articles-page .page-header-link-item:active {
+  transform: scale(0.95);
+}
+
+/* 一覧本体 */
+.articles-page .article-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 14px;
 }
 
-.article-list-item {
+/* 各記事＝タップしたくなるカード。色付き左アクセントバー＋シェブロン＋色付きグロー。
+   アクセント色は nth-child でティール→コーラル→ゴールド→スカイと巡回させ、
+   レトロ・ポップな彩りにする（--accent 1 変数だけで枠/バー/矢印/影を連動）。 */
+.articles-page .article-list-item {
+  --accent: var(--fl-teal);
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-surface-2);
+  gap: 4px;
+  padding: 16px 44px 16px 22px;
+  background: var(--fl-card);
+  border: 2px solid color-mix(in srgb, var(--accent) 22%, #fff);
+  border-radius: var(--fl-r-lg);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 26%, transparent);
   text-decoration: none;
-  color: var(--color-text);
+  color: var(--fl-ink);
+  overflow: hidden;
   transition:
-    border-color var(--duration) var(--ease-standard),
-    background var(--duration) var(--ease-standard);
+    transform var(--fl-dur) var(--fl-bounce),
+    box-shadow var(--fl-dur) var(--fl-bounce),
+    border-color var(--fl-dur) var(--fl-bounce);
+  animation: articles-rise 400ms var(--fl-bounce) both;
+}
+/* 左アクセントバー（6px）。 */
+.articles-page .article-list-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--accent);
+}
+/* 右のシェブロン。 */
+.articles-page .article-list-item::after {
+  content: "›";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  transition: transform var(--fl-dur) var(--fl-bounce);
+}
+
+.articles-page .article-list li:nth-child(4n + 2) .article-list-item {
+  --accent: var(--fl-coral);
+}
+.articles-page .article-list li:nth-child(4n + 3) .article-list-item {
+  --accent: var(--fl-gold-dark);
+}
+.articles-page .article-list li:nth-child(4n + 4) .article-list-item {
+  --accent: var(--fl-sky);
 }
 
 @media (hover: hover) {
-  .article-list-item:hover {
-    border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
+  .articles-page .article-list-item:hover {
+    border-color: var(--accent);
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--accent) 42%, transparent);
+    transform: translateY(-4px);
+  }
+  .articles-page .article-list-item:hover::after {
+    transform: translateY(-50%) translateX(3px);
+  }
+}
+.articles-page .article-list-item:active {
+  transform: scale(0.98);
+}
+
+.articles-page .article-list-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--fl-ink);
+}
+.articles-page .article-list-desc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--fl-muted);
+}
+
+@keyframes articles-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.article-list-title {
-  font-weight: 600;
+@media (prefers-reduced-motion: reduce) {
+  .articles-page .article-list-item {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+  .articles-page .page-header-link-item {
+    transition: none;
+    transform: none;
+  }
 }
 
-.article-list-desc {
-  font-size: var(--fs-sm);
-  color: var(--color-text-sub);
-}
-
-/* 記事詳細 */
+/* =====================================================================
+   記事詳細（ArticlePage）— Flip7 デザインシステム（docs/DESIGN.md）レイヤー。
+   すべて .article-page 配下にスコープ。共有の .page-header-link-item / .btn-primary も
+   この配下でのみ上書きし、他画面へ波及させない。マークアップ・DOM は無改変（CSS のみ）。
+   ===================================================================== */
 .article-page {
-  gap: var(--space-5);
+  /* --- 配色トークン（他画面と同一の Flip7 パレット） --- */
+  --fl-teal: #2ba8a2;
+  --fl-teal-dark: #1e8c86;
+  --fl-teal-bg: #e8f6f5;
+  --fl-gold: #ffd23f;
+  --fl-gold-light: #ffe47a;
+  --fl-gold-dark: #e6b800;
+  --fl-cream: #fff8e7;
+  --fl-surface: #eff8f7;
+  --fl-card: #ffffff;
+  --fl-ink: #123f3c;
+  --fl-body: #34514f;
+  --fl-muted: #566d6b;
+
+  --fl-r-sm: 10px;
+  --fl-r-md: 16px;
+  --fl-r-lg: 24px;
+  --fl-r-pill: 999px;
+
+  --fl-glow-teal: 0 8px 22px rgba(43, 168, 162, 0.28);
+  --fl-glow-teal-soft: 0 4px 14px rgba(43, 168, 162, 0.18);
+  --fl-glow-gold: 0 8px 22px rgba(255, 210, 63, 0.42);
+
+  --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fl-dur: 220ms;
+
+  gap: 24px;
+  color: var(--fl-body);
+  background:
+    radial-gradient(120% 40% at 50% -6%, rgba(255, 226, 138, 0.45) 0%, rgba(255, 226, 138, 0) 60%),
+    var(--fl-surface);
 }
 
-.article-topnav {
+/* トップナビ — クリームの浮遊 sticky バー（戻る導線をピルで）。 */
+.article-page .article-topnav {
+  position: sticky;
+  top: 8px;
+  z-index: 10;
   display: flex;
-  gap: var(--space-2);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 248, 231, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(43, 168, 162, 0.22);
+  border-radius: var(--fl-r-md);
+  box-shadow: var(--fl-glow-teal-soft);
+}
+.article-page .page-header-link-item {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--fl-teal-dark);
+  background: var(--fl-cream);
+  border: 2px solid var(--fl-teal);
+  border-radius: var(--fl-r-pill);
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    background var(--fl-dur) var(--fl-bounce),
+    color var(--fl-dur) var(--fl-bounce);
+}
+@media (hover: hover) {
+  .article-page .page-header-link-item:hover {
+    color: var(--fl-cream);
+    background: var(--fl-teal);
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+}
+.article-page .page-header-link-item:active {
+  transform: scale(0.95);
 }
 
-.article-body {
+/* 本文は白い読み物カードに載せて、暖色の地から浮かせる。 */
+.article-page .article-body {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  padding: 22px 20px;
+  background: var(--fl-card);
+  border: 2px solid rgba(43, 168, 162, 0.22);
+  border-radius: var(--fl-r-lg);
+  box-shadow: var(--fl-glow-teal-soft);
   line-height: var(--leading-normal);
+  color: var(--fl-body);
 }
 
-.article-body h1 {
-  font-size: 1.4rem;
+/* 記事タイトル：特大の太字インク＋ゴールドの下線アクセント。 */
+.article-page .article-body h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
   line-height: var(--leading-tight);
+  color: var(--fl-ink);
+}
+.article-page .article-body h1::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 5px;
+  margin-top: 12px;
+  background: var(--fl-gold);
+  border-radius: var(--fl-r-pill);
 }
 
-.article-body h2 {
+/* セクション見出し：ティールの太字＋破線ボーダー（Flip7 の Section Titles）。 */
+.article-page .article-body h2 {
   margin-top: var(--space-3);
+  padding-bottom: 6px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--fl-teal-dark);
+  border-bottom: 3px dashed rgba(43, 168, 162, 0.4);
 }
 
-.article-body p,
-.article-body ul,
-.article-body ol {
+.article-page .article-body p,
+.article-page .article-body ul,
+.article-page .article-body ol {
   margin: 0;
 }
 
-.article-body ul,
-.article-body ol {
-  padding-left: 1.2em;
+.article-page .article-body ul,
+.article-page .article-body ol {
+  padding-left: 1.3em;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
 }
-
-.article-body blockquote {
-  margin: 0;
-  padding: var(--space-3) var(--space-4);
-  border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius-xs);
-  background: var(--color-surface);
-  color: var(--color-text-sub);
+/* 箇条書きの記号はティールで。 */
+.article-page .article-body li::marker {
+  color: var(--fl-teal);
 }
 
-.article-body pre {
+/* 引用＝ティールの補足カード（左アクセントバー）。 */
+.article-page .article-body blockquote {
   margin: 0;
-  padding: var(--space-3) var(--space-4);
+  padding: 14px 16px;
+  border: 2px solid rgba(43, 168, 162, 0.3);
+  border-left: 6px solid var(--fl-teal);
+  border-radius: var(--fl-r-md);
+  background: var(--fl-teal-bg);
+  color: var(--fl-body);
+}
+.article-page .article-body blockquote p {
+  color: var(--fl-body);
+}
+
+.article-page .article-body pre {
+  margin: 0;
+  padding: 14px 16px;
   overflow-x: auto;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
+  border: 2px solid rgba(43, 168, 162, 0.28);
+  border-radius: var(--fl-r-md);
+  background: var(--fl-cream);
   font-size: var(--fs-sm);
 }
 
-.article-body code {
+.article-page .article-body code {
   font-family: var(--font-numeric);
 }
-
-.article-body hr {
-  margin: 0;
-  border: none;
-  border-top: 1px solid var(--color-border);
+/* インラインコード：淡いティールのピル。 */
+.article-page .article-body :not(pre) > code {
+  padding: 1px 7px;
+  font-size: 0.9em;
+  color: var(--fl-teal-dark);
+  background: var(--fl-teal-bg);
+  border-radius: 7px;
 }
 
-.article-link {
-  color: var(--color-accent);
+.article-page .article-body hr {
+  margin: 0;
+  border: none;
+  border-top: 3px dashed rgba(43, 168, 162, 0.35);
+}
+
+.article-page .article-link {
+  color: var(--fl-teal-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (hover: hover) {
+  .article-page .article-link:hover {
+    color: var(--fl-teal);
+  }
 }
 
 /* 未作成の記事へのリンク等、遷移させないテキスト。装飾は付けず地の文と区別しない。 */
-.article-link-disabled {
+.article-page .article-link-disabled {
   color: inherit;
 }
 
-/* 画像プレースホルダ（実画像は未調達のため枠のみ表示） */
-.article-image-placeholder {
+/* 画像プレースホルダ（実画像は未調達のため枠のみ表示）。ティール枠の丸カードに。 */
+.article-page .article-image-placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--space-1);
   min-height: 140px;
-  /* padding: var(--space-4); */
-  /* border: 1px dashed var(--color-border); */
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-surface);
-  color: var(--color-text-sub);
+  border: 2px solid rgba(43, 168, 162, 0.28);
+  border-radius: var(--fl-r-md);
+  background: var(--fl-teal-bg);
+  color: var(--fl-muted);
   text-align: center;
 }
-
-.article-image-placeholder-img {
+.article-page .article-image-placeholder-img {
   max-width: 100%;
   height: auto;
   border-radius: inherit;
 }
-
-.article-image-placeholder-icon {
+.article-page .article-image-placeholder-icon {
   font-size: 1.8rem;
 }
-
-.article-image-placeholder-alt {
+.article-page .article-image-placeholder-alt {
   font-size: var(--fs-sm);
 }
-
-.article-image-caption {
+.article-page .article-image-caption {
   font-size: var(--fs-sm);
-  color: var(--color-text-sub);
+  color: var(--fl-muted);
   text-align: center;
 }
 
 /* 用語集などの表。スマホ幅(640px)を超える表は横スクロールで逃がす。 */
-.article-table-wrap {
+.article-page .article-table-wrap {
   overflow-x: auto;
+  border: 2px solid rgba(43, 168, 162, 0.28);
+  border-radius: var(--fl-r-md);
 }
-
-.article-table-wrap table {
+.article-page .article-table-wrap table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--fs-sm);
 }
-
-.article-table-wrap th,
-.article-table-wrap td {
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-border);
+.article-page .article-table-wrap th,
+.article-page .article-table-wrap td {
+  padding: 8px 12px;
+  border: 1px solid rgba(43, 168, 162, 0.2);
   text-align: left;
   vertical-align: top;
 }
-
-.article-table-wrap th {
-  background: var(--color-surface);
+.article-page .article-table-wrap th {
+  color: var(--fl-teal-dark);
+  font-weight: 800;
+  background: var(--fl-teal-bg);
   white-space: nowrap;
 }
-
 /* 画像は補足列のため、未挿入時に表が間延びしないよう狭めておく */
-.article-table-wrap th:last-child,
-.article-table-wrap td:last-child {
+.article-page .article-table-wrap th:last-child,
+.article-page .article-table-wrap td:last-child {
   width: 4.5em;
 }
 
-.article-end-cta {
+/* 末尾 CTA — ゴールドのグラデ・ピル（光沢オーバーレイ＋ゴールドグロー）。 */
+.article-page .article-end-cta {
   display: flex;
   justify-content: center;
   padding-top: var(--space-3);
+}
+.article-page .article-end-cta .btn-primary {
+  position: relative;
+  overflow: hidden;
+  min-height: 54px;
+  padding: 0 28px;
+  font-weight: 800;
+  color: var(--fl-ink);
+  background: linear-gradient(180deg, var(--fl-gold-light) 0%, var(--fl-gold) 100%);
+  border: none;
+  border-radius: var(--fl-r-pill);
+  box-shadow: var(--fl-glow-gold);
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    box-shadow var(--fl-dur) var(--fl-bounce);
+}
+.article-page .article-end-cta .btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 52% 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  border-radius: var(--fl-r-pill) var(--fl-r-pill) 40% 40%;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .article-page .article-end-cta .btn-primary:hover {
+    background: linear-gradient(180deg, var(--fl-gold-light) 0%, var(--fl-gold) 100%);
+    box-shadow: 0 12px 28px rgba(255, 210, 63, 0.5);
+    transform: translateY(-2px);
+  }
+}
+.article-page .article-end-cta .btn-primary:active {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-page .page-header-link-item,
+  .article-page .article-end-cta .btn-primary {
+    transition: none;
+    transform: none;
+  }
 }
