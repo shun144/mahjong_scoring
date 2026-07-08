@@ -17,7 +17,7 @@ describe("PrivacyPolicyPage", () => {
     expect(
       screen.getByRole("heading", { name: "プライバシーポリシー", level: 1 }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "ホームに戻る" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "ホーム" })).toHaveAttribute("href", "/");
   });
 
   it("広告掲載が目的のため、広告配信の説明とオプトアウト導線を含む", () => {

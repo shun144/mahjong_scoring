@@ -1,326 +1,326 @@
 - generic [ref=f6e3]:
-  - main [ref=f6e4]:
-    - navigation "記事ナビゲーション" [ref=f6e5]:
-      - link "記事一覧に戻る" [ref=f6e6] [cursor=pointer]:
-        - /url: /articles
-      - link "ホームに戻る" [ref=f6e7] [cursor=pointer]:
-        - /url: /
-    - article [ref=f6e8]:
-      - heading "麻雀の点数計算ガイド｜符・翻から点数を出す流れ" [level=1] [ref=f6e9]
-      - paragraph [ref=f6e10]: 点数計算は、料理のレシピと同じで「作る順番」が決まっています。順番さえ覚えれば、どんな手でも同じやり方で点数を出せます。このページで全体の流れをつかんで、細かい部分は各記事で深掘りしてください。
-      - blockquote [ref=f6e11]:
-        - paragraph [ref=f6e12]:
-          - text: 「符」「翻（ハン）」「点数」の関係をつかんだら、
-          - link "麻雀点数トレーニング" [ref=f6e13] [cursor=pointer]:
-            - /url: /
-          - text: でガンガン練習してみてください。
-      - heading "点数が決まる3ステップ" [level=2] [ref=f6e14]
-      - paragraph [ref=f6e15]:
-        - img "符→翻→点数の3ステップ図" [ref=f6e16]:
-          - img "符→翻→点数の3ステップ図" [ref=f6e17]
-      - paragraph [ref=f6e18]: 点数は、次の3ステップで必ず決まります。
-      - list [ref=f6e19]:
-        - listitem [ref=f6e20]:
-          - strong [ref=f6e21]: 符を数える
-          - text: （あがりの「形」を点にする）
-        - listitem [ref=f6e22]:
-          - strong [ref=f6e23]: 翻を数える
-          - text: （役とドラを合計する）
-        - listitem [ref=f6e24]:
-          - strong [ref=f6e25]: 符と翻を点数に変える
-          - text: （計算して点数を出す）
-      - paragraph [ref=f6e26]: この順番はどんな手でも変わりません。まずはこの3つがあることだけ覚えてください。
-      - heading "このページでずっと使う例" [level=3] [ref=f6e27]
-      - paragraph [ref=f6e28]: 説明がバラバラにならないよう、次の1つの手をゴールまで一緒に追いかけます。
-      - blockquote [ref=f6e29]:
-        - paragraph [ref=f6e30]:
-          - strong [ref=f6e31]: 例：門前（鳴いていない）でツモあがり。リーチもかけた。5萬が3枚そろった暗刻があり、タンヤオも成立。待ちは両面待ち。
-      - paragraph [ref=f6e32]: この手を最後に点数まで出しきります。
-      - heading "ステップ1：符を数える" [level=2] [ref=f6e33]
-      - paragraph [ref=f6e34]: 点数計算で一番の難所がこの符です。ここさえクリアすれば、あとは一気に楽になります。
-      - paragraph [ref=f6e35]: 符とは、かんたんに言うと「あがりの形の複雑さ」を点にしたものです。難しい形であるほど符が高くなります。
-      - heading "まず20符からスタート" [level=3] [ref=f6e36]
-      - paragraph [ref=f6e37]:
-        - text: どんな手も、最初に
-        - strong [ref=f6e38]: 20符
-        - text: をもらえます。ここから、条件を満たすたびに符をたし算していきます。
-      - paragraph [ref=f6e39]: たす条件は、大きく分けて4つです。
-      - table [ref=f6e41]:
-        - rowgroup [ref=f6e42]:
-          - row "たす場所 内容 加える符" [ref=f6e43]:
-            - columnheader "たす場所" [ref=f6e44]
-            - columnheader "内容" [ref=f6e45]
-            - columnheader "加える符" [ref=f6e46]
-        - rowgroup [ref=f6e47]:
-          - row "あがり方 門前でロン +10符" [ref=f6e48]:
-            - cell "あがり方" [ref=f6e49]
-            - cell "門前でロン" [ref=f6e50]
-            - cell "+10符" [ref=f6e51]
-          - row "あがり方 ツモ（平和・七対子を除く） +2符" [ref=f6e52]:
-            - cell "あがり方" [ref=f6e53]
-            - cell "ツモ（平和・七対子を除く）" [ref=f6e54]
-            - cell "+2符" [ref=f6e55]
-          - row "面子（メンツ） 刻子や槓子の種類による（下の表） +2〜+32符" [ref=f6e56]:
-            - cell "面子（メンツ）" [ref=f6e57]
-            - cell "刻子や槓子の種類による（下の表）" [ref=f6e58]
-            - cell "+2〜+32符" [ref=f6e59]
-          - row "雀頭（ジャントウ） 役牌のペア（白・發・中・場風・自風） +2符" [ref=f6e60]:
-            - cell "雀頭（ジャントウ）" [ref=f6e61]
-            - cell "役牌のペア（白・發・中・場風・自風）" [ref=f6e62]
-            - cell "+2符" [ref=f6e63]
-          - row "待ち カンチャン・ペンチャン・単騎 +2符" [ref=f6e64]:
-            - cell "待ち" [ref=f6e65]
-            - cell "カンチャン・ペンチャン・単騎" [ref=f6e66]
-            - cell "+2符" [ref=f6e67]
-      - heading "面子（刻子・槓子）の符" [level=3] [ref=f6e68]
-      - paragraph [ref=f6e69]: 同じ牌をそろえた面子は、次のように符がつきます。順子（連番3枚）は0符です。
-      - table [ref=f6e71]:
-        - rowgroup [ref=f6e72]:
-          - row "面子の種類 中張牌（2〜8） 么九牌（1・9・字牌）" [ref=f6e73]:
-            - columnheader "面子の種類" [ref=f6e74]
-            - columnheader "中張牌（2〜8）" [ref=f6e75]
-            - columnheader "么九牌（1・9・字牌）" [ref=f6e76]
-        - rowgroup [ref=f6e77]:
-          - row "明刻（鳴いた3枚） 2符 4符" [ref=f6e78]:
-            - cell "明刻（鳴いた3枚）" [ref=f6e79]
-            - cell "2符" [ref=f6e80]
-            - cell "4符" [ref=f6e81]
-          - row "暗刻（自力の3枚） 4符 8符" [ref=f6e82]:
-            - cell "暗刻（自力の3枚）" [ref=f6e83]
-            - cell "4符" [ref=f6e84]
-            - cell "8符" [ref=f6e85]
-          - row "明槓（鳴いた4枚） 8符 16符" [ref=f6e86]:
-            - cell "明槓（鳴いた4枚）" [ref=f6e87]
-            - cell "8符" [ref=f6e88]
-            - cell "16符" [ref=f6e89]
-          - row "暗槓（自力の4枚） 16符 32符" [ref=f6e90]:
-            - cell "暗槓（自力の4枚）" [ref=f6e91]
-            - cell "16符" [ref=f6e92]
-            - cell "32符" [ref=f6e93]
-      - paragraph [ref=f6e94]:
-        - text: 覚え方はシンプルで、
-        - strong [ref=f6e95]: 「隠しているほど（暗いほど）」「端っこの牌（么九）ほど」高くなる
-        - text: 、と考えると迷いません。
-      - heading "待ちの種類" [level=3] [ref=f6e96]
-      - paragraph [ref=f6e97]: あと1枚を待つ形にも符がつきます。
-      - table [ref=f6e99]:
-        - rowgroup [ref=f6e100]:
-          - row "待ちの種類 どんな待ち 加える符" [ref=f6e101]:
-            - columnheader "待ちの種類" [ref=f6e102]
-            - columnheader "どんな待ち" [ref=f6e103]
-            - columnheader "加える符" [ref=f6e104]
-        - rowgroup [ref=f6e105]:
-          - row "両面（リャンメン） 例：34 で 2 か 5 を待つ 0符" [ref=f6e106]:
-            - cell "両面（リャンメン）" [ref=f6e107]
-            - cell "例：34 で 2 か 5 を待つ" [ref=f6e108]
-            - cell "0符" [ref=f6e109]
-          - row "シャンポン ペア2組でどちらかが刻子になるのを待つ 0符" [ref=f6e110]:
-            - cell "シャンポン" [ref=f6e111]
-            - cell "ペア2組でどちらかが刻子になるのを待つ" [ref=f6e112]
-            - cell "0符" [ref=f6e113]
-          - row "カンチャン 例：13 で間の 2 だけを待つ +2符" [ref=f6e114]:
-            - cell "カンチャン" [ref=f6e115]
-            - cell "例：13 で間の 2 だけを待つ" [ref=f6e116]
-            - cell "+2符" [ref=f6e117]
-          - row "ペンチャン 例：12 で 3 だけ／89 で 7 だけを待つ +2符" [ref=f6e118]:
-            - cell "ペンチャン" [ref=f6e119]
-            - cell "例：12 で 3 だけ／89 で 7 だけを待つ" [ref=f6e120]
-            - cell "+2符" [ref=f6e121]
-          - row "単騎（タンキ） 雀頭のもう1枚を待つ +2符" [ref=f6e122]:
-            - cell "単騎（タンキ）" [ref=f6e123]
-            - cell "雀頭のもう1枚を待つ" [ref=f6e124]
-            - cell "+2符" [ref=f6e125]
-      - heading "例で符を数えてみる" [level=3] [ref=f6e126]
-      - paragraph [ref=f6e127]:
-        - img "符の内訳の積み上げ図" [ref=f6e128]:
-          - img "符の内訳の積み上げ図" [ref=f6e129]
-      - paragraph [ref=f6e130]: さっきの例（門前ツモ・5萬の暗刻・両面待ち）で数えてみましょう。
-      - list [ref=f6e131]:
-        - listitem [ref=f6e132]:
-          - text: 基本：
-          - strong [ref=f6e133]: 20符
-        - listitem [ref=f6e134]:
-          - text: ツモであがった：
-          - strong [ref=f6e135]: +2符
-        - listitem [ref=f6e136]:
-          - text: 5萬（中張牌）の暗刻：
-          - strong [ref=f6e137]: +4符
-        - listitem [ref=f6e138]:
-          - text: 両面待ち：
-          - strong [ref=f6e139]: +0符
-        - listitem [ref=f6e140]:
-          - text: 雀頭は普通の牌：
-          - strong [ref=f6e141]: +0符
-      - paragraph [ref=f6e142]:
-        - text: 合計は
-        - strong [ref=f6e143]: 20＋2＋4＝26符
-        - text: 。
-      - paragraph [ref=f6e144]:
-        - text: 最後に
-        - strong [ref=f6e145]: 10符の位で切り上げ
-        - text: るので、26符 →
-        - strong [ref=f6e146]: 30符
-        - text: になります。この「切り上げ」を忘れる人がとても多いので注意してください。
-      - heading "覚えておく2つの例外" [level=3] [ref=f6e147]
-      - list [ref=f6e148]:
-        - listitem [ref=f6e149]:
-          - strong [ref=f6e150]: 平和ツモ
-          - text: は計算せず
-          - strong [ref=f6e151]: 20符で固定
-        - listitem [ref=f6e152]:
-          - strong [ref=f6e153]: 七対子
-          - text: は計算せず
-          - strong [ref=f6e154]: 25符で固定
-      - paragraph [ref=f6e155]: 詳しくは「符計算のやり方」へ。
-      - heading "ステップ2：翻を数える" [level=2] [ref=f6e156]
-      - paragraph [ref=f6e157]:
-        - text: 翻は、成立した
-        - strong [ref=f6e158]: 役の翻数＋ドラの数
-        - text: をぜんぶ足したものです。役が1つもないとあがれない、という点にも注意してください。
-      - paragraph [ref=f6e159]:
-        - img "主要な役の翻数の例" [ref=f6e160]:
-          - img "主要な役の翻数の例" [ref=f6e161]
-        - emphasis [ref=f6e162]: リーチ1翻・タンヤオ1翻・ホンイツ2/3翻…など主要役を一覧表で
-      - paragraph [ref=f6e163]: さっきの例では、次の役がそろっています。
-      - list [ref=f6e164]:
-        - listitem [ref=f6e165]: リーチ：1翻
-        - listitem [ref=f6e166]: 門前ツモ：1翻
-        - listitem [ref=f6e167]: タンヤオ：1翻
-      - paragraph [ref=f6e168]:
-        - text: 合計で
-        - strong [ref=f6e169]: 3翻
-        - text: です。（今回はドラなし）
-      - paragraph [ref=f6e170]: なお、鳴くと翻が減る役（食い下がり）もあります。詳しくは「役一覧」へ。
-      - heading "ステップ3：点数に変換する" [level=2] [ref=f6e171]
-      - paragraph [ref=f6e172]: いよいよ、符と翻を点数に変えます。使う式はこれ1本です。
-      - code [ref=f6e174]: 基本点 = 符 × 2^(2 + 翻)
-      - paragraph [ref=f6e175]:
-        - code [ref=f6e176]: 2^(2+翻)
-        - text: は「2 を（2＋翻数）回かける」という意味です。今回は3翻なので、
-        - code [ref=f6e177]: 2 + 3 = 5
-        - text: 。
-        - strong [ref=f6e178]: 2を5回かけると 32
-        - text: になります。
-      - paragraph [ref=f6e179]: だから、さっきの例（30符・3翻）の基本点は、
-      - code [ref=f6e181]: 基本点 = 30 × 32 = 960
-      - paragraph [ref=f6e182]:
-        - text: この
-        - strong [ref=f6e183]: 基本点に、親か子か・ロンかツモかで倍率
-        - text: をかけて、実際の点数にします。
-      - paragraph [ref=f6e184]:
-        - img "点数変換の早見イメージ" [ref=f6e185]:
-          - img "点数変換の早見イメージ" [ref=f6e186]
-        - emphasis [ref=f6e187]: 子ロン×4／親ロン×6／ツモ時の親子の支払い
-      - table [ref=f6e189]:
-        - rowgroup [ref=f6e190]:
-          - row "あがり方 かけ算 今回の点数（切り上げ後）" [ref=f6e191]:
-            - columnheader "あがり方" [ref=f6e192]
-            - columnheader "かけ算" [ref=f6e193]
-            - columnheader "今回の点数（切り上げ後）" [ref=f6e194]
-        - rowgroup [ref=f6e195]:
-          - row "子のロン 基本点×4 3900点" [ref=f6e196]:
-            - cell "子のロン" [ref=f6e197]
-            - cell "基本点×4" [ref=f6e198]
-            - cell "3900点" [ref=f6e199]
-          - row "子のツモ 親は×2／子は×1 親2000＋子1000ずつ＝4000点" [ref=f6e200]:
-            - cell "子のツモ" [ref=f6e201]
-            - cell "親は×2／子は×1" [ref=f6e202]
-            - cell "親2000＋子1000ずつ＝4000点" [ref=f6e203]:
-              - text: 親2000＋子1000ずつ＝
-              - strong [ref=f6e204]: 4000点
-      - paragraph [ref=f6e205]:
-        - text: 例は「子のツモ」なので、親から2000点・ほかの子2人から1000点ずつ、
-        - strong [ref=f6e206]: 合計4000点
-        - text: が答えです。
-      - paragraph [ref=f6e207]:
-        - text: このとき、支払いは
-        - strong [ref=f6e208]: 100点の位で切り上げ
-        - text: ます（960×2＝1920 → 2000）。
-      - paragraph [ref=f6e209]: 細かい組み合わせは「点数早見表」へ。
-      - heading "満貫以上の区切り" [level=2] [ref=f6e210]
-      - paragraph [ref=f6e211]: 翻がどんどん増えると点数は青天井にはならず、区切りのところで固定されます。
-      - paragraph [ref=f6e212]:
-        - img "満貫〜役満の点数表" [ref=f6e213]:
-          - img "満貫〜役満の点数表" [ref=f6e214]
-        - emphasis [ref=f6e215]: 満貫・跳満・倍満・三倍満・役満の子/親点数
-      - table [ref=f6e217]:
-        - rowgroup [ref=f6e218]:
-          - row "区切り 子のあがり 親のあがり" [ref=f6e219]:
-            - columnheader "区切り" [ref=f6e220]
-            - columnheader "子のあがり" [ref=f6e221]
-            - columnheader "親のあがり" [ref=f6e222]
-        - rowgroup [ref=f6e223]:
-          - row "満貫 8000点 12000点" [ref=f6e224]:
-            - cell "満貫" [ref=f6e225]
-            - cell "8000点" [ref=f6e226]
-            - cell "12000点" [ref=f6e227]
-          - row "跳満 12000点 18000点" [ref=f6e228]:
-            - cell "跳満" [ref=f6e229]
-            - cell "12000点" [ref=f6e230]
-            - cell "18000点" [ref=f6e231]
-          - row "倍満 16000点 24000点" [ref=f6e232]:
-            - cell "倍満" [ref=f6e233]
-            - cell "16000点" [ref=f6e234]
-            - cell "24000点" [ref=f6e235]
-          - row "三倍満 24000点 36000点" [ref=f6e236]:
-            - cell "三倍満" [ref=f6e237]
-            - cell "24000点" [ref=f6e238]
-            - cell "36000点" [ref=f6e239]
-          - row "役満 32000点 48000点" [ref=f6e240]:
-            - cell "役満" [ref=f6e241]
-            - cell "32000点" [ref=f6e242]
-            - cell "48000点" [ref=f6e243]
-      - heading "もう1つの例：リーチ・ツモ・平和・ドラ1（子）" [level=2] [ref=f6e244]
-      - paragraph [ref=f6e245]: 平和ツモは20符固定、というルールを使う例です。
-      - list [ref=f6e246]:
-        - listitem [ref=f6e247]:
-          - text: 符：
-          - strong [ref=f6e248]: 20符
-          - text: （平和ツモは固定）
-        - listitem [ref=f6e249]:
-          - text: 翻：
-          - strong [ref=f6e250]: 4翻
-          - text: （リーチ＋ツモ＋平和＋ドラ1）
-        - listitem [ref=f6e251]:
-          - text: 基本点：20 × 2^(2+4) ＝ 20 × 64 ＝
-          - strong [ref=f6e252]: "1280"
-        - listitem [ref=f6e253]: 子のツモなので、親は1280×2＝2600、子は1280→1300
-        - listitem [ref=f6e254]:
-          - text: 答え：
-          - strong [ref=f6e255]: 親2600／子1300ずつ → 合計5200点
-          - text: 慣れるまでは
-          - link "ツール" [ref=f6e256] [cursor=pointer]:
-            - /url: /
-          - text: で答え合わせしながら、実際に手を動かすのが一番の近道です。
-      - heading "つまずきやすいポイント" [level=2] [ref=f6e257]
-      - list [ref=f6e258]:
-        - listitem [ref=f6e259]:
-          - strong [ref=f6e260]: 平和ツモを30符にしてしまう
-          - text: （正しくは20符固定）
-        - listitem [ref=f6e261]:
-          - strong [ref=f6e262]: 七対子を符計算してしまう
-          - text: （25符で固定）
-        - listitem [ref=f6e263]:
-          - strong [ref=f6e264]: ツモの+2符を足し忘れる
-        - listitem [ref=f6e265]:
-          - strong [ref=f6e266]: 切り上げを忘れる
-          - text: （符は10の位、点数は100の位で切り上げ） →「よくある計算ミス」でまとめて解説。
-      - heading "次に読む" [level=2] [ref=f6e267]
-      - list [ref=f6e268]:
-        - listitem [ref=f6e269]: 符計算のやり方（図解）
-        - listitem [ref=f6e270]: 翻の数え方と役一覧
-        - listitem [ref=f6e271]: 点数早見表
-        - listitem [ref=f6e272]: よくある計算ミス
-        - listitem [ref=f6e273]: 満貫・跳満・倍満の境界
-      - separator [ref=f6e274]
-      - paragraph [ref=f6e275]:
-        - emphasis [ref=f6e276]: 一般的なルール（一飜縛り・喰い断あり）を前提に解説しています。連風牌の符や切り上げ満貫など一部はルールにより異なります。
-    - link "点数計算モードを試す" [ref=f6e278] [cursor=pointer]:
-      - /url: /quiz
-  - contentinfo [ref=f6e279]:
-    - navigation "フッター" [ref=f6e280]:
-      - link "学習ガイド" [ref=f6e281] [cursor=pointer]:
-        - /url: /articles
-      - link "プライバシーポリシー" [ref=f6e282] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=f6e283]: © 2026 麻雀点数トレーニング
+    - main [ref=f6e4]:
+        - navigation "記事ナビゲーション" [ref=f6e5]:
+            - link "記事一覧に戻る" [ref=f6e6] [cursor=pointer]:
+                - /url: /articles
+            - link "ホーム" [ref=f6e7] [cursor=pointer]:
+                - /url: /
+        - article [ref=f6e8]:
+            - heading "麻雀の点数計算ガイド｜符・翻から点数を出す流れ" [level=1] [ref=f6e9]
+            - paragraph [ref=f6e10]: 点数計算は、料理のレシピと同じで「作る順番」が決まっています。順番さえ覚えれば、どんな手でも同じやり方で点数を出せます。このページで全体の流れをつかんで、細かい部分は各記事で深掘りしてください。
+            - blockquote [ref=f6e11]:
+                - paragraph [ref=f6e12]:
+                    - text: 「符」「翻（ハン）」「点数」の関係をつかんだら、
+                    - link "麻雀点数トレーニング" [ref=f6e13] [cursor=pointer]:
+                        - /url: /
+                    - text: でガンガン練習してみてください。
+            - heading "点数が決まる3ステップ" [level=2] [ref=f6e14]
+            - paragraph [ref=f6e15]:
+                - img "符→翻→点数の3ステップ図" [ref=f6e16]:
+                    - img "符→翻→点数の3ステップ図" [ref=f6e17]
+            - paragraph [ref=f6e18]: 点数は、次の3ステップで必ず決まります。
+            - list [ref=f6e19]:
+                - listitem [ref=f6e20]:
+                    - strong [ref=f6e21]: 符を数える
+                    - text: （あがりの「形」を点にする）
+                - listitem [ref=f6e22]:
+                    - strong [ref=f6e23]: 翻を数える
+                    - text: （役とドラを合計する）
+                - listitem [ref=f6e24]:
+                    - strong [ref=f6e25]: 符と翻を点数に変える
+                    - text: （計算して点数を出す）
+            - paragraph [ref=f6e26]: この順番はどんな手でも変わりません。まずはこの3つがあることだけ覚えてください。
+            - heading "このページでずっと使う例" [level=3] [ref=f6e27]
+            - paragraph [ref=f6e28]: 説明がバラバラにならないよう、次の1つの手をゴールまで一緒に追いかけます。
+            - blockquote [ref=f6e29]:
+                - paragraph [ref=f6e30]:
+                    - strong [ref=f6e31]: 例：門前（鳴いていない）でツモあがり。リーチもかけた。5萬が3枚そろった暗刻があり、タンヤオも成立。待ちは両面待ち。
+            - paragraph [ref=f6e32]: この手を最後に点数まで出しきります。
+            - heading "ステップ1：符を数える" [level=2] [ref=f6e33]
+            - paragraph [ref=f6e34]: 点数計算で一番の難所がこの符です。ここさえクリアすれば、あとは一気に楽になります。
+            - paragraph [ref=f6e35]: 符とは、かんたんに言うと「あがりの形の複雑さ」を点にしたものです。難しい形であるほど符が高くなります。
+            - heading "まず20符からスタート" [level=3] [ref=f6e36]
+            - paragraph [ref=f6e37]:
+                - text: どんな手も、最初に
+                - strong [ref=f6e38]: 20符
+                - text: をもらえます。ここから、条件を満たすたびに符をたし算していきます。
+            - paragraph [ref=f6e39]: たす条件は、大きく分けて4つです。
+            - table [ref=f6e41]:
+                - rowgroup [ref=f6e42]:
+                    - row "たす場所 内容 加える符" [ref=f6e43]:
+                        - columnheader "たす場所" [ref=f6e44]
+                        - columnheader "内容" [ref=f6e45]
+                        - columnheader "加える符" [ref=f6e46]
+                - rowgroup [ref=f6e47]:
+                    - row "あがり方 門前でロン +10符" [ref=f6e48]:
+                        - cell "あがり方" [ref=f6e49]
+                        - cell "門前でロン" [ref=f6e50]
+                        - cell "+10符" [ref=f6e51]
+                    - row "あがり方 ツモ（平和・七対子を除く） +2符" [ref=f6e52]:
+                        - cell "あがり方" [ref=f6e53]
+                        - cell "ツモ（平和・七対子を除く）" [ref=f6e54]
+                        - cell "+2符" [ref=f6e55]
+                    - row "面子（メンツ） 刻子や槓子の種類による（下の表） +2〜+32符" [ref=f6e56]:
+                        - cell "面子（メンツ）" [ref=f6e57]
+                        - cell "刻子や槓子の種類による（下の表）" [ref=f6e58]
+                        - cell "+2〜+32符" [ref=f6e59]
+                    - row "雀頭（ジャントウ） 役牌のペア（白・發・中・場風・自風） +2符" [ref=f6e60]:
+                        - cell "雀頭（ジャントウ）" [ref=f6e61]
+                        - cell "役牌のペア（白・發・中・場風・自風）" [ref=f6e62]
+                        - cell "+2符" [ref=f6e63]
+                    - row "待ち カンチャン・ペンチャン・単騎 +2符" [ref=f6e64]:
+                        - cell "待ち" [ref=f6e65]
+                        - cell "カンチャン・ペンチャン・単騎" [ref=f6e66]
+                        - cell "+2符" [ref=f6e67]
+            - heading "面子（刻子・槓子）の符" [level=3] [ref=f6e68]
+            - paragraph [ref=f6e69]: 同じ牌をそろえた面子は、次のように符がつきます。順子（連番3枚）は0符です。
+            - table [ref=f6e71]:
+                - rowgroup [ref=f6e72]:
+                    - row "面子の種類 中張牌（2〜8） 么九牌（1・9・字牌）" [ref=f6e73]:
+                        - columnheader "面子の種類" [ref=f6e74]
+                        - columnheader "中張牌（2〜8）" [ref=f6e75]
+                        - columnheader "么九牌（1・9・字牌）" [ref=f6e76]
+                - rowgroup [ref=f6e77]:
+                    - row "明刻（鳴いた3枚） 2符 4符" [ref=f6e78]:
+                        - cell "明刻（鳴いた3枚）" [ref=f6e79]
+                        - cell "2符" [ref=f6e80]
+                        - cell "4符" [ref=f6e81]
+                    - row "暗刻（自力の3枚） 4符 8符" [ref=f6e82]:
+                        - cell "暗刻（自力の3枚）" [ref=f6e83]
+                        - cell "4符" [ref=f6e84]
+                        - cell "8符" [ref=f6e85]
+                    - row "明槓（鳴いた4枚） 8符 16符" [ref=f6e86]:
+                        - cell "明槓（鳴いた4枚）" [ref=f6e87]
+                        - cell "8符" [ref=f6e88]
+                        - cell "16符" [ref=f6e89]
+                    - row "暗槓（自力の4枚） 16符 32符" [ref=f6e90]:
+                        - cell "暗槓（自力の4枚）" [ref=f6e91]
+                        - cell "16符" [ref=f6e92]
+                        - cell "32符" [ref=f6e93]
+            - paragraph [ref=f6e94]:
+                - text: 覚え方はシンプルで、
+                - strong [ref=f6e95]: 「隠しているほど（暗いほど）」「端っこの牌（么九）ほど」高くなる
+                - text: 、と考えると迷いません。
+            - heading "待ちの種類" [level=3] [ref=f6e96]
+            - paragraph [ref=f6e97]: あと1枚を待つ形にも符がつきます。
+            - table [ref=f6e99]:
+                - rowgroup [ref=f6e100]:
+                    - row "待ちの種類 どんな待ち 加える符" [ref=f6e101]:
+                        - columnheader "待ちの種類" [ref=f6e102]
+                        - columnheader "どんな待ち" [ref=f6e103]
+                        - columnheader "加える符" [ref=f6e104]
+                - rowgroup [ref=f6e105]:
+                    - row "両面（リャンメン） 例：34 で 2 か 5 を待つ 0符" [ref=f6e106]:
+                        - cell "両面（リャンメン）" [ref=f6e107]
+                        - cell "例：34 で 2 か 5 を待つ" [ref=f6e108]
+                        - cell "0符" [ref=f6e109]
+                    - row "シャンポン ペア2組でどちらかが刻子になるのを待つ 0符" [ref=f6e110]:
+                        - cell "シャンポン" [ref=f6e111]
+                        - cell "ペア2組でどちらかが刻子になるのを待つ" [ref=f6e112]
+                        - cell "0符" [ref=f6e113]
+                    - row "カンチャン 例：13 で間の 2 だけを待つ +2符" [ref=f6e114]:
+                        - cell "カンチャン" [ref=f6e115]
+                        - cell "例：13 で間の 2 だけを待つ" [ref=f6e116]
+                        - cell "+2符" [ref=f6e117]
+                    - row "ペンチャン 例：12 で 3 だけ／89 で 7 だけを待つ +2符" [ref=f6e118]:
+                        - cell "ペンチャン" [ref=f6e119]
+                        - cell "例：12 で 3 だけ／89 で 7 だけを待つ" [ref=f6e120]
+                        - cell "+2符" [ref=f6e121]
+                    - row "単騎（タンキ） 雀頭のもう1枚を待つ +2符" [ref=f6e122]:
+                        - cell "単騎（タンキ）" [ref=f6e123]
+                        - cell "雀頭のもう1枚を待つ" [ref=f6e124]
+                        - cell "+2符" [ref=f6e125]
+            - heading "例で符を数えてみる" [level=3] [ref=f6e126]
+            - paragraph [ref=f6e127]:
+                - img "符の内訳の積み上げ図" [ref=f6e128]:
+                    - img "符の内訳の積み上げ図" [ref=f6e129]
+            - paragraph [ref=f6e130]: さっきの例（門前ツモ・5萬の暗刻・両面待ち）で数えてみましょう。
+            - list [ref=f6e131]:
+                - listitem [ref=f6e132]:
+                    - text: 基本：
+                    - strong [ref=f6e133]: 20符
+                - listitem [ref=f6e134]:
+                    - text: ツモであがった：
+                    - strong [ref=f6e135]: +2符
+                - listitem [ref=f6e136]:
+                    - text: 5萬（中張牌）の暗刻：
+                    - strong [ref=f6e137]: +4符
+                - listitem [ref=f6e138]:
+                    - text: 両面待ち：
+                    - strong [ref=f6e139]: +0符
+                - listitem [ref=f6e140]:
+                    - text: 雀頭は普通の牌：
+                    - strong [ref=f6e141]: +0符
+            - paragraph [ref=f6e142]:
+                - text: 合計は
+                - strong [ref=f6e143]: 20＋2＋4＝26符
+                - text: 。
+            - paragraph [ref=f6e144]:
+                - text: 最後に
+                - strong [ref=f6e145]: 10符の位で切り上げ
+                - text: るので、26符 →
+                - strong [ref=f6e146]: 30符
+                - text: になります。この「切り上げ」を忘れる人がとても多いので注意してください。
+            - heading "覚えておく2つの例外" [level=3] [ref=f6e147]
+            - list [ref=f6e148]:
+                - listitem [ref=f6e149]:
+                    - strong [ref=f6e150]: 平和ツモ
+                    - text: は計算せず
+                    - strong [ref=f6e151]: 20符で固定
+                - listitem [ref=f6e152]:
+                    - strong [ref=f6e153]: 七対子
+                    - text: は計算せず
+                    - strong [ref=f6e154]: 25符で固定
+            - paragraph [ref=f6e155]: 詳しくは「符計算のやり方」へ。
+            - heading "ステップ2：翻を数える" [level=2] [ref=f6e156]
+            - paragraph [ref=f6e157]:
+                - text: 翻は、成立した
+                - strong [ref=f6e158]: 役の翻数＋ドラの数
+                - text: をぜんぶ足したものです。役が1つもないとあがれない、という点にも注意してください。
+            - paragraph [ref=f6e159]:
+                - img "主要な役の翻数の例" [ref=f6e160]:
+                    - img "主要な役の翻数の例" [ref=f6e161]
+                - emphasis [ref=f6e162]: リーチ1翻・タンヤオ1翻・ホンイツ2/3翻…など主要役を一覧表で
+            - paragraph [ref=f6e163]: さっきの例では、次の役がそろっています。
+            - list [ref=f6e164]:
+                - listitem [ref=f6e165]: リーチ：1翻
+                - listitem [ref=f6e166]: 門前ツモ：1翻
+                - listitem [ref=f6e167]: タンヤオ：1翻
+            - paragraph [ref=f6e168]:
+                - text: 合計で
+                - strong [ref=f6e169]: 3翻
+                - text: です。（今回はドラなし）
+            - paragraph [ref=f6e170]: なお、鳴くと翻が減る役（食い下がり）もあります。詳しくは「役一覧」へ。
+            - heading "ステップ3：点数に変換する" [level=2] [ref=f6e171]
+            - paragraph [ref=f6e172]: いよいよ、符と翻を点数に変えます。使う式はこれ1本です。
+            - code [ref=f6e174]: 基本点 = 符 × 2^(2 + 翻)
+            - paragraph [ref=f6e175]:
+                - code [ref=f6e176]: 2^(2+翻)
+                - text: は「2 を（2＋翻数）回かける」という意味です。今回は3翻なので、
+                - code [ref=f6e177]: 2 + 3 = 5
+                - text: 。
+                - strong [ref=f6e178]: 2を5回かけると 32
+                - text: になります。
+            - paragraph [ref=f6e179]: だから、さっきの例（30符・3翻）の基本点は、
+            - code [ref=f6e181]: 基本点 = 30 × 32 = 960
+            - paragraph [ref=f6e182]:
+                - text: この
+                - strong [ref=f6e183]: 基本点に、親か子か・ロンかツモかで倍率
+                - text: をかけて、実際の点数にします。
+            - paragraph [ref=f6e184]:
+                - img "点数変換の早見イメージ" [ref=f6e185]:
+                    - img "点数変換の早見イメージ" [ref=f6e186]
+                - emphasis [ref=f6e187]: 子ロン×4／親ロン×6／ツモ時の親子の支払い
+            - table [ref=f6e189]:
+                - rowgroup [ref=f6e190]:
+                    - row "あがり方 かけ算 今回の点数（切り上げ後）" [ref=f6e191]:
+                        - columnheader "あがり方" [ref=f6e192]
+                        - columnheader "かけ算" [ref=f6e193]
+                        - columnheader "今回の点数（切り上げ後）" [ref=f6e194]
+                - rowgroup [ref=f6e195]:
+                    - row "子のロン 基本点×4 3900点" [ref=f6e196]:
+                        - cell "子のロン" [ref=f6e197]
+                        - cell "基本点×4" [ref=f6e198]
+                        - cell "3900点" [ref=f6e199]
+                    - row "子のツモ 親は×2／子は×1 親2000＋子1000ずつ＝4000点" [ref=f6e200]:
+                        - cell "子のツモ" [ref=f6e201]
+                        - cell "親は×2／子は×1" [ref=f6e202]
+                        - cell "親2000＋子1000ずつ＝4000点" [ref=f6e203]:
+                            - text: 親2000＋子1000ずつ＝
+                            - strong [ref=f6e204]: 4000点
+            - paragraph [ref=f6e205]:
+                - text: 例は「子のツモ」なので、親から2000点・ほかの子2人から1000点ずつ、
+                - strong [ref=f6e206]: 合計4000点
+                - text: が答えです。
+            - paragraph [ref=f6e207]:
+                - text: このとき、支払いは
+                - strong [ref=f6e208]: 100点の位で切り上げ
+                - text: ます（960×2＝1920 → 2000）。
+            - paragraph [ref=f6e209]: 細かい組み合わせは「点数早見表」へ。
+            - heading "満貫以上の区切り" [level=2] [ref=f6e210]
+            - paragraph [ref=f6e211]: 翻がどんどん増えると点数は青天井にはならず、区切りのところで固定されます。
+            - paragraph [ref=f6e212]:
+                - img "満貫〜役満の点数表" [ref=f6e213]:
+                    - img "満貫〜役満の点数表" [ref=f6e214]
+                - emphasis [ref=f6e215]: 満貫・跳満・倍満・三倍満・役満の子/親点数
+            - table [ref=f6e217]:
+                - rowgroup [ref=f6e218]:
+                    - row "区切り 子のあがり 親のあがり" [ref=f6e219]:
+                        - columnheader "区切り" [ref=f6e220]
+                        - columnheader "子のあがり" [ref=f6e221]
+                        - columnheader "親のあがり" [ref=f6e222]
+                - rowgroup [ref=f6e223]:
+                    - row "満貫 8000点 12000点" [ref=f6e224]:
+                        - cell "満貫" [ref=f6e225]
+                        - cell "8000点" [ref=f6e226]
+                        - cell "12000点" [ref=f6e227]
+                    - row "跳満 12000点 18000点" [ref=f6e228]:
+                        - cell "跳満" [ref=f6e229]
+                        - cell "12000点" [ref=f6e230]
+                        - cell "18000点" [ref=f6e231]
+                    - row "倍満 16000点 24000点" [ref=f6e232]:
+                        - cell "倍満" [ref=f6e233]
+                        - cell "16000点" [ref=f6e234]
+                        - cell "24000点" [ref=f6e235]
+                    - row "三倍満 24000点 36000点" [ref=f6e236]:
+                        - cell "三倍満" [ref=f6e237]
+                        - cell "24000点" [ref=f6e238]
+                        - cell "36000点" [ref=f6e239]
+                    - row "役満 32000点 48000点" [ref=f6e240]:
+                        - cell "役満" [ref=f6e241]
+                        - cell "32000点" [ref=f6e242]
+                        - cell "48000点" [ref=f6e243]
+            - heading "もう1つの例：リーチ・ツモ・平和・ドラ1（子）" [level=2] [ref=f6e244]
+            - paragraph [ref=f6e245]: 平和ツモは20符固定、というルールを使う例です。
+            - list [ref=f6e246]:
+                - listitem [ref=f6e247]:
+                    - text: 符：
+                    - strong [ref=f6e248]: 20符
+                    - text: （平和ツモは固定）
+                - listitem [ref=f6e249]:
+                    - text: 翻：
+                    - strong [ref=f6e250]: 4翻
+                    - text: （リーチ＋ツモ＋平和＋ドラ1）
+                - listitem [ref=f6e251]:
+                    - text: 基本点：20 × 2^(2+4) ＝ 20 × 64 ＝
+                    - strong [ref=f6e252]: "1280"
+                - listitem [ref=f6e253]: 子のツモなので、親は1280×2＝2600、子は1280→1300
+                - listitem [ref=f6e254]:
+                    - text: 答え：
+                    - strong [ref=f6e255]: 親2600／子1300ずつ → 合計5200点
+                    - text: 慣れるまでは
+                    - link "ツール" [ref=f6e256] [cursor=pointer]:
+                        - /url: /
+                    - text: で答え合わせしながら、実際に手を動かすのが一番の近道です。
+            - heading "つまずきやすいポイント" [level=2] [ref=f6e257]
+            - list [ref=f6e258]:
+                - listitem [ref=f6e259]:
+                    - strong [ref=f6e260]: 平和ツモを30符にしてしまう
+                    - text: （正しくは20符固定）
+                - listitem [ref=f6e261]:
+                    - strong [ref=f6e262]: 七対子を符計算してしまう
+                    - text: （25符で固定）
+                - listitem [ref=f6e263]:
+                    - strong [ref=f6e264]: ツモの+2符を足し忘れる
+                - listitem [ref=f6e265]:
+                    - strong [ref=f6e266]: 切り上げを忘れる
+                    - text: （符は10の位、点数は100の位で切り上げ） →「よくある計算ミス」でまとめて解説。
+            - heading "次に読む" [level=2] [ref=f6e267]
+            - list [ref=f6e268]:
+                - listitem [ref=f6e269]: 符計算のやり方（図解）
+                - listitem [ref=f6e270]: 翻の数え方と役一覧
+                - listitem [ref=f6e271]: 点数早見表
+                - listitem [ref=f6e272]: よくある計算ミス
+                - listitem [ref=f6e273]: 満貫・跳満・倍満の境界
+            - separator [ref=f6e274]
+            - paragraph [ref=f6e275]:
+                - emphasis [ref=f6e276]: 一般的なルール（一飜縛り・喰い断あり）を前提に解説しています。連風牌の符や切り上げ満貫など一部はルールにより異なります。
+        - link "点数計算モードを試す" [ref=f6e278] [cursor=pointer]:
+            - /url: /quiz
+    - contentinfo [ref=f6e279]:
+        - navigation "フッター" [ref=f6e280]:
+            - link "学習ガイド" [ref=f6e281] [cursor=pointer]:
+                - /url: /articles
+            - link "プライバシーポリシー" [ref=f6e282] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=f6e283]: © 2026 麻雀点数トレーニング

@@ -35,7 +35,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <h1>問題が発生しました</h1>
           <p>予期しないエラーが発生しました。お手数ですが、最初からやり直してください。</p>
           <button type="button" className="btn-primary" onClick={this.handleReload}>
-            ホームに戻る
+            ホーム
           </button>
         </main>
       );

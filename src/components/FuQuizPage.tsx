@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { problemToScoreHandInput, type Problem } from "../data/problem";
 import { scoreHand } from "../engine/scoreHand";
 import { generateFuChoices } from "../generator/distractors";
+import { createSeededRandom, seedFromString } from "../generator/random";
 import { nextProblem } from "../store/nextProblem";
 import { recordAnswer } from "../store/statsStore";
 import { ChoiceGrid } from "./ChoiceGrid";
@@ -35,8 +36,13 @@ export function FuQuizPage() {
     () => problem.answer.fuDetail ?? scoreHand(problemToScoreHandInput(problem))?.fuDetail,
     [problem],
   );
+  // 選択肢のシャッフルは問題IDから決定的に導出する（QuizPageと同じ理由。成績画面を
+  // 経由して戻ってきても4択の内容・並び順が変わらないようにする）。
   const choices = useMemo<number[]>(
-    () => (fuDetail ? generateFuChoices(fuDetail, Math.random) : [problem.answer.fu]),
+    () =>
+      fuDetail
+        ? generateFuChoices(fuDetail, createSeededRandom(seedFromString(problem.id)))
+        : [problem.answer.fu],
     [problem, fuDetail],
   );
 
@@ -54,7 +60,7 @@ export function FuQuizPage() {
 
   return (
     <main className="page-shell quiz-page">
-      <PageHeader title="符計算" backTo="/fu/quiz" />
+      <PageHeader title="符計算" backTo="/fu/quiz" problem={problem} />
       <QuizConditions conditions={problem.conditions} />
 
       {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}

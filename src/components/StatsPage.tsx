@@ -1,14 +1,27 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import type { Problem } from "../data/problem";
 import { clearStats, loadStats, type TagStat } from "../store/statsStore";
 import "./stats.css";
 
-/** PageHeader の「成績を見る」から渡される、戻り先の出題パス。 */
-function resolveBackTo(state: unknown): string {
+interface StatsNavState {
+  /** 戻り先の出題パス。 */
+  backTo: string;
+  /** 出題中に「成績」で来た場合の、表示していた問題（あれば同じ問題・同じ4択に戻す）。 */
+  problem?: Problem;
+}
+
+/** PageHeader の「成績」から渡される遷移stateを解決する。 */
+function resolveStatsNavState(state: unknown): StatsNavState {
   const fallback = "/quiz";
-  if (!state || typeof state !== "object" || !("backTo" in state)) return fallback;
-  const backTo = (state as { backTo: unknown }).backTo;
-  return backTo === "/quiz" || backTo === "/fu/quiz" ? backTo : fallback;
+  if (!state || typeof state !== "object") return { backTo: fallback };
+  const s = state as { backTo?: unknown; problem?: unknown };
+  const backTo = s.backTo === "/quiz" || s.backTo === "/fu/quiz" ? s.backTo : fallback;
+  const problem =
+    s.problem && typeof s.problem === "object" && "id" in s.problem
+      ? (s.problem as Problem)
+      : undefined;
+  return { backTo, problem };
 }
 
 interface TagRow {
@@ -48,7 +61,7 @@ function TagBar({ row }: { row: TagRow }) {
 
 export function StatsPage() {
   const location = useLocation();
-  const backTo = resolveBackTo(location.state);
+  const { backTo, problem } = resolveStatsNavState(location.state);
   const [stats, setStats] = useState(() => loadStats());
   const accuracyPct =
     stats.totalAnswered > 0 ? Math.round((stats.totalCorrect / stats.totalAnswered) * 100) : 0;
@@ -65,7 +78,11 @@ export function StatsPage() {
       <div className="page-header">
         <h1>成績</h1>
         <div className="page-header-link">
-          <Link to={backTo} className="page-header-link-item">
+          <Link
+            to={backTo}
+            state={problem ? { problem, review: true } : undefined}
+            className="page-header-link-item"
+          >
             練習に戻る
           </Link>
         </div>

@@ -57,10 +57,28 @@ describe("FuQuizPage", () => {
 
   it("returns to the fu quiz page (not the score quiz page) after viewing stats", () => {
     renderFuQuiz();
-    fireEvent.click(screen.getByRole("link", { name: "成績を見る" }));
+    fireEvent.click(screen.getByRole("link", { name: "成績" }));
     expect(screen.getByRole("heading", { name: "成績" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
     expect(screen.getByRole("heading", { name: "符計算" })).toBeInTheDocument();
+  });
+
+  it("keeps the same problem and the same choice order after a stats round trip", () => {
+    renderFuQuiz();
+    const skipButton = screen.getByRole("button", { name: "次の問題へ" });
+    const choicesBefore = screen
+      .getAllByRole("button")
+      .filter((b) => b !== skipButton)
+      .map((b) => b.textContent);
+
+    fireEvent.click(screen.getByRole("link", { name: "成績" }));
+    fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
+
+    const choicesAfter = screen
+      .getAllByRole("button")
+      .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
+      .map((b) => b.textContent);
+    expect(choicesAfter).toEqual(choicesBefore);
   });
 });

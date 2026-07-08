@@ -1,56 +1,56 @@
 - generic [ref=f6e3]:
-  - main [ref=f6e4]:
-    - generic [ref=f6e5]:
-      - heading "符計算" [level=1] [ref=f6e6]
-      - generic [ref=f6e7]:
-        - link "ホームに戻る" [ref=f6e8] [cursor=pointer]:
-          - /url: /
-        - link "成績を見る" [ref=f6e9] [cursor=pointer]:
-          - /url: /stats
-    - region "局条件" [ref=f6e10]:
-      - generic "場風東 自風南" [ref=f6e11]:
-        - generic [ref=f6e12]: 東
-        - generic [ref=f6e13]: 場
-        - generic [ref=f6e14]: 南
-        - generic [ref=f6e15]: 家
-      - generic [ref=f6e17]: 子
-    - region "アガリ牌・ドラ表示牌" [ref=f6e18]:
-      - generic [ref=f6e20]:
-        - generic [ref=f6e21]: ツモ
-        - img "四萬" [ref=f6e24]
-      - generic [ref=f6e28]:
-        - generic [ref=f6e29]:
-          - generic [ref=f6e30]: 表
-          - img "九萬" [ref=f6e33]
-        - generic [ref=f6e35]:
-          - generic [ref=f6e36]: 裏
-          - generic [ref=f6e38]: なし
-    - generic [ref=f6e42]:
-      - img "二萬" [ref=f6e43]
-      - img "二萬" [ref=f6e45]
-      - img "二萬" [ref=f6e47]
-      - img "三萬" [ref=f6e49]
-      - img "三萬" [ref=f6e51]
-      - img "三萬" [ref=f6e53]
-      - img "四萬" [ref=f6e55]
-      - img "四萬" [ref=f6e57]
-      - img "七筒" [ref=f6e59]
-      - img "八筒" [ref=f6e61]
-      - img "九筒" [ref=f6e63]
-      - img "五索" [ref=f6e65]
-      - img "五索" [ref=f6e67]
-    - generic [ref=f6e70]:
-      - paragraph [ref=f6e71]: 符を選んでください
-      - generic [ref=f6e72]:
-        - button "20符" [ref=f6e73] [cursor=pointer]
-        - button "34符" [ref=f6e74] [cursor=pointer]
-        - button "40符" [ref=f6e75] [cursor=pointer]
-        - button "50符" [ref=f6e76] [cursor=pointer]
-    - button "次の問題へ" [ref=f6e78] [cursor=pointer]
-  - contentinfo [ref=f6e79]:
-    - navigation "フッター" [ref=f6e80]:
-      - link "学習ガイド" [ref=f6e81] [cursor=pointer]:
-        - /url: /articles
-      - link "プライバシーポリシー" [ref=f6e82] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=f6e83]: © 2026 麻雀点数トレーニング
+    - main [ref=f6e4]:
+        - generic [ref=f6e5]:
+            - heading "符計算" [level=1] [ref=f6e6]
+            - generic [ref=f6e7]:
+                - link "ホーム" [ref=f6e8] [cursor=pointer]:
+                    - /url: /
+                - link "成績" [ref=f6e9] [cursor=pointer]:
+                    - /url: /stats
+        - region "局条件" [ref=f6e10]:
+            - generic "場風東 自風南" [ref=f6e11]:
+                - generic [ref=f6e12]: 東
+                - generic [ref=f6e13]: 場
+                - generic [ref=f6e14]: 南
+                - generic [ref=f6e15]: 家
+            - generic [ref=f6e17]: 子
+        - region "アガリ牌・ドラ表示牌" [ref=f6e18]:
+            - generic [ref=f6e20]:
+                - generic [ref=f6e21]: ツモ
+                - img "四萬" [ref=f6e24]
+            - generic [ref=f6e28]:
+                - generic [ref=f6e29]:
+                    - generic [ref=f6e30]: 表
+                    - img "九萬" [ref=f6e33]
+                - generic [ref=f6e35]:
+                    - generic [ref=f6e36]: 裏
+                    - generic [ref=f6e38]: なし
+        - generic [ref=f6e42]:
+            - img "二萬" [ref=f6e43]
+            - img "二萬" [ref=f6e45]
+            - img "二萬" [ref=f6e47]
+            - img "三萬" [ref=f6e49]
+            - img "三萬" [ref=f6e51]
+            - img "三萬" [ref=f6e53]
+            - img "四萬" [ref=f6e55]
+            - img "四萬" [ref=f6e57]
+            - img "七筒" [ref=f6e59]
+            - img "八筒" [ref=f6e61]
+            - img "九筒" [ref=f6e63]
+            - img "五索" [ref=f6e65]
+            - img "五索" [ref=f6e67]
+        - generic [ref=f6e70]:
+            - paragraph [ref=f6e71]: 符を選んでください
+            - generic [ref=f6e72]:
+                - button "20符" [ref=f6e73] [cursor=pointer]
+                - button "34符" [ref=f6e74] [cursor=pointer]
+                - button "40符" [ref=f6e75] [cursor=pointer]
+                - button "50符" [ref=f6e76] [cursor=pointer]
+        - button "次の問題へ" [ref=f6e78] [cursor=pointer]
+    - contentinfo [ref=f6e79]:
+        - navigation "フッター" [ref=f6e80]:
+            - link "学習ガイド" [ref=f6e81] [cursor=pointer]:
+                - /url: /articles
+            - link "プライバシーポリシー" [ref=f6e82] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=f6e83]: © 2026 麻雀点数トレーニング

@@ -1,61 +1,61 @@
 - generic [ref=e3]:
-  - main [ref=e4]:
-    - generic [ref=e5]:
-      - heading "出題" [level=1] [ref=e6]
-      - generic [ref=e7]:
-        - link "ホームに戻る" [ref=e8] [cursor=pointer]:
-          - /url: /
-        - link "成績を見る" [ref=e9] [cursor=pointer]:
-          - /url: /stats
-    - region "局条件" [ref=e10]:
-      - generic [ref=e12]: 満貫切上
-      - generic "場風東 自風西" [ref=e13]:
-        - generic [ref=e14]: 東
-        - generic [ref=e15]: 場
-        - generic [ref=e16]: 西
-        - generic [ref=e17]: 家
-      - generic [ref=e19]: 子
-    - region "アガリ牌・ドラ表示牌" [ref=e20]:
-      - generic [ref=e22]:
-        - generic [ref=e23]: ツモ
-        - img "中" [ref=e26]
-      - generic [ref=e30]:
-        - generic [ref=e31]:
-          - generic [ref=e32]: 表
-          - img "八萬" [ref=e35]
-        - generic [ref=e37]:
-          - generic [ref=e38]: 裏
-          - generic [ref=e40]: なし
-    - generic [ref=e42]:
-      - generic [ref=e44]:
-        - img "三索" [ref=e45]
-        - img "四索" [ref=e47]
-        - img "五索" [ref=e49]
-        - img "五索" [ref=e51]
-        - img "五索" [ref=e53]
-        - img "中" [ref=e55]
-        - img "中" [ref=e57]
-      - generic [ref=e59]:
-        - generic [ref=e60]:
-          - img "三萬" [ref=e61]
-          - img "三萬" [ref=e63]
-          - img "三萬" [ref=e65]
-        - generic [ref=e67]:
-          - img "四索" [ref=e68]
-          - img "五索" [ref=e70]
-          - img "六索" [ref=e72]
-    - generic [ref=e74]:
-      - paragraph [ref=e75]: 点数を選んでください
-      - generic [ref=e76]:
-        - button "400 / 800" [ref=e77] [cursor=pointer]
-        - button "2000 / 4000" [ref=e78] [cursor=pointer]
-        - button "400 / 700" [ref=e79] [cursor=pointer]
-        - button "1300 / 2600" [ref=e80] [cursor=pointer]
-    - button "次の問題へ" [ref=e82] [cursor=pointer]
-  - contentinfo [ref=e83]:
-    - navigation "フッター" [ref=e84]:
-      - link "学習ガイド" [ref=e85] [cursor=pointer]:
-        - /url: /articles
-      - link "プライバシーポリシー" [ref=e86] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=e87]: © 2026 麻雀点数トレーニング
+    - main [ref=e4]:
+        - generic [ref=e5]:
+            - heading "出題" [level=1] [ref=e6]
+            - generic [ref=e7]:
+                - link "ホーム" [ref=e8] [cursor=pointer]:
+                    - /url: /
+                - link "成績" [ref=e9] [cursor=pointer]:
+                    - /url: /stats
+        - region "局条件" [ref=e10]:
+            - generic [ref=e12]: 満貫切上
+            - generic "場風東 自風西" [ref=e13]:
+                - generic [ref=e14]: 東
+                - generic [ref=e15]: 場
+                - generic [ref=e16]: 西
+                - generic [ref=e17]: 家
+            - generic [ref=e19]: 子
+        - region "アガリ牌・ドラ表示牌" [ref=e20]:
+            - generic [ref=e22]:
+                - generic [ref=e23]: ツモ
+                - img "中" [ref=e26]
+            - generic [ref=e30]:
+                - generic [ref=e31]:
+                    - generic [ref=e32]: 表
+                    - img "八萬" [ref=e35]
+                - generic [ref=e37]:
+                    - generic [ref=e38]: 裏
+                    - generic [ref=e40]: なし
+        - generic [ref=e42]:
+            - generic [ref=e44]:
+                - img "三索" [ref=e45]
+                - img "四索" [ref=e47]
+                - img "五索" [ref=e49]
+                - img "五索" [ref=e51]
+                - img "五索" [ref=e53]
+                - img "中" [ref=e55]
+                - img "中" [ref=e57]
+            - generic [ref=e59]:
+                - generic [ref=e60]:
+                    - img "三萬" [ref=e61]
+                    - img "三萬" [ref=e63]
+                    - img "三萬" [ref=e65]
+                - generic [ref=e67]:
+                    - img "四索" [ref=e68]
+                    - img "五索" [ref=e70]
+                    - img "六索" [ref=e72]
+        - generic [ref=e74]:
+            - paragraph [ref=e75]: 点数を選んでください
+            - generic [ref=e76]:
+                - button "400 / 800" [ref=e77] [cursor=pointer]
+                - button "2000 / 4000" [ref=e78] [cursor=pointer]
+                - button "400 / 700" [ref=e79] [cursor=pointer]
+                - button "1300 / 2600" [ref=e80] [cursor=pointer]
+        - button "次の問題へ" [ref=e82] [cursor=pointer]
+    - contentinfo [ref=e83]:
+        - navigation "フッター" [ref=e84]:
+            - link "学習ガイド" [ref=e85] [cursor=pointer]:
+                - /url: /articles
+            - link "プライバシーポリシー" [ref=e86] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=e87]: © 2026 麻雀点数トレーニング

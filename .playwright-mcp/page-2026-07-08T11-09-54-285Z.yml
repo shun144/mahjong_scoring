@@ -1,55 +1,55 @@
 - generic [ref=e3]:
-  - main [ref=e4]:
-    - generic [ref=e5]:
-      - link "麻雀点数トレーニング ホーム" [ref=e6] [cursor=pointer]:
-        - /url: /
-        - img [ref=e8]
-        - generic [ref=e10]: 麻雀点数トレーニング
-      - navigation "ヘッダー" [ref=e11]:
-        - link "設定" [ref=e12] [cursor=pointer]:
-          - /url: /settings
-          - generic [ref=e13]: ⚙
-          - text: 設定
-    - generic [ref=e14]:
-      - generic [ref=e15]:
-        - generic [ref=e22]: 4択ドリル
-        - heading "和了形から 点数を当てる" [level=1] [ref=e23]
-        - paragraph [ref=e24]: 最終点数または符を4択で答える反復ドリル。
-      - navigation "練習モード" [ref=e25]:
-        - heading "練習メニュー" [level=2] [ref=e26]:
-          - generic [ref=e27]: 🀄
-          - text: 練習メニュー
-        - generic [ref=e28]:
-          - link "点数計算モード 最終点数を当てる" [ref=e29] [cursor=pointer]:
-            - /url: /quiz
-            - img [ref=e31]
-            - generic [ref=e33]:
-              - generic [ref=e34]: 点数計算モード
-              - generic [ref=e35]: 最終点数を当てる
-            - generic [ref=e36]: ›
-          - link "符計算モード 符を答える" [ref=e37] [cursor=pointer]:
-            - /url: /fu/quiz
-            - img [ref=e39]
-            - generic [ref=e41]:
-              - generic [ref=e42]: 符計算モード
-              - generic [ref=e43]: 符を答える
-            - generic [ref=e44]: ›
-          - link "成績を見る 正答率・苦手分野を確認" [ref=e45] [cursor=pointer]:
-            - /url: /stats
-            - img [ref=e47]
-            - generic [ref=e49]:
-              - generic [ref=e50]: 成績を見る
-              - generic [ref=e51]: 正答率・苦手分野を確認
-            - generic [ref=e52]: ›
-      - paragraph [ref=e53]:
-        - link "点数計算の学習ガイドを読む" [ref=e54] [cursor=pointer]:
-          - /url: /articles
-          - generic [ref=e55]: 📖
-          - text: 点数計算の学習ガイドを読む
-  - contentinfo [ref=e56]:
-    - navigation "フッター" [ref=e57]:
-      - link "学習ガイド" [ref=e58] [cursor=pointer]:
-        - /url: /articles
-      - link "プライバシーポリシー" [ref=e59] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=e60]: © 2026 麻雀点数トレーニング
+    - main [ref=e4]:
+        - generic [ref=e5]:
+            - link "麻雀点数トレーニング ホーム" [ref=e6] [cursor=pointer]:
+                - /url: /
+                - img [ref=e8]
+                - generic [ref=e10]: 麻雀点数トレーニング
+            - navigation "ヘッダー" [ref=e11]:
+                - link "設定" [ref=e12] [cursor=pointer]:
+                    - /url: /settings
+                    - generic [ref=e13]: ⚙
+                    - text: 設定
+        - generic [ref=e14]:
+            - generic [ref=e15]:
+                - generic [ref=e22]: 4択ドリル
+                - heading "和了形から 点数を当てる" [level=1] [ref=e23]
+                - paragraph [ref=e24]: 最終点数または符を4択で答える反復ドリル。
+            - navigation "練習モード" [ref=e25]:
+                - heading "練習メニュー" [level=2] [ref=e26]:
+                    - generic [ref=e27]: 🀄
+                    - text: 練習メニュー
+                - generic [ref=e28]:
+                    - link "点数計算モード 最終点数を当てる" [ref=e29] [cursor=pointer]:
+                        - /url: /quiz
+                        - img [ref=e31]
+                        - generic [ref=e33]:
+                            - generic [ref=e34]: 点数計算モード
+                            - generic [ref=e35]: 最終点数を当てる
+                        - generic [ref=e36]: ›
+                    - link "符計算モード 符を答える" [ref=e37] [cursor=pointer]:
+                        - /url: /fu/quiz
+                        - img [ref=e39]
+                        - generic [ref=e41]:
+                            - generic [ref=e42]: 符計算モード
+                            - generic [ref=e43]: 符を答える
+                        - generic [ref=e44]: ›
+                    - link "成績 正答率・苦手分野を確認" [ref=e45] [cursor=pointer]:
+                        - /url: /stats
+                        - img [ref=e47]
+                        - generic [ref=e49]:
+                            - generic [ref=e50]: 成績
+                            - generic [ref=e51]: 正答率・苦手分野を確認
+                        - generic [ref=e52]: ›
+            - paragraph [ref=e53]:
+                - link "点数計算の学習ガイドを読む" [ref=e54] [cursor=pointer]:
+                    - /url: /articles
+                    - generic [ref=e55]: 📖
+                    - text: 点数計算の学習ガイドを読む
+    - contentinfo [ref=e56]:
+        - navigation "フッター" [ref=e57]:
+            - link "学習ガイド" [ref=e58] [cursor=pointer]:
+                - /url: /articles
+            - link "プライバシーポリシー" [ref=e59] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=e60]: © 2026 麻雀点数トレーニング

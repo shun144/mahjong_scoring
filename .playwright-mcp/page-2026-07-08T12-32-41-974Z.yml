@@ -1,26 +1,26 @@
 - generic [ref=e3]:
-  - main [ref=e4]:
-    - generic [ref=e5]:
-      - heading "学習ガイド" [level=1] [ref=e6]
-      - link "ホームに戻る" [ref=e8] [cursor=pointer]:
-        - /url: /
-    - list [ref=e9]:
-      - listitem [ref=e10]:
-        - link "麻雀の点数計算ガイド｜符・翻から点数を出す流れ 符・翻・点数の関係を3ステップで解説。符の数え方、翻の数え方、点数への変換、満貫以上の区切りまで一気に把握できる麻雀点数計算の入門ガイド。 ›" [ref=e11] [cursor=pointer]:
-          - /url: /articles/tensu-keisan-guide
-          - generic [ref=e12]: 麻雀の点数計算ガイド｜符・翻から点数を出す流れ
-          - generic [ref=e13]: 符・翻・点数の関係を3ステップで解説。符の数え方、翻の数え方、点数への変換、満貫以上の区切りまで一気に把握できる麻雀点数計算の入門ガイド。
-          - text: ›
-      - listitem [ref=e14]:
-        - link "麻雀 基本用語集｜牌・進行・役でよく出てくる言葉 麻雀でよく出てくる牌・手牌・進行・役・点数の基本用語をやさしく解説。初心者がまず覚えたい言葉を分野別の表で整理した用語集です。 ›" [ref=e15] [cursor=pointer]:
-          - /url: /articles/mahjong-yougoshu
-          - generic [ref=e16]: 麻雀 基本用語集｜牌・進行・役でよく出てくる言葉
-          - generic [ref=e17]: 麻雀でよく出てくる牌・手牌・進行・役・点数の基本用語をやさしく解説。初心者がまず覚えたい言葉を分野別の表で整理した用語集です。
-          - text: ›
-  - contentinfo [ref=e18]:
-    - navigation "フッター" [ref=e19]:
-      - link "学習ガイド" [ref=e20] [cursor=pointer]:
-        - /url: /articles
-      - link "プライバシーポリシー" [ref=e21] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=e22]: © 2026 麻雀点数トレーニング
+    - main [ref=e4]:
+        - generic [ref=e5]:
+            - heading "学習ガイド" [level=1] [ref=e6]
+            - link "ホーム" [ref=e8] [cursor=pointer]:
+                - /url: /
+        - list [ref=e9]:
+            - listitem [ref=e10]:
+                - link "麻雀の点数計算ガイド｜符・翻から点数を出す流れ 符・翻・点数の関係を3ステップで解説。符の数え方、翻の数え方、点数への変換、満貫以上の区切りまで一気に把握できる麻雀点数計算の入門ガイド。 ›" [ref=e11] [cursor=pointer]:
+                    - /url: /articles/tensu-keisan-guide
+                    - generic [ref=e12]: 麻雀の点数計算ガイド｜符・翻から点数を出す流れ
+                    - generic [ref=e13]: 符・翻・点数の関係を3ステップで解説。符の数え方、翻の数え方、点数への変換、満貫以上の区切りまで一気に把握できる麻雀点数計算の入門ガイド。
+                    - text: ›
+            - listitem [ref=e14]:
+                - link "麻雀 基本用語集｜牌・進行・役でよく出てくる言葉 麻雀でよく出てくる牌・手牌・進行・役・点数の基本用語をやさしく解説。初心者がまず覚えたい言葉を分野別の表で整理した用語集です。 ›" [ref=e15] [cursor=pointer]:
+                    - /url: /articles/mahjong-yougoshu
+                    - generic [ref=e16]: 麻雀 基本用語集｜牌・進行・役でよく出てくる言葉
+                    - generic [ref=e17]: 麻雀でよく出てくる牌・手牌・進行・役・点数の基本用語をやさしく解説。初心者がまず覚えたい言葉を分野別の表で整理した用語集です。
+                    - text: ›
+    - contentinfo [ref=e18]:
+        - navigation "フッター" [ref=e19]:
+            - link "学習ガイド" [ref=e20] [cursor=pointer]:
+                - /url: /articles
+            - link "プライバシーポリシー" [ref=e21] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=e22]: © 2026 麻雀点数トレーニング

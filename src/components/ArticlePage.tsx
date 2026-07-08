@@ -44,7 +44,7 @@ export function ArticlePage() {
           記事一覧に戻る
         </Link>
         <Link to="/" className="page-header-link-item">
-          ホームに戻る
+          ホーム
         </Link>
       </nav>
 

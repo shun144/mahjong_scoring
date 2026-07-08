@@ -27,7 +27,7 @@ describe("ErrorBoundary", () => {
     );
 
     expect(screen.getByText("問題が発生しました")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "ホームに戻る" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "ホーム" })).toBeInTheDocument();
 
     consoleSpy.mockRestore();
   });

@@ -33,3 +33,16 @@ export function createSeededRandom(seed: number): RandomSource {
     return (state - 1) / 2147483646;
   };
 }
+
+/**
+ * 文字列から createSeededRandom 用の整数シードを導出する（簡易ハッシュ、暗号用途ではない）。
+ * 同じ問題ID（Problem.id）から常に同じシードを得ることで、画面の再マウント（成績画面を
+ * 経由した行き来など）を挟んでも4択の内容・並び順が変わらないようにするために使う。
+ */
+export function seedFromString(value: string): number {
+  let hash = 0;
+  for (let i = 0; i < value.length; i++) {
+    hash = (hash * 31 + value.charCodeAt(i)) | 0;
+  }
+  return hash;
+}

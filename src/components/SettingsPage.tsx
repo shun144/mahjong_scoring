@@ -11,7 +11,7 @@ export function SettingsPage() {
         <h1>設定</h1>
         <div className="page-header-link">
           <Link to="/" className="page-header-link-item">
-            ホームに戻る
+            ホーム
           </Link>
         </div>
       </div>

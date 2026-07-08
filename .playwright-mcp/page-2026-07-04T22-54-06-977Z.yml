@@ -1,47 +1,47 @@
 - generic [ref=e3]:
-  - main [ref=e4]:
-    - generic [ref=e5]:
-      - heading "出題" [level=1] [ref=e6]
-      - link "成績を見る" [ref=e7] [cursor=pointer]:
-        - /url: /stats
-    - region "局条件" [ref=e8]:
-      - generic [ref=e9]: "場風: 東"
-      - generic [ref=e10]: "自風: 東"
-      - generic [ref=e11]: 子
-    - generic [ref=e12]:
-      - heading "手牌" [level=2] [ref=e13]
-      - generic [ref=e14]:
-        - generic [ref=e15]:
-          - generic [ref=e16]: ツモ
-          - img "白" [ref=e68]
-        - generic [ref=e21]:
-          - img "一萬" [ref=e69]
-          - img "一萬" [ref=e71]
-          - img "一萬" [ref=e73]
-          - img "二筒" [ref=e75]
-          - img "二筒" [ref=e77]
-          - img "二筒" [ref=e79]
-          - img "三索" [ref=e81]
-          - img "三索" [ref=e36]
-          - img "三索" [ref=e83]
-          - img "北" [ref=e85]
-          - img "北" [ref=e87]
-          - img "白" [ref=e89]
-          - img "白" [ref=e91]
-    - region "ドラ表示牌" [ref=e49]:
-      - generic [ref=e50]:
-        - generic [ref=e51]: ドラ表示牌
-        - img "一萬" [ref=e93]
-    - generic [ref=e55]:
-      - paragraph [ref=e56]: 点数を選んでください
-      - generic [ref=e57]:
-        - button "子8000 / 親16000" [ref=e95] [cursor=pointer]
-        - button "子6000 / 親12000" [ref=e96] [cursor=pointer]
-        - button "子16000 / 親32000" [ref=e97] [cursor=pointer]
-        - button "子32000 / 親64000" [ref=e98] [cursor=pointer]
-    - button "次の問題へ" [active] [ref=e63] [cursor=pointer]
-  - contentinfo [ref=e64]:
-    - navigation "フッター" [ref=e65]:
-      - link "プライバシーポリシー" [ref=e66] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=e67]: © 2026 麻雀 点数計算ドリル
+    - main [ref=e4]:
+        - generic [ref=e5]:
+            - heading "出題" [level=1] [ref=e6]
+            - link "成績" [ref=e7] [cursor=pointer]:
+                - /url: /stats
+        - region "局条件" [ref=e8]:
+            - generic [ref=e9]: "場風: 東"
+            - generic [ref=e10]: "自風: 東"
+            - generic [ref=e11]: 子
+        - generic [ref=e12]:
+            - heading "手牌" [level=2] [ref=e13]
+            - generic [ref=e14]:
+                - generic [ref=e15]:
+                    - generic [ref=e16]: ツモ
+                    - img "白" [ref=e68]
+                - generic [ref=e21]:
+                    - img "一萬" [ref=e69]
+                    - img "一萬" [ref=e71]
+                    - img "一萬" [ref=e73]
+                    - img "二筒" [ref=e75]
+                    - img "二筒" [ref=e77]
+                    - img "二筒" [ref=e79]
+                    - img "三索" [ref=e81]
+                    - img "三索" [ref=e36]
+                    - img "三索" [ref=e83]
+                    - img "北" [ref=e85]
+                    - img "北" [ref=e87]
+                    - img "白" [ref=e89]
+                    - img "白" [ref=e91]
+        - region "ドラ表示牌" [ref=e49]:
+            - generic [ref=e50]:
+                - generic [ref=e51]: ドラ表示牌
+                - img "一萬" [ref=e93]
+        - generic [ref=e55]:
+            - paragraph [ref=e56]: 点数を選んでください
+            - generic [ref=e57]:
+                - button "子8000 / 親16000" [ref=e95] [cursor=pointer]
+                - button "子6000 / 親12000" [ref=e96] [cursor=pointer]
+                - button "子16000 / 親32000" [ref=e97] [cursor=pointer]
+                - button "子32000 / 親64000" [ref=e98] [cursor=pointer]
+        - button "次の問題へ" [active] [ref=e63] [cursor=pointer]
+    - contentinfo [ref=e64]:
+        - navigation "フッター" [ref=e65]:
+            - link "プライバシーポリシー" [ref=e66] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=e67]: © 2026 麻雀 点数計算ドリル

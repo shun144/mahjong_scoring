@@ -1,31 +1,31 @@
 - generic [ref=e3]:
-  - main [ref=e154]:
-    - generic [ref=e155]:
-      - heading "解説" [level=1] [ref=e156]
-      - link "成績を見る" [ref=e157] [cursor=pointer]:
-        - /url: /stats
-    - paragraph [ref=e158]: ✕ 不正解
-    - paragraph [ref=e159]: "あなたの回答: 30符"
-    - paragraph [ref=e160]: "正解: 20符"
-    - region "符計算" [ref=e161]:
-      - list [ref=e162]:
-        - listitem [ref=e163]:
-          - generic [ref=e164]: 平和ツモ(固定)
-          - generic [ref=e165]: 20符
-      - list [ref=e166]:
-        - listitem [ref=e167]:
-          - generic [ref=e168]: 門前清自摸和
-          - generic [ref=e169]: 1翻
-        - listitem [ref=e170]:
-          - generic [ref=e171]: 平和
-          - generic [ref=e172]: 1翻
-    - generic [ref=e173]:
-      - link "問題に戻る" [ref=e174] [cursor=pointer]:
-        - /url: /fu/quiz
-      - link "次の問題へ" [ref=e175] [cursor=pointer]:
-        - /url: /fu/quiz
-  - contentinfo [ref=e11]:
-    - navigation "フッター" [ref=e12]:
-      - link "プライバシーポリシー" [ref=e13] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=e14]: © 2026 麻雀 点数計算ドリル
+    - main [ref=e154]:
+        - generic [ref=e155]:
+            - heading "解説" [level=1] [ref=e156]
+            - link "成績" [ref=e157] [cursor=pointer]:
+                - /url: /stats
+        - paragraph [ref=e158]: ✕ 不正解
+        - paragraph [ref=e159]: "あなたの回答: 30符"
+        - paragraph [ref=e160]: "正解: 20符"
+        - region "符計算" [ref=e161]:
+            - list [ref=e162]:
+                - listitem [ref=e163]:
+                    - generic [ref=e164]: 平和ツモ(固定)
+                    - generic [ref=e165]: 20符
+            - list [ref=e166]:
+                - listitem [ref=e167]:
+                    - generic [ref=e168]: 門前清自摸和
+                    - generic [ref=e169]: 1翻
+                - listitem [ref=e170]:
+                    - generic [ref=e171]: 平和
+                    - generic [ref=e172]: 1翻
+        - generic [ref=e173]:
+            - link "問題に戻る" [ref=e174] [cursor=pointer]:
+                - /url: /fu/quiz
+            - link "次の問題へ" [ref=e175] [cursor=pointer]:
+                - /url: /fu/quiz
+    - contentinfo [ref=e11]:
+        - navigation "フッター" [ref=e12]:
+            - link "プライバシーポリシー" [ref=e13] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=e14]: © 2026 麻雀 点数計算ドリル

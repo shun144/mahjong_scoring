@@ -1,28 +1,28 @@
 - generic [ref=f1e3]:
-  - main [ref=f1e67]:
-    - generic [ref=f1e68]:
-      - heading "解説" [level=1] [ref=f1e69]
-      - link "成績を見る" [ref=f1e70] [cursor=pointer]:
-        - /url: /stats
-    - paragraph [ref=f1e71]: ✕ 不正解
-    - paragraph [ref=f1e72]: "あなたの回答: 子2000 / 親4000"
-    - paragraph [ref=f1e73]: "正解: 子3000 / 親6000"
-    - region "点数計算" [ref=f1e74]:
-      - list [ref=f1e75]:
-        - listitem [ref=f1e76]:
-          - generic [ref=f1e77]: 七対子
-          - generic [ref=f1e78]: 2翻
-        - listitem [ref=f1e79]:
-          - generic [ref=f1e80]: ドラ
-          - generic [ref=f1e81]: 4翻
-      - paragraph [ref=f1e82]: 6翻 跳満 → 子ツモ 子3000 / 親6000
-    - generic [ref=f1e83]:
-      - link "問題に戻る" [ref=f1e84] [cursor=pointer]:
-        - /url: /quiz
-      - link "次の問題へ" [ref=f1e85] [cursor=pointer]:
-        - /url: /quiz
-  - contentinfo [ref=f1e63]:
-    - navigation "フッター" [ref=f1e64]:
-      - link "プライバシーポリシー" [ref=f1e65] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=f1e66]: © 2026 麻雀 点数計算ドリル
+    - main [ref=f1e67]:
+        - generic [ref=f1e68]:
+            - heading "解説" [level=1] [ref=f1e69]
+            - link "成績" [ref=f1e70] [cursor=pointer]:
+                - /url: /stats
+        - paragraph [ref=f1e71]: ✕ 不正解
+        - paragraph [ref=f1e72]: "あなたの回答: 子2000 / 親4000"
+        - paragraph [ref=f1e73]: "正解: 子3000 / 親6000"
+        - region "点数計算" [ref=f1e74]:
+            - list [ref=f1e75]:
+                - listitem [ref=f1e76]:
+                    - generic [ref=f1e77]: 七対子
+                    - generic [ref=f1e78]: 2翻
+                - listitem [ref=f1e79]:
+                    - generic [ref=f1e80]: ドラ
+                    - generic [ref=f1e81]: 4翻
+            - paragraph [ref=f1e82]: 6翻 跳満 → 子ツモ 子3000 / 親6000
+        - generic [ref=f1e83]:
+            - link "問題に戻る" [ref=f1e84] [cursor=pointer]:
+                - /url: /quiz
+            - link "次の問題へ" [ref=f1e85] [cursor=pointer]:
+                - /url: /quiz
+    - contentinfo [ref=f1e63]:
+        - navigation "フッター" [ref=f1e64]:
+            - link "プライバシーポリシー" [ref=f1e65] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=f1e66]: © 2026 麻雀 点数計算ドリル

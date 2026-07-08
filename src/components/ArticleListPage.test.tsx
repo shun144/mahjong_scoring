@@ -15,7 +15,7 @@ describe("ArticleListPage", () => {
   it("見出しとホームへの導線を表示する", () => {
     renderPage();
     expect(screen.getByRole("heading", { name: "学習ガイド", level: 1 })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "ホームに戻る" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "ホーム" })).toHaveAttribute("href", "/");
   });
 
   it("記事一覧にガイドへのリンクを表示する", () => {

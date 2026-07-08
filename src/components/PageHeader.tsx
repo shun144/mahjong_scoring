@@ -1,25 +1,32 @@
 import { Link } from "react-router-dom";
+import type { Problem } from "../data/problem";
 
 interface Props {
   title: string;
   /** 成績画面の「練習に戻る」が戻ってくるべき出題パス（例: "/quiz" | "/fu/quiz"）。 */
   backTo?: string;
+  /**
+   * 現在表示中の問題。渡しておくと、成績画面の「練習に戻る」で同じ問題（同じ4択・
+   * 同じ並び順）にそのまま戻れる（出題中の画面のみ渡す。解説画面は次の問題に進む
+   * 導線が別にあるため任意）。
+   */
+  problem?: Problem;
 }
 
-export function PageHeader({ title, backTo }: Props) {
+export function PageHeader({ title, backTo, problem }: Props) {
   return (
     <div className="page-header">
       <h1>{title}</h1>
       <div className="page-header-link">
         <Link to="/" className="page-header-link-item">
-          ホームに戻る
+          ホーム
         </Link>
         <Link
           to="/stats"
-          state={backTo ? { backTo } : undefined}
+          state={backTo ? { backTo, problem } : undefined}
           className="page-header-link-item"
         >
-          成績を見る
+          成績
         </Link>
       </div>
     </div>

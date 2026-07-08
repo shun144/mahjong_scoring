@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { resolveAnswer, type Problem } from "../data/problem";
 import type { Payment } from "../engine/score";
 import { generateChoices, paymentKey } from "../generator/distractors";
+import { createSeededRandom, seedFromString } from "../generator/random";
 import { useSettings } from "../settings/SettingsContext";
 import { nextProblem } from "../store/nextProblem";
 import { recordAnswer } from "../store/statsStore";
@@ -34,6 +35,9 @@ export function QuizPage() {
     () => resolveAnswer(problem, settings.roundUpMangan),
     [problem, settings.roundUpMangan],
   );
+  // 選択肢のシャッフルは問題IDから決定的に導出する。成績画面を経由して戻ってくるなど、
+  // 同じ問題で画面が再マウントされても4択の内容・並び順が変わらないようにするため
+  // （Math.randomだと再マウントのたびに再シャッフルされてしまう）。
   const choices = useMemo<Payment[]>(
     () =>
       generateChoices(
@@ -44,7 +48,7 @@ export function QuizPage() {
           isDealer: effectiveProblem.conditions.isDealer,
           winType: effectiveProblem.hand.winType,
         },
-        Math.random,
+        createSeededRandom(seedFromString(effectiveProblem.id)),
       ),
     [effectiveProblem],
   );
@@ -62,7 +66,7 @@ export function QuizPage() {
 
   return (
     <main className="page-shell quiz-page">
-      <PageHeader title="点数計算" backTo="/quiz" />
+      <PageHeader title="点数計算" backTo="/quiz" problem={problem} />
       <QuizConditions
         conditions={effectiveProblem.conditions}
         roundUpMangan={settings.roundUpMangan}

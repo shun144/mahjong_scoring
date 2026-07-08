@@ -33,7 +33,7 @@ describe("SettingsPage", () => {
   it("見出しとホームへの導線を表示する", async () => {
     renderPage(createInMemoryRepository());
     expect(screen.getByRole("heading", { name: "設定", level: 1 })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "ホームに戻る" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "ホーム" })).toHaveAttribute("href", "/");
   });
 
   it("既定では切り上げ満貫トグルがONで表示される", async () => {

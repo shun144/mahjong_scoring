@@ -10,7 +10,9 @@
       "Bash(echo \"---exit:$?---\")",
       "Bash(npx eslint *)",
       "Bash(xargs tail -5)",
-      "Bash(pkill -f vite)"
+      "Bash(pkill -f vite)",
+      "Bash(cp /tmp/QuizPage.tsx.bak src/components/QuizPage.tsx)",
+      "Bash(rm /tmp/QuizPage.tsx.bak)"
     ]
   }
 }

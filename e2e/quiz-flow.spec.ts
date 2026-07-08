@@ -27,7 +27,7 @@ test.describe("麻雀点数トレーニング - 一連の学習フロー", () =>
     await expect(page).toHaveURL(/\/quiz$/);
     await expect(page.getByRole("heading", { name: "出題" })).toBeVisible();
 
-    await page.getByRole("link", { name: "成績を見る" }).click();
+    await page.getByRole("link", { name: "成績" }).click();
     await expect(page).toHaveURL(/\/stats$/);
     await expect(page.getByRole("heading", { name: "成績" })).toBeVisible();
     // 選択肢はシャッフルされるため正誤は問わず、1問だけ回答が記録されたことを確認する

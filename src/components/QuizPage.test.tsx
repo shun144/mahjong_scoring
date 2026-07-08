@@ -100,7 +100,7 @@ describe("QuizPage", () => {
   it("renders the hand, conditions, 4 answer choices, and a skip button", () => {
     renderQuiz();
     expect(screen.getByRole("heading", { name: "出題" })).toBeInTheDocument();
-    // ページ上のボタンは4つの選択肢＋1つのスキップボタン（ヘッダーの「成績を見る」はリンク）。
+    // ページ上のボタンは4つの選択肢＋1つのスキップボタン（ヘッダーの「成績」はリンク）。
     const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(5);
     expect(screen.getByRole("button", { name: "次の問題へ" })).toBeInTheDocument();
@@ -166,8 +166,25 @@ describe("QuizPage", () => {
 
   it("returns to the score quiz page (not the fu quiz page) after viewing stats", () => {
     renderQuiz();
-    fireEvent.click(screen.getByRole("link", { name: "成績を見る" }));
+    fireEvent.click(screen.getByRole("link", { name: "成績" }));
     expect(screen.getByRole("heading", { name: "成績" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "練習に戻る" })).toHaveAttribute("href", "/quiz");
+  });
+
+  it("keeps the same problem and the same choice order after a stats round trip", () => {
+    renderQuiz();
+    const choicesBefore = screen
+      .getAllByRole("button")
+      .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
+      .map((b) => b.textContent);
+
+    fireEvent.click(screen.getByRole("link", { name: "成績" }));
+    fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
+
+    const choicesAfter = screen
+      .getAllByRole("button")
+      .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
+      .map((b) => b.textContent);
+    expect(choicesAfter).toEqual(choicesBefore);
   });
 });

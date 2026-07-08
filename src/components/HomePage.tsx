@@ -88,7 +88,7 @@ export function HomePage() {
                 <TileFace tile={STATS_TILE} size="sm" />
               </span>
               <span className="home-mode-body">
-                <span className="home-mode-title">成績を見る</span>
+                <span className="home-mode-title">成績</span>
                 <span className="home-mode-desc">正答率・苦手分野を確認</span>
               </span>
               <span className="home-mode-arrow" aria-hidden="true">

@@ -1,50 +1,50 @@
 - generic [ref=e3]:
-  - main [ref=e15]:
-    - generic [ref=e16]:
-      - heading "符計算" [level=1] [ref=e17]
-      - link "成績を見る" [ref=e18] [cursor=pointer]:
-        - /url: /stats
-    - region "局条件" [ref=e19]:
-      - generic [ref=e20]: "場風: 東"
-      - generic [ref=e21]: "自風: 東"
-      - generic [ref=e22]: 子
-      - generic [ref=e23]: リーチ
-    - generic [ref=e24]:
-      - heading "手牌" [level=2] [ref=e25]
-      - generic [ref=e26]:
-        - generic [ref=e27]:
-          - generic [ref=e28]: ロン
-          - img "白" [ref=e30]
-        - generic [ref=e33]:
-          - img "二萬" [ref=e34]
-          - img "二萬" [ref=e36]
-          - img "四萬" [ref=e38]
-          - img "四萬" [ref=e40]
-          - img "六萬" [ref=e42]
-          - img "六萬" [ref=e44]
-          - img "八筒" [ref=e46]
-          - img "八筒" [ref=e48]
-          - img "一索" [ref=e50]
-          - img "一索" [ref=e52]
-          - img "三索" [ref=e54]
-          - img "三索" [ref=e56]
-          - img "白" [ref=e58]
-    - region "ドラ表示牌" [ref=e60]:
-      - generic [ref=e61]:
-        - generic [ref=e62]: ドラ表示牌
-        - img "九萬" [ref=e64]
-      - generic [ref=e66]:
-        - generic [ref=e67]: 裏ドラ表示牌
-        - generic [ref=e68]: なし
-    - generic [ref=e69]:
-      - paragraph [ref=e70]: 符を選んでください
-      - generic [ref=e71]:
-        - button "50符" [ref=e72] [cursor=pointer]
-        - button "40符" [ref=e73] [cursor=pointer]
-        - button "25符" [ref=e74] [cursor=pointer]
-        - button "20符" [ref=e75] [cursor=pointer]
-  - contentinfo [ref=e11]:
-    - navigation "フッター" [ref=e12]:
-      - link "プライバシーポリシー" [ref=e13] [cursor=pointer]:
-        - /url: /privacy
-    - paragraph [ref=e14]: © 2026 麻雀 点数計算ドリル
+    - main [ref=e15]:
+        - generic [ref=e16]:
+            - heading "符計算" [level=1] [ref=e17]
+            - link "成績" [ref=e18] [cursor=pointer]:
+                - /url: /stats
+        - region "局条件" [ref=e19]:
+            - generic [ref=e20]: "場風: 東"
+            - generic [ref=e21]: "自風: 東"
+            - generic [ref=e22]: 子
+            - generic [ref=e23]: リーチ
+        - generic [ref=e24]:
+            - heading "手牌" [level=2] [ref=e25]
+            - generic [ref=e26]:
+                - generic [ref=e27]:
+                    - generic [ref=e28]: ロン
+                    - img "白" [ref=e30]
+                - generic [ref=e33]:
+                    - img "二萬" [ref=e34]
+                    - img "二萬" [ref=e36]
+                    - img "四萬" [ref=e38]
+                    - img "四萬" [ref=e40]
+                    - img "六萬" [ref=e42]
+                    - img "六萬" [ref=e44]
+                    - img "八筒" [ref=e46]
+                    - img "八筒" [ref=e48]
+                    - img "一索" [ref=e50]
+                    - img "一索" [ref=e52]
+                    - img "三索" [ref=e54]
+                    - img "三索" [ref=e56]
+                    - img "白" [ref=e58]
+        - region "ドラ表示牌" [ref=e60]:
+            - generic [ref=e61]:
+                - generic [ref=e62]: ドラ表示牌
+                - img "九萬" [ref=e64]
+            - generic [ref=e66]:
+                - generic [ref=e67]: 裏ドラ表示牌
+                - generic [ref=e68]: なし
+        - generic [ref=e69]:
+            - paragraph [ref=e70]: 符を選んでください
+            - generic [ref=e71]:
+                - button "50符" [ref=e72] [cursor=pointer]
+                - button "40符" [ref=e73] [cursor=pointer]
+                - button "25符" [ref=e74] [cursor=pointer]
+                - button "20符" [ref=e75] [cursor=pointer]
+    - contentinfo [ref=e11]:
+        - navigation "フッター" [ref=e12]:
+            - link "プライバシーポリシー" [ref=e13] [cursor=pointer]:
+                - /url: /privacy
+        - paragraph [ref=e14]: © 2026 麻雀 点数計算ドリル
