@@ -8,7 +8,9 @@
       "Bash(taskkill //F //IM node.exe //FI \"WINDOWTITLE eq *5183*\")",
       "Bash(taskkill *)",
       "Bash(echo \"---exit:$?---\")",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(xargs tail -5)",
+      "Bash(pkill -f vite)"
     ]
   }
 }

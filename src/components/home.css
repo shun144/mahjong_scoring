@@ -1,118 +1,534 @@
+/* =====================================================================
+   ホーム画面 — Flip7 デザインシステム（docs/DESIGN.md）を唯一の典拠に再構築。
+   レトロでポップ／teal-coral-gold／丸みのある形／色付きグロー影／弾むモーション。
+   すべてのトークンは .home-page スコープに閉じ込め、グローバル・他画面には影響させない。
+   ===================================================================== */
+
 .home-page {
-  /* 高さは .app-layout（flex）から与えられるため min-height は持たせない。
-     余った縦スペースの中央にコンテンツを寄せる。
-     Airbnb 流の generous whitespace で開けたヒーローにする。 */
+  /* --- 配色（DESIGN.md Colors） --- */
+  --fl-teal: #2ba8a2;
+  --fl-teal-light: #3cc4bd;
+  --fl-teal-dark: #1e8c86;
+  --fl-teal-bg: #e8f6f5;
+  --fl-gold: #ffd23f;
+  --fl-gold-light: #ffe47a;
+  --fl-gold-dark: #e6b800;
+  --fl-coral: #ef6c4a;
+  --fl-coral-light: #ff8a6a;
+  --fl-coral-dark: #d45233;
+  --fl-cream: #fff8e7;
+  --fl-sky: #5dade2;
+  --fl-surface: #eff8f7;
+  --fl-card: #ffffff;
+  /* インク：深いティール寄りの濃色（クリーム/白の上で AA を満たす） */
+  --fl-ink: #123f3c;
+  --fl-body: #34514f;
+  --fl-muted: #566d6b;
+
+  /* --- 形状（DESIGN.md Border Radius、web px 換算） --- */
+  --fl-r-sm: 10px;
+  --fl-r-md: 16px;
+  --fl-r-lg: 24px;
+  --fl-r-xl: 32px;
+  --fl-r-pill: 999px;
+
+  /* --- 色付きグロー影（DESIGN.md Elevation） --- */
+  --fl-shadow-card: 0 6px 20px rgba(43, 168, 162, 0.12);
+  --fl-glow-teal: 0 8px 22px rgba(43, 168, 162, 0.3);
+  --fl-glow-coral: 0 8px 22px rgba(239, 108, 74, 0.34);
+  --fl-glow-gold: 0 8px 22px rgba(255, 210, 63, 0.42);
+  --fl-glow-sky: 0 6px 18px rgba(93, 173, 226, 0.3);
+
+  /* --- モーション（弾むイージング。マイクロ操作は 500ms 以内） --- */
+  --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fl-dur: 240ms;
+
+  display: flex;
+  flex-direction: column;
+  color: var(--fl-body);
+  /* 上部にゴールドの暖かなハロー、全体は淡いティール面。レトロな温かみ。 */
+  background:
+    radial-gradient(130% 60% at 50% -12%, rgba(255, 226, 138, 0.55) 0%, rgba(255, 226, 138, 0) 60%),
+    var(--fl-surface);
+}
+
+/* =====================================================================
+   トップバー（左：ブランド／右：設定）— クリーム帯＋2px ティール境界・sticky
+   ===================================================================== */
+.home-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(255, 248, 231, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(43, 168, 162, 0.22);
+}
+
+/* ブランド（牌チップ＋アプリ名）。牌は少し傾けた「ゲーム駒」風のクリーム札に。 */
+.home-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.home-brand-chip {
+  display: inline-flex;
+  padding: 5px;
+  background: var(--fl-cream);
+  border: 2px solid var(--fl-ink);
+  border-radius: var(--fl-r-md);
+  box-shadow: var(--fl-glow-teal);
+  transform: rotate(-5deg);
+  transition: transform var(--fl-dur) var(--fl-bounce);
+}
+
+.home-brand:hover .home-brand-chip {
+  transform: rotate(-5deg) scale(1.06);
+}
+
+.home-brand-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--fl-teal-dark);
+}
+
+/* 設定：ピル形ボタン（クリーム地＋ティール枠）。hover でティール塗り＋グロー。 */
+.home-topbar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.home-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--fl-teal-dark);
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--fl-cream);
+  border: 2px solid var(--fl-teal);
+  border-radius: var(--fl-r-pill);
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    background var(--fl-dur) var(--fl-bounce),
+    color var(--fl-dur) var(--fl-bounce),
+    box-shadow var(--fl-dur) var(--fl-bounce);
+}
+
+.home-pill-btn-icon {
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .home-pill-btn:hover {
+    background: var(--fl-teal);
+    color: var(--fl-cream);
+    box-shadow: var(--fl-glow-teal);
+    transform: translateY(-2px);
+  }
+}
+
+.home-pill-btn:active {
+  transform: scale(0.95);
+}
+
+/* =====================================================================
+   コンテンツ（縦スペースの中央にヒーロー→メニュー→ガイドを積む）
+   ===================================================================== */
+.home-content {
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-6);
+  gap: 40px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 20px 56px;
   text-align: center;
-  padding: var(--space-8) var(--space-4);
 }
 
-/* ヒーロー（見出し＋説明文） */
+/* =====================================================================
+   ヒーロー — 扇カード＋リボン＋特大見出し
+   ===================================================================== */
 .home-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  gap: 16px;
+  animation: home-rise 460ms var(--fl-bounce) both;
 }
 
-.home-hero h1 {
-  font-size: var(--fs-emphasis);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
+/* 背後の扇状カード（Flip7 パッケージのファン配置。純装飾）。 */
+.home-hero-fan {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 52px;
+  margin-bottom: 4px;
 }
 
-.home-hero p {
-  max-width: 32em;
-  color: var(--color-text-sub);
+.home-hero-fan-card {
+  width: 30px;
+  height: 44px;
+  margin: 0 -7px;
+  border-radius: 8px;
+  border: 2px solid var(--fl-ink);
+  box-shadow: 0 4px 10px rgba(18, 63, 60, 0.16);
+  transform-origin: bottom center;
+}
+.home-hero-fan-card--teal {
+  background: var(--fl-teal);
+  transform: rotate(-24deg) translateY(6px);
+}
+.home-hero-fan-card--coral {
+  background: var(--fl-coral);
+  transform: rotate(-12deg) translateY(-1px);
+}
+.home-hero-fan-card--gold {
+  background: var(--fl-gold);
+  transform: rotate(0deg) translateY(-5px);
+}
+.home-hero-fan-card--sky {
+  background: var(--fl-sky);
+  transform: rotate(12deg) translateY(-1px);
+}
+.home-hero-fan-card--mint {
+  background: var(--fl-teal-light);
+  transform: rotate(24deg) translateY(6px);
 }
 
-/* モード選択グリッド。スマホは1列、480px以上でドリル2枚を横並びにし、
-   成績カードは全幅（下段）に置く。 */
+/* リボンバナー（DESIGN.md の折り返しリボン。両端の帯を疑似要素で背後へ）。 */
+.home-ribbon {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 7px 20px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--fl-teal-dark);
+  background: var(--fl-cream);
+  border: 3px solid var(--fl-ink);
+  border-radius: 6px;
+}
+.home-ribbon::before,
+.home-ribbon::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 8px;
+  width: 18px;
+  height: 100%;
+  background: var(--fl-gold-light);
+  border: 3px solid var(--fl-ink);
+}
+.home-ribbon::before {
+  left: -12px;
+  border-radius: 4px 0 0 4px;
+}
+.home-ribbon::after {
+  right: -12px;
+  border-radius: 0 4px 4px 0;
+}
+
+.home-hero-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 8vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.005em;
+  color: var(--fl-ink);
+}
+
+/* キーワードをゴールドのマーカーで塗った強調（レトロ・ポップ）。 */
+.home-hero-mark {
+  position: relative;
+  white-space: nowrap;
+  padding: 0 4px;
+  color: var(--fl-ink);
+}
+.home-hero-mark::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: 2px;
+  height: 42%;
+  z-index: -1;
+  background: var(--fl-gold);
+  border-radius: 6px;
+  transform: rotate(-1.5deg);
+}
+
+.home-hero-sub {
+  max-width: 30em;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--fl-muted);
+}
+
+/* =====================================================================
+   練習メニュー — セクション見出し（絵文字＋破線ボーダー）＋タイル状カード
+   ===================================================================== */
 .home-modes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.home-modes-title {
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--fl-teal-dark);
+  border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
+}
+.home-modes-title-icon {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.home-modes-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-3);
+  gap: 14px;
   width: 100%;
-  max-width: 520px;
 }
 
-/* 各モードは「アイコン＋見出し」を横並びにしたボタン風カード。
-   Airbnb 1-tier（影なし・border＋角丸）を基調に、ボタンらしい小さめ角丸（--radius-sm）と
-   hover の淡い Rausch 塗り・押下の手応え（translateY）を添える。 */
-.home-mode-card {
+/* 各モード：白カード／大角丸／色付き左アクセントバー／色付きグロー。
+   アイコンチップ＋見出し＋シェブロン。タップしたくなる「ゲーム駒」。 */
+.home-mode {
+  position: relative;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: var(--space-3);
-  min-height: 56px;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface-2);
-  color: var(--color-text);
-  text-decoration: none;
+  gap: 14px;
+  min-height: 72px;
+  padding: 16px 18px 16px 22px;
+  background: var(--fl-card);
+  border: 2px solid transparent;
+  border-radius: var(--fl-r-lg);
   text-align: left;
+  text-decoration: none;
+  color: var(--fl-ink);
+  overflow: hidden;
   transition:
-    border-color var(--duration) var(--ease-standard),
-    background var(--duration) var(--ease-standard),
-    box-shadow var(--duration) var(--ease-standard),
-    transform var(--duration) var(--ease-standard);
+    transform var(--fl-dur) var(--fl-bounce),
+    box-shadow var(--fl-dur) var(--fl-bounce);
+  animation: home-pop 420ms var(--fl-bounce) both;
+}
+/* 左アクセントバー（6px。状態＝色で識別）。 */
+.home-mode::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
 }
 
-/* hover はポインタ環境のみ。ボタン同様に淡い Rausch を敷き、枠線を Rausch に寄せ、1段だけ浮かせる。 */
+.home-mode--score {
+  box-shadow: var(--fl-glow-teal);
+  animation-delay: 60ms;
+}
+.home-mode--score::before {
+  background: var(--fl-teal);
+}
+.home-mode--fu {
+  box-shadow: var(--fl-glow-coral);
+  animation-delay: 120ms;
+}
+.home-mode--fu::before {
+  background: var(--fl-coral);
+}
+.home-mode--stats {
+  box-shadow: var(--fl-glow-gold);
+  animation-delay: 180ms;
+}
+.home-mode--stats::before {
+  background: var(--fl-gold-dark);
+}
+
 @media (hover: hover) {
-  .home-mode-card:hover {
-    border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
-    box-shadow: var(--shadow-sm);
+  .home-mode:hover {
+    transform: translateY(-4px);
+  }
+  .home-mode--score:hover {
+    box-shadow: 0 14px 30px rgba(43, 168, 162, 0.4);
+  }
+  .home-mode--fu:hover {
+    box-shadow: 0 14px 30px rgba(239, 108, 74, 0.42);
+  }
+  .home-mode--stats:hover {
+    box-shadow: 0 14px 30px rgba(255, 210, 63, 0.5);
+  }
+  .home-mode:hover .home-mode-arrow {
+    transform: translateX(3px);
   }
 }
-
-.home-mode-card:active {
-  transform: translateY(1px);
+.home-mode:active {
+  transform: scale(0.97);
 }
 
+/* 牌アイコン：傾けたクリームの札に収め、カード色のリングを添える。 */
 .home-mode-icon {
-  /* 牌サイズは TileFace の size prop（sm）と tiles.css が決める。ここは収縮させないだけ。 */
   display: inline-flex;
   flex: none;
+  padding: 6px;
+  background: var(--fl-cream);
+  border-radius: var(--fl-r-md);
+  transform: rotate(-4deg);
+}
+.home-mode--score .home-mode-icon {
+  box-shadow: 0 0 0 2px var(--fl-teal);
+}
+.home-mode--fu .home-mode-icon {
+  box-shadow: 0 0 0 2px var(--fl-coral);
+}
+.home-mode--stats .home-mode-icon {
+  box-shadow: 0 0 0 2px var(--fl-gold-dark);
 }
 
 .home-mode-body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-0);
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
-
 .home-mode-title {
-  font-size: var(--fs-base);
-  font-weight: 600;
-  line-height: var(--leading-tight);
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--fl-ink);
 }
-
 .home-mode-desc {
-  font-size: var(--fs-sm);
-  color: var(--color-text-sub);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--fl-muted);
 }
 
+.home-mode-arrow {
+  flex: none;
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--fl-teal);
+  transition: transform var(--fl-dur) var(--fl-bounce);
+}
+.home-mode--fu .home-mode-arrow {
+  color: var(--fl-coral);
+}
+.home-mode--stats .home-mode-arrow {
+  color: var(--fl-gold-dark);
+}
+
+/* 480px 以上：ドリル2枚を横並び、成績カードは全幅（情報構造は現状維持）。 */
 @media (min-width: 480px) {
-  .home-modes {
+  .home-modes-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .home-mode-card--wide {
+  .home-mode--wide {
     grid-column: 1 / -1;
   }
 }
 
+/* =====================================================================
+   学習ガイドへの導線 — 破線ピル（ゴースト）
+   ===================================================================== */
 .home-articles-link {
-  font-size: var(--fs-sm);
+  margin: 0;
+  line-height: 1;
+}
+.home-guide-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--fl-teal-dark);
+  text-decoration: none;
+  background: transparent;
+  border: 2px dashed var(--fl-teal);
+  border-radius: var(--fl-r-pill);
+  transition:
+    background var(--fl-dur) var(--fl-bounce),
+    transform var(--fl-dur) var(--fl-bounce);
+}
+.home-guide-pill-icon {
+  font-size: 1.05em;
+  line-height: 1;
+}
+@media (hover: hover) {
+  .home-guide-pill:hover {
+    background: var(--fl-teal-bg);
+    transform: translateY(-2px);
+  }
+}
+.home-guide-pill:active {
+  transform: scale(0.96);
 }
 
-.home-articles-link a {
-  color: var(--color-text-sub);
-  text-decoration: underline;
+/* =====================================================================
+   キーフレーム（弾む登場）
+   ===================================================================== */
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes home-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* モーション抑制設定では登場・ホバー移動を無効化する。 */
+@media (prefers-reduced-motion: reduce) {
+  .home-hero,
+  .home-mode {
+    animation: none;
+  }
+  .home-brand-chip,
+  .home-pill-btn,
+  .home-mode,
+  .home-mode-arrow,
+  .home-guide-pill {
+    transition: none;
+    transform: none;
+  }
 }

@@ -10,7 +10,11 @@ describe("App routing", () => {
         <App />
       </MemoryRouter>,
     );
-    expect(screen.getByRole("heading", { name: "麻雀点数トレーニング" })).toBeInTheDocument();
+    // 見出し内でキーワードをマーカー強調する <span> によりアクセシブルネームに空白が入るため、
+    // 空白を許容する正規表現で照合する。
+    expect(
+      screen.getByRole("heading", { name: /和了形から\s*点数\s*を当てる/ }),
+    ).toBeInTheDocument();
   });
 
   it("renders the quiz page at /quiz", () => {

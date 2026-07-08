@@ -10,6 +10,7 @@ import { ChoiceGrid } from "./ChoiceGrid";
 import { formatPayment } from "./format";
 import { PageHeader } from "./PageHeader";
 import "./quiz.css";
+import "./quizFlip7.css";
 import { QuizConditions } from "./QuizConditions";
 import { QuizTileHeader } from "./QuizTileHeader";
 import { HandDisplay } from "./tiles/HandDisplay";
@@ -60,22 +61,34 @@ export function QuizPage() {
   }
 
   return (
-    <main className="page-shell">
+    <main className="page-shell quiz-page">
       <PageHeader title="出題" />
-      <QuizConditions conditions={effectiveProblem.conditions} roundUpMangan={settings.roundUpMangan} />
+      <QuizConditions
+        conditions={effectiveProblem.conditions}
+        roundUpMangan={settings.roundUpMangan}
+      />
 
-      <QuizTileHeader problem={effectiveProblem} />
+      {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}
+      <section className="qp-board" aria-label="問題">
+        <QuizTileHeader problem={effectiveProblem} />
 
-      <section className="quiz-hand">
-        <HandDisplay
-          concealed={effectiveProblem.hand.concealed}
-          melds={effectiveProblem.hand.melds}
-          winningTile={effectiveProblem.hand.winningTile}
-        />
+        <div className="quiz-hand">
+          <span className="qp-section-label">手牌</span>
+          <HandDisplay
+            concealed={effectiveProblem.hand.concealed}
+            melds={effectiveProblem.hand.melds}
+            winningTile={effectiveProblem.hand.winningTile}
+          />
+        </div>
       </section>
 
       <section className="quiz-answer">
-        <p className="quiz-answer-label">点数を選んでください</p>
+        <p className="quiz-answer-label">
+          <span className="qp-answer-icon" aria-hidden="true">
+            🎯
+          </span>
+          点数を選んでください
+        </p>
         <ChoiceGrid
           items={choices}
           keyOf={paymentKey}
@@ -85,8 +98,11 @@ export function QuizPage() {
       </section>
 
       <section className="quiz-skip">
-        <button type="button" className="btn-secondary" onClick={handleSkip}>
+        <button type="button" className="qp-skip-btn" onClick={handleSkip}>
           次の問題へ
+          <span className="qp-skip-arrow" aria-hidden="true">
+            ↻
+          </span>
         </button>
       </section>
     </main>
