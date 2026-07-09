@@ -21,7 +21,7 @@ describe("ArticleListPage", () => {
   it("記事一覧にガイドへのリンクを表示する", () => {
     renderPage();
     const link = screen.getByRole("link", {
-      name: /麻雀の点数計算ガイド/,
+      name: /点数計算ガイド/,
     });
     expect(link).toHaveAttribute("href", "/articles/tensu-keisan-guide");
   });

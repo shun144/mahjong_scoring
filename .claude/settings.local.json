@@ -13,7 +13,13 @@
       "Bash(pkill -f vite)",
       "Bash(cp /tmp/QuizPage.tsx.bak src/components/QuizPage.tsx)",
       "Bash(rm /tmp/QuizPage.tsx.bak)",
-      "Bash(node -e \"console.log\\(require\\('./package.json'\\).devDependencies['@testing-library/user-event'] || require\\('./package.json'\\).dependencies?.['@testing-library/user-event'] || 'NOT FOUND'\\)\")"
+      "Bash(node -e \"console.log\\(require\\('./package.json'\\).devDependencies['@testing-library/user-event'] || require\\('./package.json'\\).dependencies?.['@testing-library/user-event'] || 'NOT FOUND'\\)\")",
+      "Bash(echo \"=== EXIT: $? ===\")",
+      "Bash(curl -s -o /dev/null -w \"5173:%{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(curl -s -o /dev/null -w \"5174:%{http_code}\\\\n\" http://localhost:5174/)",
+      "Bash(rm -f card-grid.png card-grid-mobile.png current-list.png)",
+      "Bash(git checkout *)",
+      "Bash(xargs -r rm -f)"
     ]
   }
 }

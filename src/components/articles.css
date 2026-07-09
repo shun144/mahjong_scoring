@@ -85,26 +85,32 @@
   transform: scale(0.95);
 }
 
-/* 一覧本体 */
-.articles-page .article-list {
+/* 一覧本体＝カードグリッド。スマホでも2列に並べるタイル型カード。 */
+.articles-page .article-card-grid {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 14px;
 }
+.articles-page .article-card-grid li {
+  display: flex;
+}
 
-/* 各記事＝タップしたくなるカード。色付き左アクセントバー＋シェブロン＋色付きグロー。
-   アクセント色は nth-child でティール→コーラル→ゴールド→スカイと巡回させ、
-   レトロ・ポップな彩りにする（--accent 1 変数だけで枠/バー/矢印/影を連動）。 */
-.articles-page .article-list-item {
+/* 各記事＝タップしたくなるカード。DESIGN.md の Cards（白背景・角丸lg・shadow-card・
+   6px 色付き左アクセントバー・色付きグロー影）に準拠。アクセント色は nth-child で
+   ティール→コーラル→ゴールド→スカイと巡回させ、レトロ・ポップな彩りにする
+   （--accent 1 変数だけで枠/バー/影を連動）。 */
+.articles-page .article-card {
   --accent: var(--fl-teal);
   position: relative;
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px 44px 16px 22px;
+  align-items: center;
+  justify-content: center;
+  min-height: 116px;
+  padding: 20px 16px 20px 22px;
   background: var(--fl-card);
   border: 2px solid color-mix(in srgb, var(--accent) 22%, #fff);
   border-radius: var(--fl-r-lg);
@@ -119,7 +125,7 @@
   animation: articles-rise 400ms var(--fl-bounce) both;
 }
 /* 左アクセントバー（6px）。 */
-.articles-page .article-list-item::before {
+.articles-page .article-card::before {
   content: "";
   position: absolute;
   left: 0;
@@ -128,54 +134,34 @@
   width: 6px;
   background: var(--accent);
 }
-/* 右のシェブロン。 */
-.articles-page .article-list-item::after {
-  content: "›";
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.6rem;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--accent);
-  transition: transform var(--fl-dur) var(--fl-bounce);
-}
 
-.articles-page .article-list li:nth-child(4n + 2) .article-list-item {
+.articles-page .article-card-grid li:nth-child(4n + 2) .article-card {
   --accent: var(--fl-coral);
 }
-.articles-page .article-list li:nth-child(4n + 3) .article-list-item {
+.articles-page .article-card-grid li:nth-child(4n + 3) .article-card {
   --accent: var(--fl-gold-dark);
 }
-.articles-page .article-list li:nth-child(4n + 4) .article-list-item {
+.articles-page .article-card-grid li:nth-child(4n + 4) .article-card {
   --accent: var(--fl-sky);
 }
 
 @media (hover: hover) {
-  .articles-page .article-list-item:hover {
+  .articles-page .article-card:hover {
     border-color: var(--accent);
     box-shadow: 0 14px 30px color-mix(in srgb, var(--accent) 42%, transparent);
     transform: translateY(-4px);
   }
-  .articles-page .article-list-item:hover::after {
-    transform: translateY(-50%) translateX(3px);
-  }
 }
-.articles-page .article-list-item:active {
+.articles-page .article-card:active {
   transform: scale(0.98);
 }
 
-.articles-page .article-list-title {
-  font-size: 1.05rem;
+.articles-page .article-card-title {
+  font-size: 1.02rem;
   font-weight: 800;
-  line-height: 1.3;
+  line-height: 1.35;
+  text-align: center;
   color: var(--fl-ink);
-}
-.articles-page .article-list-desc {
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--fl-muted);
 }
 
 @keyframes articles-rise {
@@ -190,7 +176,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .articles-page .article-list-item {
+  .articles-page .article-card {
     animation: none;
     transition: none;
     transform: none;

@@ -16,12 +16,11 @@ export function ArticleListPage() {
         </div>
       </div>
 
-      <ul className="article-list">
+      <ul className="article-card-grid">
         {articles.map((article) => (
           <li key={article.slug}>
-            <Link to={`/articles/${article.slug}`} className="article-list-item">
-              <span className="article-list-title">{article.title}</span>
-              <span className="article-list-desc">{article.description}</span>
+            <Link to={`/articles/${article.slug}`} className="article-card">
+              <span className="article-card-title">{article.title}</span>
             </Link>
           </li>
         ))}
