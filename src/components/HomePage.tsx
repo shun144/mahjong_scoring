@@ -47,7 +47,7 @@ export function HomePage() {
           <h1 className="home-hero-title">
             和了形から<span className="home-hero-mark">点数</span>を当てる
           </h1>
-          <p className="home-hero-sub">最終点数または符を4択で答える反復ドリル。</p>
+          <p className="home-hero-sub">選択肢から答える反復トレーニング</p>
         </section>
 
         <nav className="home-modes" aria-label="練習モード">
