@@ -151,7 +151,6 @@ export function FuPartsQuizPage() {
       <section className="fu-parts-form" aria-label="符の要素">
         {fuElements.kind === "standard" ? (
           <>
-            <p className="fu-parts-base">副底(基本) 20符（固定）</p>
             <ElementRow
               label="上がり方"
               choices={WIN_METHOD_CHOICES}
@@ -178,6 +177,7 @@ export function FuPartsQuizPage() {
                 correct={fuElements.pair}
                 graded={graded}
                 onSelect={(value) => setStandardAnswers((a) => ({ ...a, pair: value }))}
+                full
               />
               <ElementRow
                 label="待ち"

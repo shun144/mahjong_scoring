@@ -29,7 +29,9 @@
       "Bash(xxd)",
       "Bash(node -e ' *)",
       "Bash(pkill -f \"vite --port\")",
-      "Bash(powershell -Command \"Stop-Process -Id 7228 -Force\")"
+      "Bash(powershell -Command \"Stop-Process -Id 7228 -Force\")",
+      "Bash(git ls-tree *)",
+      "Bash(powershell -Command \"Stop-Process -Id 2000 -Force\")"
     ]
   }
 }

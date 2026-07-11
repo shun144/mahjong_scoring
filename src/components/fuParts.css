@@ -60,14 +60,6 @@
   gap: var(--space-2);
 }
 
-/* 副底(基本)の固定表示。選択不要なので info テキストとして据え置く。 */
-.fu-parts-base {
-  margin: 0;
-  font-size: var(--fs-sm);
-  font-weight: 700;
-  color: var(--fl-muted, var(--color-text-sub));
-}
-
 /* 雀頭・待ちの2択行は横に並べ、縦の行数を1つ分節約する。 */
 .fu-parts-row-pair {
   display: flex;
@@ -76,6 +68,25 @@
 .fu-parts-row-pair > .fu-parts-row {
   flex: 1 1 0;
   min-width: 0;
+}
+
+/* 雀頭・待ちの選択肢は {0,2} の1桁のみのため、他行より狭いボタン幅にして
+   雀頭のラベル列（--full）を追加しても待ちと横1行に収まる余地を確保する。 */
+.fu-parts-row-pair .fu-parts-choice-btn {
+  width: 2.75rem;
+}
+
+/* 雀頭は上がり方・面子(合計)と同じラベル列幅（--full）を共有して選択肢の開始位置を
+   縦に揃えるが、雀頭・待ちの2択行は横幅が半分しかないため、雀頭側の選択肢ボタンを
+   さらに狭くして「ラベル(5.5rem)＋選択肢2つ」が待ちと横1行に収まるようにする
+   （待ち側は対象外＝上の2.75rem幅のまま）。 */
+.fu-parts-row-pair .fu-parts-row-main--full .fu-parts-row-choices {
+  gap: 4px;
+}
+.fu-parts-row-pair .fu-parts-row-main--full .fu-parts-choice-btn {
+  width: 1.75rem;
+  padding: 0 2px;
+  font-size: 0.75rem;
 }
 
 .fu-parts-row {
