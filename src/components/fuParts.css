@@ -100,18 +100,22 @@
   white-space: nowrap;
 }
 
-/* 正誤の表示は採点前も1行ぶんの領域を確保し（空白文字）、採点前後で行の高さが変わらない
-   ようにする（採点する／次の問題へボタンの位置を固定するため）。右寄せの小さな1行。 */
+/* 正誤マーク（○/✕）は各項目名の「上」に置く。採点前も1行ぶんの領域を確保し、採点前後で
+   行の高さが変わらないようにする（採点する／次の問題へボタンの位置を固定するため）。 */
 .fu-parts-row-verdict {
   display: block;
-  min-height: 1.1em;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-align: right;
-  color: var(--color-text-sub);
+  min-height: 1.2em;
+  line-height: 1.2;
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: left;
+  color: transparent;
 }
-.fu-parts-row-verdict--revealed {
-  color: var(--color-text);
+.fu-parts-row-verdict--correct {
+  color: var(--color-success-text, var(--color-success));
+}
+.fu-parts-row-verdict--incorrect {
+  color: var(--color-danger-text, var(--color-danger));
 }
 
 .fu-parts-row-choices {
@@ -125,9 +129,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
+  /* 1桁「0符」も2桁「25符」も同じ幅に揃える（内容依存で伸びないよう固定幅）。 */
+  flex: none;
+  width: 3.5rem;
   min-height: 40px;
-  padding: 0 10px;
+  padding: 0 8px;
   font-size: 0.9rem;
   font-weight: 700;
   font-family: var(--font-numeric);
@@ -156,9 +162,18 @@
   cursor: not-allowed;
 }
 
+/* 選択中は塗りつぶし＋白文字＋リングで、未選択（白地）と一目で区別できるようにする。 */
 .fu-parts-choice-btn--selected {
-  background: var(--fl-teal-bg, var(--color-accent-bg));
-  border-color: var(--fl-teal-dark, var(--color-accent));
+  color: var(--fl-cream, #fff);
+  background: var(--fl-teal, var(--color-accent));
+  border-color: var(--fl-teal-dark, var(--color-accent-active, var(--color-accent)));
+  box-shadow: 0 0 0 3px var(--fl-teal-bg, var(--color-accent-bg));
+}
+@media (hover: hover) {
+  .fu-parts-choice-btn--selected:not(:disabled):hover {
+    color: var(--fl-cream, #fff);
+    background: var(--fl-teal-dark, var(--color-accent-active, var(--color-accent)));
+  }
 }
 
 .fu-parts-choice-btn--correct {

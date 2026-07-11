@@ -66,8 +66,8 @@ describe("FuPartsQuizPage", () => {
     expect(summary).toHaveAttribute("aria-hidden", "false");
     expect(summary).toHaveClass("fu-parts-summary--revealed");
     expect(summary?.textContent).toMatch(/○ 完答|✕ 一部不正解/);
-    // 各行にも○×＋正解符のインライン表示が出る。
-    expect(screen.getAllByText(/^○ 正解$|^✕ 正解は\d+符$/).length).toBeGreaterThanOrEqual(1);
+    // 各項目名の上に○/✕のマークだけが出る（正解値は選択肢ボタンの配色で示す）。
+    expect(screen.getAllByText(/^○$|^✕$/).length).toBeGreaterThanOrEqual(1);
   });
 
   it("grading records exactly one answer (correct or not)", () => {

@@ -250,7 +250,7 @@ export function FuPartsQuizPage() {
   );
 }
 
-/** 符の要素1行分。選択肢ボタン＋（採点後の）正誤・正解のインライン表示。 */
+/** 符の要素1行分。項目名の上の正誤マーク（採点後の○/✕）＋ラベル＋選択肢ボタン。 */
 function ElementRow({
   label,
   choices,
@@ -267,8 +267,17 @@ function ElementRow({
   onSelect: (value: number) => void;
 }) {
   const isCorrect = selected === correct;
+  const verdictClass = graded
+    ? isCorrect
+      ? " fu-parts-row-verdict--correct"
+      : " fu-parts-row-verdict--incorrect"
+    : "";
   return (
     <div className="fu-parts-row" role="group" aria-label={label}>
+      {/* 正誤マークは項目名の真上に置く（○/✕のみ）。正解の値は選択肢ボタンの配色で判別できる。 */}
+      <span className={`fu-parts-row-verdict${verdictClass}`} aria-hidden={!graded}>
+        {graded ? (isCorrect ? "○" : "✕") : " "}
+      </span>
       <div className="fu-parts-row-main">
         <span className="fu-parts-row-label">{label}</span>
         <div className="fu-parts-row-choices">
@@ -298,12 +307,6 @@ function ElementRow({
           })}
         </div>
       </div>
-      <span
-        className={`fu-parts-row-verdict${graded ? " fu-parts-row-verdict--revealed" : ""}`}
-        aria-hidden={!graded}
-      >
-        {graded ? (isCorrect ? "○ 正解" : `✕ 正解は${correct}符`) : " "}
-      </span>
     </div>
   );
 }
