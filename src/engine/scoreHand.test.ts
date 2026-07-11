@@ -307,3 +307,54 @@ describe("scoreHand - roundUpMangan option", () => {
     expect(oyaTsumo?.payment).toEqual({ kind: "tsumo-oya", each: 4000 });
   });
 });
+
+describe("scoreHand - includeFuElements option (符分解モード. SPEC.md §4.10)", () => {
+  // 平和ロン(30符=副底20+門前ロン10)の門前手。
+  function pinfuRonInput(overrides: Partial<ScoreHandInput> = {}): ScoreHandInput {
+    return baseInput({
+      concealed: tiles("234m567p33z345s789m"),
+      winningTile: parseTileNotation("9m"),
+      winType: "ron",
+      riichi: true,
+      ...overrides,
+    });
+  }
+
+  it("既定(オプション無し)ではfuElementsを含まない(問題バンクの回帰比較に影響しないため)", () => {
+    const result = scoreHand(pinfuRonInput());
+    expect(result?.fuElements).toBeUndefined();
+  });
+
+  it("includeFuElements:trueで、fuDetail.totalと一致するfuElementsを返す", () => {
+    const withElements = scoreHand(pinfuRonInput(), { includeFuElements: true });
+    expect(withElements?.fuElements).toEqual({
+      kind: "standard",
+      winMethod: 10,
+      meldTotal: 0,
+      pair: 0,
+      wait: 0,
+      subtotal: 30,
+      total: 30,
+    });
+    expect(withElements?.fuElements?.kind === "standard" && withElements.fuElements.total).toBe(
+      withElements?.fuDetail?.total,
+    );
+    // han/fu/payment等の採点結果はオプション無しと変わらない。
+    const withoutElements = scoreHand(pinfuRonInput());
+    expect(withElements?.han).toBe(withoutElements?.han);
+    expect(withElements?.fu).toBe(withoutElements?.fu);
+    expect(withElements?.payment).toEqual(withoutElements?.payment);
+  });
+
+  it("七対子はfixed 25符のfuElementsを返す", () => {
+    const result = scoreHand(
+      baseInput({
+        concealed: tiles("22m44m66m88p11s33s5z5z"),
+        winningTile: parseTileNotation("5z"),
+        winType: "ron",
+      }),
+      { includeFuElements: true },
+    );
+    expect(result?.fuElements).toEqual({ kind: "fixed", fu: 25 });
+  });
+});

@@ -16,7 +16,10 @@ function resolveStatsNavState(state: unknown): StatsNavState {
   const fallback = "/quiz";
   if (!state || typeof state !== "object") return { backTo: fallback };
   const s = state as { backTo?: unknown; problem?: unknown };
-  const backTo = s.backTo === "/quiz" || s.backTo === "/fu/quiz" ? s.backTo : fallback;
+  const backTo =
+    s.backTo === "/quiz" || s.backTo === "/fu/quiz" || s.backTo === "/fu/parts"
+      ? s.backTo
+      : fallback;
   const problem =
     s.problem && typeof s.problem === "object" && "id" in s.problem
       ? (s.problem as Problem)

@@ -1,0 +1,285 @@
+/* 符分解モード（FuPartsQuizPage）専用スタイル。
+   ページ全体は .quiz-page（quiz.css/quizFlip7.css）の配色・カード・ボタン基調を継承し、
+   ここでは符の要素フォーム固有のレイアウト・状態色のみを追加する。
+   スマホ縦画面で「手牌・お題・回答・採点結果」を極力1画面に収め、選択肢を操作しても
+   手牌が視界から外れないようにする（SPEC.md §4.10「スマホ1画面表示」）。 */
+
+/* このページだけ page-shell の縦gap（既定 --space-5=24px）を詰め、1画面に収まりやすくする。 */
+.fu-parts-page {
+  gap: var(--space-3);
+}
+
+/* お題（局条件＋アガリ牌＋手牌）をまとめてsticky固定する。PageHeader（top:8pxでsticky）の
+   すぐ下に続けて貼り付くよう、ヘッダーの概算の高さぶんだけtopをずらす。 */
+.fu-parts-sticky {
+  position: sticky;
+  top: 60px;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  /* sticky区間の下に本文が透けないよう、背面と同じ地色を敷く。 */
+  background: var(--fl-surface, var(--color-bg));
+}
+
+.fu-parts-conditions-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* アガリ牌チップ（局条件バッジの隣に添える。ツモ=スカイ／ロン=コーラルで色分け）。
+   quizFlip7.css の `.quiz-page .badge` と同specificity(2クラス)にして、後勝ち
+   （このCSSは quiz.css/quizFlip7.css の後に読み込む）で確実に上書きする。 */
+.badge.fu-parts-wintype-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px 4px 16px;
+}
+.badge.fu-parts-wintype-badge--tsumo {
+  background: color-mix(in srgb, var(--fl-sky, var(--color-accent)) 16%, #fff);
+  border-color: var(--fl-sky, var(--color-accent));
+}
+.badge.fu-parts-wintype-badge--ron {
+  background: color-mix(in srgb, var(--fl-coral, var(--color-accent)) 15%, #fff);
+  border-color: var(--fl-coral, var(--color-accent));
+}
+
+/* 手牌の囲い自体は HandDisplay（.mj-hand-display）が持つため、ここでは余白調整のみ行う。
+   独立した「アガリ牌」ブロックを廃した分、既存の .qp-board(quizFlip7.css) は使わない。 */
+.fu-parts-board {
+  display: flex;
+}
+
+.fu-parts-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* 副底(基本)の固定表示。選択不要なので info テキストとして据え置く。 */
+.fu-parts-base {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--fl-muted, var(--color-text-sub));
+}
+
+/* 雀頭・待ちの2択行は横に並べ、縦の行数を1つ分節約する。 */
+.fu-parts-row-pair {
+  display: flex;
+  gap: var(--space-3);
+}
+.fu-parts-row-pair > .fu-parts-row {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.fu-parts-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ラベルとボタン群を同じ行に並べる（縦積みをやめて行数を減らす）。 */
+.fu-parts-row-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.fu-parts-row-label {
+  flex: none;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  color: var(--fl-ink, var(--color-text));
+  white-space: nowrap;
+}
+
+/* 正誤の表示は採点前も1行ぶんの領域を確保し（空白文字）、採点前後で行の高さが変わらない
+   ようにする（採点する／次の問題へボタンの位置を固定するため）。右寄せの小さな1行。 */
+.fu-parts-row-verdict {
+  display: block;
+  min-height: 1.1em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: right;
+  color: var(--color-text-sub);
+}
+.fu-parts-row-verdict--revealed {
+  color: var(--color-text);
+}
+
+.fu-parts-row-choices {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fu-parts-choice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 40px;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  color: var(--fl-ink, var(--color-text));
+  background: var(--fl-card, var(--color-bg));
+  border: 2px solid var(--fl-teal, var(--color-border));
+  border-radius: var(--fl-r-md, var(--radius-sm));
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+@media (hover: hover) {
+  .fu-parts-choice-btn:not(:disabled):hover {
+    background: var(--fl-teal-bg, var(--color-surface));
+    transform: translateY(-2px);
+  }
+}
+.fu-parts-choice-btn:not(:disabled):active {
+  transform: scale(0.96);
+}
+.fu-parts-choice-btn:disabled {
+  cursor: not-allowed;
+}
+
+.fu-parts-choice-btn--selected {
+  background: var(--fl-teal-bg, var(--color-accent-bg));
+  border-color: var(--fl-teal-dark, var(--color-accent));
+}
+
+.fu-parts-choice-btn--correct {
+  background: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
+}
+
+.fu-parts-choice-btn--incorrect {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
+}
+
+/* 不正解時、正解の選択肢を点線で示す（自分が選んだわけではないため塗らない）。 */
+.fu-parts-choice-btn--reveal {
+  border-style: dashed;
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
+}
+
+/* 合計・切り上げ・完答の表示。採点前も領域を確保し高さを固定する
+   （visibility:hidden は display:none と違いレイアウト上の領域を占有したまま保つ）。 */
+.fu-parts-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  min-height: 2.6rem;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  visibility: hidden;
+}
+.fu-parts-summary--revealed {
+  visibility: visible;
+}
+
+.fu-parts-summary-line {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.fu-parts-summary .result-verdict {
+  font-size: 1rem;
+}
+
+.fu-parts-grade-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--fl-cream, #fff);
+  background: var(--fl-teal, var(--color-accent));
+  border: 2px solid var(--fl-teal-dark, var(--color-accent));
+  border-radius: var(--fl-r-pill, var(--radius-pill));
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+@media (hover: hover) {
+  .fu-parts-grade-btn:not(:disabled):hover {
+    background: var(--fl-teal-dark, var(--color-accent-active));
+    transform: translateY(-2px);
+  }
+}
+.fu-parts-grade-btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+.fu-parts-grade-btn:disabled {
+  color: var(--color-text-sub);
+  background: var(--color-border);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+/* 参考「符の内訳」は既定で折りたたむ（採点後のみ表示。1画面レイアウトを押し下げないよう
+   ボタン列より後ろに置き、開閉してもそれより上のレイアウトは動かない）。 */
+.fu-parts-detail {
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+}
+
+.fu-parts-detail-summary {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-text-sub);
+  cursor: pointer;
+  list-style: none;
+}
+.fu-parts-detail-summary::-webkit-details-marker {
+  display: none;
+}
+.fu-parts-detail-summary::before {
+  content: "▸ ";
+}
+.fu-parts-detail[open] .fu-parts-detail-summary::before {
+  content: "▾ ";
+}
+
+.fu-parts-detail-body {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fu-parts-choice-btn,
+  .fu-parts-grade-btn {
+    transition: none;
+    transform: none;
+  }
+}

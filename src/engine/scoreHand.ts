@@ -1,9 +1,12 @@
 import { countAkaDora, countDoraFromIndicators } from "./dora";
 import {
   calculateFuBreakdown,
+  calculateFuElements,
   chiitoitsuFuBreakdown,
+  chiitoitsuFuElements,
   type FuBreakdown,
   type FuBreakdownOptions,
+  type FuElementBreakdown,
 } from "./fu";
 import { buildStandardInterpretations, type StandardInterpretation } from "./interpretation";
 import { decomposeChiitoitsu, decomposeKokushi } from "./decompose";
@@ -35,6 +38,7 @@ interface Candidate {
   fu: number;
   isYakuman: boolean;
   fuDetail?: FuBreakdown;
+  fuElements?: FuElementBreakdown;
 }
 
 export interface ScoreHandOptions extends FuBreakdownOptions {
@@ -43,6 +47,11 @@ export interface ScoreHandOptions extends FuBreakdownOptions {
    * trueにすると4翻30符・3翻60符等も満貫として採点する（score.tsのcalculatePaymentへ伝播）。
    */
   roundUpMangan?: boolean;
+  /**
+   * 符の要素別内訳（符分解モード用。SPEC.md §4.10）を結果に含めるか（既定false）。
+   * falseの間は既存のScoreResultと完全に同一の出力になる（問題バンクの回帰比較に影響しない）。
+   */
+  includeFuElements?: boolean;
 }
 
 function isMenzenHand(melds: readonly Meld[]): boolean {
@@ -65,6 +74,7 @@ function buildCandidateResult(
     payment,
     rank: rank ?? undefined,
     fuDetail: candidate.fuDetail,
+    fuElements: options.includeFuElements ? candidate.fuElements : undefined,
   };
 }
 
@@ -117,6 +127,7 @@ export function scoreHand(
 
   for (const interp of interpretations) {
     const fuDetail = calculateFuBreakdown(interp, yakuCtx, opts);
+    const fuElements = opts.includeFuElements ? calculateFuElements(interp, yakuCtx) : undefined;
     const yakumanResults = detectYakuman(interp, { isMenzen }, concealedCounts);
     if (yakumanResults.length > 0) {
       candidates.push({
@@ -125,6 +136,7 @@ export function scoreHand(
         fu: fuDetail.total,
         isYakuman: true,
         fuDetail,
+        fuElements,
       });
       continue; // 役満と通常役は複合させない
     }
@@ -133,7 +145,7 @@ export function scoreHand(
     if (regularYaku.length === 0) continue; // 役なし（ドラのみ）は無効
     const yaku = [...regularYaku, ...doraYaku];
     const han = regularYaku.reduce((a, y) => a + y.han, 0) + bonusHan;
-    candidates.push({ yaku, han, fu: fuDetail.total, isYakuman: false, fuDetail });
+    candidates.push({ yaku, han, fu: fuDetail.total, isYakuman: false, fuDetail, fuElements });
   }
 
   // --- 七対子・国士無双は副露が無い場合のみ ---
@@ -182,6 +194,7 @@ export function scoreHand(
         fu: 25,
         isYakuman: false,
         fuDetail: chiitoitsuFuBreakdown(),
+        fuElements: opts.includeFuElements ? chiitoitsuFuElements() : undefined,
       });
     }
   }

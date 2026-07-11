@@ -27,8 +27,7 @@ export function FuBreakdownContent({ detail }: { detail: FuBreakdown }) {
     <>
       <ul className="fu-list">
         {detail.items.map((item, i) => {
-          const text =
-            item.count && item.count > 1 ? `${item.label} × ${item.count}` : item.label;
+          const text = item.count && item.count > 1 ? `${item.label} × ${item.count}` : item.label;
           return (
             <li key={i}>
               <span className={meldMarkClass(item.label)}>{text}</span>

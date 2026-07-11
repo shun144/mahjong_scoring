@@ -6,6 +6,7 @@ import "./home.css";
 // 各モードカードの装飾に使う代表牌（見た目のみ。採点ロジックには無関係）。
 const SCORE_TILE: Tile = { suit: "z", rank: 7 }; // 中
 const FU_TILE: Tile = { suit: "p", rank: 5, red: true }; // 赤5筒
+const PARTS_TILE: Tile = { suit: "m", rank: 8 }; // 8萬
 const CONVERT_TILE: Tile = { suit: "s", rank: 5, red: true }; // 赤5索
 const STATS_TILE: Tile = { suit: "z", rank: 6 }; // 發
 // ヘッダーのブランドマークに使う代表牌（見た目のみ）。
@@ -78,6 +79,19 @@ export function HomePage() {
               <span className="home-mode-body">
                 <span className="home-mode-title">符計算モード</span>
                 <span className="home-mode-desc">符を答える</span>
+              </span>
+              <span className="home-mode-arrow" aria-hidden="true">
+                ›
+              </span>
+            </Link>
+
+            <Link to="/fu/parts" className="home-mode home-mode--parts">
+              <span className="home-mode-icon" aria-hidden="true">
+                <TileFace tile={PARTS_TILE} size="sm" />
+              </span>
+              <span className="home-mode-body">
+                <span className="home-mode-title">符分解モード</span>
+                <span className="home-mode-desc">符を要素ごとに組み立てる</span>
               </span>
               <span className="home-mode-arrow" aria-hidden="true">
                 ›

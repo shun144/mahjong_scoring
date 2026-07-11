@@ -4,6 +4,7 @@ import { ArticlePage } from "./components/ArticlePage";
 import { ConvertQuizPage } from "./components/ConvertQuizPage";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Footer } from "./components/Footer";
+import { FuPartsQuizPage } from "./components/FuPartsQuizPage";
 import { FuQuizPage } from "./components/FuQuizPage";
 import { FuResultPage } from "./components/FuResultPage";
 import { HomePage } from "./components/HomePage";
@@ -26,6 +27,7 @@ function App() {
             <Route path="/result" element={<ResultPage />} />
             <Route path="/fu/quiz" element={<FuQuizPage />} />
             <Route path="/fu/result" element={<FuResultPage />} />
+            <Route path="/fu/parts" element={<FuPartsQuizPage />} />
             <Route path="/convert" element={<ConvertQuizPage />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/articles" element={<ArticleListPage />} />

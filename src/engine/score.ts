@@ -1,7 +1,7 @@
 import type { WinType } from "./model";
-import type { FuBreakdown } from "./fu";
+import type { FuBreakdown, FuElementBreakdown } from "./fu";
 
-export type { FuBreakdown, FuItem } from "./fu";
+export type { FuBreakdown, FuElementBreakdown, FuItem } from "./fu";
 
 export interface YakuResult {
   name: string;
@@ -24,6 +24,12 @@ export interface ScoreResult {
   interpretationNote?: string;
   /** 符の内訳（解説表示用）。満貫以上など符が点数に影響しない場合は省略され得る。 */
   fuDetail?: FuBreakdown;
+  /**
+   * 符の要素別内訳（符分解モード用。SPEC.md §4.10）。
+   * scoreHand に opts.includeFuElements を渡した場合のみ含まれる
+   * （既定では省略され、既存のバンク回帰テストの比較に影響しない）。
+   */
+  fuElements?: FuElementBreakdown;
 }
 
 function roundUp100(n: number): number {

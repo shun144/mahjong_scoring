@@ -65,7 +65,7 @@ export function FuQuizPage() {
 
       {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}
       <section className="qp-board" aria-label="問題">
-        <QuizTileHeader problem={problem} />
+        <QuizTileHeader problem={problem} showDora={false} />
 
         <div className="quiz-hand">
           <span className="qp-section-label">手牌</span>

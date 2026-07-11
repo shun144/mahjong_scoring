@@ -190,3 +190,88 @@ export function chiitoitsuFuBreakdown(): FuBreakdown {
     fixed: true,
   };
 }
+
+/**
+ * 符分解モード（SPEC.md §4.10）用の要素別内訳。
+ * calculateFuBreakdown の内訳（FuItem.label）には依存せず、標準形の符計算を
+ * 「上がり方／面子の符合計／雀頭／待ち」の4要素に直接分解する。
+ * 平和ツモ・七対子など固定符の手は分解せず fixed を返す（七対子は chiitoitsuFuElements を使う）。
+ */
+export type FuElementBreakdown =
+  | {
+      kind: "standard";
+      /** 上がり方: 門前ロン=10 / ツモ=2 / 鳴きロン=0。 */
+      winMethod: number;
+      /** 4面子の符の合計（順子は0符のため寄与しない）。 */
+      meldTotal: number;
+      /** 雀頭: 役牌(三元牌/自風/場風)=2 / それ以外=0。 */
+      pair: number;
+      /** 待ち: 嵌張・辺張・単騎=2 / 両面・双碰=0。 */
+      wait: number;
+      /** 切り上げ前の合計（20+winMethod+meldTotal+pair+wait）。 */
+      subtotal: number;
+      /** 10符切り上げ後の最終符。 */
+      total: number;
+      /** 喰い平和形の切り上げ等、補足があれば記す。 */
+      note?: string;
+    }
+  | {
+      kind: "fixed";
+      /** 平和ツモ=20 / 七対子=25。 */
+      fu: number;
+    };
+
+/**
+ * 4面子1雀頭形の符を要素別に分解する（SPEC.md §4.10）。
+ * 平和ロン（30符＝副底20＋門前ロン10）は fixed にならないため標準4要素として分解する
+ * （上がり方=10・他0）。平和ツモのみ固定符として扱う。
+ */
+export function calculateFuElements(
+  interp: StandardInterpretation,
+  ctx: FuContext,
+): FuElementBreakdown {
+  if (isPinfuShape(interp, ctx)) {
+    if (ctx.winType === "tsumo") return { kind: "fixed", fu: 20 };
+    return { kind: "standard", winMethod: 10, meldTotal: 0, pair: 0, wait: 0, subtotal: 30, total: 30 };
+  }
+
+  const winMethod = ctx.winType === "ron" ? (ctx.isMenzen ? 10 : 0) : 2;
+  const meldTotal = interp.sets.reduce((sum, set) => sum + setFu(set), 0);
+  const pair = isYakuhaiPairType(interp.pair.tileType, ctx) ? 2 : 0;
+
+  const winningSet = interp.sets.find((s) => s.isWinningGroup);
+  const waitKind: WaitKind | undefined =
+    winningSet?.waitKind ?? (interp.pair.isWinningGroup ? "tanki" : undefined);
+  const wait = waitFu(waitKind);
+
+  const subtotal = 20 + winMethod + meldTotal + pair + wait;
+
+  // 喰い平和形のロン（鳴きで符が一切付かない20符形）は30符に切り上げる（calculateFuBreakdownと同条件）。
+  if (subtotal === 20 && ctx.winType === "ron" && !ctx.isMenzen) {
+    return {
+      kind: "standard",
+      winMethod,
+      meldTotal,
+      pair,
+      wait,
+      subtotal,
+      total: 30,
+      note: "喰い平和形のため30符に切り上げ",
+    };
+  }
+
+  return {
+    kind: "standard",
+    winMethod,
+    meldTotal,
+    pair,
+    wait,
+    subtotal,
+    total: Math.ceil(subtotal / 10) * 10,
+  };
+}
+
+/** 七対子の符要素（25符固定・SPEC.md §4.10）。 */
+export function chiitoitsuFuElements(): FuElementBreakdown {
+  return { kind: "fixed", fu: 25 };
+}

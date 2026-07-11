@@ -23,7 +23,12 @@
       "Bash(powershell -Command 'Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -eq '\\\\'''\\\\'' } | Select-Object Id')",
       "Bash(npx vite *)",
       "Bash(npx playwright *)",
-      "Bash(node tmp-measure.mjs)"
+      "Bash(node tmp-measure.mjs)",
+      "mcp__plugin_playwright_playwright__browser_find",
+      "Bash(pkill -f \"vite --port 5183\")",
+      "Bash(xxd)",
+      "Bash(node -e ' *)",
+      "Bash(pkill -f \"vite --port\")"
     ]
   }
 }

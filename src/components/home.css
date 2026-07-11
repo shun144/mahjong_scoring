@@ -18,6 +18,8 @@
   --fl-coral-dark: #d45233;
   --fl-cream: #fff8e7;
   --fl-sky: #5dade2;
+  --fl-violet: #9b6dd6;
+  --fl-violet-dark: #7a4fc0;
   --fl-surface: #eff8f7;
   --fl-card: #ffffff;
   /* インク：深いティール寄りの濃色（クリーム/白の上で AA を満たす） */
@@ -38,6 +40,7 @@
   --fl-glow-coral: 0 8px 22px rgba(239, 108, 74, 0.34);
   --fl-glow-gold: 0 8px 22px rgba(255, 210, 63, 0.42);
   --fl-glow-sky: 0 6px 18px rgba(93, 173, 226, 0.3);
+  --fl-glow-violet: 0 8px 22px rgba(155, 109, 214, 0.32);
 
   /* --- モーション（弾むイージング。マイクロ操作は 500ms 以内） --- */
   --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -363,6 +366,13 @@
 .home-mode--fu::before {
   background: var(--fl-coral);
 }
+.home-mode--parts {
+  box-shadow: var(--fl-glow-violet);
+  animation-delay: 140ms;
+}
+.home-mode--parts::before {
+  background: var(--fl-violet);
+}
 .home-mode--convert {
   box-shadow: var(--fl-glow-sky);
   animation-delay: 150ms;
@@ -387,6 +397,9 @@
   }
   .home-mode--fu:hover {
     box-shadow: 0 14px 30px rgba(239, 108, 74, 0.42);
+  }
+  .home-mode--parts:hover {
+    box-shadow: 0 14px 30px rgba(155, 109, 214, 0.42);
   }
   .home-mode--convert:hover {
     box-shadow: 0 14px 30px rgba(93, 173, 226, 0.42);
@@ -416,6 +429,9 @@
 }
 .home-mode--fu .home-mode-icon {
   box-shadow: 0 0 0 2px var(--fl-coral);
+}
+.home-mode--parts .home-mode-icon {
+  box-shadow: 0 0 0 2px var(--fl-violet);
 }
 .home-mode--convert .home-mode-icon {
   box-shadow: 0 0 0 2px var(--fl-sky);
@@ -453,6 +469,9 @@
 }
 .home-mode--fu .home-mode-arrow {
   color: var(--fl-coral);
+}
+.home-mode--parts .home-mode-arrow {
+  color: var(--fl-violet);
 }
 .home-mode--convert .home-mode-arrow {
   color: var(--fl-sky);

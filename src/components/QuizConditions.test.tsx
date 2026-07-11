@@ -10,6 +10,8 @@ const conditions: Problem["conditions"] = {
   riichi: false,
 };
 
+const riichiConditions: Problem["conditions"] = { ...conditions, riichi: true };
+
 describe("QuizConditions", () => {
   it("roundUpManganを渡さない場合は「満貫切上」タグを表示しない", () => {
     render(<QuizConditions conditions={conditions} />);
@@ -28,5 +30,20 @@ describe("QuizConditions", () => {
     const section = container.querySelector(".quiz-conditions");
     const firstBadgeText = section?.firstElementChild?.textContent;
     expect(firstBadgeText).toBe("満貫切上");
+  });
+
+  it("リーチの問題では既定（showRiichi未指定）で「リーチ」タグを表示する", () => {
+    render(<QuizConditions conditions={riichiConditions} />);
+    expect(screen.getByText("リーチ")).toBeInTheDocument();
+  });
+
+  it("showRiichi=falseの場合、リーチの問題でも「リーチ」タグを表示しない（符分解モード用）", () => {
+    render(<QuizConditions conditions={riichiConditions} showRiichi={false} />);
+    expect(screen.queryByText("リーチ")).not.toBeInTheDocument();
+  });
+
+  it("showRiichi=falseでも、リーチでない問題は元々「リーチ」タグを表示しない", () => {
+    render(<QuizConditions conditions={conditions} showRiichi={false} />);
+    expect(screen.queryByText("リーチ")).not.toBeInTheDocument();
   });
 });

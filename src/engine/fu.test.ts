@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   calculateFu,
   calculateFuBreakdown,
+  calculateFuElements,
   chiitoitsuFuBreakdown,
+  chiitoitsuFuElements,
   type FuContext,
 } from "./fu";
 import { buildStandardInterpretations } from "./interpretation";
@@ -260,5 +262,122 @@ describe("chiitoitsuFuBreakdown", () => {
     expect(breakdown.fixed).toBe(true);
     expect(breakdown.items).toHaveLength(1);
     expect(breakdown.items[0].fu).toBe(25);
+  });
+});
+
+describe("calculateFuElements - 符分解モードの要素別内訳 (SPEC.md §4.10)", () => {
+  it("pinfu tsumo is a fixed 20 fu element (not decomposed)", () => {
+    const counts = countsFromCompact("234m567p33z345s789m");
+    const winType = tileToType(parseTileNotation("9m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "tsumo");
+    const elements = calculateFuElements(interp, baseCtx({ winType: "tsumo" }));
+    expect(elements).toEqual({ kind: "fixed", fu: 20 });
+  });
+
+  it("pinfu ron decomposes as standard (winMethod=10, others 0, total 30)", () => {
+    const counts = countsFromCompact("234m567p33z345s789m");
+    const winType = tileToType(parseTileNotation("9m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const elements = calculateFuElements(interp, baseCtx({ winType: "ron" }));
+    expect(elements).toEqual({
+      kind: "standard",
+      winMethod: 10,
+      meldTotal: 0,
+      pair: 0,
+      wait: 0,
+      subtotal: 30,
+      total: 30,
+    });
+  });
+
+  it("menzen ron + terminal ankou + tanki: winMethod=10, meldTotal=8, wait=2, total=40", () => {
+    // 20(副底)+10(門前ロン)+8(老頭暗刻)+2(単騎) = 40（calculateFuBreakdownの既存テストと同一手）
+    const counts = countsFromCompact("111m456p789s234s4z4z");
+    const winType = tileToType(parseTileNotation("4z"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const elements = calculateFuElements(interp, baseCtx({ winType: "ron" }));
+    expect(elements).toEqual({
+      kind: "standard",
+      winMethod: 10,
+      meldTotal: 8,
+      pair: 0,
+      wait: 2,
+      subtotal: 40,
+      total: 40,
+    });
+  });
+
+  it("tsumo + yakuhai pair + kanchan wait rounds up to 30 (pair=2)", () => {
+    const counts = countsFromCompact("123p456p789s46m5m");
+    counts[27] += 2; // 雀頭は東(自風=場風=east)を2枚追加
+    const winType = tileToType(parseTileNotation("5m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "tsumo");
+    const elements = calculateFuElements(interp, baseCtx({ winType: "tsumo" }));
+    expect(elements).toEqual({
+      kind: "standard",
+      winMethod: 2,
+      meldTotal: 0,
+      pair: 2,
+      wait: 2,
+      subtotal: 26,
+      total: 30,
+    });
+  });
+
+  it("open hand ryanmen ron (kuipinfu) bumps 20 -> 30 with a note", () => {
+    const counts = countsFromCompact("234m456m567p345s");
+    counts[9 + 8] += 2; // 9p雀頭(非役牌)
+    const winType = tileToType(parseTileNotation("6m"));
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "ron");
+    const elements = calculateFuElements(interp, baseCtx({ winType: "ron", isMenzen: false }));
+    expect(elements).toEqual({
+      kind: "standard",
+      winMethod: 0,
+      meldTotal: 0,
+      pair: 0,
+      wait: 0,
+      subtotal: 20,
+      total: 30,
+      note: "喰い平和形のため30符に切り上げ",
+    });
+  });
+
+  it("counts a concealed kan (暗槓) in meldTotal at its full fu value", () => {
+    // 20(副底)+10(門前ロン)+32(老頭暗槓)+2(役牌雀頭)+2(単騎) = 66 -> 70符
+    const counts = countsFromCompact("456p789s234s5z5z");
+    const winType = tileToType(parseTileNotation("5z"));
+    const [interp] = buildStandardInterpretations(
+      counts,
+      3,
+      [{ type: "ankan", tiles: ["1m", "1m", "1m", "1m"].map(parseTileNotation) }],
+      winType,
+      "ron",
+    );
+    const elements = calculateFuElements(interp, baseCtx({ winType: "ron" }));
+    expect(elements).toEqual({
+      kind: "standard",
+      winMethod: 10,
+      meldTotal: 32,
+      pair: 2,
+      wait: 2,
+      subtotal: 66,
+      total: 70,
+    });
+  });
+
+  it("matches calculateFuBreakdown's total for the same hand", () => {
+    const counts = countsFromCompact("222m888s456p789p55m");
+    const winType = tileToType(parseTileNotation("5m"));
+    const ctx = baseCtx({ winType: "tsumo" });
+    const [interp] = buildStandardInterpretations(counts, 4, [], winType, "tsumo");
+    const elements = calculateFuElements(interp, ctx);
+    const breakdown = calculateFuBreakdown(interp, ctx);
+    expect(elements.kind === "standard" ? elements.total : elements.fu).toBe(breakdown.total);
+  });
+});
+
+describe("chiitoitsuFuElements", () => {
+  it("is a fixed 25 fu element", () => {
+    expect(chiitoitsuFuElements()).toEqual({ kind: "fixed", fu: 25 });
   });
 });

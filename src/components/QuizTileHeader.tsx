@@ -38,8 +38,15 @@ function LabeledTiles({
 /**
  * アガリ牌・ドラ表示牌・裏ドラ表示牌を、ラベル上／牌下の同じ並びで横に配置するヘッダー。
  * 裏ドラ表示牌はリーチ時のみ表示する（SPEC.md §5.4）。
+ * 符計算モードは符がドラの影響を受けないため、showDora=false でドラ表示を省略できる。
  */
-export function QuizTileHeader({ problem }: { problem: Problem }) {
+export function QuizTileHeader({
+  problem,
+  showDora = true,
+}: {
+  problem: Problem;
+  showDora?: boolean;
+}) {
   const winType = problem.hand.winType;
   return (
     <section className="quiz-tile-header" aria-label="アガリ牌・ドラ表示牌">
@@ -54,14 +61,16 @@ export function QuizTileHeader({ problem }: { problem: Problem }) {
         />
       </div>
       {/* グレー枠に表ドラ・裏ドラをまとめる。 */}
-      <div className="dora-indicator-section">
-        <div className="dora-indicator-group">
-          <div className="dora-indicator-tiles">
-            <LabeledTiles label="表" tiles={problem.doraIndicators} keyPrefix="dora" />
-            <LabeledTiles label="裏" tiles={problem.uraDoraIndicators} keyPrefix="uradora" />
+      {showDora && (
+        <div className="dora-indicator-section">
+          <div className="dora-indicator-group">
+            <div className="dora-indicator-tiles">
+              <LabeledTiles label="表" tiles={problem.doraIndicators} keyPrefix="dora" />
+              <LabeledTiles label="裏" tiles={problem.uraDoraIndicators} keyPrefix="uradora" />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
