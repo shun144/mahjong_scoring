@@ -92,6 +92,22 @@
   gap: var(--space-2);
 }
 
+/* 全幅表示の2行（上がり方・面子(合計)）はラベル列幅を grid で共通固定し、
+   選択肢ボタンの開始位置（左端）を縦に揃える。ラベルの文字数差（4字/6字相当）で
+   ボタン列がずれないようにするための対応（雀頭・待ちの2択並列行は対象外）。 */
+.fu-parts-row-main--full {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  align-items: center;
+  column-gap: var(--space-2);
+}
+.fu-parts-row-main--full .fu-parts-row-label {
+  grid-column: 1;
+}
+.fu-parts-row-main--full .fu-parts-row-choices {
+  grid-column: 2;
+}
+
 .fu-parts-row-label {
   flex: none;
   font-size: var(--fs-sm);

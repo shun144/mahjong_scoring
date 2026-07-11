@@ -1,5 +1,0 @@
-- contentinfo [ref=f6e4]:
-  - navigation "フッター" [ref=f6e5]:
-    - link "プライバシーポリシー" [ref=f6e6] [cursor=pointer]:
-      - /url: /privacy
-  - paragraph [ref=f6e7]: © 2026 麻雀 点数計算ドリル

@@ -159,6 +159,7 @@ export function FuPartsQuizPage() {
               correct={fuElements.winMethod}
               graded={graded}
               onSelect={(value) => setStandardAnswers((a) => ({ ...a, winMethod: value }))}
+              full
             />
             <ElementRow
               label="面子(合計)"
@@ -167,6 +168,7 @@ export function FuPartsQuizPage() {
               correct={fuElements.meldTotal}
               graded={graded}
               onSelect={(value) => setStandardAnswers((a) => ({ ...a, meldTotal: value }))}
+              full
             />
             <div className="fu-parts-row-pair">
               <ElementRow
@@ -258,6 +260,7 @@ function ElementRow({
   correct,
   graded,
   onSelect,
+  full,
 }: {
   label: string;
   choices: readonly number[];
@@ -265,6 +268,8 @@ function ElementRow({
   correct: number;
   graded: boolean;
   onSelect: (value: number) => void;
+  /** 全幅表示の行（上がり方・面子(合計)）か。true の場合、ラベル列幅を grid で揃える対象になる。 */
+  full?: boolean;
 }) {
   const isCorrect = selected === correct;
   const verdictClass = graded
@@ -278,7 +283,7 @@ function ElementRow({
       <span className={`fu-parts-row-verdict${verdictClass}`} aria-hidden={!graded}>
         {graded ? (isCorrect ? "○" : "✕") : " "}
       </span>
-      <div className="fu-parts-row-main">
+      <div className={`fu-parts-row-main${full ? " fu-parts-row-main--full" : ""}`}>
         <span className="fu-parts-row-label">{label}</span>
         <div className="fu-parts-row-choices">
           {choices.map((value) => {

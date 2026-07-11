@@ -28,7 +28,8 @@
       "Bash(pkill -f \"vite --port 5183\")",
       "Bash(xxd)",
       "Bash(node -e ' *)",
-      "Bash(pkill -f \"vite --port\")"
+      "Bash(pkill -f \"vite --port\")",
+      "Bash(powershell -Command \"Stop-Process -Id 7228 -Force\")"
     ]
   }
 }
