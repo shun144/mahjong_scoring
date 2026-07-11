@@ -1,0 +1,99 @@
+/* 点数換算モード（ConvertQuizPage）専用スタイル。
+   バッジ本体（.badge等）は quiz.css を流用し、ここでは配色差分のみ追加する。 */
+
+/* 条件バッジ列（親子・ツモ/ロン・満貫切上）は他画面より一段目立たせたいので中央寄せにする。 */
+.convert-question {
+  justify-content: center;
+}
+
+/* ツモ/ロンは中立ベースのまま値のみ強調（既存 .badge の既定を踏襲）。 */
+.badge--convert-wintype {
+  font-weight: 600;
+}
+
+/* 符・翻の出題カード（フラッシュカード）。牌画像は使わず数字のみを主役にする。
+   回答結果もこのカードの中（符・翻の下）に表示する。結果ゾーンは常にマウントし
+   visibility:hidden で領域だけ確保するため、回答前後でカードの高さが変わらず、
+   下に続く選択肢・「次の問題へ」ボタンの位置が動かない。 */
+.convert-flashcard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-height: 120px;
+  padding: var(--space-6) var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.convert-flashcard-value {
+  margin: 0;
+  font-size: clamp(2rem, 9vw, 2.6rem);
+  font-weight: 700;
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* 結果ゾーン。visibility:hidden は display:none と異なりレイアウト上の領域を
+   占有したまま保つため、回答前は不可視だが高さは既に確保されている。 */
+.convert-flashcard-result {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  visibility: hidden;
+}
+
+.convert-flashcard-result--revealed {
+  visibility: visible;
+}
+
+/* 正誤・計算式の見た目は result.css の共通クラス（.result-verdict-row 等）に委ね、
+   独自の中央寄せ等の上書きはしない。答え（.result-answer）だけは、点数計算モード
+   （ResultPage）・符計算モード（FuResultPage）の resultFlip7.css と同じ
+   「ゴールドのピルで囲む」強調を適用する（両ページは .result-page スコープなので
+   ここに同値のトークンを個別に持つ）。 */
+.convert-page {
+  --fl-gold-light: #ffe47a;
+  --fl-gold-dark: #e6b800;
+  --fl-ink: #123f3c;
+  --fl-r-pill: 999px;
+  --fl-glow-gold-soft: 0 4px 14px rgba(255, 210, 63, 0.28);
+}
+
+.convert-flashcard-result .result-answer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 16px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--fl-ink);
+  background: var(--fl-gold-light);
+  border: 2px solid var(--fl-gold-dark);
+  border-radius: var(--fl-r-pill);
+  box-shadow: var(--fl-glow-gold-soft);
+}
+
+/* スマホ幅では答えのピルが目立ちすぎる／折り返しやすいため、一回り小さくする。 */
+@media (--bp-sm) {
+  .convert-flashcard-result .result-answer {
+    gap: 4px;
+    padding: 4px 12px;
+    font-size: 1.15rem;
+  }
+}
+
+/* 計算式の指数 (2+N翻) を上付きにする。既定のsupは小さく上がりすぎるため微調整する。 */
+.convert-formula sup {
+  font-size: 0.7em;
+  vertical-align: super;
+  line-height: 0;
+}

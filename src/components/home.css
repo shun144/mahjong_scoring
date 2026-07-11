@@ -363,6 +363,13 @@
 .home-mode--fu::before {
   background: var(--fl-coral);
 }
+.home-mode--convert {
+  box-shadow: var(--fl-glow-sky);
+  animation-delay: 150ms;
+}
+.home-mode--convert::before {
+  background: var(--fl-sky);
+}
 .home-mode--stats {
   box-shadow: var(--fl-glow-gold);
   animation-delay: 180ms;
@@ -380,6 +387,9 @@
   }
   .home-mode--fu:hover {
     box-shadow: 0 14px 30px rgba(239, 108, 74, 0.42);
+  }
+  .home-mode--convert:hover {
+    box-shadow: 0 14px 30px rgba(93, 173, 226, 0.42);
   }
   .home-mode--stats:hover {
     box-shadow: 0 14px 30px rgba(255, 210, 63, 0.5);
@@ -406,6 +416,9 @@
 }
 .home-mode--fu .home-mode-icon {
   box-shadow: 0 0 0 2px var(--fl-coral);
+}
+.home-mode--convert .home-mode-icon {
+  box-shadow: 0 0 0 2px var(--fl-sky);
 }
 .home-mode--stats .home-mode-icon {
   box-shadow: 0 0 0 2px var(--fl-gold-dark);
@@ -441,12 +454,15 @@
 .home-mode--fu .home-mode-arrow {
   color: var(--fl-coral);
 }
+.home-mode--convert .home-mode-arrow {
+  color: var(--fl-sky);
+}
 .home-mode--stats .home-mode-arrow {
   color: var(--fl-gold-dark);
 }
 
 /* 480px 以上：ドリル2枚を横並び、成績カードは全幅（情報構造は現状維持）。 */
-@media (min-width: 480px) {
+@media (--bp-home-2col) {
   .home-modes-grid {
     grid-template-columns: 1fr 1fr;
   }

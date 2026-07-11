@@ -1,3 +1,6 @@
+/* ブレークポイント（--bp-xxx）の定義は src/styles/breakpoints.css を正典とする
+   （postcss.config.js の postcss-global-data 経由で全CSSファイルに読み込まれる）。 */
+
 :root {
   color-scheme: light;
 
@@ -182,7 +185,7 @@ select:focus-visible {
   gap: var(--space-5);
 }
 
-@media (min-width: 640px) {
+@media (--bp-sm-up) {
   .page-shell {
     padding: var(--space-6) var(--space-4);
   }

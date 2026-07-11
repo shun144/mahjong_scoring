@@ -1,0 +1,7 @@
+/* --- ブレークポイント定義（唯一の正典。値を変える時はここだけ直す） ---
+   postcss-global-data（postcss.config.js）が全CSSファイルへこの定義を読み込ませ、
+   postcss-custom-media が各ファイル内の @media (--bp-xxx) を実際の条件へ展開する。
+   このファイル自体はどこからも import せず、ビルド時にだけ参照される。 */
+@custom-media --bp-sm (max-width: 639px);
+@custom-media --bp-sm-up (min-width: 640px);
+@custom-media --bp-home-2col (min-width: 480px);

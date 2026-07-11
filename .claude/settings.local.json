@@ -19,7 +19,9 @@
       "Bash(curl -s -o /dev/null -w \"5174:%{http_code}\\\\n\" http://localhost:5174/)",
       "Bash(rm -f card-grid.png card-grid-mobile.png current-list.png)",
       "Bash(git checkout *)",
-      "Bash(xargs -r rm -f)"
+      "Bash(xargs -r rm -f)",
+      "Bash(powershell -Command 'Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -eq '\\\\'''\\\\'' } | Select-Object Id')",
+      "Bash(npx vite *)"
     ]
   }
 }

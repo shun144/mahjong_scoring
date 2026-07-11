@@ -167,7 +167,7 @@
    牌サイズ(md)は viewport<~624px で縮み始めるので、シェル最大幅(640px)未満の
    全域で牌間・副露・行の gap/padding を圧縮し、鳴き入り手牌のオーバーヘッドを
    上の -78px 想定内に抑える（PC全幅は既定の余白のまま）。 */
-@media (max-width: 639px) {
+@media (--bp-sm) {
   .mj-tile-row {
     gap: 1px;
   }
