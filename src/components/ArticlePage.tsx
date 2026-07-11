@@ -31,7 +31,7 @@ export function ArticlePage() {
   const article = slug ? getArticleBySlug(slug) : undefined;
   const articleSlugs = getAllArticles().map((a) => a.slug);
 
-  useArticleMeta(article?.title, article?.description);
+  useArticleMeta(article?.title, undefined);
 
   if (!article) {
     return <Navigate to="/articles" replace />;
