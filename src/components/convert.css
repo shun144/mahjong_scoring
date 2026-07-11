@@ -22,7 +22,7 @@
   justify-content: center;
   gap: var(--space-4);
   min-height: 120px;
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-6) var(--space-5) var(--space-3);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   background: var(--color-surface-2);
@@ -82,12 +82,43 @@
   box-shadow: var(--fl-glow-gold-soft);
 }
 
-/* スマホ幅では答えのピルが目立ちすぎる／折り返しやすいため、一回り小さくする。 */
 @media (--bp-sm) {
+  /* 内訳（正誤・答え・計算式）の表示範囲を全問で一定にする。
+     計算式の行数（1〜2行）や正誤＋答えの折返しは問題ごとに変わるため、
+     内訳ゾーンの高さを「最も背が高くなるケース（正誤折返し＋計算式2行）」に
+     合わせて確保し、内容は上寄せにする。短い問題は下に余白を残すだけで、
+     カード高＝以降の選択肢・ボタン位置は全問で揃う。スクロールはさせない。 */
+  .convert-flashcard-result {
+    min-height: 6.5rem;
+    justify-content: center;
+  }
+
+  /* 正誤ラベルは既定(--fs-score=2.2rem)だと大きく、狭い画面での折返しで
+     高さのブレが大きくなるため抑える。 */
+  .convert-flashcard-result .result-verdict {
+    font-size: 1.3rem;
+  }
+
+  /* 答えのピルは目立ちすぎ／折り返しやすいので一回り小さくする。
+     子ツモ（答えが「X / Y」の2値）でも正誤と1行に収まりやすいサイズにする。 */
   .convert-flashcard-result .result-answer {
     gap: 4px;
-    padding: 4px 12px;
-    font-size: 1.15rem;
+    padding: 4px 10px;
+    font-size: 1.05rem;
+  }
+
+  /* 計算式も一段小さくして、狭い画面での折返しと高さのブレを抑える。 */
+  .convert-flashcard-result .calculation-line {
+    font-size: 0.95rem;
+  }
+}
+
+/* 極狭端末（~320px）では子ツモの答え「X / Y」が正誤と1行に収まらず折り返すため、
+   その分だけ内訳ゾーンの予約高さを増やし、全問で高さを揃える（フォントは読みやすさ優先で
+   据え置き）。一般的なスマホ幅には影響しない。 */
+@media (--bp-xs) {
+  .convert-flashcard-result {
+    min-height: 8rem;
   }
 }
 

@@ -5,3 +5,5 @@
 @custom-media --bp-sm (max-width: 639px);
 @custom-media --bp-sm-up (min-width: 640px);
 @custom-media --bp-home-2col (min-width: 480px);
+/* 極狭端末（iPhone SE 1st 等、~320px）。折返しが増える最狭幅の個別調整用。 */
+@custom-media --bp-xs (max-width: 339px);

@@ -21,7 +21,9 @@
       "Bash(git checkout *)",
       "Bash(xargs -r rm -f)",
       "Bash(powershell -Command 'Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -eq '\\\\'''\\\\'' } | Select-Object Id')",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(npx playwright *)",
+      "Bash(node tmp-measure.mjs)"
     ]
   }
 }
