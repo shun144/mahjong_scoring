@@ -169,25 +169,24 @@ export function FuPartsQuizPage() {
               onSelect={(value) => setStandardAnswers((a) => ({ ...a, meldTotal: value }))}
               full
             />
-            <div className="fu-parts-row-pair">
-              <ElementRow
-                label="雀頭"
-                choices={PAIR_CHOICES}
-                selected={standardAnswers.pair}
-                correct={fuElements.pair}
-                graded={graded}
-                onSelect={(value) => setStandardAnswers((a) => ({ ...a, pair: value }))}
-                full
-              />
-              <ElementRow
-                label="待ち"
-                choices={WAIT_CHOICES}
-                selected={standardAnswers.wait}
-                correct={fuElements.wait}
-                graded={graded}
-                onSelect={(value) => setStandardAnswers((a) => ({ ...a, wait: value }))}
-              />
-            </div>
+            <ElementRow
+              label="雀頭"
+              choices={PAIR_CHOICES}
+              selected={standardAnswers.pair}
+              correct={fuElements.pair}
+              graded={graded}
+              onSelect={(value) => setStandardAnswers((a) => ({ ...a, pair: value }))}
+              full
+            />
+            <ElementRow
+              label="待ち"
+              choices={WAIT_CHOICES}
+              selected={standardAnswers.wait}
+              correct={fuElements.wait}
+              graded={graded}
+              onSelect={(value) => setStandardAnswers((a) => ({ ...a, wait: value }))}
+              full
+            />
           </>
         ) : (
           <ElementRow
@@ -252,7 +251,7 @@ export function FuPartsQuizPage() {
   );
 }
 
-/** 符の要素1行分。項目名の上の正誤マーク（採点後の○/✕）＋ラベル＋選択肢ボタン。 */
+/** 符の要素1行分。ラベル＋正誤マーク（採点後の○/✕、ラベルの右）＋選択肢ボタン。 */
 function ElementRow({
   label,
   choices,
@@ -268,7 +267,7 @@ function ElementRow({
   correct: number;
   graded: boolean;
   onSelect: (value: number) => void;
-  /** 全幅表示の行（上がり方・面子(合計)）か。true の場合、ラベル列幅を grid で揃える対象になる。 */
+  /** 全幅表示の行か。true の場合、ラベル列幅を grid で揃える対象になる。 */
   full?: boolean;
 }) {
   const isCorrect = selected === correct;
@@ -279,12 +278,12 @@ function ElementRow({
     : "";
   return (
     <div className="fu-parts-row" role="group" aria-label={label}>
-      {/* 正誤マークは項目名の真上に置く（○/✕のみ）。正解の値は選択肢ボタンの配色で判別できる。 */}
-      <span className={`fu-parts-row-verdict${verdictClass}`} aria-hidden={!graded}>
-        {graded ? (isCorrect ? "○" : "✕") : " "}
-      </span>
       <div className={`fu-parts-row-main${full ? " fu-parts-row-main--full" : ""}`}>
         <span className="fu-parts-row-label">{label}</span>
+        {/* 正誤マークは項目名の右に置く（○/✕のみ）。正解の値は選択肢ボタンの配色で判別できる。 */}
+        <span className={`fu-parts-row-verdict${verdictClass}`} aria-hidden={!graded}>
+          {graded ? (isCorrect ? "○" : "✕") : " "}
+        </span>
         <div className="fu-parts-row-choices">
           {choices.map((value) => {
             const isSelected = selected === value;

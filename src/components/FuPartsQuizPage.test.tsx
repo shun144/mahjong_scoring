@@ -66,7 +66,7 @@ describe("FuPartsQuizPage", () => {
     expect(summary).toHaveAttribute("aria-hidden", "false");
     expect(summary).toHaveClass("fu-parts-summary--revealed");
     expect(summary?.textContent).toMatch(/○ 完答|✕ 一部不正解/);
-    // 各項目名の上に○/✕のマークだけが出る（正解値は選択肢ボタンの配色で示す）。
+    // 各項目名の右に○/✕のマークだけが出る（正解値は選択肢ボタンの配色で示す）。
     expect(screen.getAllByText(/^○$|^✕$/).length).toBeGreaterThanOrEqual(1);
   });
 

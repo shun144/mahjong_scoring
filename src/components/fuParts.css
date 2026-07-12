@@ -60,42 +60,13 @@
   gap: var(--space-2);
 }
 
-/* 雀頭・待ちの2択行は横に並べ、縦の行数を1つ分節約する。 */
-.fu-parts-row-pair {
-  display: flex;
-  gap: var(--space-3);
-}
-.fu-parts-row-pair > .fu-parts-row {
-  flex: 1 1 0;
-  min-width: 0;
-}
-
-/* 雀頭・待ちの選択肢は {0,2} の1桁のみのため、他行より狭いボタン幅にして
-   雀頭のラベル列（--full）を追加しても待ちと横1行に収まる余地を確保する。 */
-.fu-parts-row-pair .fu-parts-choice-btn {
-  width: 2.75rem;
-}
-
-/* 雀頭は上がり方・面子(合計)と同じラベル列幅（--full）を共有して選択肢の開始位置を
-   縦に揃えるが、雀頭・待ちの2択行は横幅が半分しかないため、雀頭側の選択肢ボタンを
-   さらに狭くして「ラベル(5.5rem)＋選択肢2つ」が待ちと横1行に収まるようにする
-   （待ち側は対象外＝上の2.75rem幅のまま）。 */
-.fu-parts-row-pair .fu-parts-row-main--full .fu-parts-row-choices {
-  gap: 4px;
-}
-.fu-parts-row-pair .fu-parts-row-main--full .fu-parts-choice-btn {
-  width: 1.75rem;
-  padding: 0 2px;
-  font-size: 0.75rem;
-}
-
 .fu-parts-row {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-/* ラベルとボタン群を同じ行に並べる（縦積みをやめて行数を減らす）。 */
+/* ラベル・正誤マーク・ボタン群を同じ行に並べる。 */
 .fu-parts-row-main {
   display: flex;
   flex-wrap: wrap;
@@ -103,20 +74,14 @@
   gap: var(--space-2);
 }
 
-/* 全幅表示の2行（上がり方・面子(合計)）はラベル列幅を grid で共通固定し、
-   選択肢ボタンの開始位置（左端）を縦に揃える。ラベルの文字数差（4字/6字相当）で
-   ボタン列がずれないようにするための対応（雀頭・待ちの2択並列行は対象外）。 */
+/* 標準手の4要素行（上がり方・面子(合計)・雀頭・待ち）は全幅で縦に並べ、ラベル列幅を
+   grid で共通固定し、選択肢ボタンの開始位置（左端）を4行とも縦に揃える。ラベルの
+   文字数差（2字〜6字相当）でボタン列がずれないようにするための対応。 */
 .fu-parts-row-main--full {
   display: grid;
-  grid-template-columns: 5.5rem 1fr;
+  grid-template-columns: 4rem 1.4em 1fr;
   align-items: center;
   column-gap: var(--space-2);
-}
-.fu-parts-row-main--full .fu-parts-row-label {
-  grid-column: 1;
-}
-.fu-parts-row-main--full .fu-parts-row-choices {
-  grid-column: 2;
 }
 
 .fu-parts-row-label {
@@ -127,11 +92,13 @@
   white-space: nowrap;
 }
 
-/* 正誤マーク（○/✕）は各項目名の「上」に置く。採点前も1行ぶんの領域を確保し、採点前後で
-   行の高さが変わらないようにする（採点する／次の問題へボタンの位置を固定するため）。 */
+/* 正誤マーク（○/✕）は各項目名の「右」に置く。採点前も領域を確保し、採点前後で
+   行の高さ・選択肢ボタンの開始位置が変わらないようにする（採点する／次の問題へ
+   ボタンの位置を固定するため）。 */
 .fu-parts-row-verdict {
-  display: block;
-  min-height: 1.2em;
+  display: inline-block;
+  flex: none;
+  min-width: 1.2em;
   line-height: 1.2;
   font-size: 1rem;
   font-weight: 800;
@@ -158,7 +125,7 @@
   justify-content: center;
   /* 1桁「0符」も2桁「25符」も同じ幅に揃える（内容依存で伸びないよう固定幅）。 */
   flex: none;
-  width: 3.5rem;
+  width: 3.4rem;
   min-height: 40px;
   padding: 0 8px;
   font-size: 0.9rem;
