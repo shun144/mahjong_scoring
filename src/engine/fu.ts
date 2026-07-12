@@ -1,6 +1,6 @@
 import type { HandSet, StandardInterpretation, WaitKind } from "./interpretation";
 import type { Wind, WinType } from "./model";
-import { isTerminalOrHonor } from "./tileType";
+import { isTerminalOrHonor, windToHonorType } from "./tileType";
 
 export interface FuContext {
   /** 副露が一つも無い（門前）かどうか。 */
@@ -47,11 +47,6 @@ function meldFuLabel(set: HandSet): string {
 }
 
 const SANGEN_TYPES = [31, 32, 33]; // 白發中
-
-function windToHonorType(wind: Wind): number {
-  const rank = { east: 1, south: 2, west: 3, north: 4 }[wind];
-  return 27 + (rank - 1);
-}
 
 /** 雀頭が役牌（三元牌／自風／場風）かどうか。 */
 export function isYakuhaiPairType(tileType: number, ctx: FuContext): boolean {

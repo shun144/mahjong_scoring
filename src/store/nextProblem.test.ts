@@ -4,7 +4,7 @@ import type { Problem } from "../data/problem";
 import { createSeededRandom } from "../generator/random";
 import { nextProblem } from "./nextProblem";
 import { loadStats, recordAnswer, type StatsState } from "./statsStore";
-import { categoryBias, problemWeight } from "./weighting";
+import { categoryBias, CHIITOI_BIAS_FU_PARTS, problemWeight } from "./weighting";
 
 const problemBank = problemBankRaw as unknown as Problem[];
 
@@ -60,5 +60,30 @@ describe("nextProblem", () => {
     const biasedProbability = targetSelectionProbability(loadStats());
 
     expect(biasedProbability).toBeGreaterThan(baselineProbability);
+  });
+
+  it("符分解モード（chiitoiBias=CHIITOI_BIAS_FU_PARTS）は七対子の出題率を約3%に抑える", () => {
+    function chiitoiShare(rng: ReturnType<typeof createSeededRandom>, opts: object, n: number) {
+      let chiitoi = 0;
+      for (let i = 0; i < n; i++) {
+        const p = nextProblem(rng, opts);
+        if (p.answer.yaku.some((y) => y.name.includes("七対子"))) chiitoi += 1;
+      }
+      return chiitoi / n;
+    }
+
+    const N = 6000;
+    const fuPartsShare = chiitoiShare(
+      createSeededRandom(11),
+      { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_PARTS },
+      N,
+    );
+    const fuQuizShare = chiitoiShare(createSeededRandom(11), { excludeMangan: true }, N);
+
+    // 符分解モードは約3%（幅を持たせて判定）。
+    expect(fuPartsShare).toBeGreaterThan(0.01);
+    expect(fuPartsShare).toBeLessThan(0.05);
+    // chiitoiBias を渡さない符計算モード相当は従来水準（符分解より明確に高い）のまま。
+    expect(fuQuizShare).toBeGreaterThan(fuPartsShare * 1.5);
   });
 });

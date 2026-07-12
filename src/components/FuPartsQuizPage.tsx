@@ -11,6 +11,7 @@ import {
 } from "../generator/fuElementChoices";
 import { createSeededRandom, seedFromString } from "../generator/random";
 import { nextProblem } from "../store/nextProblem";
+import { CHIITOI_BIAS_FU_PARTS } from "../store/weighting";
 import { FuBreakdownContent } from "./FuBreakdown";
 import "./quiz.css";
 import "./quizFlip7.css";
@@ -59,7 +60,7 @@ export function FuPartsQuizPage() {
   // 出題履歴。cursor が指す問題を表示する。次へ→で末尾なら新規出題を追加、
   // 途中なら履歴上の次へ進む。←戻るで cursor を戻せる。
   const [history, setHistory] = useState<Problem[]>(() => [
-    nextProblem(Math.random, { excludeMangan: true }),
+    nextProblem(Math.random, { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_PARTS }),
   ]);
   const [cursor, setCursor] = useState(0);
   const problem = history[cursor];
@@ -130,7 +131,10 @@ export function FuPartsQuizPage() {
   function handleNext() {
     setHistory((h) => {
       if (cursor < h.length - 1) return h;
-      return [...h, nextProblem(Math.random, { excludeMangan: true })];
+      return [
+        ...h,
+        nextProblem(Math.random, { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_PARTS }),
+      ];
     });
     setCursor((c) => c + 1);
     resetAnswers();
@@ -146,7 +150,7 @@ export function FuPartsQuizPage() {
           操作している間も手牌が視界から外れないようにする（スマホ1画面表示。SPEC.md §4.10）。 */}
       <div className="fu-parts-sticky">
         <div className="fu-parts-conditions-row">
-          <QuizConditions conditions={problem.conditions} showRiichi={false} />
+          <QuizConditions conditions={problem.conditions} showRiichi={false} showDealer={false} />
           {/* アガリ牌は独立ブロックにせず、局条件バッジの隣にチップとして添える。 */}
           <span className={`badge fu-parts-wintype-badge fu-parts-wintype-badge--${winType}`}>
             <TileFace tile={problem.hand.winningTile} size="sm" />

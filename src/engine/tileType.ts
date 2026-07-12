@@ -1,4 +1,4 @@
-import type { Suit, Tile } from "./model";
+import type { Suit, Tile, Wind } from "./model";
 
 /**
  * 牌を赤ドラを無視した34種の型インデックス(0-33)に変換する。
@@ -31,6 +31,12 @@ export function isTerminal(type: number): boolean {
 
 export function isHonorType(type: number): boolean {
   return type >= 27;
+}
+
+/** 風牌（東南西北）の型インデックスに変換する（東=27/南=28/西=29/北=30）。 */
+export function windToHonorType(wind: Wind): number {
+  const rank = { east: 1, south: 2, west: 3, north: 4 }[wind];
+  return 27 + (rank - 1);
 }
 
 export function isGreenType(type: number): boolean {

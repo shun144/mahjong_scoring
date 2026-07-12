@@ -32,7 +32,9 @@
       "Bash(powershell -Command \"Stop-Process -Id 7228 -Force\")",
       "Bash(git ls-tree *)",
       "Bash(powershell -Command \"Stop-Process -Id 2000 -Force\")",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(awk '{print $5}')",
+      "mcp__plugin_playwright_playwright__browser_tabs"
     ]
   }
 }

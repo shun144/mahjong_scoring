@@ -3,7 +3,7 @@ import type { Problem } from "../data/problem";
 import type { ScoreRank } from "../engine/score";
 import { createSeededRandom } from "../generator/random";
 import { createEmptyStats, type StatsState } from "./statsStore";
-import { categoryBias, problemWeight, weightedPick } from "./weighting";
+import { categoryBias, CHIITOI_BIAS_FU_PARTS, problemWeight, weightedPick } from "./weighting";
 
 function fakeProblem(fuType: number, yakuCategories: string[]): Problem {
   return {
@@ -91,6 +91,18 @@ describe("categoryBias", () => {
   it("prioritises 役満 suppression over the 50符 boost when both apply", () => {
     // 役満かつ50符+ でも役満抑制（<1）が優先される
     expect(categoryBias(biasProblem({ rank: "yakuman", fu: 60 }))).toBeLessThan(1);
+  });
+
+  it("chiitoiBias 引数を渡すと七対子の抑制係数だけを上書きする（符分解モード用）", () => {
+    const chiitoi = biasProblem({ yaku: ["七対子"], fu: 25 });
+    expect(categoryBias(chiitoi, CHIITOI_BIAS_FU_PARTS)).toBe(CHIITOI_BIAS_FU_PARTS);
+    // 引数省略時は従来どおり CHIITOI_BIAS（0.31）のまま
+    expect(categoryBias(chiitoi)).toBeCloseTo(0.31, 5);
+  });
+
+  it("chiitoiBias 引数は役満・満貫50符+の分岐に影響しない", () => {
+    expect(categoryBias(biasProblem({ rank: "yakuman", fu: 40 }), 0.05)).toBeLessThan(1);
+    expect(categoryBias(biasProblem({ rank: "mangan", fu: 50 }), 0.05)).toBeGreaterThan(1);
   });
 });
 

@@ -591,6 +591,92 @@ P13 実装時点では既定OFFとしていたが、**`DEFAULT_SETTINGS.roundUpM
 
 ---
 
+### 追記（2026-07-13 その3）: 親/子バッジの削除＋「面子(合計)」選択肢の昇順表示
+
+符分解モードの局条件バッジから**「親/子」バッジを削除**し（符は親子に依存しないためノイズ）、標準手の「**面子(合計)**」の4択を**昇順に表示**する（他の固定選択肢が昇順なのに面子だけ順不同なのを解消）。適用範囲は**符分解モードのみ**。ロジック（生成の誤答選定・符計算・採点）の本質は不変で、**表示層＋選択肢の並び順**のみの変更。
+
+> 方針決定（2026-07-13）: **① 親/子バッジの非表示は `QuizConditions` に `showDealer?: boolean`（既定 `true`）を追加し、符分解のみ `false` を渡す（既存の `showRiichi` と同じパターン。最終点数・符計算・点数換算モードは既定 `true` のまま無改変）。自風・場風バッジは雀頭・面子の役牌判定に効くため残す（自風=東 ⟺ 親 の含意で親子は暗黙に残る）／② 面子(合計)の昇順は `generateMeldTotalChoices` の末尾の `shuffle([correct, ...])` を昇順ソート `[...].sort((a,b)=>a-b)` に置換。誤答の選定（近傍±2/±4/±8優先＋プール補完＋shuffleでの抽出）はランダムのまま、最終の並びだけ値の小さい順に固定する。シード決定性は保たれる。**
+
+- **仕様追記（先行・本コミットで対応済み）**: `SPEC.md` §4.10（位置づけ＝親子非表示の根拠／A.標準手の面子(合計)＝昇順表示）に反映済み。
+
+- **`QuizConditions.tsx`**: `showDealer?: boolean`（既定 `true`）を追加。`false` のとき `badge--dealer`（親/子）を描画しない。JSDoc に符分解専用で親子を省く旨を追記。他の呼び出し元（最終点数・符計算モード）は既定 `true` のため無改変。
+
+- **`FuPartsQuizPage.tsx`**: `<QuizConditions ... showRiichi={false} showDealer={false} />` を渡す（既存の `showRiichi={false}` に併記）。他は不変。
+
+- **`fuElementChoices.ts`**: `generateMeldTotalChoices` の返却を昇順ソートに変更（`return [correct, ...shuffledDistractors].sort((a, b) => a - b);`）。JSDoc に「最後に昇順で返す（誤答の選定はランダム）」を追記。他の固定選択肢（`WIN_METHOD_CHOICES` 等）は元々昇順のため不変。
+
+- **テスト**:
+  - `fuElementChoices.test.ts`: 既存3件（正解を含む・決定性・非負）は不変で緑。**追加**: 返却が昇順であること（`expect(choices).toEqual([...choices].sort((a,b)=>a-b))`）。
+  - `FuPartsQuizPage.test.tsx`: **追加/改修**: 局条件に「親」「子」バッジが表示されないこと（`queryByText("親")`／`queryByText("子")` が null）。既存の「リーチ非表示」テストと同様の観点。面子(合計)行の選択肢ボタンのテキストが昇順で並ぶことを1件追加してもよい。
+  - `QuizConditions.test.tsx`（あれば）: 既定 `showDealer=true` で親/子が出ること、`showDealer={false}` で出ないことを追加してもよい。他モードのテストは既定挙動のまま緑。
+
+- **ブラウザ確認**: 符分解モードで局条件列に「親/子」バッジが無く、場風・自風・アガリ牌チップは残ること。面子(合計)の4択が左から昇順に並ぶこと。最終点数・符計算モードでは従来どおり親/子バッジが表示されること（回帰なし）。
+
+**DoD（追記分）**: 符分解モードの局条件から親/子バッジが消え、面子(合計)の選択肢が昇順で表示される。他モードの親/子バッジ・選択肢生成は無改変。既存テスト緑＋昇順テスト追加。`SPEC.md` §4.10 反映済み。
+**リスク**: 低（`QuizConditions` の prop 追加は既定 `true` で他モード無影響／`generateMeldTotalChoices` の変更は並び替えのみで正解・誤答の集合は不変）。
+
+---
+
+### 追記（2026-07-13 その4）: 自風牌雀頭の問題を意図的に生成する
+
+符計算で頻出かつ間違えやすい「**雀頭＝自風牌（役牌雀頭 +2符）**」の形（例: 東場西家で雀頭が西）を、生成時に一定割合で明示的に作る。純ランダムでは自風牌が雀頭になる確率が約 1/34（≒2.9%）と低く、ドリルでほぼ練習できないため、生成頻度を引き上げる。**エンジンの符計算は変更しない**（`fu.ts` の `isYakuhaiPairType` が自風/場風/三元の雀頭を既に +2符 と採点する。§5.2）。生成（`randomHand.ts`）の**頻度調整のみ**の変更。適用範囲は全出題モード共通（生成器は共有）だが、特に符計算・符分解モードの練習価値が高い。
+
+> 方針決定（2026-07-13）: **① 生成器 `buildRandomStandardHand` で `pickConditions` を手牌構築の前へ移し、seatWind を先に確定させる／② 一定確率（`SEAT_WIND_PAIR_PROB` 既定 `1/15` ≒ 0.067）で `tryAddPair` に「自風牌タイプ」を優先させる（`tryAddPair(counts, rng, preferredType?)`）。占有済み等で使えない場合は従来どおりランダム抽出にフォールバック／③ 対象は標準形（4面子1雀頭）のみ。七対子は雀頭概念がないため対象外／④ 自風牌雀頭は平和・断幺九を崩すため他役なしの手はリトライで破棄される（既存の「役なし→リトライ」ループが吸収。実効出現率は概ね6〜8%程度）／⑤ `windToHonorType`（現状 `fu.ts` 内の非公開関数）を共有ユーティリティ化して生成側と単一の変換元を共有する。**
+
+- **仕様追記（先行・本コミットで対応済み）**: `SPEC.md` §4.1（出題の前提）に「自風牌雀頭の出題を意図的に確保する」を追記済み。
+
+- **`windToHonorType` の共有化**: `fu.ts` 内の非公開 `windToHonorType(wind): number`（東27/南28/西29/北30）を共有モジュール（`engine/tileType.ts` が自然。あるいは `fu.ts` から `export`）へ移し、`fu.ts`・`randomHand.ts` の双方が同一実装を参照する。重複定義を避ける。
+
+- **`randomHand.ts`**:
+  - `tryAddPair(counts, rng, preferredType?)`: `preferredType` が渡され `counts[preferredType] <= 2` なら優先して使う。使えなければ従来のランダム抽出ループにフォールバック。
+  - `buildRandomGroups(rng, preferredPairType?)`: `preferredPairType` を `tryAddPair` へ素通しする。
+  - `buildRandomStandardHand(rng)`: `pickConditions` を**先頭**で呼び、`seatWind` を確定。`const forceSeatWindPair = chance(SEAT_WIND_PAIR_PROB, rng);` を評価し、`forceSeatWindPair` 時のみ `preferredPairType = windToHonorType(seatWind)` を `buildRandomGroups` に渡す。定数 `SEAT_WIND_PAIR_PROB = 1 / 15`（コメントで ≒0.067 と明記）をファイル冒頭に置く。
+  - `pickConditions` の呼び出し位置移動により RNG 消費順が変わる点に留意（下記テスト参照）。`buildRandomChiitoiHand` は変更しない（七対子は対象外）。
+
+- **テスト**（`generateProblem.test.ts` / `randomHand.test.ts`）:
+  - 既存テストは**分布・性質ベースのみ**で特定シードの手牌値をハードコードしていないため、RNG 消費順が変わっても壊れない（確認済み）。念のため全生成テストを再実行して緑を確認。
+  - **追加**（`generateProblem.test.ts`）: 多数生成したうち、**自風牌が雀頭の問題がベースライン（約3%）より有意に多く出る**こと（例: 複数シード合算の多数生成で自風牌雀頭が全体の 5% 以上）。統計揺らぎに強くするためサンプルは複数シード合算で十分な母数を確保する。判定は「標準形（七対子でない）かつ雀頭牌 == 自風牌」で行う。雀頭牌の特定は手牌から2枚1組の字牌等を見る必要があるため、`answer` のタグや符内訳から役牌雀頭を判定できるか実装時に確認（`answer.fuDetail` に「雀頭(役牌)」行があるか、あるいは concealed から雀頭を再構成）。最も確実なのは concealed をカウントして「自風牌がちょうど2枚（かつ刻子でない）」を数える方針。
+  - **回帰**: 場風=東/南のみ・親子一貫性・最低1役・4枚制約・七対子が時々出る、等の既存分布テストが引き続き緑。
+
+- **ブラウザ確認**: 符計算／符分解モードを何問か送り、自風牌雀頭（例: 西家で雀頭が西）が体感でそれなりの頻度で現れること。雀頭が自風牌の問題で符計算・符分解の「雀頭 +2符」が正しく採点されること（エンジン不変なので理論上は保証だが目視確認）。
+
+**DoD（追記分）**: 生成される標準形問題のうち自風牌雀頭がベースライン（約3%）より有意に増える（既定で概ね6〜8%程度、テストは 5% 以上で判定）。エンジンの符計算・他の生成制約（場風範囲・親子一貫性・最低1役・4枚制約・七対子出現）は無改変で全テスト緑。`windToHonorType` は単一実装を共有。`SPEC.md` §4.1 反映済み。
+**リスク**: 中（`pickConditions` の順序移動で全生成の RNG 消費順が変わる〔ただし特定シード値に依存するテストは無し〕／自風牌雀頭の強制が平和・断幺九を消しリトライ増でわずかに生成効率が下がる〔200回リトライ内で吸収される想定〕／`windToHonorType` 共有化に伴う import 変更が `fu.ts` に及ぶ）。
+
+---
+
+### 追記（2026-07-13 その5）: 符分解モードの七対子出題率を約3%に抑える
+
+符分解モードでは七対子が**固定符手**（25符を `{20,25,30}` から選ぶだけ）で要素分解の練習にならないため出過ぎると退屈。現状の実効七対子率は**約8.5%**（実測。`excludeMangan` で満貫以上の非七対子手が除外され、七対子の相対比率が一般モードの約6%より押し上がる）。これを**符分解モードのみ約3%**に下げる。適用範囲は符分解モードのみ（符計算＝`/fu/quiz`・最終点数＝`/quiz` の七対子頻度は無変更）。生成器の七対子生成率（`generateRandomHand` の 12%）・問題バンクは触らず、**出題選択時のカテゴリ係数を符分解モード専用に上書き**して実現する。
+
+> 方針決定（2026-07-13）: **① `NextProblemOptions` に `chiitoiBias?: number` を追加し、`nextProblem` 内の重み計算（生成候補・バンク両経路）で `categoryBias(p)` → `categoryBias(p, opts.chiitoiBias)` に渡す／② `categoryBias(problem, chiitoiBias = CHIITOI_BIAS)` に第2引数を追加し、七対子分岐の戻り値だけを差し替える（役満・満貫50符+ の分岐は不変）／③ 符分解モード専用係数を `weighting.ts` に定数として置き（例 `CHIITOI_BIAS_FU_PARTS`）、`FuPartsQuizPage` の2箇所の `nextProblem({ excludeMangan: true })` に `chiitoiBias: CHIITOI_BIAS_FU_PARTS` を渡す／④ 係数値は現状8.5%→3%（約0.35倍）から起点 0.31×0.35≒0.1 と見積り、実測で約3%に入るよう微調整する／⑤ 符計算・最終点数モードは `chiitoiBias` を渡さず既定 `CHIITOI_BIAS=0.31` のまま。**
+
+- **仕様追記（先行・本コミットで対応済み）**: `SPEC.md` §4.10（位置づけに「七対子は約3%に抑える」）・§4.1（出題傾向の調整に符分解モードの追加抑制の一文）に反映済み。
+
+- **`weighting.ts`**:
+  - `categoryBias(problem, chiitoiBias: number = CHIITOI_BIAS)`: 第2引数を追加。七対子分岐 `if (yaku.some(... "七対子")) return chiitoiBias;` に使う。デフォルト引数のため既存呼び出し（引数1個）は挙動不変。
+  - `export const CHIITOI_BIAS_FU_PARTS = 0.12;`（符分解モード用。実測調整値。下記「実装時の追加修正」参照）。
+
+- **`nextProblem.ts`**:
+  - `NextProblemOptions` に `chiitoiBias?: number` を追加。
+  - 生成候補の重み `categoryBias(p)` とバンクの重み `categoryBias(p)` の**両方**を `categoryBias(p, opts.chiitoiBias)` に変更（`opts.chiitoiBias` 未指定時は `categoryBias` のデフォルトで `CHIITOI_BIAS` にフォールバック）。
+
+- **`FuPartsQuizPage.tsx`**: 2箇所（初期 state・`handleNext`）の `nextProblem(Math.random, { excludeMangan: true })` を `nextProblem(Math.random, { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_PARTS })` に変更。`weighting.ts` から定数を import。
+
+- **実装時の追加修正（発見した根本原因）**: 当初 `CHIITOI_BIAS_FU_PARTS` をどれだけ下げても実出題が約5〜6%より下がらない現象を実測で発見。原因は `nextProblem` の生成候補集めが**固定3回**（`GENERATED_CANDIDATE_COUNT`）しか試行しない点にあった。`excludeMangan`（符計算・符分解モード共通）では生成の一定割合が満貫以上として弾かれるため、3回中1回しか有効候補が残らないことが約38%の頻度で発生し（実測）、その唯一の候補がたまたま七対子だと**重み付けが機能する前に確定してしまう**（候補が1つしかなければ bias に関わらずそれが採用される）。これは符分解モード固有ではなく `excludeMangan` を使う経路（符計算モードも含む）に元から存在した構造的な穴で、七対子抑制を強めるほど顕在化する。**修正**: `nextProblem.ts` に `MAX_CANDIDATE_ATTEMPTS = 12` を追加し、候補集めのループを「`GENERATED_CANDIDATE_COUNT`（3）個集まるか `MAX_CANDIDATE_ATTEMPTS` 回試すまで」に変更（`for (let i = 0; i < MAX_CANDIDATE_ATTEMPTS && candidates.length < GENERATED_CANDIDATE_COUNT; i++)`）。`excludeMangan` を使わない最終点数モードは元々ほぼ毎回3回で3個埋まるため実質無変更、`excludeMangan` を使う符計算・符分解モードは候補プールが安定して3個に近づき、カテゴリ係数（バイアス）が効くようになる。この修正により `CHIITOI_BIAS_FU_PARTS` は 0.1 では約2.5%、**0.12 で約3%**（複数シードで2.97〜3.44%）に収束することを実測で確認し、0.12 を採用した。
+
+- **テスト**:
+  - **追加**（`weighting.test.ts`）: `categoryBias(chiitoiProblem, CHIITOI_BIAS_FU_PARTS)` が `CHIITOI_BIAS_FU_PARTS` を返し、`categoryBias(chiitoiProblem)`（引数1個）は従来どおり `CHIITOI_BIAS`（0.31）を返す（デフォルト不変）。役満・満貫50符+ の分岐は第2引数に影響されない。
+  - **追加**（`nextProblem.test.ts`・頻度回帰）: `nextProblem({ excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_PARTS })` を多数（6000件）引いた七対子率が**約3%**（判定は幅を持たせ 1%〜5%）。併せて `nextProblem({ excludeMangan: true })`（`chiitoiBias` 省略＝符計算モード相当）の七対子率が符分解より明確に高い（1.5倍以上）ことを確認し、符分解のみ下がったことを担保。乱数シードは固定。
+  - **回帰**: `generateProblem.test.ts` の「occasionally produces 七対子」は `generateProblem` 直呼び（`categoryBias`・`nextProblem` を経由しない生成率12%のまま）なので不変で緑。最終点数・符計算モードのテストは `chiitoiBias` を渡さないため挙動不変。`MAX_CANDIDATE_ATTEMPTS` 追加後も既存の `nextProblem.test.ts`「バンク・生成の両方が混在する」等の性質ベーステストは緑（特定シード値をハードコードしていないため）。
+
+- **ブラウザ確認**: 符分解モードで多数の問題を送り、七対子（固定符25符）の出現が体感で明らかに減っていること（約3%）。符計算モード（`/fu/quiz`）では従来どおり七対子がそれなりに出ること（無変更）。
+
+**DoD（追記分）**: 符分解モードの実効七対子率が約8.5%→**約3%**に下がる（テストは幅で判定）。符計算・最終点数モードの七対子頻度、生成器の七対子生成率、問題バンクは無変更。`categoryBias` のデフォルト引数により既存呼び出しは挙動不変。候補集めループの `MAX_CANDIDATE_ATTEMPTS` 修正により低バイアスが実際に機能する土台ができた。全テスト緑。`SPEC.md` §4.10/§4.1 反映済み。
+**リスク**: 低〜中（出題選択の重み係数の変更に加え、候補集めループの試行回数を増やす修正を伴う。後者は `excludeMangan` を使う符計算モードの候補プールの質もわずかに変える〔弾かれた分を埋め直すだけで、生成・バンク・採点ロジックには波及しない〕。デフォルト引数・既定の `MAX_CANDIDATE_ATTEMPTS` 到達余地により後方互換）。
+
+---
+
 ## 全体のマイルストーン
 
 1. **M1（エンジン確立）**: P0〜P3 完了。CLIやテストで任意の手を正しく採点でき、バンクと一致。

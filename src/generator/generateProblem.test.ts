@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { scoreHand } from "../engine/scoreHand";
-import { tilesToCounts } from "../engine/tileType";
+import { tilesToCounts, windToHonorType } from "../engine/tileType";
 import { problemToScoreHandInput } from "../data/problem";
 import { generateProblem } from "./generateProblem";
 import { createSeededRandom } from "./random";
@@ -126,6 +126,27 @@ describe("generateProblem", () => {
 
     const seatWinds = new Set(problems.map((p) => p.conditions.seatWind));
     expect(seatWinds.size).toBe(4);
+  });
+
+  it("自風牌が雀頭の問題が、意図的な確保によりベースライン（約3%）より有意に多く出る（SPEC.md §4.1）", () => {
+    // 字牌は順子を作れないため、手牌全体でその型がちょうど2枚なら雀頭で確定できる
+    // （刻子=3枚／槓=4枚。3枚未満で複数グループから偶然2枚集まることはない）。
+    const seeds = [101, 102, 103, 104, 105];
+    let standardCount = 0;
+    let seatWindPairCount = 0;
+    for (const seed of seeds) {
+      const problems = generateMany(SAMPLE_SIZE, seed);
+      for (const p of problems) {
+        if (p.answer.yaku.some((y) => y.name === "七対子")) continue; // 七対子は雀頭概念なし
+        standardCount += 1;
+        const seatWindType = windToHonorType(p.conditions.seatWind);
+        const allTiles = [...p.hand.concealed, ...p.hand.melds.flatMap((m) => m.tiles)];
+        const counts = tilesToCounts(allTiles);
+        if (counts[seatWindType] === 2) seatWindPairCount += 1;
+      }
+    }
+    expect(standardCount).toBeGreaterThan(500);
+    expect(seatWindPairCount / standardCount).toBeGreaterThanOrEqual(0.05);
   });
 
   it("occasionally produces 七対子 hands", () => {

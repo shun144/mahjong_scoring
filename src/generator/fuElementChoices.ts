@@ -17,6 +17,7 @@ const MELD_TOTAL_POOL = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 
 /**
  * 面子の符合計（4面子ぶんの合計）の4択を生成する（SPEC.md §4.10）。
  * 正解の近傍（±2/±4/±8）を優先し、足りない分は妥当な符プールから補完する。
+ * 誤答の選定はランダムだが、最後に昇順で返す（他の要素行の固定選択肢と表示を統一）。
  */
 export function generateMeldTotalChoices(correct: number, rng: RandomSource): number[] {
   const seen = new Set<number>([correct]);
@@ -37,5 +38,5 @@ export function generateMeldTotalChoices(correct: number, rng: RandomSource): nu
   }
 
   const shuffledDistractors = shuffle(distractors, rng).slice(0, CHOICE_COUNT - 1);
-  return shuffle([correct, ...shuffledDistractors], rng);
+  return [correct, ...shuffledDistractors].sort((a, b) => a - b);
 }

@@ -46,4 +46,14 @@ describe("QuizConditions", () => {
     render(<QuizConditions conditions={conditions} showRiichi={false} />);
     expect(screen.queryByText("リーチ")).not.toBeInTheDocument();
   });
+
+  it("既定（showDealer未指定）で「親/子」タグを表示する", () => {
+    const { container } = render(<QuizConditions conditions={conditions} />);
+    expect(container.querySelector(".badge--dealer")).not.toBeNull();
+  });
+
+  it("showDealer=falseの場合、「親/子」タグを表示しない（符分解モード用）", () => {
+    const { container } = render(<QuizConditions conditions={conditions} showDealer={false} />);
+    expect(container.querySelector(".badge--dealer")).toBeNull();
+  });
 });

@@ -49,6 +49,14 @@ describe("FuPartsQuizPage", () => {
     }
   });
 
+  it("never shows a 親/子 badge, even across many random problems (符に無関係のため常に非表示)", () => {
+    const { container } = renderFuParts();
+    for (let i = 0; i < 30; i++) {
+      expect(container.querySelector(".badge--dealer")).toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: "次へ→" }));
+    }
+  });
+
   it("採点する is disabled until every row has a selection", () => {
     renderFuParts();
     const gradeBtn = screen.getByRole("button", { name: "採点する" });

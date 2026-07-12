@@ -2,13 +2,16 @@ import { indicatorForDora } from "../engine/dora";
 import type { Meld, Tile, Wind, WinType } from "../engine/model";
 import { scoreHand, type ScoreHandInput } from "../engine/scoreHand";
 import type { ScoreResult } from "../engine/score";
-import { tileToType, tilesToCounts, typeToTile } from "../engine/tileType";
+import { tileToType, tilesToCounts, typeToTile, windToHonorType } from "../engine/tileType";
 import { chance, pickOne, randomInt, type RandomSource } from "./random";
 
 const WINDS: Wind[] = ["east", "south", "west", "north"];
 /** SPEC.md の出題範囲: 場風は東・南のみ。 */
 const ROUND_WINDS: Wind[] = ["east", "south"];
 const SUIT_BASES = [0, 9, 18]; // m, p, s
+/** 標準形の雀頭を自風牌に固定する確率（SPEC.md §4.1）。純ランダムでは約1/34しか
+    出ず練習しにくいため、一定割合で意図的に「自風牌雀頭（役牌雀頭 +2符）」を作る。 */
+const SEAT_WIND_PAIR_PROB = 1 / 15;
 
 interface BuiltGroup {
   kind: "sequence" | "triplet";
@@ -40,7 +43,16 @@ function tryAddTriplet(counts: number[], rng: RandomSource): BuiltGroup | null {
   return null;
 }
 
-function tryAddPair(counts: number[], rng: RandomSource): number | null {
+/**
+ * 雀頭の型を選ぶ。preferredType が渡され、まだ2枚以下しか使われていなければ
+ * それを優先する（自風牌雀頭を意図的に増やすため。SPEC.md §4.1）。
+ * 優先牌が使えない場合は従来どおりランダム抽出にフォールバックする。
+ */
+function tryAddPair(counts: number[], rng: RandomSource, preferredType?: number): number | null {
+  if (preferredType !== undefined && counts[preferredType] <= 2) {
+    counts[preferredType] += 2;
+    return preferredType;
+  }
   for (let attempt = 0; attempt < 20; attempt++) {
     const type = randomInt(0, 33, rng);
     if (counts[type] <= 2) {
@@ -53,6 +65,7 @@ function tryAddPair(counts: number[], rng: RandomSource): number | null {
 
 function buildRandomGroups(
   rng: RandomSource,
+  preferredPairType?: number,
 ): { groups: BuiltGroup[]; pairType: number } | null {
   const counts = new Array(34).fill(0);
   const groups: BuiltGroup[] = [];
@@ -64,7 +77,7 @@ function buildRandomGroups(
     if (!group) return null;
     groups.push(group);
   }
-  const pairType = tryAddPair(counts, rng);
+  const pairType = tryAddPair(counts, rng, preferredPairType);
   if (pairType === null) return null;
   return { groups, pairType };
 }
@@ -200,7 +213,13 @@ function pickConditions(rng: RandomSource): {
 
 /** 4面子1雀頭の標準形をランダムに1つ構築する。構築不能なら null。 */
 function buildRandomStandardHand(rng: RandomSource): RandomHandResult | null {
-  const built = buildRandomGroups(rng);
+  const { seatWind, roundWind, isDealer, winType } = pickConditions(rng);
+  // 一定確率で雀頭を自風牌に固定する（自風牌雀頭＝役牌雀頭 +2符。SPEC.md §4.1）。
+  // 占有済み等で使えない場合は buildRandomGroups 内でランダム抽出にフォールバックする。
+  const preferredPairType = chance(SEAT_WIND_PAIR_PROB, rng)
+    ? windToHonorType(seatWind)
+    : undefined;
+  const built = buildRandomGroups(rng, preferredPairType);
   if (!built) return null;
   const { groups, pairType } = built;
 
@@ -242,7 +261,6 @@ function buildRandomStandardHand(rng: RandomSource): RandomHandResult | null {
   const concealed = [...concealedTiles, typeToTile(pairType), typeToTile(pairType)];
   // 四槓子は必ずリーチ無し（allowsRiichi 内で判定）。
   const riichi = allowsRiichi(melds) && chance(0.5, rng);
-  const { seatWind, roundWind, isDealer, winType } = pickConditions(rng);
 
   applyRedFive(concealed, melds, rng);
   const { doraIndicators, uraDoraIndicators } = buildDoraIndicators(concealed, melds, riichi, rng);
