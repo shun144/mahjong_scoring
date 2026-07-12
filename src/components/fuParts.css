@@ -254,6 +254,65 @@
   cursor: not-allowed;
 }
 
+/* 出題を前後・再挑戦する3ボタン（←戻る／もう一度／次へ→）を横一列に並べる。
+   無効時も常時表示し、幅（flex: 1）を保つことで採点前後・履歴の端でも
+   レイアウトが動かないようにする（SPEC.md §4.10）。 */
+.fu-parts-nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.fu-parts-nav-btn {
+  display: inline-flex;
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--fl-teal-dark, var(--color-accent));
+  background: var(--fl-cream, var(--color-bg));
+  border: 2px solid var(--fl-teal, var(--color-border));
+  border-radius: var(--fl-r-pill, var(--radius-pill));
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+/* 次へ→は常時活性の主操作のため、採点するボタンと同じ塗りつぶし配色にして目立たせる。 */
+.fu-parts-nav-btn--next {
+  color: var(--fl-cream, #fff);
+  background: var(--fl-teal, var(--color-accent));
+  border-color: var(--fl-teal-dark, var(--color-accent));
+}
+
+@media (hover: hover) {
+  .fu-parts-nav-btn:not(:disabled):hover {
+    color: var(--fl-cream, #fff);
+    background: var(--fl-teal, var(--color-accent));
+    box-shadow: var(--fl-glow-teal);
+    transform: translateY(-2px);
+  }
+  .fu-parts-nav-btn--next:not(:disabled):hover {
+    background: var(--fl-teal-dark, var(--color-accent-active));
+  }
+}
+.fu-parts-nav-btn:not(:disabled):active {
+  transform: scale(0.96);
+}
+.fu-parts-nav-btn:disabled {
+  color: var(--color-text-sub);
+  background: var(--color-border);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+}
+
 /* 参考「符の内訳」は既定で折りたたむ（採点後のみ表示。1画面レイアウトを押し下げないよう
    ボタン列より後ろに置き、開閉してもそれより上のレイアウトは動かない）。 */
 .fu-parts-detail {
@@ -287,7 +346,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fu-parts-choice-btn,
-  .fu-parts-grade-btn {
+  .fu-parts-grade-btn,
+  .fu-parts-nav-btn {
     transition: none;
     transform: none;
   }

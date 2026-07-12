@@ -11,9 +11,11 @@ interface Props {
    * 導線が別にあるため任意）。
    */
   problem?: Problem;
+  /** 「成績」リンクを表示するか（既定 true）。成績に連携しないモード（符分解など）は false を渡す。 */
+  showStats?: boolean;
 }
 
-export function PageHeader({ title, backTo, problem }: Props) {
+export function PageHeader({ title, backTo, problem, showStats = true }: Props) {
   return (
     <div className="page-header">
       <h1>{title}</h1>
@@ -21,13 +23,15 @@ export function PageHeader({ title, backTo, problem }: Props) {
         <Link to="/" className="page-header-link-item">
           ホーム
         </Link>
-        <Link
-          to="/stats"
-          state={backTo ? { backTo, problem } : undefined}
-          className="page-header-link-item"
-        >
-          成績
-        </Link>
+        {showStats ? (
+          <Link
+            to="/stats"
+            state={backTo ? { backTo, problem } : undefined}
+            className="page-header-link-item"
+          >
+            成績
+          </Link>
+        ) : null}
       </div>
     </div>
   );

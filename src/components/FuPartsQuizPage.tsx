@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { problemToScoreHandInput, type Problem } from "../data/problem";
 import type { FuElementBreakdown } from "../engine/fu";
 import { scoreHand } from "../engine/scoreHand";
@@ -12,7 +11,6 @@ import {
 } from "../generator/fuElementChoices";
 import { createSeededRandom, seedFromString } from "../generator/random";
 import { nextProblem } from "../store/nextProblem";
-import { recordAnswer } from "../store/statsStore";
 import { FuBreakdownContent } from "./FuBreakdown";
 import "./quiz.css";
 import "./quizFlip7.css";
@@ -22,11 +20,6 @@ import { PageHeader } from "./PageHeader";
 import { QuizConditions } from "./QuizConditions";
 import { HandDisplay } from "./tiles/HandDisplay";
 import { TileFace } from "./tiles/TileFace";
-
-/** 解説（成績画面）から「問題に戻る」で渡される復習用の遷移 state。 */
-function isReviewState(state: unknown): state is { problem: Problem; review: boolean } {
-  return !!state && typeof state === "object" && "problem" in state && "review" in state;
-}
 
 /** 標準手（4面子1雀頭）で選ぶ4要素の回答状態。未選択は null。 */
 interface StandardAnswers {
@@ -60,19 +53,25 @@ function isStandardFullyCorrect(
  * 符分解モード（SPEC.md §4.10）。符計算モードと同じ和了形（満貫以上・ドラは対象外）に対し、
  * 符を要素ごと（標準手=上がり方・面子の符合計・雀頭・待ち／固定符手=固定符）に選ばせ、
  * 一括採点する。出題〜回答〜採点を単一画面にインライン集約する（別 result 画面を持たない）。
+ * 成績には連携せず（§4.10）、出題履歴を保持して「←戻る／もう一度／次へ→」で移動できる。
  */
 export function FuPartsQuizPage() {
-  const location = useLocation();
-  // 解説（成績画面）から「問題に戻る」で来た場合は同じ問題を再表示する。復習なので成績は記録しない。
-  const [reviewProblem, setReviewProblem] = useState(() =>
-    isReviewState(location.state) ? location.state.problem : null,
-  );
-  const [problem, setProblem] = useState(
-    () => reviewProblem ?? nextProblem(Math.random, { excludeMangan: true }),
-  );
+  // 出題履歴。cursor が指す問題を表示する。次へ→で末尾なら新規出題を追加、
+  // 途中なら履歴上の次へ進む。←戻るで cursor を戻せる。
+  const [history, setHistory] = useState<Problem[]>(() => [
+    nextProblem(Math.random, { excludeMangan: true }),
+  ]);
+  const [cursor, setCursor] = useState(0);
+  const problem = history[cursor];
   const [standardAnswers, setStandardAnswers] = useState<StandardAnswers>(emptyStandardAnswers);
   const [fixedAnswer, setFixedAnswer] = useState<number | null>(null);
   const [graded, setGraded] = useState(false);
+
+  function resetAnswers() {
+    setStandardAnswers(emptyStandardAnswers());
+    setFixedAnswer(null);
+    setGraded(false);
+  }
 
   const fuElements = useMemo<FuElementBreakdown | undefined>(
     () => scoreHand(problemToScoreHandInput(problem), { includeFuElements: true })?.fuElements,
@@ -94,7 +93,7 @@ export function FuPartsQuizPage() {
     // 満貫以上を除外した出題のみ渡す前提のため、通常は起こらない防御的な分岐。
     return (
       <main className="page-shell quiz-page fu-parts-page">
-        <PageHeader title="符分解" backTo="/fu/parts" problem={problem} />
+        <PageHeader title="符分解" showStats={false} />
         <p>問題を読み込めませんでした。</p>
       </main>
     );
@@ -107,25 +106,41 @@ export function FuPartsQuizPage() {
       ? fixedAnswer === fuElements.fu
       : isStandardFullyCorrect(standardAnswers, fuElements);
 
+  const isFirst = cursor === 0;
+
   function handleGrade() {
     if (!isComplete) return;
-    if (!reviewProblem) recordAnswer(problem, isFullyCorrect); // 復習（同じ問題の再回答）は二重計上しない
     setGraded(true);
   }
 
+  /** 直前の問題に戻る（履歴の先頭では無効）。成績には連携しないため記録は行わない。 */
+  function handleBack() {
+    if (isFirst) return;
+    setCursor((c) => c - 1);
+    resetAnswers();
+  }
+
+  /** 採点後、同じ問題をもう一度解き直す（問題は変えず回答・採点のみリセット）。 */
+  function handleRetry() {
+    if (!graded) return;
+    resetAnswers();
+  }
+
+  /** 次の問題へ進む。履歴の末尾なら新規出題を追加し、途中なら履歴上の次へ進む。 */
   function handleNext() {
-    setReviewProblem(null);
-    setProblem(nextProblem(Math.random, { excludeMangan: true }));
-    setStandardAnswers(emptyStandardAnswers());
-    setFixedAnswer(null);
-    setGraded(false);
+    setHistory((h) => {
+      if (cursor < h.length - 1) return h;
+      return [...h, nextProblem(Math.random, { excludeMangan: true })];
+    });
+    setCursor((c) => c + 1);
+    resetAnswers();
   }
 
   const winType = problem.hand.winType;
 
   return (
     <main className="page-shell quiz-page fu-parts-page">
-      <PageHeader title="符分解" backTo="/fu/parts" problem={problem} />
+      <PageHeader title="符分解" showStats={false} />
 
       {/* お題（局条件・アガリ牌・手牌）を上部にまとめてsticky固定し、下の選択肢を
           操作している間も手牌が視界から外れないようにする（スマホ1画面表示。SPEC.md §4.10）。 */}
@@ -230,12 +245,21 @@ export function FuPartsQuizPage() {
         </button>
       </section>
 
-      <section className="quiz-skip">
-        <button type="button" className="qp-skip-btn" onClick={handleNext}>
-          次の問題へ
-          <span className="qp-skip-arrow" aria-hidden="true">
-            ↻
-          </span>
+      {/* 出題を前後・再挑戦する3ボタン。無効時も常時表示し、配置（幅）を保つことで
+          回答前後・履歴の端でもレイアウトが動かないようにする（SPEC.md §4.10）。 */}
+      <section className="fu-parts-nav" aria-label="出題の移動">
+        <button type="button" className="fu-parts-nav-btn" disabled={isFirst} onClick={handleBack}>
+          ←戻る
+        </button>
+        <button type="button" className="fu-parts-nav-btn" disabled={!graded} onClick={handleRetry}>
+          もう一度
+        </button>
+        <button
+          type="button"
+          className="fu-parts-nav-btn fu-parts-nav-btn--next"
+          onClick={handleNext}
+        >
+          次へ→
         </button>
       </section>
 

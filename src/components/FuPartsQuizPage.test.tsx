@@ -1,16 +1,13 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import { loadStats } from "../store/statsStore";
 import { FuPartsQuizPage } from "./FuPartsQuizPage";
-import { StatsPage } from "./StatsPage";
 
 function renderFuParts() {
   return render(
     <MemoryRouter initialEntries={["/fu/parts"]}>
       <Routes>
         <Route path="/fu/parts" element={<FuPartsQuizPage />} />
-        <Route path="/stats" element={<StatsPage />} />
       </Routes>
     </MemoryRouter>,
   );
@@ -26,21 +23,29 @@ function selectFirstChoiceInEachRow() {
 }
 
 describe("FuPartsQuizPage", () => {
-  it("renders the hand, conditions (no dora), element rows, grade button, and skip button", () => {
+  it("renders the hand, conditions (no dora), element rows, grade button, and nav buttons", () => {
     const { container } = renderFuParts();
     expect(screen.getByRole("heading", { name: "符分解" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "採点する" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "次の問題へ" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "←戻る" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "もう一度" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "次へ→" })).toBeInTheDocument();
     expect(screen.getAllByRole("group").length).toBeGreaterThanOrEqual(1);
     // 符計算・符分解モードはドラに無関係なため、ドラ表示牌の枠は出さない。
     expect(container.querySelector(".dora-indicator-section")).toBeNull();
+  });
+
+  it("成績には連携しないため、上部に「成績」リンクを表示しない", () => {
+    renderFuParts();
+    expect(screen.queryByRole("link", { name: "成績" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "ホーム" })).toBeInTheDocument();
   });
 
   it("never shows a リーチ badge, even across many random problems (符に無関係のため常に非表示)", () => {
     renderFuParts();
     for (let i = 0; i < 30; i++) {
       expect(screen.queryByText("リーチ")).not.toBeInTheDocument();
-      fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+      fireEvent.click(screen.getByRole("button", { name: "次へ→" }));
     }
   });
 
@@ -51,6 +56,13 @@ describe("FuPartsQuizPage", () => {
 
     selectFirstChoiceInEachRow();
     expect(gradeBtn).not.toBeDisabled();
+  });
+
+  it("←戻る is disabled at the first problem, もう一度 is disabled before grading", () => {
+    renderFuParts();
+    expect(screen.getByRole("button", { name: "←戻る" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "もう一度" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "次へ→" })).not.toBeDisabled();
   });
 
   it("grading reveals per-row verdicts and the summary, and disables further grading", () => {
@@ -68,33 +80,20 @@ describe("FuPartsQuizPage", () => {
     expect(summary?.textContent).toMatch(/○ 完答|✕ 一部不正解/);
     // 各項目名の右に○/✕のマークだけが出る（正解値は選択肢ボタンの配色で示す）。
     expect(screen.getAllByText(/^○$|^✕$/).length).toBeGreaterThanOrEqual(1);
+    // 採点後は「もう一度」が押せるようになる。
+    expect(screen.getByRole("button", { name: "もう一度" })).not.toBeDisabled();
   });
 
-  it("grading records exactly one answer (correct or not)", () => {
-    localStorage.clear();
+  it("次へ→ before grading does not require a selection, and resets the form", () => {
     renderFuParts();
-    const before = loadStats().totalAnswered;
-
     selectFirstChoiceInEachRow();
-    fireEvent.click(screen.getByRole("button", { name: "採点する" }));
+    fireEvent.click(screen.getByRole("button", { name: "次へ→" }));
 
-    expect(loadStats().totalAnswered).toBe(before + 1);
-  });
-
-  it("skipping before grading does not record an answer, and resets the form", () => {
-    localStorage.clear();
-    renderFuParts();
-    const before = loadStats().totalAnswered;
-
-    selectFirstChoiceInEachRow();
-    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
-
-    expect(loadStats().totalAnswered).toBe(before);
     expect(screen.getByRole("heading", { name: "符分解" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "採点する" })).toBeDisabled();
   });
 
-  it("次の問題へ after grading loads a new problem and hides the summary again", () => {
+  it("次へ→ after grading loads a new problem and hides the summary again", () => {
     const { container } = renderFuParts();
     selectFirstChoiceInEachRow();
     fireEvent.click(screen.getByRole("button", { name: "採点する" }));
@@ -102,30 +101,40 @@ describe("FuPartsQuizPage", () => {
       "fu-parts-summary--revealed",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+    fireEvent.click(screen.getByRole("button", { name: "次へ→" }));
     const summary = container.querySelector(".fu-parts-summary");
     expect(summary).toHaveAttribute("aria-hidden", "true");
     expect(summary).not.toHaveClass("fu-parts-summary--revealed");
     expect(screen.getByRole("button", { name: "採点する" })).toBeDisabled();
   });
 
-  it("returns to the fu-parts page (not another quiz page) after viewing stats", () => {
+  it("←戻る returns to the previous problem after 次へ→, and re-enables at the first problem again", () => {
     renderFuParts();
-    fireEvent.click(screen.getByRole("link", { name: "成績" }));
-    expect(screen.getByRole("heading", { name: "成績" })).toBeInTheDocument();
+    const firstLabels = screen.getAllByRole("group").map((g) => g.getAttribute("aria-label"));
 
-    fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
-    expect(screen.getByRole("heading", { name: "符分解" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "次へ→" }));
+    expect(screen.getByRole("button", { name: "←戻る" })).not.toBeDisabled();
+
+    fireEvent.click(screen.getByRole("button", { name: "←戻る" }));
+    const backLabels = screen.getAllByRole("group").map((g) => g.getAttribute("aria-label"));
+    expect(backLabels).toEqual(firstLabels);
+    expect(screen.getByRole("button", { name: "←戻る" })).toBeDisabled();
   });
 
-  it("keeps the same problem (same element groups) after a stats round trip", () => {
-    renderFuParts();
+  it("もう一度 keeps the same problem while resetting answers and the summary", () => {
+    const { container } = renderFuParts();
     const labelsBefore = screen.getAllByRole("group").map((g) => g.getAttribute("aria-label"));
 
-    fireEvent.click(screen.getByRole("link", { name: "成績" }));
-    fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
+    selectFirstChoiceInEachRow();
+    fireEvent.click(screen.getByRole("button", { name: "採点する" }));
+    fireEvent.click(screen.getByRole("button", { name: "もう一度" }));
 
     const labelsAfter = screen.getAllByRole("group").map((g) => g.getAttribute("aria-label"));
     expect(labelsAfter).toEqual(labelsBefore);
+    expect(container.querySelector(".fu-parts-summary")).not.toHaveClass(
+      "fu-parts-summary--revealed",
+    );
+    expect(screen.getByRole("button", { name: "採点する" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "もう一度" })).toBeDisabled();
   });
 });
