@@ -189,6 +189,14 @@
   color: var(--color-success-text);
 }
 
+/* 採点後、自分が選ばず正解でもない選択肢を淡色で沈める（自分の選択=緑/赤・正解値=点線枠を浮き立たせる）。 */
+.fu-parts-choice-btn--muted {
+  background: color-mix(in srgb, var(--fl-muted, var(--color-text-sub)) 8%, var(--fl-card, #fff));
+  border-color: color-mix(in srgb, var(--fl-muted, var(--color-text-sub)) 28%, transparent);
+  color: var(--fl-muted, var(--color-text-sub));
+  opacity: 0.7;
+}
+
 /* 合計・切り上げ・完答の表示。採点前も領域を確保し高さを固定する
    （visibility:hidden は display:none と違いレイアウト上の領域を占有したまま保つ）。 */
 .fu-parts-summary {

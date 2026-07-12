@@ -324,6 +324,8 @@ function ElementRow({
                 : "fu-parts-choice-btn--incorrect";
             } else if (value === correct) {
               stateClass = "fu-parts-choice-btn--reveal";
+            } else {
+              stateClass = "fu-parts-choice-btn--muted";
             }
             return (
               <button

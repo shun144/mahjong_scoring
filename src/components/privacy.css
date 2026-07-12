@@ -34,17 +34,25 @@
 /* ヘッダー — 他画面と同じ浮遊 sticky カード。 */
 .privacy-page .page-header {
   position: sticky;
-  top: 8px;
+  top: 0;
   z-index: 10;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  padding: 10px 16px;
-  background: rgba(255, 248, 231, 0.9);
+  background: rgba(255, 248, 231, 0.86);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 2px solid rgba(43, 168, 162, 0.22);
-  border-radius: var(--fl-r-md);
-  box-shadow: var(--fl-glow-teal-soft);
+  border-bottom: 2px solid rgba(43, 168, 162, 0.22);
+  margin-inline: calc(50% - 50vw);
+  margin-top: calc(-1 * var(--space-4));
+  padding: 10px max(16px, calc(50vw - 320px));
+}
+
+@media (--bp-sm-up) {
+  .privacy-page .page-header {
+    margin-top: calc(-1 * var(--space-6));
+  }
 }
 .privacy-page .page-header h1 {
   font-size: 1.15rem;
