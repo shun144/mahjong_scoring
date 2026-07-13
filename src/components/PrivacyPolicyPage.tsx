@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
+import { CONTACT_FORM_URL, SITE_NAME } from "../config/site";
 import "./privacy.css";
 
-const SITE_NAME = "麻雀点数トレーニング";
-// 第7条 お問い合わせ窓口（Google フォームの公開用 viewform URL）。
-const CONTACT_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSfFnI4zqQTGDRO5ae4rxI5P8c2CkAx99UE9be1Sw4gQCxxoCA/viewform";
 const EFFECTIVE_DATE = "2026年7月4日";
 
 export function PrivacyPolicyPage() {

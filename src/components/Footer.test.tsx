@@ -24,6 +24,16 @@ describe("Footer", () => {
     expect(link).toHaveAttribute("href", "/articles");
   });
 
+  it("運営者情報へのリンクを表示する", () => {
+    render(
+      <MemoryRouter>
+        <Footer />
+      </MemoryRouter>,
+    );
+    const link = screen.getByRole("link", { name: "運営者情報" });
+    expect(link).toHaveAttribute("href", "/about");
+  });
+
   it("contentinfo ランドマーク(footer)として提供される", () => {
     render(
       <MemoryRouter>

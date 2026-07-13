@@ -11,6 +11,7 @@ export function Footer() {
       <nav className="app-footer-nav" aria-label="フッター">
         <Link to="/articles">学習ガイド</Link>
         <Link to="/privacy">プライバシーポリシー</Link>
+        <Link to="/about">運営者情報</Link>
       </nav>
       <p className="app-footer-copy">© 2026 麻雀点数トレーニング</p>
     </footer>

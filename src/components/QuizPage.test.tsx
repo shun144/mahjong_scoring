@@ -99,7 +99,7 @@ function renderQuizWithProblem(problem: Problem, repository: SettingsRepository)
 describe("QuizPage", () => {
   it("renders the hand, conditions, 4 answer choices, and a skip button", () => {
     renderQuiz();
-    expect(screen.getByRole("heading", { name: "出題" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
     // ページ上のボタンは4つの選択肢＋1つのスキップボタン（ヘッダーの「成績」はリンク）。
     const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(5);
@@ -123,7 +123,7 @@ describe("QuizPage", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
 
-    expect(screen.getByRole("heading", { name: "出題" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
     expect(loadStats().totalAnswered).toBe(before);
   });
 

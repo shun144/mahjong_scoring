@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { AboutPage } from "./components/AboutPage";
 import { ArticleListPage } from "./components/ArticleListPage";
 import { ArticlePage } from "./components/ArticlePage";
 import { ConvertQuizPage } from "./components/ConvertQuizPage";
@@ -34,6 +35,7 @@ function App() {
             <Route path="/articles/:slug" element={<ArticlePage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
         </ErrorBoundary>
       </SettingsProvider>
