@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="麻雀 東">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C8F5C"/><stop offset="1" stop-color="#146F45"/></linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDF6"/><stop offset="1" stop-color="#F1E9D6"/></linearGradient>
+  </defs>
+  <rect x="10" y="10" width="492" height="492" rx="116" fill="url(#bg)" stroke="#0C4B2E" stroke-width="20"/>
+  <rect x="112" y="86" width="288" height="360" rx="34" fill="#0C4B2E" opacity="0.25"/>
+  <rect x="112" y="76" width="288" height="360" rx="30" fill="url(#tile)" stroke="#0C4B2E" stroke-width="12"/>
+  <g fill="#12603E" transform="translate(256 262) scale(0.3 -0.3) translate(-500 -380)"><path d="M436 306H292V418H436ZM557 306V418H703V306ZM172 587V215H190C239 215 292 241 292 253V277H380C308 156 181 29 30 -50L37 -63C197 -12 334 62 436 156V-89H461C507 -89 557 -64 557 -53V268C623 116 730 8 876 -57C890 1 926 39 971 51L973 62C827 93 665 170 576 277H703V230H724C766 230 825 256 826 264V539C846 543 859 551 866 559L749 648L693 587H557V681H920C935 681 946 686 949 697C901 740 822 801 822 801L752 710H557V805C584 809 591 820 594 834L436 849V710H53L61 681H436V587H300L172 636ZM436 447H292V558H436ZM557 447V558H703V447Z"/></g>
+</svg>

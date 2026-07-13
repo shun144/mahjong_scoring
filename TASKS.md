@@ -874,6 +874,45 @@ P19 の基盤（牌記法パーサ・`mahjong` レンダラ・翻数バッジ・
 
 ---
 
+## P20. ファビコン・アプリアイコン・Web アプリマニフェストの反映
+
+**目的**: ユーザーが `public/icons/` に配置したアイコン資産一式を反映し、ブラウザタブ・ブックマーク・iOS/Android「ホーム画面に追加」でアプリのアイコンと名称を表示する（`SPEC.md` §8.4）。加えて Web アプリマニフェストで**ホーム画面へのインストール（スタンドアロン表示）**を可能にする（Service Worker・オフラインは持たない）。ブランドの一貫性と、AdSense 審査／SNS 共有時の信頼性・見栄えを高める。既存のクイズ・記事・設定・成績・デザインは無改変で維持する。
+
+> 方針決定（2026-07-14）: **① 反映範囲は favicon（`.ico`＋SVG）・apple-touch-icon・Web アプリマニフェスト・`theme-color`。ユーザーが配置したフルセット（`public/icons/`）を使う／② マニフェスト（`display: standalone`）を有効化しホーム画面インストールを可能にする。ただし Service Worker・オフラインキャッシュは導入しない（＝完全な PWA ではない）。§2.2 を「オフライン対応のみ除外／マニフェスト・インストールは提供」に改訂／③ 資産は `public/icons/` 配下のまま `index.html` の `<head>` から `/icons/...` の絶対パスで参照（Vite が `public/` をルート配信・`dist/` へコピー）。**
+
+> 前提（2026-07-14 確認済み）: アイコン資産は受領・配置済み（`public/icons/`）。実ファイル: `favicon.ico`（16/32px マルチサイズ）・`icon.svg`・`apple-touch-icon.png`（180×180）・`icon-192.png`・`icon-512.png`・`site.webmanifest`（`name`「麻雀点数計算」/`short_name`「点数計算」/`display: standalone`/`start_url: "/"`/`theme_color`・`background_color`=`#146F45`）。同梱の `head-snippet.html`・`preview.png`・`icon-1024.png`・`icon.svg` の一部は参考／未使用。**同梱スニペットの `<link rel="manifest" href="/site.webmanifest">` はパス誤り**（実体は `/icons/site.webmanifest`）で、反映時に修正する。
+
+### スコープ
+
+**含む**: `public/icons/` の資産を用いた `index.html` `<head>` への `<link rel="icon">`（`.ico`＋SVG）・`<link rel="apple-touch-icon">`・`<link rel="manifest">`（`/icons/site.webmanifest` に修正）・`<meta name="theme-color">` の追加／dev・build でのアイコン／マニフェスト配信確認／`SPEC.md` §2.2・§8.4・§10 への反映。
+**含まない**: Service Worker・オフラインキャッシュ（§2.2 スコープ外）／OGP・Twitter カード用 `og:image` メタ／アイコン画像そのものの制作（ユーザー提供済み）／マニフェストの内容（`name` 等）の再設計（提供された値をそのまま採用）。
+
+### 作業項目
+
+- **仕様追記（先行）**: ドキュメント方針に従い**実装前に `SPEC.md` を更新**（本コミットで対応済み）。
+  - §8.4「ファビコン・アプリアイコン・マニフェスト」を新設／改訂（目的・配置〔`public/icons/`〕・提供資産一式・HTML 反映〔正しいパス〕・スコープ外）。
+  - §2.2 を改訂: 除外はオフライン対応（Service Worker）のみとし、**マニフェスト・ホーム画面インストールは含む**旨の注記を追加。
+  - §10 に受け入れ基準（favicon・apple-touch-icon・マニフェストの反映）を追加。
+
+- **`index.html` の `<head>` に反映**（`public/icons/head-snippet.html` を基に、manifest パスを修正して転記）:
+  - `<link rel="icon" href="/icons/favicon.ico" sizes="any" />`
+  - `<link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />`
+  - `<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />`
+  - `<link rel="manifest" href="/icons/site.webmanifest" />`（**スニペットの `/site.webmanifest` は誤り。`/icons/` を付ける**）
+  - `<meta name="theme-color" content="#146F45" />`
+  - 既存の `<title>`・`<meta name="description">`・AdSense スクリプトは変更しない。
+
+- **確認**:
+  - `npm run dev` でタブに favicon が表示される（強制リロード／キャッシュ無効で確認。タブアイコンは強くキャッシュされる）。
+  - `npm run build` 後、`dist/icons/` に資産が出力され、`npm run preview` で `/icons/site.webmanifest` が 200 で配信されること（`/site.webmanifest` は 404 のまま＝参照していないことの確認）。
+  - Chrome DevTools の Application → Manifest でマニフェストが読み込まれ、アイコン・名称・`theme_color` が認識され、インストール可能（installability）と表示されること。SPA フォールバック（`public/_redirects`）で `.webmanifest` が index.html に化けないこと（`/icons/*.webmanifest` が実ファイルとして配信されること）を確認する。
+  - iOS Safari（可能なら実機）で「ホーム画面に追加」時に `apple-touch-icon` が使われることを目視。
+
+**DoD**: ブラウザタブに `favicon.ico`／`icon.svg` が表示され、`/icons/site.webmanifest` が正しく読み込まれてホーム画面インストール（スタンドアロン表示）が可能になり、iOS「ホーム画面に追加」で `apple-touch-icon.png` が使われる。資産は `public/icons/` から `dist/icons/` へコピーされる。Service Worker・オフラインキャッシュは導入していない。既存の画面・テストに回帰なし。`SPEC.md` §2.2/§8.4/§10 反映済み。
+**リスク**: 低（`<head>` へのリンク追加が中心）。要注意点: ① 同梱スニペットの manifest パス誤り（`/site.webmanifest`）をそのまま貼ると 404 になる → `/icons/` を付ける／② SPA フォールバック（`/* /index.html 200`）が `.webmanifest`・`.ico`・`.png` を巻き込んで index.html を返さないか（実ファイルが優先されるはずだが要確認）／③ ブラウザのファビコン強キャッシュによる表示反映の遅れ。
+
+---
+
 ## 全体のマイルストーン
 
 1. **M1（エンジン確立）**: P0〜P3 完了。CLIやテストで任意の手を正しく採点でき、バンクと一致。
@@ -888,6 +927,7 @@ P19 の基盤（牌記法パーサ・`mahjong` レンダラ・翻数バッジ・
 10. **M10（ヘッダー統一）**: P17 完了。トップ以外の全画面のヘッダーがトップと同じ全幅帯スタイルに揃う。
 11. **M11（運営者情報／AdSense 対応）**: P18 完了。運営者情報ページ（`/about`）が動作し、フッターからどの画面でも到達できる。
 12. **M12（役一覧記事／牌姿レンダリング）**: P19 完了。記事内に牌姿を埋め込む基盤が動作し、役一覧記事を1本公開。
+13. **M13（ファビコン／アプリアイコン／マニフェスト）**: P20 完了。favicon・apple-touch-icon・Web アプリマニフェストが反映され、タブ／ホーム画面でアプリアイコンが表示され、インストール（スタンドアロン表示）が可能になる（Service Worker・オフラインは非対応）。
 
 ## 未確定・要確認（実装前に潰す）
 
@@ -895,3 +935,4 @@ P19 の基盤（牌記法パーサ・`mahjong` レンダラ・翻数バッジ・
 - 問題バンクの初期問題数の最終値（50〜100の範囲で調整）。
 - 苦手復習の重み付けの具体式（正答率の逆数系 or `1 - accuracy + ε`）は P8 で確定。
 - 運営者名義（ハンドルネーム）の最終値（P18）。暫定 `shun`。公開前に確定して `src/config/site.ts` の `OPERATOR_NAME` を差し替える。
+- アイコン資産（P20）。ユーザーが `public/icons/` に配置済み（favicon.ico・icon.svg・apple-touch-icon.png・icon-192/512.png・site.webmanifest）。残作業は `index.html` `<head>` への反映のみ（manifest パスは `/icons/site.webmanifest` に修正して貼る）。

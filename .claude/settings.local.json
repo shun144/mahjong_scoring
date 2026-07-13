@@ -41,7 +41,8 @@
       "Bash(grep -oE '[0-9]+$')",
       "Bash(xargs -r taskkill //F //PID)",
       "Bash(kill %1)",
-      "Bash(jobs)"
+      "Bash(jobs)",
+      "Bash(file public/icons/*)"
     ]
   }
 }
