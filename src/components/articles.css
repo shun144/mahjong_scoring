@@ -18,6 +18,7 @@
   --fl-ink: #123f3c;
   --fl-body: #34514f;
   --fl-muted: #566d6b;
+  --fl-hand-bg: #f7f9fc;
 
   --fl-r-md: 16px;
   --fl-r-lg: 24px;
@@ -321,6 +322,10 @@
   font-weight: 800;
   color: var(--fl-teal-dark);
   border-bottom: 3px dashed rgba(43, 168, 162, 0.4);
+}
+
+.article-page .article-body h3 {
+  margin-bottom: -16px;
 }
 
 .article-page .article-body p,
