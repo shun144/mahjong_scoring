@@ -1,0 +1,83 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - navigation "記事ナビゲーション" [ref=e5]:
+      - link "記事一覧に戻る" [ref=e6] [cursor=pointer]:
+        - /url: /articles
+      - link "ホーム" [ref=e7] [cursor=pointer]:
+        - /url: /
+    - article [ref=e8]:
+      - heading "麻雀の役一覧｜成立条件・よくある勘違い・具体例つき" [level=1] [ref=e9]
+      - paragraph [ref=e10]: 麻雀で点数がもらえるのは、手牌が「役」という決まった形になったときだけです。このページでは、役ごとに成立条件・間違えやすいポイント・実際の手牌例をまとめています。
+      - blockquote [ref=e11]:
+        - paragraph [ref=e12]:
+          - text: 役を覚えたら、
+          - link "麻雀点数トレーニング" [ref=e13] [cursor=pointer]:
+            - /url: /
+          - text: で実際に点数を計算する練習もしてみてください。
+      - heading "1翻の役" [level=2] [ref=e14]
+      - heading "ピンフ（平和）" [level=3] [ref=e15]
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - img "四筒" [ref=e18]
+          - img "五筒" [ref=e20]
+          - img "六筒" [ref=e22]
+          - img "七筒" [ref=e24]
+          - img "八筒" [ref=e26]
+          - img "一索" [ref=e28]
+          - img "二索" [ref=e30]
+          - img "三索" [ref=e32]
+          - img "二萬" [ref=e34]
+          - img "三萬" [ref=e36]
+          - img "四萬" [ref=e38]
+          - img "九萬" [ref=e40]
+          - img "九萬" [ref=e42]
+        - generic [ref=e44]:
+          - generic [ref=e45]: あがり牌
+          - img "九筒" [ref=e46]
+      - paragraph [ref=e48]:
+        - strong [ref=e49]: 成立条件
+      - list [ref=e50]:
+        - listitem [ref=e51]:
+          - text: 面子が4つとも
+          - strong [ref=e52]: 順子
+          - text: （数字が3つ連続した形）であること。刻子（同じ牌3枚）が1つでも混ざると成立しません。
+        - listitem [ref=e53]:
+          - text: 雀頭（対子）が
+          - strong [ref=e54]: 役牌以外
+          - text: であること。三元牌・自風牌・場風牌が雀頭だとピンフは崩れます。
+        - listitem [ref=e55]:
+          - text: あがり牌の待ちが
+          - strong [ref=e56]: 両面待ち
+          - text: であること。カンチャン（嵌張）・ペンチャン（辺張）・単騎・シャンポンでは成立しません。
+        - listitem [ref=e57]:
+          - strong [ref=e58]: 門前
+          - text: （鳴いていない）でのみ成立します。
+      - paragraph [ref=e59]:
+        - strong [ref=e60]: よくある勘違い
+      - list [ref=e61]:
+        - listitem [ref=e62]:
+          - text: 「役牌以外の対子が雀頭ならOK」と思われがちですが、正しくは
+          - strong [ref=e63]: 自風・場風・三元牌でなければOK
+          - text: "です。役牌にあたらない字牌（例: 自分の風でも場の風でもない風牌）が雀頭でもピンフは成立します。"
+        - listitem [ref=e64]:
+          - text: ツモであがった場合、ピンフ単独ではツモ符（+2符）が付きません（
+          - strong [ref=e65]: 平和ツモは20符固定
+          - text: ）。これは「面子・待ちがすべて0符の手だから」で、符計算の中でも特に間違えやすいポイントです。
+        - listitem [ref=e66]: 鳴くと崩れる役なので、チー・ポン・カンを一度でもすると、その時点でピンフの可能性はなくなります。
+      - paragraph [ref=e67]:
+        - strong [ref=e68]: 具体例
+      - paragraph [ref=e69]: 上の牌姿は「④⑤⑥⑦⑧筒＋①②③索＋②③④萬＋九萬九萬」で、あがり牌は⑨筒です。 面子はすべて順子（456p・678p・123s・234m）、雀頭は九萬（役牌ではない）、待ちは⑦⑧筒からの両面待ちなので、ピンフが成立します。ツモならピンフのみで20符1翻、ロンなら門前加符が付いて30符1翻になります。
+      - separator [ref=e70]
+      - paragraph [ref=e71]:
+        - emphasis [ref=e72]: （このページは順次追記予定です）
+    - link "点数計算モードを試す" [ref=e74] [cursor=pointer]:
+      - /url: /quiz
+  - contentinfo [ref=e75]:
+    - navigation "フッター" [ref=e76]:
+      - link "学習ガイド" [ref=e77] [cursor=pointer]:
+        - /url: /articles
+      - link "プライバシーポリシー" [ref=e78] [cursor=pointer]:
+        - /url: /privacy
+      - link "運営者情報" [ref=e79] [cursor=pointer]:
+        - /url: /about
+    - paragraph [ref=e80]: © 2026 麻雀点数トレーニング

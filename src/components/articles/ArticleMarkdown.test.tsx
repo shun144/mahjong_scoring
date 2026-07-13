@@ -73,4 +73,34 @@ describe("ArticleMarkdown", () => {
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  it("mahjongコードブロックは牌姿(牌画像)として描画する。あがり牌も手牌と区別せず並べる", () => {
+    renderMarkdown("```mahjong\n234m 567p 345s 99m | 9p\n```");
+    expect(screen.getByRole("img", { name: "二萬" })).toBeInTheDocument();
+    const winningTileImg = screen.getByRole("img", { name: "九筒" });
+    expect(winningTileImg).toBeInTheDocument();
+    // あがり牌にラベル・区切りブロックを付けない(手牌と同じ並びに含まれる)。
+    expect(screen.queryByText("あがり")).not.toBeInTheDocument();
+    expect(winningTileImg.closest(".article-hand-winning")).toBeNull();
+    expect(screen.queryByText(/234m/)).not.toBeInTheDocument();
+  });
+
+  it("キー行形式では門前/鳴きの翻数バッジを表示する", () => {
+    renderMarkdown("```mahjong\nhand: 234m 567p 345s 99m | 9p\nmenzen: 1\nnaki: -\n```");
+    expect(screen.getByText("門前")).toBeInTheDocument();
+    expect(screen.getByText("1翻")).toBeInTheDocument();
+    expect(screen.getByText("鳴き")).toBeInTheDocument();
+    expect(screen.getByText("なし")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "二萬" })).toBeInTheDocument();
+  });
+
+  it("不正な牌姿記法はコードブロックのままフォールバック表示する", () => {
+    renderMarkdown("```mahjong\nnot a hand\n```");
+    expect(screen.getByText("not a hand")).toBeInTheDocument();
+  });
+
+  it("mahjong以外の言語のコードブロックは通常通り描画する", () => {
+    renderMarkdown("```ts\nconst x = 1;\n```");
+    expect(screen.getByText("const x = 1;")).toBeInTheDocument();
+  });
 });

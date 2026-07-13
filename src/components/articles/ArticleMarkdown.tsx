@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Link } from "react-router-dom";
+import { parseHandNotation } from "../../content/articles/handNotation";
+import { ArticleHand } from "./ArticleHand";
 
 // クイズ/ホームなど、記事から実際に遷移してよいアプリ内ルート。
 // 未作成の記事(スラッグ)を除き、これ以外の内部パスはリンクとして扱わずテキスト化する。
@@ -70,6 +72,29 @@ export function ArticleMarkdown({ markdown, articleSlugs }: ArticleMarkdownProps
           <table>{children}</table>
         </div>
       );
+    },
+    pre({ node, children }) {
+      const soleChild = node?.children.length === 1 ? node.children[0] : undefined;
+      if (soleChild?.type === "element" && soleChild.tagName === "code") {
+        const classProp = soleChild.properties?.className;
+        const classNames = Array.isArray(classProp) ? classProp.map(String) : [];
+        if (classNames.includes("language-mahjong")) {
+          const textNode = soleChild.children[0];
+          const raw = textNode?.type === "text" ? textNode.value : "";
+          const parsed = parseHandNotation(raw);
+          if (parsed) {
+            return (
+              <ArticleHand
+                hand={parsed.hand}
+                winningTile={parsed.winningTile}
+                menzen={parsed.menzen}
+                naki={parsed.naki}
+              />
+            );
+          }
+        }
+      }
+      return <pre>{children}</pre>;
     },
     a({ href, children }) {
       const kind = href ? resolveLinkKind(href, articleSlugs) : "text";

@@ -487,6 +487,87 @@
   width: 4.5em;
 }
 
+/* 牌姿（手牌図）。mahjong コードブロックを差し替えて描画する。
+   翻数バッジ行＋牌行の縦積み。牌は本文幅に 13 枚＋あがり牌が収まるよう流動縮小し、
+   スマホでも見切れ・横スクロールなく1画面に収める。左右パディングは最小限にし、
+   牌を囲いの端まで寄せる。 */
+.article-page .article-hand {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* 本文カード(.article-body)の左右 padding(20px)を負マージンで相殺し、黄色
+     （クリーム）エリアを白カード幅いっぱいの横帯に広げる。外側に白い余白を残さない。
+     上下 border のみ残し、左右 border と角丸は落として端まで直線で伸ばす。 */
+  margin-inline: -20px;
+  padding-block: 8px;
+  border-block: 2px solid rgba(43, 168, 162, 0.28);
+  background: var(--fl-cream);
+}
+/* 門前／鳴きの翻数バッジ行。囲いの左右余白をなくすため、バッジ行だけ左に
+   最小限のインセットを残す（枠線に張り付いて視認しづらくなるのを防ぐ）。 */
+.article-page .article-hand-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-inline: 6px;
+}
+.article-page .article-han-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  border-radius: var(--fl-r-pill);
+  border: 2px solid transparent;
+}
+.article-page .article-han-badge-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+/* 門前＝ティール（成立色）。 */
+.article-page .article-han-badge--menzen {
+  color: var(--fl-teal-dark);
+  background: var(--fl-teal-bg);
+  border-color: rgba(43, 168, 162, 0.4);
+}
+/* 鳴きで成立（喰い下がり）＝ゴールド系で門前と区別。 */
+.article-page .article-han-badge--naki {
+  color: var(--fl-gold-dark);
+  background: #fff6d6;
+  border-color: rgba(230, 184, 0, 0.5);
+}
+/* 鳴き不可（門前のみ）＝グレーで沈める。 */
+.article-page .article-han-badge--none {
+  color: var(--fl-muted);
+  background: #eef1f1;
+  border-color: rgba(86, 109, 107, 0.28);
+}
+
+/* 牌行。牌は流動幅で縮小し、13 枚＋あがり牌を本文幅に収める。 */
+.article-page .article-hand-tiles {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  min-width: 0;
+  /* 13 枚＋あがり牌＝14 枚分（区別なく同列）を本文幅いっぱいの帯に収める。CSS 変数内の
+     % は width 適用先（.mj-tile-wrap）の親基準で循環解決され 0 に潰れるため、既存
+     md 牌と同様に vw ベースで算出する。min(100vw,640px)＝本文シェル幅、-72px＝
+     ページシェル左右パディング＋牌間 gap の見込み（黄色エリアは本文カード幅いっぱいに
+     広げたため本文カードの左右 padding は差し引かない）。上限 30px。 */
+  --art-tile-w: min(30px, calc((min(100vw, 640px) - 72px) / 14));
+  padding-inline: 4px;
+}
+/* 牌行配下の md 牌だけ流動幅に上書き（囲い外のクイズ牌には影響しない）。 */
+.article-page .article-hand-tiles .mj-tile-wrap.mj-tile-size-md {
+  --mj-tile-w: var(--art-tile-w);
+  --mj-tile-h: calc(var(--art-tile-w) * 4 / 3);
+}
+.article-page .article-hand-tiles .mj-tile-row {
+  gap: 1px;
+}
+
 /* 末尾 CTA — ゴールドのグラデ・ピル（光沢オーバーレイ＋ゴールドグロー）。 */
 .article-page .article-end-cta {
   display: flex;

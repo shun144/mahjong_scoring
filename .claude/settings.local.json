@@ -37,7 +37,9 @@
       "mcp__plugin_playwright_playwright__browser_tabs",
       "Bash(grep -nE \"^#{1,3} \" SPEC.md)",
       "Bash(grep -nE \"^#{1,3} \" TASKS.md)",
-      "Bash(powershell -Command 'Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object {$_.CommandLine -like '\\\\''*5183*'\\\\''} | Stop-Process -Force')"
+      "Bash(powershell -Command 'Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object {$_.CommandLine -like '\\\\''*5183*'\\\\''} | Stop-Process -Force')",
+      "Bash(grep -oE '[0-9]+$')",
+      "Bash(xargs -r taskkill //F //PID)"
     ]
   }
 }

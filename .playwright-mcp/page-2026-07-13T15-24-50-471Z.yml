@@ -1,0 +1,71 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - navigation "記事ナビゲーション" [ref=e5]:
+      - link "記事一覧に戻る" [ref=e6] [cursor=pointer]:
+        - /url: /articles
+      - link "ホーム" [ref=e7] [cursor=pointer]:
+        - /url: /
+    - article [ref=e8]:
+      - heading "麻雀の役一覧｜成立条件とよくある勘違い" [level=1] [ref=e9]
+      - paragraph [ref=e10]: 役ごとに、成立条件・間違えやすいポイント・門前と鳴きの翻数をまとめました。
+      - blockquote [ref=e11]:
+        - paragraph [ref=e12]:
+          - text: 役を覚えたら
+          - link "麻雀点数トレーニング" [ref=e13] [cursor=pointer]:
+            - /url: /
+          - text: で点数計算も練習できます。
+      - heading "1翻の役" [level=2] [ref=e14]
+      - heading "ピンフ（平和）" [level=3] [ref=e15]
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - generic [ref=e19]: 門前
+            - generic [ref=e20]: 1翻
+          - generic [ref=e21]:
+            - generic [ref=e22]: 鳴き
+            - generic [ref=e23]: なし
+        - generic [ref=e25]:
+          - img "四筒" [ref=e26]
+          - img "五筒" [ref=e28]
+          - img "六筒" [ref=e30]
+          - img "七筒" [ref=e32]
+          - img "八筒" [ref=e34]
+          - img "一索" [ref=e36]
+          - img "二索" [ref=e38]
+          - img "三索" [ref=e40]
+          - img "二萬" [ref=e42]
+          - img "三萬" [ref=e44]
+          - img "四萬" [ref=e46]
+          - img "九萬" [ref=e48]
+          - img "九萬" [ref=e50]
+          - img "九筒" [ref=e52]
+      - paragraph [ref=e54]:
+        - strong [ref=e55]: 成立条件
+      - list [ref=e56]:
+        - listitem [ref=e57]: 面子が4つとも順子。刻子が1つでもあると不成立。
+        - listitem [ref=e58]: 雀頭が役牌（三元牌・自風・場風）以外。
+        - listitem [ref=e59]: 待ちが両面。カンチャン・ペンチャン・単騎・シャンポンは不可。
+        - listitem [ref=e60]: 門前のみ。鳴くと消える。
+      - paragraph [ref=e61]:
+        - strong [ref=e62]: よくある勘違い
+      - list [ref=e63]:
+        - listitem [ref=e64]: 雀頭は「役牌でなければOK」。自分の風でも場の風でもない字牌なら使える。
+        - listitem [ref=e65]:
+          - text: 平和ツモはツモ符が付かず、
+          - strong [ref=e66]: 20符固定
+          - text: 。
+        - listitem [ref=e67]: ロンは門前加符で30符、ツモは20符。
+      - separator [ref=e68]
+      - paragraph [ref=e69]:
+        - emphasis [ref=e70]: （このページは順次追記予定です）
+    - link "点数計算モードを試す" [ref=e72] [cursor=pointer]:
+      - /url: /quiz
+  - contentinfo [ref=e73]:
+    - navigation "フッター" [ref=e74]:
+      - link "学習ガイド" [ref=e75] [cursor=pointer]:
+        - /url: /articles
+      - link "プライバシーポリシー" [ref=e76] [cursor=pointer]:
+        - /url: /privacy
+      - link "運営者情報" [ref=e77] [cursor=pointer]:
+        - /url: /about
+    - paragraph [ref=e78]: © 2026 麻雀点数トレーニング

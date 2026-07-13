@@ -52,6 +52,14 @@ const ARTICLE_META: ArticleMeta[] = [
     publishedAt: "2026-07-09",
     order: 3,
   },
+  {
+    slug: "mahjong-yaku-list",
+    title: "役一覧",
+    description:
+      "麻雀の役を翻数別に紹介。牌姿つきで成立条件・よくある勘違い・具体例を解説します。",
+    publishedAt: "2026-07-13",
+    order: 4,
+  },
 ];
 
 export function getAllArticles(): Article[] {
