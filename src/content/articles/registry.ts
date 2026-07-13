@@ -1,6 +1,7 @@
 export interface ArticleMeta {
   slug: string;
   title: string;
+  description: string; // meta description用。記事ごとに固有の要約(SEO対策)
   publishedAt: string; // YYYY-MM-DD
   order: number;
 }
@@ -30,19 +31,24 @@ const ARTICLE_META: ArticleMeta[] = [
   {
     slug: "tensu-keisan-guide",
     title: "点数計算ガイド",
+    description:
+      "麻雀の点数計算の全体像を解説。符を数える→翻を数える→点数に変える、の3ステップを具体例つきでやさしく紹介します。",
     publishedAt: "2026-07-07",
     order: 1,
   },
   {
     slug: "mahjong-yougoshu",
     title: "基本用語集",
+    description:
+      "萬子・筒子・索子・字牌、自風牌・場風牌など、点数計算の理解に欠かせない麻雀の基本用語をやさしく解説します。",
     publishedAt: "2026-07-08",
     order: 2,
   },
   {
     slug: "mahjong-one-round-flow",
     title: "1局の流れ",
-
+    description:
+      "席決め・配牌からツモと打牌の繰り返し、和了・流局までを順番に解説。麻雀の1局の流れを初心者向けに紹介します。",
     publishedAt: "2026-07-09",
     order: 3,
   },

@@ -32,6 +32,12 @@ describe("ArticlePage", () => {
     expect(document.title).toContain("麻雀の点数計算ガイド");
   });
 
+  it("meta descriptionを記事ごとの専用説明文に設定する", () => {
+    renderAt("/articles/tensu-keisan-guide");
+    const meta = document.querySelector('meta[name="description"]');
+    expect(meta?.getAttribute("content")).toContain("符を数える");
+  });
+
   it("記事内の画像はすべてプレースホルダ枠として表示する", () => {
     renderAt("/articles/tensu-keisan-guide");
     expect(screen.getAllByRole("img").length).toBe(5);
