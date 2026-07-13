@@ -29,7 +29,7 @@ describe("ArticlePage", () => {
 
   it("document.titleを記事タイトルベースに設定する", () => {
     renderAt("/articles/tensu-keisan-guide");
-    expect(document.title).toContain("麻雀の点数計算ガイド");
+    expect(document.title).toContain("数計算ガイド｜麻雀点数トレーニング");
   });
 
   it("meta descriptionを記事ごとの専用説明文に設定する", () => {

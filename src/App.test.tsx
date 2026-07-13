@@ -23,7 +23,7 @@ describe("App routing", () => {
         <App />
       </MemoryRouter>,
     );
-    expect(screen.getByRole("heading", { name: "出題" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
   });
 
   it("renders the article list page at /articles", () => {
