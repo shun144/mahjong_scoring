@@ -115,7 +115,36 @@
   }
 }
 
-.st-body {
+/* 親/子カルーセル本体：横スクロール+スナップの1軸のみを持つ。
+   表内部には横スクロールを持たせず（入れ子競合を避けるため）、
+   縦スクロールは各パネル（.st-panel）側でそれぞれ処理する。 */
+.st-carousel {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.st-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-carousel {
+    scroll-behavior: auto;
+  }
+}
+
+.st-panel {
+  flex: 0 0 100%;
+  min-width: 0;
+  max-width: 100%;
+  scroll-snap-align: start;
   overflow-y: auto;
   padding: var(--space-4) var(--space-2);
   display: flex;
@@ -134,11 +163,6 @@
   font-size: var(--fs-base);
   font-weight: 700;
   color: var(--color-text);
-}
-
-/* 狭い端末では表がはみ出す場合に横スクロールで救済する。 */
-.st-scroll {
-  overflow-x: auto;
 }
 
 .score-table {

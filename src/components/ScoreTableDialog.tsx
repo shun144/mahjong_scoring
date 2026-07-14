@@ -122,72 +122,81 @@ function ScoreTableBlock({
   return (
     <section className="st-block">
       <h3 className="st-block-title">{title}</h3>
-      <div className="st-scroll">
-        <table className="score-table">
-          <thead>
-            <tr>
-              <th scope="col" className="st-corner">
-                符
+      <table className="score-table">
+        <thead>
+          <tr>
+            <th scope="col" className="st-corner">
+              符
+            </th>
+            {HANS.map((han) => (
+              <th scope="col" key={han}>
+                {han}翻
               </th>
-              {HANS.map((han) => (
-                <th scope="col" key={han}>
-                  {han}翻
-                </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.fu}>
+              <th scope="row" className="st-fu-head">
+                <span className="st-fu">{row.fu}符</span>
+                {row.note && <span className="st-fu-note">{row.note}</span>}
+              </th>
+              {row.cells.map((cell, i) => (
+                <td key={HANS[i]} className={cell?.mangan ? "st-cell st-cell--mangan" : "st-cell"}>
+                  {cell ? (
+                    <>
+                      <span className="st-main">{cell.main}</span>
+                      <span className="st-sub">{cell.sub}</span>
+                    </>
+                  ) : (
+                    <span className="st-empty" aria-hidden="true">
+                      –
+                    </span>
+                  )}
+                </td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.fu}>
-                <th scope="row" className="st-fu-head">
-                  <span className="st-fu">{row.fu}符</span>
-                  {row.note && <span className="st-fu-note">{row.note}</span>}
-                </th>
-                {row.cells.map((cell, i) => (
-                  <td
-                    key={HANS[i]}
-                    className={cell?.mangan ? "st-cell st-cell--mangan" : "st-cell"}
-                  >
-                    {cell ? (
-                      <>
-                        <span className="st-main">{cell.main}</span>
-                        <span className="st-sub">{cell.sub}</span>
-                      </>
-                    ) : (
-                      <span className="st-empty" aria-hidden="true">
-                        –
-                      </span>
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-          <tbody>
-            {rankRows.map((row, i) => (
-              <tr key={row.label} className={i === 0 ? "st-rank-row-first" : undefined}>
-                <th scope="row" className="st-fu-head">
-                  <span className="st-rank-name">{row.label}</span>
-                  <span className="st-rank-note">{row.note}</span>
-                </th>
-                <td className="st-cell st-cell--mangan" colSpan={HANS.length}>
-                  <span className="st-main">{row.main}</span>
-                  <span className="st-sub">{row.sub}</span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+        <tbody>
+          {rankRows.map((row, i) => (
+            <tr key={row.label} className={i === 0 ? "st-rank-row-first" : undefined}>
+              <th scope="row" className="st-fu-head">
+                <span className="st-rank-name">{row.label}</span>
+                <span className="st-rank-note">{row.note}</span>
+              </th>
+              <td className="st-cell st-cell--mangan" colSpan={HANS.length}>
+                <span className="st-main">{row.main}</span>
+                <span className="st-sub">{row.sub}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </section>
   );
 }
 
 type Side = "dealer" | "nonDealer";
 
+/** IntersectionObserver でパネルの可視判定に使う閾値。半分を超えて見えている側をアクティブとする。 */
+const VISIBILITY_THRESHOLD = 0.55;
+
+function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export function ScoreTableDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const dealerPanelRef = useRef<HTMLDivElement>(null);
+  const nonDealerPanelRef = useRef<HTMLDivElement>(null);
   const [side, setSide] = useState<Side>("dealer");
+  // 開いた瞬間の位置合わせ（アニメーションなし）に使う、常に最新の side を指すref。
+  const sideRef = useRef<Side>(side);
+  sideRef.current = side;
 
   // open の変化に応じてネイティブ <dialog> を開閉する（フォーカストラップ・Esc は標準機能）。
   useEffect(() => {
@@ -204,6 +213,57 @@ export function ScoreTableDialog({ open, onClose }: { open: boolean; onClose: ()
     dlg.addEventListener("close", onClose);
     return () => dlg.removeEventListener("close", onClose);
   }, [onClose]);
+
+  // 開いた直後は現在の side にアニメーションなしで位置合わせする（open のみを契機にし、
+  // トグル操作由来のスムーズスクロールとは干渉させない）。
+  useEffect(() => {
+    if (!open) return;
+    const container = carouselRef.current;
+    const panel = sideRef.current === "dealer" ? dealerPanelRef.current : nonDealerPanelRef.current;
+    if (!container || !panel) return;
+    container.scrollTo({ left: panel.offsetLeft, behavior: "auto" });
+  }, [open]);
+
+  // スワイプでどちらのパネルが見えているかを監視し、トグルの選択状態（aria-pressed）に反映する
+  // （位置→state同期）。
+  useEffect(() => {
+    const container = carouselRef.current;
+    const dealerPanel = dealerPanelRef.current;
+    const nonDealerPanel = nonDealerPanelRef.current;
+    if (!container || !dealerPanel || !nonDealerPanel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          setSide(entry.target === dealerPanel ? "dealer" : "nonDealer");
+        }
+      },
+      { root: container, threshold: VISIBILITY_THRESHOLD },
+    );
+    observer.observe(dealerPanel);
+    observer.observe(nonDealerPanel);
+    return () => observer.disconnect();
+  }, []);
+
+  // トグル押下→対象パネルへスクロール（state→位置同期）。reduced-motion時は即時ジャンプ。
+  const scrollToSide = useCallback((target: Side) => {
+    const container = carouselRef.current;
+    const panel = target === "dealer" ? dealerPanelRef.current : nonDealerPanelRef.current;
+    if (!container || !panel) return;
+    container.scrollTo({
+      left: panel.offsetLeft,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  }, []);
+
+  const handleToggle = useCallback(
+    (target: Side) => {
+      setSide(target);
+      scrollToSide(target);
+    },
+    [scrollToSide],
+  );
 
   // 背景（::backdrop）クリックで閉じる。クリック対象が <dialog> 自身なら枠外。
   const handleClick = useCallback((e: React.MouseEvent<HTMLDialogElement>) => {
@@ -228,7 +288,7 @@ export function ScoreTableDialog({ open, onClose }: { open: boolean; onClose: ()
                   side === "dealer" ? "st-toggle-btn st-toggle-btn--active" : "st-toggle-btn"
                 }
                 aria-pressed={side === "dealer"}
-                onClick={() => setSide("dealer")}
+                onClick={() => handleToggle("dealer")}
               >
                 親
               </button>
@@ -238,7 +298,7 @@ export function ScoreTableDialog({ open, onClose }: { open: boolean; onClose: ()
                   side === "nonDealer" ? "st-toggle-btn st-toggle-btn--active" : "st-toggle-btn"
                 }
                 aria-pressed={side === "nonDealer"}
-                onClick={() => setSide("nonDealer")}
+                onClick={() => handleToggle("nonDealer")}
               >
                 子
               </button>
@@ -253,12 +313,13 @@ export function ScoreTableDialog({ open, onClose }: { open: boolean; onClose: ()
             ×
           </button>
         </header>
-        <div className="st-body">
-          {side === "dealer" ? (
+        <div className="st-carousel" ref={carouselRef} aria-label="親子の点数早見表（スワイプで切替）">
+          <div className="st-panel" ref={dealerPanelRef}>
             <ScoreTableBlock title="親" rows={DEALER_ROWS} rankRows={DEALER_RANK_ROWS} />
-          ) : (
+          </div>
+          <div className="st-panel" ref={nonDealerPanelRef}>
             <ScoreTableBlock title="子" rows={NON_DEALER_ROWS} rankRows={NON_DEALER_RANK_ROWS} />
-          )}
+          </div>
         </div>
       </div>
     </dialog>

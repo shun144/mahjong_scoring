@@ -60,7 +60,10 @@
       "PowerShell(Get-NetTCPConnection *)",
       "PowerShell(Stop-Process *)",
       "Bash(find . -iname \"setupTests*\" -not -path \"*/node_modules/*\")",
-      "Bash(grep -rn \"setupFiles\" vite.config.* vitest.config.*)"
+      "Bash(grep -rn \"setupFiles\" vite.config.* vitest.config.*)",
+      "Read(//c/Users/noels/.claude/skills/**)",
+      "Read(//c/Users/noels/.agents/skills/grilling/**)",
+      "Read(//c/Users/noels/.claude/**)"
     ]
   }
 }

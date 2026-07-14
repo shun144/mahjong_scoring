@@ -46,3 +46,51 @@
 - 上段の局条件バッジ列にリーチが出ない（最終点数モード）。
 - 他モードの表示・テストに影響がない。
 - `npm test` / `npm run lint` が通る。
+
+---
+
+## T-002 点数早見表ダイアログを親/子スワイプカルーセル化
+
+### 目的 / 変更内容
+点数早見表ダイアログ（`ScoreTableDialog`）で、現状**トグルボタンでのみ**切り替えている
+親表・子表を、**スワイプで左右に切り替えられるカルーセル**にする。トグルは残し、スワイプと双方向同期する。
+（正典: SPEC.md §4.12「点数早見表ダイアログ」／§8.1 オーバーレイ）
+
+### 確定した設計判断
+- **スライド**: **親／子の2枚**（各パネルに 符×翻の本表＋満貫区分行を含む）。
+- **切替UI**: 既存の**親/子トグルを残し、スワイプと双方向同期**。デスクトップ・非タッチでもトグルで切替可。
+- **実装方式**: **CSS `scroll-snap`**（横スクロールコンテナ＋`scroll-snap-type: x mandatory`、各パネル100%幅）。
+  ライブラリ追加・手動touchハンドラは採用しない。
+- **両パネル常時描画**: 現状の片側条件描画（`side === "dealer" ? ... : ...`）をやめ、**両パネルをDOMに常時描画**する（scroll-snap成立の前提）。表データはモジュール読込時に生成済みでコスト増は軽微。
+- **入れ子スクロール排除**: **横軸はカルーセルの1軸のみ**。表内の横スクロール（`.st-scroll { overflow-x: auto }`）を**廃止**し、表を `table-layout: fixed` でパネル幅に収める。極小端末はフォント縮小で吸収。**ダイアログ本文の縦スクロールは残す**。
+- **同期**: スクロール位置→state は `IntersectionObserver`（各パネル、閾値 ~0.55）で判定。
+  トグル押下→対象パネルへ `scrollTo({ behavior: "smooth" })`、**`prefers-reduced-motion` 時は `"auto"`（即時ジャンプ）**。
+- **アクセシビリティ**: トグルの `aria-pressed` を維持、スクロールコンテナに `aria-label`。各パネルの `親`/`子` 見出し（h3）は残す。色のみ依存にしない。
+
+### 影響ファイル
+- `src/components/ScoreTableDialog.tsx` — 条件描画→両パネル描画、scroll-snapコンテナ、`IntersectionObserver`/`scrollTo` 同期
+- `src/components/scoreTable.css` — `.st-body` を横スクロール＋スナップ化・パネル100%幅、`.st-scroll` の横スクロール撤去、reduced-motion対応
+- `src/components/ScoreTableDialog.test.tsx` — **新規**（現状ダイアログ単体テストは無い）
+
+### 実装ステップ
+1. **`ScoreTableDialog.tsx`**:
+   - `.st-body` 内に**親・子の2パネルを常に描画**する横スクロールコンテナ（例: `.st-carousel`）を置き、各パネルを `.st-panel`（100%幅・`scroll-snap-align: start`）でラップ。
+   - コンテナ要素に `ref` を持たせ、各パネルに `IntersectionObserver`（root=コンテナ、閾値 ~0.55）を張って、可視側で `side` state を更新する（スワイプ→トグル同期）。
+   - `side` 変化がユーザーのトグル操作由来のとき、対象パネルへ `scrollTo`。`window.matchMedia("(prefers-reduced-motion: reduce)")` を見て `behavior` を切替。無限同期ループを避けるため「トグル起点のスクロール」と「スクロール起点のstate更新」を区別する（フラグ/直近値ガード等）。
+   - `open` で開いた直後は現在の `side` に**アニメーションなしで**位置合わせする。
+2. **`scoreTable.css`**:
+   - `.st-carousel { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; }`、`.st-panel { flex:0 0 100%; scroll-snap-align:start; }`。
+   - `.st-scroll { overflow-x: auto }` の横スクロールを撤去（表をパネル幅に収める前提のスタイルへ）。
+   - `@media (prefers-reduced-motion: reduce)` で `scroll-behavior: auto`。スクロールバーは必要なら視覚的に隠す。
+3. **テスト（`ScoreTableDialog.test.tsx` 新規）**:
+   - jsdomはスクロール/スナップ/`IntersectionObserver` 未実装のため、`IntersectionObserver` を**モック**する。
+   - ①親・**両パネルが同時にDOM描画**される、②トグル押下でアクティブ側（`aria-pressed`）が切替、③Observer発火をシミュレートしスクロール→トグル状態が同期、を検証。
+   - 実スワイプのピクセル挙動はjsdom範囲外として検証しない（計画上の割り切り）。
+
+### 受け入れ基準
+- 早見表ダイアログで、親表・子表を**スワイプで左右に切り替えられる**。
+- 親/子トグルとスワイプが**双方向同期**する（トグル→スクロール、スワイプ→`aria-pressed`）。
+- 横方向の入れ子スクロールが無く、スワイプが表内スクロールに吸われない。
+- `prefers-reduced-motion` 指定時はトグル切替が即時ジャンプになる。
+- 早見表の数値は従来どおり `calculatePayment` 由来で、クイズ採点と食い違わない。
+- `npm test` / `npm run lint` が通る。
