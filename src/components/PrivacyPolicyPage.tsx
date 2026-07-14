@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CONTACT_FORM_URL, SITE_NAME } from "../config/site";
+import { SITE_NAME } from "../config/site";
 import "./privacy.css";
 
 const EFFECTIVE_DATE = "2026年7月4日";
@@ -112,11 +112,9 @@ export function PrivacyPolicyPage() {
 
       <section className="privacy-section" aria-label="第7条 お問い合わせ窓口">
         <h2>第7条（お問い合わせ窓口）</h2>
-        <p>本ポリシーに関するお問い合わせは、下記の窓口までお願いいたします。</p>
         <p className="privacy-contact">
-          <a href={CONTACT_FORM_URL} target="_blank" rel="noopener noreferrer">
-            お問い合わせフォームを開く
-          </a>
+          本ポリシーに関するお問い合わせは、<Link to="/contact">お問い合わせページ</Link>
+          よりお願いいたします。
         </p>
       </section>
 

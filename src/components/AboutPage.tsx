@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CONTACT_FORM_URL, OPERATOR_NAME, SITE_NAME } from "../config/site";
+import { OPERATOR_NAME, SITE_NAME } from "../config/site";
 import "./about.css";
 
 export function AboutPage() {
@@ -67,11 +67,9 @@ export function AboutPage() {
 
       <section className="about-section" aria-label="お問い合わせ">
         <h2>お問い合わせ</h2>
-        <p>当サイトに関するお問い合わせは、下記の窓口までお願いいたします。</p>
         <p className="about-contact">
-          <a href={CONTACT_FORM_URL} target="_blank" rel="noopener noreferrer">
-            お問い合わせフォームを開く
-          </a>
+          当サイトに関するお問い合わせは、<Link to="/contact">お問い合わせページ</Link>
+          よりお願いいたします。
         </p>
       </section>
     </main>

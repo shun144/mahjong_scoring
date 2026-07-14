@@ -30,11 +30,11 @@ describe("PrivacyPolicyPage", () => {
     );
   });
 
-  it("お問い合わせフォーム(Google フォーム)へのリンクを表示する", () => {
+  it("お問い合わせページへの内部リンクを表示する", () => {
     renderPage();
-    expect(screen.getByRole("link", { name: "お問い合わせフォームを開く" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "お問い合わせページ" })).toHaveAttribute(
       "href",
-      "https://docs.google.com/forms/d/e/1FAIpQLSfFnI4zqQTGDRO5ae4rxI5P8c2CkAx99UE9be1Sw4gQCxxoCA/viewform",
+      "/contact",
     );
   });
 });

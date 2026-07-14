@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import { CONTACT_FORM_URL, OPERATOR_NAME } from "../config/site";
+import { OPERATOR_NAME } from "../config/site";
 import { AboutPage } from "./AboutPage";
 
 function renderPage() {
@@ -38,11 +38,11 @@ describe("AboutPage", () => {
     expect(screen.getByRole("heading", { name: "免責事項" })).toBeInTheDocument();
   });
 
-  it("お問い合わせフォーム(Googleフォーム)へのリンクを表示する", () => {
+  it("お問い合わせページへの内部リンクを表示する", () => {
     renderPage();
-    expect(screen.getByRole("link", { name: "お問い合わせフォームを開く" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "お問い合わせページ" })).toHaveAttribute(
       "href",
-      CONTACT_FORM_URL,
+      "/contact",
     );
   });
 

@@ -10,6 +10,7 @@ export function Footer() {
     <footer className="app-footer">
       <nav className="app-footer-nav" aria-label="フッター">
         <Link to="/articles">学習ガイド</Link>
+        <Link to="/contact">お問い合わせ</Link>
         <Link to="/privacy">プライバシーポリシー</Link>
         <Link to="/about">運営者情報</Link>
       </nav>

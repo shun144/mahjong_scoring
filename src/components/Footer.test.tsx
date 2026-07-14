@@ -24,6 +24,16 @@ describe("Footer", () => {
     expect(link).toHaveAttribute("href", "/articles");
   });
 
+  it("お問い合わせへのリンクを表示する", () => {
+    render(
+      <MemoryRouter>
+        <Footer />
+      </MemoryRouter>,
+    );
+    const link = screen.getByRole("link", { name: "お問い合わせ" });
+    expect(link).toHaveAttribute("href", "/contact");
+  });
+
   it("運営者情報へのリンクを表示する", () => {
     render(
       <MemoryRouter>

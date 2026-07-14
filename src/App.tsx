@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { AboutPage } from "./components/AboutPage";
 import { ArticleListPage } from "./components/ArticleListPage";
 import { ArticlePage } from "./components/ArticlePage";
+import { ContactPage } from "./components/ContactPage";
 import { ConvertQuizPage } from "./components/ConvertQuizPage";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Footer } from "./components/Footer";
@@ -36,6 +37,7 @@ function App() {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </ErrorBoundary>
       </SettingsProvider>
