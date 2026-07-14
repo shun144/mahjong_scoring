@@ -1,5 +1,6 @@
 import type { Tile } from "../engine/model";
 import type { Problem } from "../data/problem";
+import tenbo1000Url from "../assets/tenbo/tenbo-1000.png";
 import { WIN_TYPE_LABELS } from "./format";
 import { TileRow } from "./tiles/TileRow";
 
@@ -39,13 +40,18 @@ function LabeledTiles({
  * アガリ牌・ドラ表示牌・裏ドラ表示牌を、ラベル上／牌下の同じ並びで横に配置するヘッダー。
  * 裏ドラ表示牌はリーチ時のみ表示する（SPEC.md §5.4）。
  * 符計算モードは符がドラの影響を受けないため、showDora=false でドラ表示を省略できる。
+ * showRiichi=true の場合、アガリ牌とドラ表示牌の間にリーチ表示（「リーチ」ラベル＋1000点棒の画像）を
+ * 挟む（最終点数モード専用。SPEC.md §4.1「リーチ表示の位置」）。非リーチ時も同じ幅の枠を確保し、
+ * ドラ表示牌の位置を動かさないため、常に描画して非リーチ時は visibility:hidden で隠す。
  */
 export function QuizTileHeader({
   problem,
   showDora = true,
+  showRiichi = false,
 }: {
   problem: Problem;
   showDora?: boolean;
+  showRiichi?: boolean;
 }) {
   const winType = problem.hand.winType;
   return (
@@ -60,6 +66,18 @@ export function QuizTileHeader({
           labelClassName="mj-winning-label"
         />
       </div>
+      {showRiichi &&
+        (problem.conditions.riichi ? (
+          <div className="riichi-indicator-section">
+            <span className="tile-info-label">リーチ</span>
+            <img src={tenbo1000Url} alt="" className="riichi-indicator-stick" />
+          </div>
+        ) : (
+          <div className="riichi-indicator-section riichi-indicator-spacer" aria-hidden="true">
+            <span className="tile-info-label">リーチ</span>
+            <img src={tenbo1000Url} alt="" className="riichi-indicator-stick" />
+          </div>
+        ))}
       {/* グレー枠に表ドラ・裏ドラをまとめる。 */}
       {showDora && (
         <div className="dora-indicator-section">

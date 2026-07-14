@@ -118,17 +118,6 @@
   color: var(--fl-teal-dark);
 }
 
-/* リーチ：コーラル（エネルギー）。 */
-.quiz-page .badge-riichi {
-  background: color-mix(in srgb, var(--fl-coral) 14%, #fff);
-  border-color: var(--fl-coral);
-  color: var(--fl-coral-dark);
-  box-shadow: var(--fl-glow-coral);
-}
-.quiz-page .badge-riichi .badge-value {
-  color: var(--fl-coral-dark);
-}
-
 /* 満貫切上：ゴールド（ハイライト）。 */
 .quiz-page .badge--roundup {
   background: var(--fl-gold-light);

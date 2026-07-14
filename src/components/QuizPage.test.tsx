@@ -57,6 +57,20 @@ function boundaryProblem(): Problem {
   };
 }
 
+// boundaryProblem() のリーチを外した手。ピンフのみで1役成立するため、依然として正当な和了形。
+function nonRiichiProblem(): Problem {
+  const base = boundaryProblem();
+  const conditions = { ...base.conditions, riichi: false };
+  const answer = scoreHand({
+    ...base.hand,
+    doraIndicators: base.doraIndicators,
+    uraDoraIndicators: [],
+    ...conditions,
+  });
+  if (!answer) throw new Error("テスト用の非リーチ手が不正です");
+  return { ...base, id: "test-non-riichi", conditions, answer };
+}
+
 function createInMemoryRepository(initial: AppSettings = DEFAULT_SETTINGS): SettingsRepository {
   let stored = initial;
   return {
@@ -160,6 +174,34 @@ describe("QuizPage", () => {
 
     expect(await screen.findByRole("heading", { name: "解説" })).toBeInTheDocument();
     expect(screen.getByText(/答え: 8000/)).toBeInTheDocument();
+  });
+
+  it("リーチ表示は上段の条件バッジではなく、アガリ牌の右隣（リーチ枠内）に出る", async () => {
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    const { container } = renderQuizWithProblem(boundaryProblem(), repo);
+
+    await waitFor(() => expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument());
+
+    const conditionsSection = container.querySelector(".quiz-conditions");
+    expect(conditionsSection?.textContent).not.toContain("リーチ");
+
+    const riichiSection = container.querySelector(".riichi-indicator-section");
+    expect(riichiSection).not.toHaveClass("riichi-indicator-spacer");
+    expect(riichiSection).not.toHaveAttribute("aria-hidden");
+    expect(riichiSection?.textContent).toBe("リーチ");
+    expect(riichiSection?.querySelector(".riichi-indicator-stick")).toBeInTheDocument();
+  });
+
+  it("非リーチの問題では、リーチ枠（「リーチ」ラベル＋点棒画像）は確保されるが非表示になる（ドラ表示牌の位置を動かさないため）", async () => {
+    const repo = createInMemoryRepository();
+    const { container } = renderQuizWithProblem(nonRiichiProblem(), repo);
+
+    await waitFor(() => expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4));
+
+    const riichiSection = container.querySelector(".riichi-indicator-section");
+    expect(riichiSection).toHaveClass("riichi-indicator-spacer");
+    expect(riichiSection).toHaveAttribute("aria-hidden", "true");
+    expect(riichiSection?.querySelector(".riichi-indicator-stick")).toBeInTheDocument();
   });
 
   it("returns to the score quiz page (not the fu quiz page) after viewing stats", () => {

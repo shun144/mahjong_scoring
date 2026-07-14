@@ -55,7 +55,10 @@
       "Bash(grep -n \"^## P21\\\\|^---$\" /c/work/20260702_mahjong_scoring/TASKS.md)",
       "Bash(awk -F: '$1>900 && $1<960')",
       "Bash(awk 'NR==916,0 && /^---$/{print NR\": \"$0; if\\(NR>916\\) exit}' /c/work/20260702_mahjong_scoring/TASKS.md)",
-      "Bash(grep -n \"^---$\")"
+      "Bash(grep -n \"^---$\")",
+      "Bash(kill -9 2838)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "PowerShell(Stop-Process *)"
     ]
   }
 }

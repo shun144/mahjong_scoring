@@ -76,13 +76,20 @@
   margin: 0 0 var(--space-2);
 }
 
-/* アガリ牌・ドラ表示牌・裏ドラ表示牌をラベル上／牌下で横並びにするヘッダー。 */
+/* アガリ牌・ドラ表示牌・裏ドラ表示牌をラベル上／牌下で横並びにするヘッダー。
+   アガリ牌〜リーチの間隔は固定の gap にする（space-betweenだとドラ表示牌の枚数で
+   ドラ枠の幅が変わるたびにリーチの位置がずれてしまうため）。ドラ表示牌は
+   margin-left:auto で右端に押し出し、見た目上は従来どおり右寄せのまま保つ。 */
 .quiz-tile-header {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: var(--space-4);
   /* アガリ牌／ドラ表示牌の2セクションを同じ高さに揃える。 */
   align-items: stretch;
+}
+
+.dora-indicator-section {
+  margin-left: auto;
 }
 
 /* 両セクションの色付き枠を、伸ばしたセクションの高さいっぱいに広げて高さを揃える。
@@ -107,6 +114,29 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
+}
+
+/* リーチ表示（最終点数モードのみ・アガリ牌の右隣）。「リーチ」ラベル＋1000点棒の画像を
+   ラベル上／画像下でアガリ牌・ドラ表示牌と同じ並びに揃える。非リーチ時も同じ内容を
+   visibility:hidden で描画し、幅を確保してドラ表示牌の位置を動かさない
+   （SPEC.md §4.1「リーチ表示の位置」）。 */
+.riichi-indicator-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* 点棒画像（横長・約6.67:1）。 */
+.riichi-indicator-stick {
+  display: block;
+  width: 92px;
+  height: auto;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.18));
+}
+
+.riichi-indicator-spacer {
+  visibility: hidden;
 }
 
 /* 表ドラ・裏ドラをまとめて囲む枠。囲みスタイルはアガリ牌と同じ（padding/角丸/枠線）で、

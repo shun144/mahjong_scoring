@@ -73,6 +73,7 @@ export function QuizPage() {
       <QuizConditions
         conditions={effectiveProblem.conditions}
         roundUpMangan={settings.roundUpMangan}
+        showRiichi={false}
       />
 
       <div className="qp-toolbar">
@@ -84,7 +85,7 @@ export function QuizPage() {
 
       {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}
       <section className="qp-board" aria-label="問題">
-        <QuizTileHeader problem={effectiveProblem} />
+        <QuizTileHeader problem={effectiveProblem} showRiichi />
 
         <div className="quiz-hand">
           <span className="qp-section-label">手牌</span>
