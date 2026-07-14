@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Problem } from "../data/problem";
@@ -12,19 +13,30 @@ interface Props {
   problem?: Problem;
   /** 「成績」リンクを表示するか（既定 true）。成績に連携しないモード（符分解・点数換算）は false を渡す。 */
   showStats?: boolean;
+  /** ハンバーガーの左に置く追加のアイコンボタン等（例: 点数計算モードの点数早見表ボタン）。 */
+  headerAction?: ReactNode;
 }
 
 /**
  * ハンバーガー＋右ドロワーのサイドバーに「ホーム」「成績」を集約したヘッダー。
  * 点数計算モード系の画面で使う（/quiz・/result・/fu/quiz・/fu/result・/fu/parts・/convert）。
  */
-export function SidebarPageHeader({ title, backTo, problem, showStats = true }: Props) {
+export function SidebarPageHeader({
+  title,
+  backTo,
+  problem,
+  showStats = true,
+  headerAction,
+}: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="page-header">
       <h1>{title}</h1>
-      <HamburgerButton open={open} onClick={() => setOpen(true)} />
+      <div className="page-header-actions">
+        {headerAction}
+        <HamburgerButton open={open} onClick={() => setOpen(true)} />
+      </div>
       <Sidebar open={open} onClose={() => setOpen(false)} label="メニュー">
         <Link to="/" className="sidebar-nav-item" onClick={() => setOpen(false)}>
           <span className="sidebar-nav-icon" aria-hidden="true">

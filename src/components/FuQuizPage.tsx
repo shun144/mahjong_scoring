@@ -61,11 +61,11 @@ export function FuQuizPage() {
   return (
     <main className="page-shell quiz-page">
       <SidebarPageHeader title="符計算" backTo="/fu/quiz" problem={problem} />
-      <QuizConditions conditions={problem.conditions} />
+      <QuizConditions conditions={problem.conditions} showRiichi={false} />
 
       {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}
       <section className="qp-board" aria-label="問題">
-        <QuizTileHeader problem={problem} showDora={false} />
+        <QuizTileHeader problem={problem} showDora={false} showRiichi />
 
         <div className="quiz-hand">
           <span className="qp-section-label">手牌</span>

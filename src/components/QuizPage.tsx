@@ -69,19 +69,26 @@ export function QuizPage() {
 
   return (
     <main className="page-shell quiz-page">
-      <SidebarPageHeader title="点数計算" backTo="/quiz" problem={problem} />
+      <SidebarPageHeader
+        title="点数計算"
+        backTo="/quiz"
+        problem={problem}
+        headerAction={
+          <button
+            type="button"
+            className="qp-table-header-btn"
+            onClick={() => setShowScoreTable(true)}
+            aria-label="点数早見表を開く"
+          >
+            <span aria-hidden="true">📋</span>
+          </button>
+        }
+      />
       <QuizConditions
         conditions={effectiveProblem.conditions}
         roundUpMangan={settings.roundUpMangan}
         showRiichi={false}
       />
-
-      <div className="qp-toolbar">
-        <button type="button" className="qp-table-btn" onClick={() => setShowScoreTable(true)}>
-          <span aria-hidden="true">📋</span>
-          点数早見表
-        </button>
-      </div>
 
       {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}
       <section className="qp-board" aria-label="問題">

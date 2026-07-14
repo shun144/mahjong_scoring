@@ -245,33 +245,29 @@
   color: var(--color-border);
 }
 
-/* --- クイズ画面の早見表トリガーボタン --- */
-.qp-toolbar {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.qp-table-btn {
+/* --- ヘッダーの早見表トリガーボタン（ハンバーガー(.hamburger-btn)と同じ40x40の円形アイコン
+   ボタンに揃える。.quiz-page/.result-page 配下でのみ使うため、そのスコープの
+   --fl-teal-dark（Flip7 パレット）をそのまま使える。 --- */
+.qp-table-header-btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  min-height: 36px;
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  background: var(--color-bg);
-  color: var(--color-text);
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--fl-teal-dark, var(--color-text));
   cursor: pointer;
-  transition:
-    border-color var(--duration) var(--ease-standard),
-    background var(--duration) var(--ease-standard);
+  flex-shrink: 0;
+  transition: background 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @media (hover: hover) {
-  .qp-table-btn:hover {
-    border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
+  .qp-table-header-btn:hover {
+    background: rgba(43, 168, 162, 0.14);
   }
 }

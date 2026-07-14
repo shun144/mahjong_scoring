@@ -250,4 +250,16 @@ describe("QuizPage", () => {
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog", { name: "メニュー" })).not.toBeInTheDocument();
   });
+
+  it("点数早見表ボタンはヘッダー（ハンバーガーの隣）にある", () => {
+    const { container } = renderQuiz();
+    const tableBtn = screen.getByRole("button", { name: "点数早見表を開く" });
+    const hamburger = screen.getByRole("button", { name: "メニューを開く" });
+
+    // ヘッダー内の同じアクション群（ハンバーガーの隣）にあり、旧ツールバー配置ではない。
+    const actions = container.querySelector(".page-header-actions");
+    expect(actions?.contains(tableBtn)).toBe(true);
+    expect(actions?.contains(hamburger)).toBe(true);
+    expect(container.querySelector(".qp-toolbar")).not.toBeInTheDocument();
+  });
 });

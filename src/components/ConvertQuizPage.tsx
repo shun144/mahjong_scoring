@@ -13,6 +13,7 @@ import {
 } from "./format";
 import "./quiz.css";
 import "./result.css";
+import { ScoreTableDialog } from "./ScoreTableDialog";
 import { SidebarPageHeader } from "./SidebarPageHeader";
 
 interface ConvertRound {
@@ -35,6 +36,8 @@ function newRound(roundUpMangan: boolean): ConvertRound {
 export function ConvertQuizPage() {
   const { settings } = useSettings();
   const [round, setRound] = useState<ConvertRound>(() => newRound(settings.roundUpMangan));
+  // 点数早見表ダイアログの開閉。
+  const [showScoreTable, setShowScoreTable] = useState(false);
 
   function handleAnswer(selected: Payment) {
     setRound((prev) => ({ ...prev, selected }));
@@ -50,7 +53,20 @@ export function ConvertQuizPage() {
 
   return (
     <main className="page-shell quiz-page convert-page">
-      <SidebarPageHeader title="点数換算" showStats={false} />
+      <SidebarPageHeader
+        title="点数換算"
+        showStats={false}
+        headerAction={
+          <button
+            type="button"
+            className="qp-table-header-btn"
+            onClick={() => setShowScoreTable(true)}
+            aria-label="点数早見表を開く"
+          >
+            <span aria-hidden="true">📋</span>
+          </button>
+        }
+      />
 
       <section className="quiz-conditions convert-question" aria-label="条件">
         {settings.roundUpMangan ? (
@@ -118,6 +134,8 @@ export function ConvertQuizPage() {
           </span>
         </button>
       </section>
+
+      <ScoreTableDialog open={showScoreTable} onClose={() => setShowScoreTable(false)} />
     </main>
   );
 }

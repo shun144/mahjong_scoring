@@ -58,7 +58,9 @@
       "Bash(grep -n \"^---$\")",
       "Bash(kill -9 2838)",
       "PowerShell(Get-NetTCPConnection *)",
-      "PowerShell(Stop-Process *)"
+      "PowerShell(Stop-Process *)",
+      "Bash(find . -iname \"setupTests*\" -not -path \"*/node_modules/*\")",
+      "Bash(grep -rn \"setupFiles\" vite.config.* vitest.config.*)"
     ]
   }
 }

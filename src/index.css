@@ -206,6 +206,15 @@ select:focus-visible {
   background: var(--color-bg);
 }
 
+/* ハンバーガーの左に並ぶ追加アイコンボタン群（例: 点数早見表）。単一の flex item として
+   右端にまとめることで、タイトルとの space-between が崩れないようにする。 */
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
 .page-header-link {
   display: flex;
   gap: var(--space-2);

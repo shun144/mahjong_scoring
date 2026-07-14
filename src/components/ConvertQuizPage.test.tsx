@@ -136,4 +136,14 @@ describe("ConvertQuizPage", () => {
     renderConvert(repo);
     await waitFor(() => expect(screen.queryByText("満貫切上")).not.toBeInTheDocument());
   });
+
+  it("点数早見表ボタンがヘッダー（ハンバーガーの隣）にある", () => {
+    const { container } = renderConvert();
+    const tableBtn = screen.getByRole("button", { name: "点数早見表を開く" });
+    const hamburger = screen.getByRole("button", { name: "メニューを開く" });
+
+    const actions = container.querySelector(".page-header-actions");
+    expect(actions?.contains(tableBtn)).toBe(true);
+    expect(actions?.contains(hamburger)).toBe(true);
+  });
 });
