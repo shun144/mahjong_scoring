@@ -5,7 +5,10 @@ import "@testing-library/jest-dom/vitest";
 if (!document.querySelector('meta[name="description"]')) {
   const meta = document.createElement("meta");
   meta.setAttribute("name", "description");
-  meta.setAttribute("content", "麻雀の点数計算(符・翻・点数)をスマホで反復練習できるドリルアプリ。");
+  meta.setAttribute(
+    "content",
+    "麻雀の点数計算(符・翻・点数)をスマホで反復練習できるドリルアプリ。",
+  );
   document.head.appendChild(meta);
 }
 
@@ -18,6 +21,7 @@ if (typeof globalThis.IntersectionObserver === "undefined") {
     readonly root: Element | Document | null = null;
     readonly rootMargin: string = "";
     readonly thresholds: ReadonlyArray<number> = [];
+    readonly scrollMargin: string = "";
     // callback/options は使わない（可視判定を検証するテストは vi.stubGlobal で差し替える）。
     observe() {}
     unobserve() {}
