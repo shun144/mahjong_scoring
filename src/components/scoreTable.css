@@ -1,0 +1,277 @@
+/* 点数早見表ダイアログ（ScoreTableDialog）。ネイティブ <dialog> を利用。 */
+
+.score-table-dialog {
+  width: min(760px, 94vw);
+  max-height: 90svh;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.score-table-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.st-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 90svh;
+}
+
+/* タイトル帯：本文スクロールに追従して常に上部に残す。 */
+.st-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+}
+
+.st-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* 親/子切替（セグメントコントロール）。docs/DESIGN.md の Flip7 デザイン
+   （ティール基調・ピル型・弾むトランジション・グロー影）に合わせる。
+   出題画面（quizFlip7.css）と同じトーンで、ダイアログ単体でも見た目が完結するよう
+   --fl-* トークンには依存せず値を直書きする。 */
+.st-toggle {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 2px solid #2ba8a2;
+  border-radius: var(--radius-pill);
+  background: #e8f6f5;
+}
+
+.st-toggle-btn {
+  min-height: 36px;
+  padding: 0 var(--space-4);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: #1e8c86;
+  cursor: pointer;
+  transition:
+    background 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (hover: hover) {
+  .st-toggle-btn:not(.st-toggle-btn--active):hover {
+    background: color-mix(in srgb, #2ba8a2 16%, transparent);
+  }
+}
+
+.st-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.st-toggle-btn--active {
+  background: #2ba8a2;
+  color: #fff8e7;
+  box-shadow: 0 6px 18px rgba(43, 168, 162, 0.28);
+}
+
+.st-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 1.4rem;
+  line-height: 1;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text-sub);
+  cursor: pointer;
+  transition:
+    border-color var(--duration) var(--ease-standard),
+    color var(--duration) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .st-close:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}
+
+.st-body {
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.st-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.st-block-title {
+  margin: 0;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* 狭い端末では表がはみ出す場合に横スクロールで救済する。 */
+.st-scroll {
+  overflow-x: auto;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  table-layout: fixed;
+}
+
+.score-table th,
+.score-table td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-1) var(--space-1);
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* 列見出し（翻）と左上「符」ラベル：淡い面で表頭を分離。 */
+.score-table thead th,
+.st-corner {
+  background: var(--color-surface);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-text-sub);
+  white-space: nowrap;
+}
+
+/* 行見出し（符）：最左列。符とふりがな的な注記を縦に積む。 */
+.st-fu-head {
+  background: var(--color-surface);
+  width: 3.5rem;
+}
+
+.st-fu {
+  display: block;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.st-fu-note {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--color-text-sub);
+}
+
+/* 跳満以上（符に依存しない区分）の行。70符の行との区切りを太罫線で示す。 */
+.st-rank-row-first th,
+.st-rank-row-first td {
+  border-top: 2px solid var(--color-border);
+}
+
+.st-rank-name {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.st-rank-note {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: var(--color-text-sub);
+}
+
+.st-cell {
+  line-height: 1.25;
+}
+
+.st-main {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.st-sub {
+  display: block;
+  margin-top: 1px;
+  font-size: 0.65rem;
+  color: var(--color-text-sub);
+  white-space: nowrap;
+}
+
+/* 満貫セルはアクセント淡塗りで区別。 */
+.st-cell--mangan {
+  background: var(--color-accent-bg);
+}
+
+.st-cell--mangan .st-main {
+  color: var(--color-accent-text);
+}
+
+.st-empty {
+  color: var(--color-border);
+}
+
+/* --- クイズ画面の早見表トリガーボタン --- */
+.qp-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.qp-table-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 36px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    border-color var(--duration) var(--ease-standard),
+    background var(--duration) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .qp-table-btn:hover {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
+  }
+}

@@ -13,6 +13,7 @@ import { PageHeader } from "./PageHeader";
 import "./quiz.css";
 import "./quizFlip7.css";
 import { QuizConditions } from "./QuizConditions";
+import { ScoreTableDialog } from "./ScoreTableDialog";
 import { QuizTileHeader } from "./QuizTileHeader";
 import { HandDisplay } from "./tiles/HandDisplay";
 
@@ -30,6 +31,8 @@ export function QuizPage() {
     isReviewState(location.state) ? location.state.problem : null,
   );
   const [problem, setProblem] = useState(() => reviewProblem ?? nextProblem());
+  // 点数早見表ダイアログの開閉。
+  const [showScoreTable, setShowScoreTable] = useState(false);
   // 切り上げ満貫設定を反映した実効問題。設定ロード完了前はfalse相当（標準ルール）で表示する。
   const effectiveProblem = useMemo(
     () => resolveAnswer(problem, settings.roundUpMangan),
@@ -72,6 +75,13 @@ export function QuizPage() {
         roundUpMangan={settings.roundUpMangan}
       />
 
+      <div className="qp-toolbar">
+        <button type="button" className="qp-table-btn" onClick={() => setShowScoreTable(true)}>
+          <span aria-hidden="true">📋</span>
+          点数早見表
+        </button>
+      </div>
+
       {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}
       <section className="qp-board" aria-label="問題">
         <QuizTileHeader problem={effectiveProblem} />
@@ -109,6 +119,8 @@ export function QuizPage() {
           </span>
         </button>
       </section>
+
+      <ScoreTableDialog open={showScoreTable} onClose={() => setShowScoreTable(false)} />
     </main>
   );
 }
