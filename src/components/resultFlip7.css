@@ -75,34 +75,6 @@
   letter-spacing: 0.04em;
   color: var(--fl-teal-dark);
 }
-.result-page .page-header-link {
-  gap: 8px;
-}
-.result-page .page-header-link-item {
-  min-height: 36px;
-  padding: 0 14px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--fl-teal-dark);
-  background: var(--fl-cream);
-  border: 2px solid var(--fl-teal);
-  border-radius: var(--fl-r-pill);
-  transition:
-    transform var(--fl-dur) var(--fl-bounce),
-    background var(--fl-dur) var(--fl-bounce),
-    color var(--fl-dur) var(--fl-bounce);
-}
-@media (hover: hover) {
-  .result-page .page-header-link-item:hover {
-    color: var(--fl-cream);
-    background: var(--fl-teal);
-    text-decoration: none;
-    transform: translateY(-2px);
-  }
-}
-.result-page .page-header-link-item:active {
-  transform: scale(0.95);
-}
 
 /* =====================================================================
    正誤＋答え — 結果を祝う「判定カード」（正解＝ティール／不正解＝コーラル）
@@ -396,7 +368,6 @@
   .result-page .result-breakdown {
     animation: none;
   }
-  .result-page .page-header-link-item,
   .result-page .btn-primary,
   .result-page .btn-secondary {
     transition: none;

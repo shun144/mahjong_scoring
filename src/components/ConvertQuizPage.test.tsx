@@ -32,11 +32,10 @@ function renderConvert(repository: SettingsRepository = createInMemoryRepository
 
 describe("ConvertQuizPage", () => {
   it("renders the question conditions, 4 choices, and a skip button without a hand", () => {
-    renderConvert();
+    const { container } = renderConvert();
     expect(screen.getByRole("heading", { name: "点数換算" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "次の問題へ" })).toBeInTheDocument();
-    // 4択＋次の問題へ = 5ボタン。手牌（牌画像）は表示しない。
-    expect(screen.getAllByRole("button")).toHaveLength(5);
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
     expect(document.querySelector(".mj-tile")).toBeNull();
   });
 
@@ -59,9 +58,7 @@ describe("ConvertQuizPage", () => {
     expect(resultZone).toHaveAttribute("aria-hidden", "true");
     expect(resultZone).not.toHaveClass("convert-flashcard-result--revealed");
 
-    const choiceButtons = screen
-      .getAllByRole("button")
-      .filter((b) => b.textContent !== "次の問題へ");
+    const choiceButtons = container.querySelectorAll(".quiz-choice-btn");
     fireEvent.click(choiceButtons[0]);
 
     // 結果は出題カード（フラッシュカード）の中に表示される。別カードや別画面ではない。
@@ -75,9 +72,7 @@ describe("ConvertQuizPage", () => {
 
   it("計算式は指数部が上付き(sup)で表示され、平文はaria-labelで読み上げられる", () => {
     const { container } = renderConvert();
-    const choiceButtons = screen
-      .getAllByRole("button")
-      .filter((b) => b.textContent !== "次の問題へ");
+    const choiceButtons = container.querySelectorAll(".quiz-choice-btn");
     fireEvent.click(choiceButtons[0]);
 
     const formula = container.querySelector(".convert-formula");
@@ -95,9 +90,7 @@ describe("ConvertQuizPage", () => {
       (el) => el.className,
     );
 
-    const choiceButtons = screen
-      .getAllByRole("button")
-      .filter((b) => b.textContent !== "次の問題へ");
+    const choiceButtons = container.querySelectorAll(".quiz-choice-btn");
     fireEvent.click(choiceButtons[0]);
 
     const sectionsAfter = Array.from(container.querySelectorAll("main > *")).map(
@@ -110,9 +103,7 @@ describe("ConvertQuizPage", () => {
 
   it("次の問題へ replaces the question and hides the inline result again", () => {
     const { container } = renderConvert();
-    const choiceButtons = screen
-      .getAllByRole("button")
-      .filter((b) => b.textContent !== "次の問題へ");
+    const choiceButtons = container.querySelectorAll(".quiz-choice-btn");
     fireEvent.click(choiceButtons[0]);
     expect(container.querySelector(".convert-flashcard-result")).toHaveClass(
       "convert-flashcard-result--revealed",
@@ -122,11 +113,14 @@ describe("ConvertQuizPage", () => {
     const resultZone = container.querySelector(".convert-flashcard-result");
     expect(resultZone).toHaveAttribute("aria-hidden", "true");
     expect(resultZone).not.toHaveClass("convert-flashcard-result--revealed");
-    expect(screen.getAllByRole("button")).toHaveLength(5);
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
   });
 
-  it("shows no stats link (点数換算モードは成績に連携しない)", () => {
+  it("shows no stats link, only home, inside the sidebar (点数換算モードは成績に連携しない)", () => {
     renderConvert();
+    expect(screen.queryByRole("link", { name: "ホーム" })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
     expect(screen.queryByRole("link", { name: "成績" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "ホーム" })).toBeInTheDocument();
   });

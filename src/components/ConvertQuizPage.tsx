@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import type { Payment } from "../engine/score";
 import { nextConversionQuestion, type ConversionQuestion } from "../generator/conversion";
 import { paymentKey } from "../generator/distractors";
@@ -14,6 +13,7 @@ import {
 } from "./format";
 import "./quiz.css";
 import "./result.css";
+import { SidebarPageHeader } from "./SidebarPageHeader";
 
 interface ConvertRound {
   question: ConversionQuestion;
@@ -50,14 +50,7 @@ export function ConvertQuizPage() {
 
   return (
     <main className="page-shell quiz-page convert-page">
-      <div className="page-header">
-        <h1>点数換算</h1>
-        <div className="page-header-link">
-          <Link to="/" className="page-header-link-item">
-            ホーム
-          </Link>
-        </div>
-      </div>
+      <SidebarPageHeader title="点数換算" showStats={false} />
 
       <section className="quiz-conditions convert-question" aria-label="条件">
         {settings.roundUpMangan ? (

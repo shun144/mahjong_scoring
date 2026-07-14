@@ -35,8 +35,9 @@ describe("FuPartsQuizPage", () => {
     expect(container.querySelector(".dora-indicator-section")).toBeNull();
   });
 
-  it("成績には連携しないため、上部に「成績」リンクを表示しない", () => {
+  it("成績には連携しないため、サイドバーに「成績」リンクを表示しない", () => {
     renderFuParts();
+    fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
     expect(screen.queryByRole("link", { name: "成績" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "ホーム" })).toBeInTheDocument();
   });

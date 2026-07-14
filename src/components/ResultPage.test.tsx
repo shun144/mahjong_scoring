@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import type { Problem } from "../data/problem";
@@ -121,5 +121,19 @@ describe("ResultPage", () => {
     renderResult({ problem, selected: problem.answer.payment, isCorrect: true });
     const link = screen.getByRole("link", { name: "問題に戻る" });
     expect(link).toHaveAttribute("href", "/quiz");
+  });
+
+  it("ヘッダーはハンバーガー経由でサイドバーを開き、ホーム・成績への導線を持つ", () => {
+    const problem = baseProblem();
+    renderResult({ problem, selected: problem.answer.payment, isCorrect: true });
+
+    // インラインの「ホーム」「成績」リンクはヘッダーに直接出ない。
+    expect(screen.queryByRole("link", { name: "ホーム" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "成績" })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
+    expect(screen.getByRole("link", { name: "ホーム" })).toHaveAttribute("href", "/");
+    const stats = screen.getByRole("link", { name: "成績" });
+    expect(stats).toHaveAttribute("href", "/stats");
   });
 });

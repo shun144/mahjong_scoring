@@ -4,7 +4,7 @@ import { scoreHand } from "../engine/scoreHand";
 import { FuBreakdownContent } from "./FuBreakdown";
 import "./result.css";
 import "./resultFlip7.css";
-import { PageHeader } from "./PageHeader";
+import { SidebarPageHeader } from "./SidebarPageHeader";
 
 interface FuResultLocationState {
   problem: Problem;
@@ -42,7 +42,7 @@ export function FuResultPage() {
 
   return (
     <main className="page-shell result-page">
-      <PageHeader title="解説" backTo="/fu/quiz" problem={problem} />
+      <SidebarPageHeader title="解説" backTo="/fu/quiz" problem={problem} />
       <div className="result-verdict-row">
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
           {isCorrect ? "○ 正解" : "✕ 不正解"}

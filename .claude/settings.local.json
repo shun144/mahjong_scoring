@@ -46,7 +46,16 @@
       "WebSearch",
       "WebFetch(domain:mahjongtensu.com)",
       "PowerShell(npx vitest run src/components/RouteMeta.test.tsx 2>&1 | Select-Object -Last 45)",
-      "PowerShell(npm run *)"
+      "PowerShell(npm run *)",
+      "Skill(run)",
+      "Bash(chromium-cli --help)",
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:5173 >/dev/null; do sleep 1; done')",
+      "Bash(cp /tmp/dialog-test.mjs /c/work/20260702_mahjong_scoring/dialog-test.mjs)",
+      "Bash(node dialog-test.mjs)",
+      "Bash(grep -n \"^## P21\\\\|^---$\" /c/work/20260702_mahjong_scoring/TASKS.md)",
+      "Bash(awk -F: '$1>900 && $1<960')",
+      "Bash(awk 'NR==916,0 && /^---$/{print NR\": \"$0; if\\(NR>916\\) exit}' /c/work/20260702_mahjong_scoring/TASKS.md)",
+      "Bash(grep -n \"^---$\")"
     ]
   }
 }

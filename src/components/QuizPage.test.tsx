@@ -98,17 +98,15 @@ function renderQuizWithProblem(problem: Problem, repository: SettingsRepository)
 
 describe("QuizPage", () => {
   it("renders the hand, conditions, 4 answer choices, and a skip button", () => {
-    renderQuiz();
+    const { container } = renderQuiz();
     expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
-    // ページ上のボタンは4つの選択肢＋1つのスキップボタン（ヘッダーの「成績」はリンク）。
-    const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(5);
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
     expect(screen.getByRole("button", { name: "次の問題へ" })).toBeInTheDocument();
   });
 
   it("navigates to the result page immediately when a choice is clicked", () => {
-    renderQuiz();
-    const choiceButtons = screen.getAllByRole("button");
+    const { container } = renderQuiz();
+    const choiceButtons = container.querySelectorAll(".quiz-choice-btn");
     fireEvent.click(choiceButtons[0]);
 
     // 正誤に依らず常に表示される要素のみを検証する（正誤ごとの詳細はResultPage.test.tsxで検証）。
@@ -128,10 +126,10 @@ describe("QuizPage", () => {
   });
 
   it("skipping loads a new problem (choice set is re-generated)", () => {
-    renderQuiz();
+    const { container } = renderQuiz();
     // スキップを繰り返しても常に4択+スキップボタンの構成が保たれる（新しい問題に切り替わる）。
     fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
-    expect(screen.getAllByRole("button")).toHaveLength(5);
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
   });
 
   it("切り上げ満貫OFF: 境界手は標準ルールの点数(7700)のまま、タグは非表示", async () => {
@@ -166,6 +164,8 @@ describe("QuizPage", () => {
 
   it("returns to the score quiz page (not the fu quiz page) after viewing stats", () => {
     renderQuiz();
+    // 「成績」はサイドバー内にあるため、まずハンバーガーボタンでサイドバーを開く。
+    fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
     fireEvent.click(screen.getByRole("link", { name: "成績" }));
     expect(screen.getByRole("heading", { name: "成績" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "練習に戻る" })).toHaveAttribute("href", "/quiz");
@@ -176,15 +176,36 @@ describe("QuizPage", () => {
     const choicesBefore = screen
       .getAllByRole("button")
       .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
+      .filter((b) => b.getAttribute("aria-label") !== "メニューを開く")
       .map((b) => b.textContent);
 
+    fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
     fireEvent.click(screen.getByRole("link", { name: "成績" }));
     fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
 
     const choicesAfter = screen
       .getAllByRole("button")
       .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
+      .filter((b) => b.getAttribute("aria-label") !== "メニューを開く")
       .map((b) => b.textContent);
     expect(choicesAfter).toEqual(choicesBefore);
+  });
+
+  it("サイドバーはオーバーレイタップ・×ボタン・ESCキーで閉じる", () => {
+    renderQuiz();
+    const opener = screen.getByRole("button", { name: "メニューを開く" });
+
+    fireEvent.click(opener);
+    expect(screen.getByRole("dialog", { name: "メニュー" })).toBeInTheDocument();
+    fireEvent.click(document.querySelector(".sidebar-overlay")!);
+    expect(screen.queryByRole("dialog", { name: "メニュー" })).not.toBeInTheDocument();
+
+    fireEvent.click(opener);
+    fireEvent.click(screen.getByRole("button", { name: "閉じる" }));
+    expect(screen.queryByRole("dialog", { name: "メニュー" })).not.toBeInTheDocument();
+
+    fireEvent.click(opener);
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog", { name: "メニュー" })).not.toBeInTheDocument();
   });
 });

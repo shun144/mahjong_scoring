@@ -9,7 +9,7 @@ import { nextProblem } from "../store/nextProblem";
 import { recordAnswer } from "../store/statsStore";
 import { ChoiceGrid } from "./ChoiceGrid";
 import { formatPayment } from "./format";
-import { PageHeader } from "./PageHeader";
+import { SidebarPageHeader } from "./SidebarPageHeader";
 import "./quiz.css";
 import "./quizFlip7.css";
 import { QuizConditions } from "./QuizConditions";
@@ -69,7 +69,7 @@ export function QuizPage() {
 
   return (
     <main className="page-shell quiz-page">
-      <PageHeader title="点数計算" backTo="/quiz" problem={problem} />
+      <SidebarPageHeader title="点数計算" backTo="/quiz" problem={problem} />
       <QuizConditions
         conditions={effectiveProblem.conditions}
         roundUpMangan={settings.roundUpMangan}

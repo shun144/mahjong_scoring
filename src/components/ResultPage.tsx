@@ -6,7 +6,7 @@ import { FuBreakdownContent } from "./FuBreakdown";
 import { formatCalculationLine, formatPayment } from "./format";
 import "./result.css";
 import "./resultFlip7.css";
-import { PageHeader } from "./PageHeader";
+import { SidebarPageHeader } from "./SidebarPageHeader";
 
 interface ResultLocationState {
   problem: Problem;
@@ -45,7 +45,7 @@ export function ResultPage() {
 
   return (
     <main className="page-shell result-page">
-      <PageHeader title="解説" backTo="/quiz" problem={problem} />
+      <SidebarPageHeader title="解説" backTo="/quiz" problem={problem} />
       <div className="result-verdict-row">
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
           {isCorrect ? "○ 正解" : "✕ 不正解"}

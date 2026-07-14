@@ -20,10 +20,9 @@ function renderFuQuiz() {
 
 describe("FuQuizPage", () => {
   it("renders the hand, conditions, 4 fu choices, and a skip button", () => {
-    renderFuQuiz();
+    const { container } = renderFuQuiz();
     expect(screen.getByRole("heading", { name: "符計算" })).toBeInTheDocument();
-    const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(5);
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
     expect(screen.getByRole("button", { name: "次の問題へ" })).toBeInTheDocument();
   });
 
@@ -50,13 +49,14 @@ describe("FuQuizPage", () => {
   });
 
   it("skipping loads a new problem (choice set is re-generated)", () => {
-    renderFuQuiz();
+    const { container } = renderFuQuiz();
     fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
-    expect(screen.getAllByRole("button")).toHaveLength(5);
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
   });
 
   it("returns to the fu quiz page (not the score quiz page) after viewing stats", () => {
     renderFuQuiz();
+    fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
     fireEvent.click(screen.getByRole("link", { name: "成績" }));
     expect(screen.getByRole("heading", { name: "成績" })).toBeInTheDocument();
 
@@ -65,20 +65,18 @@ describe("FuQuizPage", () => {
   });
 
   it("keeps the same problem and the same choice order after a stats round trip", () => {
-    renderFuQuiz();
-    const skipButton = screen.getByRole("button", { name: "次の問題へ" });
-    const choicesBefore = screen
-      .getAllByRole("button")
-      .filter((b) => b !== skipButton)
-      .map((b) => b.textContent);
+    const { container } = renderFuQuiz();
+    const choicesBefore = Array.from(container.querySelectorAll(".quiz-choice-btn")).map(
+      (b) => b.textContent,
+    );
 
+    fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
     fireEvent.click(screen.getByRole("link", { name: "成績" }));
     fireEvent.click(screen.getByRole("link", { name: "練習に戻る" }));
 
-    const choicesAfter = screen
-      .getAllByRole("button")
-      .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
-      .map((b) => b.textContent);
+    const choicesAfter = Array.from(container.querySelectorAll(".quiz-choice-btn")).map(
+      (b) => b.textContent,
+    );
     expect(choicesAfter).toEqual(choicesBefore);
   });
 });

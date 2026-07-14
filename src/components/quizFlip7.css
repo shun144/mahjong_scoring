@@ -82,37 +82,6 @@
   color: var(--fl-teal-dark);
 }
 
-.quiz-page .page-header-link {
-  gap: 8px;
-}
-
-.quiz-page .page-header-link-item {
-  min-height: 36px;
-  padding: 0 14px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--fl-teal-dark);
-  background: var(--fl-cream);
-  border: 2px solid var(--fl-teal);
-  border-radius: var(--fl-r-pill);
-  transition:
-    transform var(--fl-dur) var(--fl-bounce),
-    background var(--fl-dur) var(--fl-bounce),
-    color var(--fl-dur) var(--fl-bounce);
-}
-
-@media (hover: hover) {
-  .quiz-page .page-header-link-item:hover {
-    color: var(--fl-cream);
-    background: var(--fl-teal);
-    text-decoration: none;
-    transform: translateY(-2px);
-  }
-}
-.quiz-page .page-header-link-item:active {
-  transform: scale(0.95);
-}
-
 /* =====================================================================
    局条件バッジ — クリームのピル（色で役割を識別）
    ===================================================================== */
@@ -402,7 +371,6 @@
   .quiz-page .quiz-choices {
     animation: none;
   }
-  .quiz-page .page-header-link-item,
   .quiz-page .quiz-choice-btn,
   .quiz-page .qp-skip-btn {
     transition: none;
