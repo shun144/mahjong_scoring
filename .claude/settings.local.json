@@ -42,7 +42,9 @@
       "Bash(xargs -r taskkill //F //PID)",
       "Bash(kill %1)",
       "Bash(jobs)",
-      "Bash(file public/icons/*)"
+      "Bash(file public/icons/*)",
+      "WebSearch",
+      "WebFetch(domain:mahjongtensu.com)"
     ]
   }
 }
