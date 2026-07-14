@@ -3,17 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="麻雀の点数計算(符・翻・点数)をスマホで反復練習できるドリルアプリ。"
-    />
-    <title>麻雀点数トレーニング | 点数計算(符・翻)を反復練習できる無料ドリル</title>
     <link rel="icon" href="/icons/favicon.ico" sizes="any" />
     <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/icons/site.webmanifest" />
-    <link rel="canonical" href="https://mahjongtensu.com/" />
     <meta name="theme-color" content="#146F45" />
+    <!--
+      title / meta description / canonical はルートごとに RouteMeta が出し分ける
+      （React 19 のメタデータ巻き上げ）。静的 title を置くと React が追加する title
+      より先頭の静的側が優先され、ルート別 title が無効になるためここには置かない。
+    -->
   </head>
   <body>
     <div id="root"></div>

@@ -44,7 +44,9 @@
       "Bash(jobs)",
       "Bash(file public/icons/*)",
       "WebSearch",
-      "WebFetch(domain:mahjongtensu.com)"
+      "WebFetch(domain:mahjongtensu.com)",
+      "PowerShell(npx vitest run src/components/RouteMeta.test.tsx 2>&1 | Select-Object -Last 45)",
+      "PowerShell(npm run *)"
     ]
   }
 }
