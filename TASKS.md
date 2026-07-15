@@ -94,3 +94,42 @@
 - `prefers-reduced-motion` 指定時はトグル切替が即時ジャンプになる。
 - 早見表の数値は従来どおり `calculatePayment` 由来で、クイズ採点と食い違わない。
 - `npm test` / `npm run lint` が通る。
+
+---
+
+## T-003 点数早見表の親/子トグル：選択強調を配色で明確化
+
+### 目的 / 変更内容
+点数早見表ダイアログ（`ScoreTableDialog`）の親/子トグルで、**非選択側の文字色がteal系のため選択中と紛らわしい**問題を是正する。
+形状（ピル型セグメントコントロール）は変えず、**非選択側の配色・文字ウェイトのみ**変更して対比を強める。
+（正典: SPEC.md §4.12「トグルの選択強調」）
+
+### 確定した設計判断
+- **選択中（アクティブ）側**: 現状のまま変更しない（teal塗り・白文字・グロー影・`font-weight: 800`）。
+- **非選択側**:
+  - 文字色: teal系（`#1e8c86`）→ `var(--color-text-sub)`（`#6a6a6a`、既存の共通ミュートトークン）。
+  - 背景: 透明 → 薄いグレー背景（不透明。白ベースで合成し、コンテナの薄teal地に対しても濁らないようにする。`fu-parts.css` の `.fu-parts-choice-btn--muted` と同様の考え方）。
+  - `font-weight`: `800` → `600`。選択中の `800` との差で強弱をつける。
+- **hover挙動**: 非選択ボタンhover時のteal薄染まり（`color-mix(in srgb, #2ba8a2 16%, transparent)`）は変更しない。
+- **ダークモード**: 本アプリは非対応のため考慮不要。
+
+### 影響ファイル
+- `src/components/scoreTable.css` — `.st-toggle-btn`（非選択ベース）のスタイル変更
+
+### 実装ステップ
+1. **`scoreTable.css`**:
+   - `.st-toggle-btn` のベーススタイルを、非選択状態の見た目として再定義する。
+     - `color: var(--color-text-sub)`
+     - `background`: 白ベースで合成した薄いグレー（例: `color-mix(in srgb, var(--color-text-sub) 8%, #fff)` 相当。コンテナ背景 `#e8f6f5` の上に乗っても不透明で濁らないこと）
+     - `font-weight: 600`
+   - `.st-toggle-btn--active` は現状の宣言（`background: #2ba8a2; color: #fff8e7; box-shadow: ...`）をそのまま維持しつつ、`font-weight: 800` を明示的に上書きする（ベース側が `600` になるため）。
+   - hover用ルール（`.st-toggle-btn:not(.st-toggle-btn--active):hover`）は変更しない。
+2. **目視確認**: `/quiz` または `/convert` から早見表ダイアログを開き、親/子トグルの非選択側が薄いグレー・選択側がteal塗りで明確に区別できること。
+
+### 受け入れ基準
+- 非選択トグルボタンの文字色が `var(--color-text-sub)` になっている。
+- 非選択トグルボタンの背景が薄いグレー（不透明）になっている。
+- 非選択トグルボタンの `font-weight` が `600`、選択中は `800` のままである。
+- 選択中側の見た目（teal塗り・白文字・グロー影）に変更がない。
+- hover挙動に変更がない。
+- `npm test` / `npm run lint` が通る。

@@ -60,12 +60,14 @@
   min-height: 36px;
   padding: 0 var(--space-4);
   font-size: var(--fs-sm);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.02em;
   border: none;
   border-radius: var(--radius-pill);
-  background: transparent;
-  color: #1e8c86;
+  /* 非選択状態: グレーの塗りつぶし（透明のままだとコンテナの薄teal地に紛れて
+     選択中と区別しづらいため、白ベースで合成した不透明なグレーを敷く）。 */
+  background: color-mix(in srgb, var(--color-text-sub) 8%, #fff);
+  color: var(--color-text-sub);
   cursor: pointer;
   transition:
     background 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -87,6 +89,7 @@
 .st-toggle-btn--active {
   background: #2ba8a2;
   color: #fff8e7;
+  font-weight: 800;
   box-shadow: 0 6px 18px rgba(43, 168, 162, 0.28);
 }
 
