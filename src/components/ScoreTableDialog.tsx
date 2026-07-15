@@ -50,7 +50,7 @@ function buildCell(fu: number, han: number, isDealer: boolean): Cell | null {
   else if (ron.payment.kind === "ron") main = fmt(ron.payment.total);
 
   let sub = "";
-  if (tsumo.payment.kind === "tsumo-oya") sub = fmt(tsumo.payment.each);
+  if (tsumo.payment.kind === "tsumo-oya") sub = `${fmt(tsumo.payment.each)}オール`;
   else if (tsumo.payment.kind === "tsumo-ko")
     sub = `${fmt(tsumo.payment.nonDealer)}/${fmt(tsumo.payment.dealer)}`;
 
@@ -76,6 +76,7 @@ function buildRows(isDealer: boolean): TableRow[] {
  * どの値で計算しても結果は同じ（各区分の下限を代表値に使う）。
  */
 const RANK_ROW_SPECS: ReadonlyArray<{ han: number; note: string }> = [
+  { han: 5, note: "5翻" },
   { han: 6, note: "6-7翻" },
   { han: 8, note: "8-10翻" },
   { han: 11, note: "11-12翻" },
@@ -96,7 +97,7 @@ function buildRankRows(isDealer: boolean): RankRow[] {
     const main = ron.rank && ron.payment.kind === "ron" ? fmt(ron.payment.total) : "";
     const sub =
       tsumo.payment.kind === "tsumo-oya"
-        ? fmt(tsumo.payment.each)
+        ? `${fmt(tsumo.payment.each)}オール`
         : tsumo.payment.kind === "tsumo-ko"
           ? `${fmt(tsumo.payment.nonDealer)}/${fmt(tsumo.payment.dealer)}`
           : "";
@@ -110,18 +111,9 @@ const NON_DEALER_ROWS = buildRows(false);
 const DEALER_RANK_ROWS = buildRankRows(true);
 const NON_DEALER_RANK_ROWS = buildRankRows(false);
 
-function ScoreTableBlock({
-  title,
-  rows,
-  rankRows,
-}: {
-  title: string;
-  rows: TableRow[];
-  rankRows: RankRow[];
-}) {
+function ScoreTableBlock({ rows, rankRows }: { rows: TableRow[]; rankRows: RankRow[] }) {
   return (
     <section className="st-block">
-      <h3 className="st-block-title">{title}</h3>
       <table className="score-table">
         <thead>
           <tr>
@@ -313,12 +305,16 @@ export function ScoreTableDialog({ open, onClose }: { open: boolean; onClose: ()
             ×
           </button>
         </header>
-        <div className="st-carousel" ref={carouselRef} aria-label="親子の点数早見表（スワイプで切替）">
+        <div
+          className="st-carousel"
+          ref={carouselRef}
+          aria-label="親子の点数早見表（スワイプで切替）"
+        >
           <div className="st-panel" ref={dealerPanelRef}>
-            <ScoreTableBlock title="親" rows={DEALER_ROWS} rankRows={DEALER_RANK_ROWS} />
+            <ScoreTableBlock rows={DEALER_ROWS} rankRows={DEALER_RANK_ROWS} />
           </div>
           <div className="st-panel" ref={nonDealerPanelRef}>
-            <ScoreTableBlock title="子" rows={NON_DEALER_ROWS} rankRows={NON_DEALER_RANK_ROWS} />
+            <ScoreTableBlock rows={NON_DEALER_ROWS} rankRows={NON_DEALER_RANK_ROWS} />
           </div>
         </div>
       </div>

@@ -2,7 +2,9 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ScoreTableDialog } from "./ScoreTableDialog";
 
-type ObserverCallback = (entries: Pick<IntersectionObserverEntry, "target" | "isIntersecting">[]) => void;
+type ObserverCallback = (
+  entries: Pick<IntersectionObserverEntry, "target" | "isIntersecting">[],
+) => void;
 
 // jsdom は IntersectionObserver を実装していないため、パネルの可視判定をモックで代替する。
 class MockIntersectionObserver {
@@ -57,12 +59,6 @@ afterEach(() => {
 });
 
 describe("ScoreTableDialog", () => {
-  it("親・子の両パネルが同時にDOM描画される（スワイプの前提）", () => {
-    render(<ScoreTableDialog open onClose={noop} />);
-    const headings = screen.getAllByRole("heading", { level: 3 });
-    expect(headings.map((h) => h.textContent)).toEqual(["親", "子"]);
-  });
-
   it("トグル押下でアクティブ側（aria-pressed）が切り替わる", () => {
     render(<ScoreTableDialog open onClose={noop} />);
     const dealerBtn = screen.getByRole("button", { name: "親" });
