@@ -163,6 +163,15 @@
   }
 }
 
+/* 狭幅ではドラ表示牌の合計枚数が多い（例: 表3+裏3=6枚）とドラ枠が広がり、
+   quiz-tile-header の折り返しでドラ表示ブロックごと次行に落ちやすい。
+   リーチ棒を一回り小さくして横幅の圧迫を緩和する（PC幅は92pxのまま）。 */
+@media (--bp-sm) {
+  .riichi-indicator-stick {
+    width: 76px;
+  }
+}
+
 /* 枠内の「表」「裏」ラベルは枠の緑に合わせた濃い緑にする。 */
 .dora-indicator-tiles .tile-info-label {
   color: var(--color-success-text);

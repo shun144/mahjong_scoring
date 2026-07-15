@@ -17,12 +17,14 @@ import { RouteMeta } from "./components/RouteMeta";
 import { SettingsPage } from "./components/SettingsPage";
 import { StatsPage } from "./components/StatsPage";
 import { SettingsProvider } from "./settings/SettingsContext";
+import { ScrollTop } from "./components/ScrollTop";
 
 function App() {
   return (
     // フッターはエラー時も含め全画面に出したいので、ErrorBoundary の外側に置く。
     <div className="app-layout">
       <RouteMeta />
+      <ScrollTop />
       <SettingsProvider>
         <ErrorBoundary>
           <Routes>
