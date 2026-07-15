@@ -181,3 +181,79 @@
 - 表3+裏3のドラ表示ケースで、縮小前より折り返しが起きにくくなっている（完全解消は必須要件としない）。
 - 既存テスト（`QuizPage.test.tsx` / `FuQuizPage.test.tsx`）に変更なく通る。
 - `npm test` / `npm run lint` が通る。
+
+---
+
+## T-005 サイドバーに他モードへの遷移ボタンを追加
+
+### 目的 / 変更内容
+出題・解説系6画面（`/quiz`・`/result`・`/fu/quiz`・`/fu/result`・`/fu/parts`・`/convert`）のサイドバー
+（`SidebarPageHeader`→`Sidebar`）に、**現在表示中のモードを除いた他モードへの遷移ボタン**を追加する。
+（正典: SPEC.md §8.5「モード切替ボタン」）
+
+### 確定した設計判断
+- モードは4つ: 点数計算（`/quiz`+`/result`）／符計算（`/fu/quiz`+`/fu/result`）／符分解（`/fu/parts`）／
+  点数換算（`/convert`）。**出題画面と解説画面は同一モードとして扱う**（モードファミリー単位）。
+- **現在のモードのボタンは非表示**（無効化表示ではなく完全に除外。最大3つ表示）。
+- **サイドバー内の並び順**: `ホーム` → 見出し「他のモードで練習」＋モードボタン(最大3) → `成績`
+  （成績非連携モードは従来どおり「成績」を出さない）。
+- **`currentMode` は呼び出し元ページが明示的に prop として `SidebarPageHeader` へ渡す**
+  （`backTo`・`showStats` と同様の設計。URL パターンからの自動判定はしない）。
+- **モード定義の共有**: `src/config/modes.ts`（新規）に id・label・path・アイコン(絵文字)を持つ配列を定義し、
+  `HomePage` のモード選択カードと本機能の両方から参照する（表示名・パスの二重管理を避ける）。
+  `HomePage` 固有の説明文(`desc`)・装飾牌(`TileFace`)・CSS クラスは `HomePage` 側に残し、
+  共有するのは最小限の情報にとどめる。
+- **遷移**: 各モードボタンは対応モードの出題画面（点数計算→`/quiz`、符計算→`/fu/quiz`、
+  符分解→`/fu/parts`、点数換算→`/convert`）への通常の `<Link>`。確認ダイアログなし、state 受け渡しなし
+  （成績ボタンの `backTo`/`problem` とは異なり、単純遷移）。
+- **アイコン**: 絵文字。仮案: 点数計算🧮／符計算🔢／符分解🧩／点数換算📐
+  （既存のホーム🏠・成績📊と同系統。最終デザインは `style` スキルで調整可）。
+
+### 影響ファイル
+- `src/config/modes.ts` — 新規。モード定義（id・label・path・icon）の配列。
+- `src/components/HomePage.tsx` — モード選択カードの定義を `modes.ts` 参照に置き換え
+  （label・path の直書きを解消。desc・CSS クラスは維持）。
+- `src/components/SidebarPageHeader.tsx` — `currentMode` prop を追加。`modes.ts` から自モード以外を
+  抽出してサイドバー内に「他のモードで練習」セクションとして描画。
+- `src/components/QuizPage.tsx` / `ResultPage.tsx` — `currentMode="score"` を渡す。
+- `src/components/FuQuizPage.tsx` / `FuResultPage.tsx` — `currentMode="fu"` を渡す。
+- `src/components/FuPartsQuizPage.tsx` — `currentMode="fu-parts"` を渡す。
+- `src/components/ConvertQuizPage.tsx` — `currentMode="convert"` を渡す。
+- `src/components/sidebar.css` — セクション見出し（「他のモードで練習」）のスタイル追加。
+- 各ページの既存テスト（`QuizPage.test.tsx`・`ResultPage.test.tsx`・`FuQuizPage.test.tsx`・
+  `FuResultPage.test.tsx`・`FuPartsQuizPage.test.tsx`・`ConvertQuizPage.test.tsx`）＋
+  `SidebarPageHeader` 用テスト（新規 or 既存拡張）
+
+### 実装ステップ
+1. **`src/config/modes.ts`（新規）**: モード定義の配列を作る。
+   ```ts
+   type ModeId = "score" | "fu" | "fu-parts" | "convert";
+   interface ModeDef { id: ModeId; label: string; path: string; icon: string; }
+   ```
+   `score`=点数計算モード(`/quiz`,🧮)／`fu`=符計算モード(`/fu/quiz`,🔢)／
+   `fu-parts`=符分解モード(`/fu/parts`,🧩)／`convert`=点数換算モード(`/convert`,📐)。
+2. **`SidebarPageHeader.tsx`**:
+   - `currentMode: ModeId` prop を追加（必須）。
+   - `modes.ts` から `m.id !== currentMode` でフィルタした配列を、`ホーム` の直後・`成績` の前に
+     「他のモードで練習」の見出し＋リンク一覧として描画する。
+   - 各リンクはクリックで `setOpen(false)`（既存のホーム/成績リンクと同様）。
+3. **各ページコンポーネント**: `SidebarPageHeader` 呼び出しに `currentMode` を追加
+   （`QuizPage`/`ResultPage`→`"score"`、`FuQuizPage`/`FuResultPage`→`"fu"`、
+   `FuPartsQuizPage`→`"fu-parts"`、`ConvertQuizPage`→`"convert"`）。
+4. **`HomePage.tsx`**: モード選択カードの `to`・タイトル文言を `modes.ts` から取得するようリファクタ
+   （`desc`・アイコンの `TileFace`・CSS 修飾クラスはモードごとに個別マップとして残す）。
+5. **`sidebar.css`**: 見出しラベル用のスタイル（例: `.sidebar-nav-heading`）を追加。
+6. **テスト**:
+   - 各ページで自モードのボタンが出ない・他3モードのボタンが出ることを確認。
+   - `/result` は「点数計算モード」ボタンが出ない（モードファミリー判定）ことを確認。
+   - `/fu/parts`・`/convert` は「成績」リンクが出ないまま、モードボタンだけ追加されることを確認。
+   - モードボタン押下で対応パスへ遷移し、サイドバーが閉じることを確認。
+
+### 受け入れ基準
+- サイドバーを持つ6画面すべてで、現在のモードを除いた他モードへの遷移ボタンが
+  「ホーム」の下・「成績」の上に表示される。
+- `/result`・`/fu/result` はそれぞれ `/quiz`・`/fu/quiz` と同じモード扱いで、自モードのボタンが出ない。
+- モードボタンは確認なしで即座に遷移する。
+- 符分解・点数換算モードの画面では「成績」リンクが引き続き出ない。
+- `HomePage`・`SidebarPageHeader` がモード定義を `modes.ts` から共有し、ラベル・パスの二重管理がない。
+- `npm test` / `npm run lint` が通る。

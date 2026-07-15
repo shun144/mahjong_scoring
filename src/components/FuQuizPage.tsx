@@ -60,7 +60,7 @@ export function FuQuizPage() {
 
   return (
     <main className="page-shell quiz-page">
-      <SidebarPageHeader title="符計算" backTo="/fu/quiz" problem={problem} />
+      <SidebarPageHeader title="符計算" currentMode="fu" backTo="/fu/quiz" problem={problem} />
       <QuizConditions conditions={problem.conditions} showRiichi={false} />
 
       {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}

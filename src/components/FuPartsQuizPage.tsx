@@ -94,7 +94,7 @@ export function FuPartsQuizPage() {
     // 満貫以上を除外した出題のみ渡す前提のため、通常は起こらない防御的な分岐。
     return (
       <main className="page-shell quiz-page fu-parts-page">
-        <SidebarPageHeader title="符分解" showStats={false} />
+        <SidebarPageHeader title="符分解" currentMode="fu-parts" showStats={false} />
         <p>問題を読み込めませんでした。</p>
       </main>
     );
@@ -144,7 +144,7 @@ export function FuPartsQuizPage() {
 
   return (
     <main className="page-shell quiz-page fu-parts-page">
-      <SidebarPageHeader title="符分解" showStats={false} />
+      <SidebarPageHeader title="符分解" currentMode="fu-parts" showStats={false} />
 
       {/* お題（局条件・アガリ牌・手牌）を上部にまとめてsticky固定し、下の選択肢を
           操作している間も手牌が視界から外れないようにする（スマホ1画面表示。SPEC.md §4.10）。 */}

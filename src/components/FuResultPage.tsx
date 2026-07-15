@@ -42,7 +42,7 @@ export function FuResultPage() {
 
   return (
     <main className="page-shell result-page">
-      <SidebarPageHeader title="解説" backTo="/fu/quiz" problem={problem} />
+      <SidebarPageHeader title="解説" currentMode="fu" backTo="/fu/quiz" problem={problem} />
       <div className="result-verdict-row">
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
           {isCorrect ? "○ 正解" : "✕ 不正解"}

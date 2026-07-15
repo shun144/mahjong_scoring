@@ -71,6 +71,7 @@ export function QuizPage() {
     <main className="page-shell quiz-page">
       <SidebarPageHeader
         title="点数計算"
+        currentMode="score"
         backTo="/quiz"
         problem={problem}
         headerAction={

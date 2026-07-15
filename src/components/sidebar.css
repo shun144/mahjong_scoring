@@ -164,6 +164,15 @@
   line-height: 1;
 }
 
+.sidebar-nav-heading {
+  margin: 4px 0 -2px;
+  padding: 0 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--fl-teal-dark);
+  opacity: 0.75;
+}
+
 @keyframes sidebar-slide-in {
   from {
     transform: translateX(100%);

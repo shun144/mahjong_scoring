@@ -1,13 +1,26 @@
 import { Link } from "react-router-dom";
+import { MODES } from "../config/modes";
 import type { Tile } from "../engine/model";
 import { TileFace } from "./tiles/TileFace";
 import "./home.css";
 
 // 各モードカードの装飾に使う代表牌（見た目のみ。採点ロジックには無関係）。
-const SCORE_TILE: Tile = { suit: "z", rank: 7 }; // 中
-const FU_TILE: Tile = { suit: "p", rank: 5, red: true }; // 赤5筒
-const PARTS_TILE: Tile = { suit: "m", rank: 8 }; // 8萬
-const CONVERT_TILE: Tile = { suit: "s", rank: 5, red: true }; // 赤5索
+// ラベル・遷移先パスは ../config/modes.ts（サイドバーのモード切替と共有）から取得し、
+// ここでは HomePage 固有の見た目情報（装飾牌・説明文・CSS修飾クラス）のみを保持する。
+const MODE_CARD_INFO: Record<string, { tile: Tile; desc: string; modifierClass: string }> = {
+  score: { tile: { suit: "z", rank: 7 }, desc: "最終点数を当てる", modifierClass: "home-mode--score" }, // 中
+  fu: { tile: { suit: "p", rank: 5, red: true }, desc: "符を答える", modifierClass: "home-mode--fu" }, // 赤5筒
+  "fu-parts": {
+    tile: { suit: "m", rank: 8 }, // 8萬
+    desc: "符を要素ごとに組み立てる",
+    modifierClass: "home-mode--parts",
+  },
+  convert: {
+    tile: { suit: "s", rank: 5, red: true }, // 赤5索
+    desc: "符・翻から点数を早見",
+    modifierClass: "home-mode--convert",
+  },
+};
 const STATS_TILE: Tile = { suit: "z", rank: 6 }; // 發
 // ヘッダーのブランドマークに使う代表牌（見た目のみ）。
 const BRAND_TILE: Tile = { suit: "z", rank: 1 }; // 東
@@ -59,57 +72,23 @@ export function HomePage() {
           </h2>
 
           <div className="home-modes-grid">
-            <Link to="/quiz" className="home-mode home-mode--score">
-              <span className="home-mode-icon" aria-hidden="true">
-                <TileFace tile={SCORE_TILE} size="sm" />
-              </span>
-              <span className="home-mode-body">
-                <span className="home-mode-title">点数計算モード</span>
-                <span className="home-mode-desc">最終点数を当てる</span>
-              </span>
-              <span className="home-mode-arrow" aria-hidden="true">
-                ›
-              </span>
-            </Link>
-
-            <Link to="/fu/quiz" className="home-mode home-mode--fu">
-              <span className="home-mode-icon" aria-hidden="true">
-                <TileFace tile={FU_TILE} size="sm" />
-              </span>
-              <span className="home-mode-body">
-                <span className="home-mode-title">符計算モード</span>
-                <span className="home-mode-desc">符を答える</span>
-              </span>
-              <span className="home-mode-arrow" aria-hidden="true">
-                ›
-              </span>
-            </Link>
-
-            <Link to="/fu/parts" className="home-mode home-mode--parts">
-              <span className="home-mode-icon" aria-hidden="true">
-                <TileFace tile={PARTS_TILE} size="sm" />
-              </span>
-              <span className="home-mode-body">
-                <span className="home-mode-title">符分解モード</span>
-                <span className="home-mode-desc">符を要素ごとに組み立てる</span>
-              </span>
-              <span className="home-mode-arrow" aria-hidden="true">
-                ›
-              </span>
-            </Link>
-
-            <Link to="/convert" className="home-mode home-mode--convert">
-              <span className="home-mode-icon" aria-hidden="true">
-                <TileFace tile={CONVERT_TILE} size="sm" />
-              </span>
-              <span className="home-mode-body">
-                <span className="home-mode-title">点数換算モード</span>
-                <span className="home-mode-desc">符・翻から点数を早見</span>
-              </span>
-              <span className="home-mode-arrow" aria-hidden="true">
-                ›
-              </span>
-            </Link>
+            {MODES.map((mode) => {
+              const info = MODE_CARD_INFO[mode.id];
+              return (
+                <Link key={mode.id} to={mode.path} className={`home-mode ${info.modifierClass}`}>
+                  <span className="home-mode-icon" aria-hidden="true">
+                    <TileFace tile={info.tile} size="sm" />
+                  </span>
+                  <span className="home-mode-body">
+                    <span className="home-mode-title">{mode.label}</span>
+                    <span className="home-mode-desc">{info.desc}</span>
+                  </span>
+                  <span className="home-mode-arrow" aria-hidden="true">
+                    ›
+                  </span>
+                </Link>
+              );
+            })}
 
             <Link to="/stats" className="home-mode home-mode--stats home-mode--wide">
               <span className="home-mode-icon" aria-hidden="true">

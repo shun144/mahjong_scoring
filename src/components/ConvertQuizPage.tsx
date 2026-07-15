@@ -55,6 +55,7 @@ export function ConvertQuizPage() {
     <main className="page-shell quiz-page convert-page">
       <SidebarPageHeader
         title="点数換算"
+        currentMode="convert"
         showStats={false}
         headerAction={
           <button

@@ -45,7 +45,7 @@ export function ResultPage() {
 
   return (
     <main className="page-shell result-page">
-      <SidebarPageHeader title="解説" backTo="/quiz" problem={problem} />
+      <SidebarPageHeader title="解説" currentMode="score" backTo="/quiz" problem={problem} />
       <div className="result-verdict-row">
         <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
           {isCorrect ? "○ 正解" : "✕ 不正解"}
