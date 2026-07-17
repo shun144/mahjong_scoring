@@ -36,7 +36,6 @@ export function ResultContent({ problem, isCorrect, collapsible = false }: Props
     <>
       <section className="card result-breakdown" aria-label="点数計算">
         <div className="result-breakdown-header">
-          <span className="rp-section-label">内訳</span>
           <p className={`result-breakdown-verdict ${isCorrect ? "correct" : "incorrect"}`}>
             <span>{isCorrect ? "○ 正解" : "✕ 不正解"}</span>
             <span className="result-breakdown-answer">答え: {formatPayment(answer.payment)}</span>
