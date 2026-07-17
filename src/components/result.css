@@ -57,6 +57,47 @@
   gap: var(--space-3);
 }
 
+/* 見出し行（左: 「内訳」ラベル／右: 正誤＋答え）。折りたたみ状態に関わらず常に表示する。 */
+.result-breakdown-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+}
+
+/* 正誤＋答え（旧: 独立した判定カード）。「内訳」見出し行のテキストに降格し、
+   カード自体の枠・背景色は正誤によらず一定にする（正誤は文字色のみで区別）。 */
+.result-breakdown-verdict {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--fs-emphasis);
+  font-weight: 600;
+}
+
+.result-breakdown-verdict.correct {
+  color: var(--color-success-text);
+}
+
+.result-breakdown-verdict.incorrect {
+  color: var(--color-danger-text);
+}
+
+.result-breakdown-answer {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.result-breakdown-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
 .yaku-list {
   list-style: none;
   margin: 0;

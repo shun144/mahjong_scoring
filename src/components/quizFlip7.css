@@ -337,8 +337,10 @@
 
 /* =====================================================================
    正誤＋答え — 結果を祝う「判定カード」（正解＝ティール／不正解＝コーラル）。
-   resultFlip7.css（符計算モードの解説画面 /fu/result）と同じ装飾を .quiz-page
-   スコープでミラーリングし、インライン結果（QuizPage）の見た目を揃える。
+   T-013 により点数計算モード（QuizPage のインライン結果）はこの判定カードを廃止し、
+   「内訳」見出し行のテキスト表示（下部の .result-breakdown-header 等）に統合した。
+   以下は現在、同じ .quiz-page スコープを共有する点数換算モード（ConvertQuizPage）
+   専用の装飾として残す。
    ===================================================================== */
 .quiz-page .result-verdict-row {
   align-items: center;
@@ -370,14 +372,6 @@
 }
 .quiz-page .result-verdict.incorrect {
   color: var(--fl-coral-dark);
-}
-
-/* スマホ幅では既定サイズ(--fs-score=2.2rem)だと答えのピルと1行に収まらず折り返りやすいため、
-   正誤ラベルのみ縮小する（convert.css の .convert-flashcard-result .result-verdict と同じ値）。 */
-@media (--bp-sm) {
-  .quiz-page .result-verdict {
-    font-size: 1.3rem;
-  }
 }
 
 .quiz-page .result-answer {

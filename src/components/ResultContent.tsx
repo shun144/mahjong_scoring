@@ -32,25 +32,48 @@ export function ResultContent({ problem, isCorrect, collapsible = false }: Props
     ? undefined
     : (answer.fuDetail ?? scoreHand(problemToScoreHandInput(problem))?.fuDetail);
 
-  const detail = (
+  return (
     <>
       <section className="card result-breakdown" aria-label="点数計算">
-        <span className="rp-section-label">内訳</span>
-        {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}
-        <ul className="yaku-list">
-          {answer.yaku.map((y, i) => (
-            <li key={i}>
-              <span>{y.name}</span>
-              <span>{y.han}翻</span>
-            </li>
-          ))}
-        </ul>
-        <p className="calculation-line">
-          {formatCalculationLine(answer, problem.conditions.isDealer, problem.hand.winType)}
-        </p>
+        <div className="result-breakdown-header">
+          <span className="rp-section-label">内訳</span>
+          <p className={`result-breakdown-verdict ${isCorrect ? "correct" : "incorrect"}`}>
+            <span>{isCorrect ? "○ 正解" : "✕ 不正解"}</span>
+            <span className="result-breakdown-answer">答え: {formatPayment(answer.payment)}</span>
+          </p>
+        </div>
+
+        {collapsible ? (
+          <button
+            type="button"
+            className="rp-detail-toggle"
+            aria-expanded={expanded}
+            onClick={() => setExpanded((v) => !v)}
+          >
+            解説はこちら
+            <span aria-hidden="true">{expanded ? "▲" : "▼"}</span>
+          </button>
+        ) : null}
+
+        {expanded ? (
+          <div className="result-breakdown-body">
+            {fuDetail ? <FuBreakdownContent detail={fuDetail} /> : null}
+            <ul className="yaku-list">
+              {answer.yaku.map((y, i) => (
+                <li key={i}>
+                  <span>{y.name}</span>
+                  <span>{y.han}翻</span>
+                </li>
+              ))}
+            </ul>
+            <p className="calculation-line">
+              {formatCalculationLine(answer, problem.conditions.isDealer, problem.hand.winType)}
+            </p>
+          </div>
+        ) : null}
       </section>
 
-      {answer.interpretationNote ? (
+      {expanded && answer.interpretationNote ? (
         <section className="result-alt" aria-label="高点法の別解">
           <h2>
             <span className="rp-alt-icon" aria-hidden="true">
@@ -61,34 +84,6 @@ export function ResultContent({ problem, isCorrect, collapsible = false }: Props
           <p>{answer.interpretationNote}</p>
         </section>
       ) : null}
-    </>
-  );
-
-  return (
-    <>
-      <div className="result-verdict-row">
-        <p className={`result-verdict ${isCorrect ? "correct" : "incorrect"}`}>
-          {isCorrect ? "○ 正解" : "✕ 不正解"}
-        </p>
-        <p className="result-answer">答え: {formatPayment(answer.payment)}</p>
-      </div>
-
-      {collapsible ? (
-        <>
-          <button
-            type="button"
-            className="rp-detail-toggle"
-            aria-expanded={expanded}
-            onClick={() => setExpanded((v) => !v)}
-          >
-            解説はこちら
-            <span aria-hidden="true">{expanded ? "▲" : "▼"}</span>
-          </button>
-          {expanded ? detail : null}
-        </>
-      ) : (
-        detail
-      )}
     </>
   );
 }

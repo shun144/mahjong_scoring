@@ -215,13 +215,15 @@ describe("QuizPage", () => {
     expect(await screen.findByText("○ 正解")).toBeInTheDocument();
     const toggle = screen.getByRole("button", { name: /解説はこちら/ });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
-    expect(container.querySelector(".result-breakdown")).not.toBeInTheDocument();
+    // 「内訳」見出し行（正誤・答え）は畳んでいても常に表示される。
+    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(container.querySelector(".result-breakdown-body")).not.toBeInTheDocument();
     expect(screen.queryByText("平和")).not.toBeInTheDocument();
 
     fireEvent.click(toggle);
 
     expect(toggle).toHaveAttribute("aria-expanded", "true");
-    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(container.querySelector(".result-breakdown-body")).toBeInTheDocument();
     expect(screen.getByText("平和")).toBeInTheDocument();
     // ページ遷移は発生していない
     expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
@@ -239,13 +241,15 @@ describe("QuizPage", () => {
     expect(await screen.findByText("✕ 不正解")).toBeInTheDocument();
     const toggle = screen.getByRole("button", { name: /解説はこちら/ });
     expect(toggle).toHaveAttribute("aria-expanded", "true");
-    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(container.querySelector(".result-breakdown-body")).toBeInTheDocument();
     expect(screen.getByText("平和")).toBeInTheDocument();
 
-    // ユーザーは手動で畳める
+    // ユーザーは手動で畳める（畳んでも「内訳」見出し行の正誤・答えは表示されたまま）
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute("aria-expanded", "false");
-    expect(container.querySelector(".result-breakdown")).not.toBeInTheDocument();
+    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(container.querySelector(".result-breakdown-body")).not.toBeInTheDocument();
+    expect(screen.getByText("✕ 不正解")).toBeInTheDocument();
   });
 
   it("リーチ表示は上段の条件バッジではなく、アガリ牌の右隣（リーチ枠内）に出る", async () => {

@@ -400,7 +400,11 @@
 
 ---
 
-## T-012 点数計算モードの正誤ラベルをスマホ幅で縮小（完了）
+## T-012 点数計算モードの正誤ラベルをスマホ幅で縮小（完了／T-013で置き換え）
+
+**注記**: 本タスクが追加した`.quiz-page .result-verdict`のスマホ幅縮小ルールは、T-013で
+`QuizPage`が独立した判定カード（`.result-verdict-row`）自体を描画しなくなるため、T-013にて
+削除する（`ConvertQuizPage`は同値のより詳細なセレクタを別途持つため影響なし）。
 
 ### 目的 / 変更内容
 
@@ -441,4 +445,99 @@
 - PC幅（640px以上）では正誤ラベルのサイズが従来どおり（`--fs-score`＝2.2rem）のまま変わらない。
 - 答えのピル・計算式のサイズに変更がない。
 - `ResultPage.tsx`（`/result`）・`FuResultPage.tsx`（`/fu/result`）・符計算モードの表示に変更がない（回帰）。
+- `npm test` / `npm run lint` が通る。
+
+---
+
+## T-013 点数計算モード: 正誤・答えを「内訳」ラベル行に統合し、判定カードを廃止（完了）
+
+### 目的 / 変更内容
+
+点数計算モード（`QuizPage`のインライン結果／`ResultPage`解説画面が共有する`ResultContent.tsx`）が
+表示していた、独立の「判定カード」（正解=ティール系／不正解=コーラル系の色付き枠＋グロー影＋登場
+アニメーション、ゴールドピルの答え表示）を廃止し、代わりに「内訳」カードの**見出し行**に正誤＋正解
+点数を統合して表示する（「内訳」ラベルの右に「○ 正解　答え: 8000」のように両端揃えで並べる）。
+（正典: SPEC.md §4.4）
+
+対象は点数計算モード（最終点数モード）のみ。符計算モードの解説画面（`FuResultPage.tsx`、
+「符の内訳」ラベル・独立実装）・点数換算モード（`ConvertQuizPage.tsx`）は変更しない。
+
+### 確定した設計判断
+
+`/grilling`セッションでの確認結果:
+
+- **対象範囲**: `ResultContent.tsx`（`QuizPage`のインライン結果・`ResultPage`解説画面が共有）のみ。
+  `FuResultPage.tsx`・`ConvertQuizPage.tsx`は対象外、現状の判定カード表示を維持する。
+- **不正解時の文言**: 「✕ 不正解　答え: 8000」のように、**正誤に関わらず常に正解の点数**
+  （`answer.payment`）を表示する（ユーザーの選択値は表示しない。既存仕様を踏襲）。
+- **記号・表記の踏襲**: ○/✕マーク・「答え: 」の半角コロン+半角スペースなど、既存の全画面共通の
+  表記規則をそのまま使う（新規に表記ルールを作らない）。
+- **見た目の強弱**: 判定カード固有の装飾（テイール/コーラルの背景色・枠・グロー影・登場アニメーション
+  `rp-pop`）は廃止する。正誤＋答えは「内訳」見出し行の**テキストとして降格**し、正解=緑
+  （`--color-success-text`）／不正解=赤（`--color-danger-text`。既存の`.result-verdict.correct`/
+  `.incorrect`と同じトークン）の文字色のみで区別する。内訳カード自体（`.card.result-breakdown`）の
+  枠・背景色は正誤によらず一定にする。
+- **答えの数値の文字スタイル**: 数字専用フォント（`--font-numeric`）・`tabular-nums`・太字は維持し、
+  フォントサイズのみ見出し行にふさわしいサイズへ縮小する（`--fs-score`の最強調から降格）。
+- **行内配置**: 見出し行はflexboxで両端揃え（`justify-content: space-between`）。左に「内訳」
+  ラベル、右に正誤＋答え。
+- **折りたたみとの関係**（`QuizPage`のインライン結果。`collapsible`時のみ該当）:
+  「内訳」ラベル＋正誤＋答えの見出し行は、「解説はこちら」トグルの**開閉状態に関わらず常時表示**する
+  （現行の「畳んでいても正誤・答えだけは見える」体験を維持）。トグルで開閉するのは**役の一覧・計算式**
+  （および「内訳」カードの外にある高点法の別解セクション）のみとする。見出し行と開閉コンテンツは
+  **同一のカード枠内**にまとめる（カードの枠自体は常時表示、中身だけアコーディオンで開閉）。
+  `ResultPage`（`collapsible=false`）では従来どおりすべて常時展開のまま変わらない。
+- **既存の関連ルールの後始末**: `quizFlip7.css`の`.quiz-page .result-verdict`に対する
+  スマホ幅（`--bp-sm`）縮小ルール（T-012で追加）は、`QuizPage`が`.result-verdict`要素を
+  描画しなくなるため**死んだCSSになる**。`ConvertQuizPage`（`page-shell quiz-page convert-page`）は
+  `convert.css`に同値（`1.3rem`）のより詳細なセレクタ（`.convert-flashcard-result .result-verdict`）
+  を既に持っており、このルールに依存していないため、削除しても`ConvertQuizPage`の見た目に影響しない。
+  SPEC.md §4.4の該当記述もあわせて更新済み（本セッションで反映）。
+  なお`.quiz-page .result-verdict-row`本体の装飾ルール（背景・枠・グロー・アニメーション）は
+  `ConvertQuizPage`が引き続き使用するため**削除しない**（用途が「点数換算モード専用」に変わる
+  ことをコメントで明記する）。同様に`.result-page .result-verdict-row`（`resultFlip7.css`）は
+  `FuResultPage.tsx`が引き続き使うため削除しない。
+
+### 影響ファイル
+
+- `src/components/ResultContent.tsx` — 構造変更（見出し行を常時表示部として切り出し、
+  役一覧・計算式のみ折りたたみ対象にする。旧`.result-verdict-row`ブロックの描画を削除）
+- `src/components/result.css` — 見出し行（ラベル＋正誤＋答え）のレイアウト・タイポグラフィ追加
+- `src/components/quizFlip7.css` — T-012のスマホ幅縮小ルールを削除。`.quiz-page
+  .result-verdict-row`等のコメントを「点数換算モード専用」に更新
+- `src/components/resultFlip7.css` — コメントの要否確認（`FuResultPage.tsx`専用である旨を明記）
+- `src/components/QuizPage.test.tsx` / `src/components/ResultPage.test.tsx` — 正誤・答えの
+  表示場所（内訳見出し行内）・折りたたみ時の常時表示を検証するようテストを更新
+
+### 実装ステップ
+
+1. **`ResultContent.tsx`**: `<section className="card result-breakdown">`内の構造を、
+   常時表示の見出し行（`内訳`ラベル＋正誤＋答え）と、`expanded`時のみ表示する残り
+   （符内訳・役一覧・計算式）に分割する。`collapsible=false`（`ResultPage`）では
+   見出し行も残りも常に表示されたままにする（挙動は変えない）。
+2. **見出し行のマークアップ**: 「内訳」ラベル（既存の`rp-section-label`）と、正誤
+   （`○ 正解`/`✕ 不正解`。既存の`.result-verdict`のクラス・色分けを流用してよい）＋
+   「答え: {formatPayment(...)}」を1つのflex行にまとめ、`justify-content: space-between`
+   で両端に配置する。
+3. **旧`.result-verdict-row`ブロックを削除**: `ResultContent.tsx`から独立した判定カード
+   （`<div className="result-verdict-row">...`）の描画を削除する。
+4. **CSS**: 新しい見出し行用のクラスを`result.css`に追加（レイアウト・フォントサイズ・色分け）。
+   `quizFlip7.css`のT-012追加分（`.quiz-page .result-verdict`のスマホ幅縮小）を削除。
+   `.quiz-page .result-verdict-row`等、判定カード装飾ルール自体は`ConvertQuizPage`が
+   引き続き使うため残すが、コメントを更新して用途の誤解を防ぐ。
+5. **テスト更新**: `QuizPage.test.tsx`・`ResultPage.test.tsx`で、正誤・答えのテキストが
+   「内訳」見出し行の中にあることを検証する。折りたたみ（正解時デフォルト畳み）の状態でも
+   正誤・答えが表示されたままであること、役一覧・計算式は畳まれて非表示であることを検証する。
+
+### 受け入れ基準
+
+- 点数計算モード（`QuizPage`インライン結果・`ResultPage`解説画面）で、「内訳」ラベルの右に
+  「○ 正解　答え: 8000」（または「✕ 不正解　答え: 8000」）が1行で表示される。
+- 独立した判定カード（テイール/コーラルの背景・グロー・アニメーション付きブロック）が
+  もう表示されない。
+- 不正解時も常に**正解の点数**が表示される（ユーザーの選択値ではない）。
+- 正解時、デフォルトで解説が畳まれていても「内訳＋正誤＋答え」は見える。役一覧・計算式は
+  「解説はこちら」を開くまで見えない。
+- 不正解時は従来どおり解説がデフォルトで展開されている。
+- 符計算モードの解説画面（`/fu/result`）・点数換算モード（`/convert`）の表示に変更がない（回帰）。
 - `npm test` / `npm run lint` が通る。
