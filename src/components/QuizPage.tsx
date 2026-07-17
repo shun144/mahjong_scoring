@@ -77,6 +77,14 @@ export function QuizPage() {
     setProblem(nextProblem());
   }
 
+  // 回答後、同じ問題を回答・採点状態だけリセットして解き直す。「問題に戻る」と同じ復習扱いにし、
+  // 再回答を成績に二重計上しない（handleAnswer の reviewProblem ガードを流用）。
+  function handleRetry() {
+    if (!answered) return;
+    setReviewProblem(problem);
+    setAnswered(null);
+  }
+
   return (
     <main className="page-shell quiz-page">
       <SidebarPageHeader
@@ -105,7 +113,6 @@ export function QuizPage() {
       <section className="qp-board" aria-label="問題">
         <QuizTileHeader problem={effectiveProblem} showRiichi />
         <div className="quiz-hand">
-          <span className="qp-section-label">手牌</span>
           <HandDisplay
             concealed={effectiveProblem.hand.concealed}
             melds={effectiveProblem.hand.melds}
@@ -117,6 +124,12 @@ export function QuizPage() {
       {answered ? (
         <>
           <section className="quiz-skip">
+            <button type="button" className="qp-skip-btn" onClick={handleRetry}>
+              もう一度
+              <span className="qp-skip-arrow" aria-hidden="true">
+                ↻
+              </span>
+            </button>
             <button type="button" className="qp-skip-btn" onClick={handleNext}>
               次の問題へ
               <span className="qp-skip-arrow" aria-hidden="true">

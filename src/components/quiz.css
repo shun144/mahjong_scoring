@@ -311,4 +311,5 @@
 .quiz-skip {
   display: flex;
   justify-content: center;
+  gap: var(--space-3);
 }

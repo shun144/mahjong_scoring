@@ -323,6 +323,58 @@ describe("QuizPage", () => {
     expect(screen.queryByRole("dialog", { name: "メニュー" })).not.toBeInTheDocument();
   });
 
+  it("未回答時は「もう一度」ボタンが存在しない", () => {
+    renderQuiz();
+    expect(screen.queryByRole("button", { name: /もう一度/ })).not.toBeInTheDocument();
+  });
+
+  it("「もう一度」を押すと同じ問題が未回答状態（4択・同じ選択肢）で再表示される", () => {
+    const { container } = renderQuiz();
+    const choicesBefore = Array.from(container.querySelectorAll(".quiz-choice-btn")).map(
+      (b) => b.textContent,
+    );
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+    expect(screen.getByText(/答え:/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /もう一度/ }));
+
+    expect(screen.queryByText(/答え:/)).not.toBeInTheDocument();
+    const choicesAfter = Array.from(container.querySelectorAll(".quiz-choice-btn")).map(
+      (b) => b.textContent,
+    );
+    expect(choicesAfter).toEqual(choicesBefore);
+  });
+
+  it("「もう一度」後の再回答は成績に記録しない", () => {
+    localStorage.clear();
+    const { container } = renderQuiz();
+    const before = loadStats().totalAnswered;
+
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+    expect(loadStats().totalAnswered).toBe(before + 1);
+
+    fireEvent.click(screen.getByRole("button", { name: /もう一度/ }));
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+
+    expect(loadStats().totalAnswered).toBe(before + 1); // もう一度後の再回答は計上しない
+  });
+
+  it("「もう一度」後に「次の問題へ」を押すと、以降の新しい問題は通常どおり成績に記録される", () => {
+    localStorage.clear();
+    const { container } = renderQuiz();
+    const before = loadStats().totalAnswered;
+
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+    fireEvent.click(screen.getByRole("button", { name: /もう一度/ }));
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+
+    expect(loadStats().totalAnswered).toBe(before + 2); // 元の1回 + 「次の問題へ」後の新しい問題1回
+  });
+
   it("点数早見表ボタンはヘッダー（ハンバーガーの隣）にある", () => {
     const { container } = renderQuiz();
     const tableBtn = screen.getByRole("button", { name: "点数早見表を開く" });
