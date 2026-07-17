@@ -15,6 +15,7 @@
   --fl-gold: #ffd23f;
   --fl-gold-light: #ffe47a;
   --fl-gold-dark: #e6b800;
+  --fl-gold-ink: #8a6d00;
   --fl-coral: #ef6c4a;
   --fl-coral-light: #ff8a6a;
   --fl-coral-dark: #d45233;
@@ -37,6 +38,7 @@
   --fl-glow-teal-soft: 0 4px 14px rgba(43, 168, 162, 0.18);
   --fl-glow-coral: 0 6px 18px rgba(239, 108, 74, 0.3);
   --fl-glow-gold: 0 6px 18px rgba(255, 210, 63, 0.36);
+  --fl-glow-gold-soft: 0 4px 14px rgba(255, 210, 63, 0.28);
   --fl-glow-sky: 0 6px 18px rgba(93, 173, 226, 0.3);
 
   --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -334,6 +336,154 @@
 }
 
 /* =====================================================================
+   正誤＋答え — 結果を祝う「判定カード」（正解＝ティール／不正解＝コーラル）。
+   resultFlip7.css（符計算モードの解説画面 /fu/result）と同じ装飾を .quiz-page
+   スコープでミラーリングし、インライン結果（QuizPage）の見た目を揃える。
+   ===================================================================== */
+.quiz-page .result-verdict-row {
+  align-items: center;
+  gap: 10px 16px;
+  padding: 18px 20px;
+  background: var(--fl-card);
+  border: 2px solid rgba(43, 168, 162, 0.28);
+  border-radius: var(--fl-r-lg);
+  box-shadow: var(--fl-glow-teal-soft);
+  animation: rp-pop 420ms var(--fl-bounce) both;
+}
+.quiz-page .result-verdict-row:has(.result-verdict.correct) {
+  background: color-mix(in srgb, var(--fl-teal) 9%, #fff);
+  border-color: var(--fl-teal);
+  box-shadow: var(--fl-glow-teal);
+}
+.quiz-page .result-verdict-row:has(.result-verdict.incorrect) {
+  background: color-mix(in srgb, var(--fl-coral) 9%, #fff);
+  border-color: var(--fl-coral);
+  box-shadow: var(--fl-glow-coral);
+}
+
+.quiz-page .result-verdict {
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.quiz-page .result-verdict.correct {
+  color: var(--fl-teal-dark);
+}
+.quiz-page .result-verdict.incorrect {
+  color: var(--fl-coral-dark);
+}
+
+.quiz-page .result-answer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 16px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--fl-ink);
+  background: var(--fl-gold-light);
+  border: 2px solid var(--fl-gold-dark);
+  border-radius: var(--fl-r-pill);
+  box-shadow: var(--fl-glow-gold-soft);
+}
+
+/* 「解説はこちら」トグル（符計算モードの解説画面には無い、インライン結果専用のUI）。
+   新規デザインは起こさず、既存の見出し類と同系色にして周囲のカードと馴染ませる。 */
+.quiz-page .rp-detail-toggle {
+  color: var(--fl-teal-dark);
+}
+
+/* =====================================================================
+   内訳カード（役・翻・符・計算式）
+   ===================================================================== */
+.quiz-page .card {
+  padding: 18px;
+  background: var(--fl-card);
+  border: 2px solid rgba(43, 168, 162, 0.3);
+  border-radius: var(--fl-r-lg);
+  box-shadow: var(--fl-glow-teal-soft);
+}
+.quiz-page .result-breakdown {
+  gap: 12px;
+  animation: rp-rise 460ms var(--fl-bounce) both;
+}
+
+.quiz-page .rp-section-label {
+  align-self: flex-start;
+  padding: 3px 12px 5px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--fl-teal-dark);
+  border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
+}
+
+.quiz-page .yaku-list {
+  gap: 0;
+}
+.quiz-page .yaku-list li {
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 2px dashed rgba(43, 168, 162, 0.22);
+}
+.quiz-page .yaku-list li:last-child {
+  border-bottom: none;
+}
+.quiz-page .yaku-list li > span:first-child {
+  color: var(--fl-ink);
+  font-weight: 700;
+}
+.quiz-page .yaku-list li > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 12px;
+  font-size: 0.85em;
+  font-weight: 800;
+  color: var(--fl-teal-dark);
+  background: var(--fl-teal-bg);
+  border-radius: var(--fl-r-pill);
+}
+
+.quiz-page .calculation-line {
+  padding-top: 12px;
+  border-top: 2px dashed rgba(43, 168, 162, 0.4);
+  font-weight: 800;
+  color: var(--fl-teal-dark);
+}
+
+/* 符内訳（点数計算モードでは補助情報）。控えめに。 */
+.quiz-page .fu-list li {
+  color: var(--fl-muted);
+}
+.quiz-page .fu-note {
+  color: var(--fl-muted);
+}
+
+/* =====================================================================
+   高点法の別解 — ゴールドの注記カード
+   ===================================================================== */
+.quiz-page .result-alt {
+  padding: 16px 18px;
+  background: color-mix(in srgb, var(--fl-gold) 14%, #fff);
+  border: 2px solid var(--fl-gold-dark);
+  border-radius: var(--fl-r-lg);
+  box-shadow: var(--fl-glow-gold-soft);
+}
+.quiz-page .result-alt h2 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  color: var(--fl-gold-ink);
+}
+.quiz-page .rp-alt-icon {
+  font-size: 1.1em;
+  line-height: 1;
+}
+.quiz-page .result-alt p {
+  color: var(--fl-body);
+}
+
+/* =====================================================================
    登場モーション（弾む）
    ===================================================================== */
 .quiz-page .qp-board {
@@ -357,7 +507,9 @@
 /* モーション抑制時は登場・ホバー移動を無効化。 */
 @media (prefers-reduced-motion: reduce) {
   .quiz-page .qp-board,
-  .quiz-page .quiz-choices {
+  .quiz-page .quiz-choices,
+  .quiz-page .result-verdict-row,
+  .quiz-page .result-breakdown {
     animation: none;
   }
   .quiz-page .quiz-choice-btn,

@@ -306,7 +306,7 @@
 ### 目的
 
 回答のたびに `/quiz→/result→/quiz` と2回ページ遷移する現行フロー（`QuizPage.tsx` の `navigate("/result", …)`）を
-廃止し、**出題画面上で結果を表示**する。テンポの中核＝「遷移ゼロの1枚の面」を構造で達成する。
+廃止し、**出題画面上で結果を表示*T*する。テンポの中核＝「遷移ゼロの1枚の面」を構造で達成する。
 **T-007・T-008 の土台**（この面が無いと解説折りたたみもカウンタも載らない）。
 
 ### 確定した設計判断
@@ -396,4 +396,131 @@
 - 正解で両方加算、**不正解で連続正解のみ0・回答数は不変**。
 - 連続正解のリセットが罰として演出されない。
 - 日付が変わると今日の回答数がリセットされる。
+- `npm test` / `npm run lint` が通る。
+
+---
+
+## T-009 回答後の「次の問題へ」ボタンをスキップボタンと同一スタイルに統一（完了）
+
+### 目的 / 変更内容
+
+`QuizPage.tsx` の回答後（インライン結果表示時）に出る「次の問題へ」ボタンは、現状 `.btn-primary` +
+`.rp-cta-arrow` を使っているが、`quizFlip7.css` に `.quiz-page .btn-primary` の上書きが無いため
+`index.css` の素の標準ボタンのまま表示され、`.quiz-answer`（`flex-direction: column`・`align-items`
+既定＝stretch）の中で**横幅いっぱいに引き伸ばされる**。未回答時のスキップボタン（`.qp-skip-btn`、
+ティール枠のアウトラインピル・中央寄せ）とは見た目が一致しておらず、同一画面内でボタンスタイルに
+一貫性がない。この不一致を解消し、回答後の「次の問題へ」もスキップボタンと同一の見た目にする。
+（正典: SPEC.md §4.2「「次の問題へ」ボタンの見た目統一」）
+
+### 確定した設計判断
+
+- 回答後の「次の問題へ」ボタンを、未回答時のスキップボタンと**同一クラス**（`qp-skip-btn` /
+  `qp-skip-arrow`）に差し替える。新規CSSは追加しない（既存の `.quiz-page .qp-skip-btn` 等を
+  そのまま流用する）。
+- DOM構造も未回答時と揃える: `ResultContent` は既存どおり `<section className="quiz-answer"
+  aria-label="結果">` に残し、ボタンは別途 `<section className="quiz-skip">` に切り出す
+  （`.quiz-answer` の `align-items` 既定値〔stretch〕でボタンが横幅いっぱいに引き伸ばされるのを避け、
+  `.quiz-skip` の中央寄せ・コンテンツ幅と一致させるため）。
+- `ResultPage.tsx`（解説画面）の「次の問題へ」は対象外。今回は `QuizPage.tsx` 内の
+  回答後／未回答時の一貫性のみを扱う（`ResultPage.tsx` 側は別途検討時に改めてグリルする）。
+
+### 影響ファイル
+
+- `src/components/QuizPage.tsx` — 回答後ブロックの構造・クラス変更
+
+### 実装ステップ
+
+1. `QuizPage.tsx` の `answered` 分岐を変更する:
+   - `<section className="quiz-answer" aria-label="結果">` は `ResultContent` のみを含める形に変更する。
+   - ボタンを `<section className="quiz-skip">` に切り出し、`className="btn-primary"` →
+     `"qp-skip-btn"`、`className="rp-cta-arrow"` → `"qp-skip-arrow"` に変更する。
+2. 目視確認: `/quiz` で回答後、「次の問題へ」ボタンが未回答時のスキップボタンと同じ見た目
+   （ティール枠アウトラインピル・中央寄せ）で表示されることを確認する。
+
+### 受け入れ基準
+
+- 回答後の「次の問題へ」ボタンが、未回答時のスキップボタンと同一の見た目（クラス・スタイル）になっている。
+- ボタンが画面中央にコンテンツ幅で表示され、横幅いっぱいに引き伸ばされない。
+- 既存テスト（`QuizPage.test.tsx`）が変更なく通る（role/name ベースの検証のため）。
+- `npm test` / `npm run lint` が通る。
+
+---
+
+## T-010 点数計算モードのインライン正誤表示を符計算モードのFlip7スタイルに統一（完了）
+
+### 目的 / 変更内容
+
+`ResultContent.tsx`（正誤・答え・内訳カード・高点法別解を表示する共有コンポーネント）は
+`QuizPage.tsx`（`.quiz-page` スコープ・インライン結果）と `ResultPage.tsx` /
+`FuResultPage.tsx`（`.result-page` スコープ・別画面）の両方から使われている。しかし
+Flip7デザイン（`docs/DESIGN.md`）の装飾は `resultFlip7.css` に `.result-page` スコープでのみ
+定義されており、`quizFlip7.css` には対応する `.quiz-page` 向けの上書きが一切無い。そのため
+符計算モードの解説画面（`/fu/result`）では正誤が色付きの「判定カード」（ティール/コーラルの枠＋
+グロー影＋登場アニメーション）とゴールドピルの答え表示で強調されるのに対し、**点数計算モードの
+インライン結果は同じ `ResultContent` を使っていながら無装飾（プレーンな色文字＋素の `.card`）の
+まま**になっている。この見た目の差を解消し、点数計算モードのインライン結果を符計算モードの解説
+画面と同じ Flip7 装飾にする。
+（正典: SPEC.md §4.4「正誤表示の見た目統一」）
+
+### 確定した設計判断
+
+- **対象範囲は結果ブロック全体**: 判定カード（`.result-verdict-row`／`.result-verdict`）・
+  答えのゴールドピル（`.result-answer`）・内訳カード（`.card`／`.result-breakdown`／
+  `.rp-section-label`／`.yaku-list`／`.calculation-line`／`.fu-list`〔非 `--primary` 版のみ。
+  `--primary` は `FuResultPage` 専用で `QuizPage` は使わないため対象外〕）・高点法別解カード
+  （`.result-alt`）を含める。
+- **実装方式**: 新規デザインは起こさず、`resultFlip7.css` の該当ルールを `quizFlip7.css` に
+  **`.quiz-page` スコープで同等の値のままミラーリング追加**する（各画面のスタイルを独立スコープで
+  管理する既存方針〔`quizFlip7.css` 冒頭コメント〕を踏襲。共通化リファクタは行わない）。
+- **不足トークンの追加**: `.quiz-page` ブロックには `--fl-gold-ink`・`--fl-glow-gold-soft` が
+  未定義のため、`resultFlip7.css` と同じ値で追加する（他のFlip7トークンは既に同一値で両ファイルに
+  定義済みのため追加不要）。
+- **アニメーション**: `@keyframes rp-pop` / `rp-rise` は `resultFlip7.css`（`ResultContent.tsx` が
+  常時import）で既に定義されており、CSSのキーフレームはスコープを持たないため `QuizPage` でも
+  そのまま参照できる。`quizFlip7.css` 側での再定義は不要。
+- **「解説はこちら」トグル（`.rp-detail-toggle`）**: 符計算モードの解説画面には存在しない、
+  点数計算モードのインライン結果専用のUIだが、周囲のカード装飾と浮かないよう **Flip7調に軽く
+  スタイリング**する（色を既存の見出し類〔`.qp-section-label` 等〕と同系の `var(--fl-teal-dark)`
+  にする程度の小さな調整。新規の装飾コンセプトは作らない）。
+- **対象外**: `ResultPage.tsx`（`/result`、点数計算モードのディープリンク用の別画面）自体は変更
+  しない。既に `.result-page` スコープで符計算モードと同じFlip7装飾を持っている。
+
+### 影響ファイル
+
+- `src/components/quizFlip7.css` — `.quiz-page` 向けの判定カード・内訳カード・高点法別解・
+  トグルのスタイル追加、不足トークンの追加
+
+### 実装ステップ
+
+1. **`quizFlip7.css`**:
+   - `.quiz-page` トークンブロックに `--fl-gold-ink: #8a6d00;`・
+     `--fl-glow-gold-soft: 0 4px 14px rgba(255, 210, 63, 0.28);` を追加する。
+   - `resultFlip7.css` の以下のルールを `.result-page` → `.quiz-page` に置き換えて追加する
+     （値は変更しない。`--primary` 系・`meld-mark` 系〔`FuResultPage` 専用〕は除く）:
+     - `.result-verdict-row`（`:has(.correct)` / `:has(.incorrect)` 含む）・登場アニメーション
+     - `.result-verdict` / `.correct` / `.incorrect`
+     - `.result-answer`
+     - `.card`・`.result-breakdown`（登場アニメーション含む）
+     - `.rp-section-label`
+     - `.yaku-list` / `.yaku-list li` / `li > span:first-child` / `li > span:last-child`
+     - `.calculation-line`
+     - `.fu-list li` / `.fu-note`（非 `--primary` 版）
+     - `.result-alt` / `h2` / `.rp-alt-icon` / `p`
+     - `prefers-reduced-motion` によるアニメーション無効化ブロック
+   - `.rp-detail-toggle` に `.quiz-page` スコープの軽微な上書き（`color: var(--fl-teal-dark)` 等）を
+     新規追加する。
+2. **目視確認**: `/quiz` で正解時・不正解時それぞれ回答し、判定カード・答え・内訳カード・
+   （不正解時は自動展開される）高点法別解が `/fu/result` と同系統のFlip7装飾で表示されることを
+   確認する。「解説はこちら」トグルの開閉も確認する。
+
+### 受け入れ基準
+
+- 点数計算モード（`/quiz`）の回答後、正誤表示が判定カード（正解=ティール系／不正解=コーラル系の
+  色付き枠＋グロー影）として表示される。
+- 答えがゴールドピルで表示される。
+- 内訳カード・高点法別解カードが符計算モードの解説画面と同系統のFlip7装飾（テイール枠・グロー影等）
+  になる。
+- 「解説はこちら」トグルが周囲のカードと違和感なく馴染む見た目になっている。
+- `ResultPage.tsx`（`/result`）・`FuResultPage.tsx`（`/fu/result`）の表示に変更がない（回帰）。
+- 符計算モードの `ChoiceGrid`・出題部分など、判定カード以外の表示に変更がない。
 - `npm test` / `npm run lint` が通る。

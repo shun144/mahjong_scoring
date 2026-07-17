@@ -64,7 +64,8 @@
       "Read(//c/Users/noels/.claude/skills/**)",
       "Read(//c/Users/noels/.agents/skills/grilling/**)",
       "Read(//c/Users/noels/.claude/**)",
-      "Bash(node ~/.claude/statusline.mjs)"
+      "Bash(node ~/.claude/statusline.mjs)",
+      "Skill(implement)"
     ]
   }
 }

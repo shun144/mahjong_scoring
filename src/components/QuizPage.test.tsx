@@ -118,14 +118,45 @@ describe("QuizPage", () => {
     expect(screen.getByRole("button", { name: "次の問題へ" })).toBeInTheDocument();
   });
 
-  it("navigates to the result page immediately when a choice is clicked", () => {
+  it("shows the result inline on the same screen when a choice is clicked (no navigation)", () => {
     const { container } = renderQuiz();
     const choiceButtons = container.querySelectorAll(".quiz-choice-btn");
     fireEvent.click(choiceButtons[0]);
 
     // 正誤に依らず常に表示される要素のみを検証する（正誤ごとの詳細はResultPage.test.tsxで検証）。
-    expect(screen.getByRole("heading", { name: "解説" })).toBeInTheDocument();
+    // 遷移していないため、見出しは引き続き「点数計算」のまま（「解説」ページには行かない）。
+    expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "解説" })).not.toBeInTheDocument();
     expect(screen.getByText(/答え:/)).toBeInTheDocument();
+    // 回答後は選択肢が消え、「次の問題へ」ボタンのみが残る。
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(0);
+  });
+
+  it("回答を記録し、「次の問題へ」を押すと遷移せずに新しい問題が出る", () => {
+    localStorage.clear();
+    const { container } = renderQuiz();
+    const before = loadStats().totalAnswered;
+
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+    expect(loadStats().totalAnswered).toBe(before + 1);
+
+    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+
+    expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
+    expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
+    expect(loadStats().totalAnswered).toBe(before + 1); // 「次へ」自体は記録しない
+  });
+
+  it("復習（同じ問題への再回答）は成績に記録しない", async () => {
+    localStorage.clear();
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    const { container } = renderQuizWithProblem(boundaryProblem(), repo);
+    await waitFor(() => expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument());
+    const before = loadStats().totalAnswered;
+
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+
+    expect(loadStats().totalAnswered).toBe(before);
   });
 
   it("skipping stays on the quiz page without recording an answer", () => {
@@ -165,15 +196,56 @@ describe("QuizPage", () => {
     expect(section?.firstElementChild?.textContent).toBe("満貫切上");
   });
 
-  it("切り上げ満貫ON: 選択後の解説にも満貫(8000)の答えが表示される", async () => {
+  it("切り上げ満貫ON: 選択後のインライン結果にも満貫(8000)の答えが表示される", async () => {
     const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: true });
     renderQuizWithProblem(boundaryProblem(), repo);
 
     const choice = await screen.findByRole("button", { name: "8000" });
     fireEvent.click(choice);
 
-    expect(await screen.findByRole("heading", { name: "解説" })).toBeInTheDocument();
-    expect(screen.getByText(/答え: 8000/)).toBeInTheDocument();
+    expect(await screen.findByText(/答え: 8000/)).toBeInTheDocument();
+  });
+
+  it("正解時は解説がデフォルトで畳まれ、トグルで展開すると内訳が現れる（遷移なし）", async () => {
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    const { container } = renderQuizWithProblem(boundaryProblem(), repo);
+    const correctChoice = await screen.findByRole("button", { name: "7700" });
+    fireEvent.click(correctChoice);
+
+    expect(await screen.findByText("○ 正解")).toBeInTheDocument();
+    const toggle = screen.getByRole("button", { name: /解説はこちら/ });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(container.querySelector(".result-breakdown")).not.toBeInTheDocument();
+    expect(screen.queryByText("平和")).not.toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(screen.getByText("平和")).toBeInTheDocument();
+    // ページ遷移は発生していない
+    expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
+  });
+
+  it("不正解時は解説がデフォルトで展開されている（非懲罰: 罰的な演出はしない）", async () => {
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    const { container } = renderQuizWithProblem(boundaryProblem(), repo);
+    await waitFor(() => expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument());
+    const wrongChoice = Array.from(container.querySelectorAll(".quiz-choice-btn")).find(
+      (b) => b.textContent !== "7700",
+    )!;
+    fireEvent.click(wrongChoice);
+
+    expect(await screen.findByText("✕ 不正解")).toBeInTheDocument();
+    const toggle = screen.getByRole("button", { name: /解説はこちら/ });
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(screen.getByText("平和")).toBeInTheDocument();
+
+    // ユーザーは手動で畳める
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(container.querySelector(".result-breakdown")).not.toBeInTheDocument();
   });
 
   it("リーチ表示は上段の条件バッジではなく、アガリ牌の右隣（リーチ枠内）に出る", async () => {

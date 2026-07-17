@@ -34,8 +34,6 @@
 /* 場風＋自風を1タグ（「東場南家」）に統合。自風(自分)を含むため Rausch 淡塗りを継承。
    場風/自風の区別は色ではなく「場」「家」の文字で担保（色覚多様性対応）。 */
 .badge--windset {
-  /* background: var(--color-accent-bg);
-  border-color: var(--color-accent-border); */
   /* 「東場南家」を詰めた複合語として見せる */
   gap: var(--space-0);
   /* 大小の文字を地の文のようにベースライン揃え */
@@ -53,10 +51,6 @@
 .badge-riichi {
   background: var(--color-danger-bg);
   border-color: var(--color-danger-border);
-  color: var(--color-danger-text);
-}
-
-.badge-riichi {
   color: var(--color-danger-text);
 }
 

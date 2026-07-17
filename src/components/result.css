@@ -36,6 +36,21 @@
   letter-spacing: var(--tracking-tight);
 }
 
+/* 「解説はこちら」開閉トグル（インライン結果でのみ使用。常時展開の ResultPage では出ない）。 */
+.rp-detail-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  padding: var(--space-1) 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text-sub);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .result-breakdown {
   display: flex;
   flex-direction: column;
