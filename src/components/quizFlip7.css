@@ -372,6 +372,14 @@
   color: var(--fl-coral-dark);
 }
 
+/* スマホ幅では既定サイズ(--fs-score=2.2rem)だと答えのピルと1行に収まらず折り返りやすいため、
+   正誤ラベルのみ縮小する（convert.css の .convert-flashcard-result .result-verdict と同じ値）。 */
+@media (--bp-sm) {
+  .quiz-page .result-verdict {
+    font-size: 1.3rem;
+  }
+}
+
 .quiz-page .result-answer {
   display: inline-flex;
   align-items: baseline;

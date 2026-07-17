@@ -400,194 +400,45 @@
 
 ---
 
-## T-009 回答後の「次の問題へ」ボタンをスキップボタンと同一スタイルに統一（完了）
+## T-012 点数計算モードの正誤ラベルをスマホ幅で縮小（完了）
 
 ### 目的 / 変更内容
 
-`QuizPage.tsx` の回答後（インライン結果表示時）に出る「次の問題へ」ボタンは、現状 `.btn-primary` +
-`.rp-cta-arrow` を使っているが、`quizFlip7.css` に `.quiz-page .btn-primary` の上書きが無いため
-`index.css` の素の標準ボタンのまま表示され、`.quiz-answer`（`flex-direction: column`・`align-items`
-既定＝stretch）の中で**横幅いっぱいに引き伸ばされる**。未回答時のスキップボタン（`.qp-skip-btn`、
-ティール枠のアウトラインピル・中央寄せ）とは見た目が一致しておらず、同一画面内でボタンスタイルに
-一貫性がない。この不一致を解消し、回答後の「次の問題へ」もスキップボタンと同一の見た目にする。
-（正典: SPEC.md §4.2「「次の問題へ」ボタンの見た目統一」）
+点数計算モード（`QuizPage.tsx`）のインライン結果にある正誤ラベル（`○ 正解`／`✕ 不正解`。マークと
+文字は同一要素の1文字列）は、既定サイズ（`--fs-score`＝2.2rem）のままスマホ幅でも表示されており、
+狭い画面では答えのピル（`.result-answer`）と1行に収まらず折り返ることがある（実機375px幅で確認済み）。
+点数換算モード（`ConvertQuizPage`）は既に `.convert-flashcard-result .result-verdict` に対して
+同様の縮小（1.3rem）をスマホ幅で適用済みであり、同じ考え方を点数計算モードにも導入する。
+（正典: SPEC.md §4.4「正誤ラベルのスマホ幅縮小（点数計算モード）」）
 
 ### 確定した設計判断
 
-- 回答後の「次の問題へ」ボタンを、未回答時のスキップボタンと**同一クラス**（`qp-skip-btn` /
-  `qp-skip-arrow`）に差し替える。新規CSSは追加しない（既存の `.quiz-page .qp-skip-btn` 等を
-  そのまま流用する）。
-- DOM構造も未回答時と揃える: `ResultContent` は既存どおり `<section className="quiz-answer"
-  aria-label="結果">` に残し、ボタンは別途 `<section className="quiz-skip">` に切り出す
-  （`.quiz-answer` の `align-items` 既定値〔stretch〕でボタンが横幅いっぱいに引き伸ばされるのを避け、
-  `.quiz-skip` の中央寄せ・コンテンツ幅と一致させるため）。
-- `ResultPage.tsx`（解説画面）の「次の問題へ」は対象外。今回は `QuizPage.tsx` 内の
-  回答後／未回答時の一貫性のみを扱う（`ResultPage.tsx` 側は別途検討時に改めてグリルする）。
+- **対象はラベル要素（`.result-verdict`）のみ**: 答えのピル（`.result-answer`）・計算式は今回は
+  対象外とする（点数換算モードのように答えピル・計算式まで併せて縮小することはしない）。
+  折り返しが完全には解消しない場合があることは許容する。
+- **ブレークポイント**: 既存の `--bp-sm`（640px未満）を使う（`convert.css`・`quiz.css` と同じ規約）。
+- **縮小後のサイズ**: `1.3rem`（`convert.css` の `.convert-flashcard-result .result-verdict` と
+  同じ値。アプリ全体での「スマホ幅の正誤ラベルサイズ」の基準を揃える）。
+- **スコープ**: 点数計算モード（`.quiz-page`）のインライン結果のみ。`ResultPage.tsx`（`/result`）・
+  `FuResultPage.tsx`（`/fu/result`）・符計算モードは対象外（T-009/T-010 と同じ境界）。
 
 ### 影響ファイル
 
-- `src/components/QuizPage.tsx` — 回答後ブロックの構造・クラス変更
+- `src/components/quizFlip7.css` — `.quiz-page .result-verdict` のスマホ幅（`--bp-sm`）向け
+  `font-size` 上書きを追加
 
 ### 実装ステップ
 
-1. `QuizPage.tsx` の `answered` 分岐を変更する:
-   - `<section className="quiz-answer" aria-label="結果">` は `ResultContent` のみを含める形に変更する。
-   - ボタンを `<section className="quiz-skip">` に切り出し、`className="btn-primary"` →
-     `"qp-skip-btn"`、`className="rp-cta-arrow"` → `"qp-skip-arrow"` に変更する。
-2. 目視確認: `/quiz` で回答後、「次の問題へ」ボタンが未回答時のスキップボタンと同じ見た目
-   （ティール枠アウトラインピル・中央寄せ）で表示されることを確認する。
+1. **`quizFlip7.css`**: 新規に `@media (--bp-sm) { .quiz-page .result-verdict { font-size: 1.3rem; } }`
+   を追加する。
+2. **目視確認**: ブラウザ幅を375px程度に縮小し、`/quiz` で不正解（ラベルが長い「✕ 不正解」）を出し、
+   正誤ラベルと答えのピルの折り返し状況を確認する（完全な1行化は必須要件ではない）。640px以上では
+   従来どおり `--fs-score`（2.2rem）のままであることも確認する。
 
 ### 受け入れ基準
 
-- 回答後の「次の問題へ」ボタンが、未回答時のスキップボタンと同一の見た目（クラス・スタイル）になっている。
-- ボタンが画面中央にコンテンツ幅で表示され、横幅いっぱいに引き伸ばされない。
-- 既存テスト（`QuizPage.test.tsx`）が変更なく通る（role/name ベースの検証のため）。
-- `npm test` / `npm run lint` が通る。
-
----
-
-## T-010 点数計算モードのインライン正誤表示を符計算モードのFlip7スタイルに統一（完了）
-
-### 目的 / 変更内容
-
-`ResultContent.tsx`（正誤・答え・内訳カード・高点法別解を表示する共有コンポーネント）は
-`QuizPage.tsx`（`.quiz-page` スコープ・インライン結果）と `ResultPage.tsx` /
-`FuResultPage.tsx`（`.result-page` スコープ・別画面）の両方から使われている。しかし
-Flip7デザイン（`docs/DESIGN.md`）の装飾は `resultFlip7.css` に `.result-page` スコープでのみ
-定義されており、`quizFlip7.css` には対応する `.quiz-page` 向けの上書きが一切無い。そのため
-符計算モードの解説画面（`/fu/result`）では正誤が色付きの「判定カード」（ティール/コーラルの枠＋
-グロー影＋登場アニメーション）とゴールドピルの答え表示で強調されるのに対し、**点数計算モードの
-インライン結果は同じ `ResultContent` を使っていながら無装飾（プレーンな色文字＋素の `.card`）の
-まま**になっている。この見た目の差を解消し、点数計算モードのインライン結果を符計算モードの解説
-画面と同じ Flip7 装飾にする。
-（正典: SPEC.md §4.4「正誤表示の見た目統一」）
-
-### 確定した設計判断
-
-- **対象範囲は結果ブロック全体**: 判定カード（`.result-verdict-row`／`.result-verdict`）・
-  答えのゴールドピル（`.result-answer`）・内訳カード（`.card`／`.result-breakdown`／
-  `.rp-section-label`／`.yaku-list`／`.calculation-line`／`.fu-list`〔非 `--primary` 版のみ。
-  `--primary` は `FuResultPage` 専用で `QuizPage` は使わないため対象外〕）・高点法別解カード
-  （`.result-alt`）を含める。
-- **実装方式**: 新規デザインは起こさず、`resultFlip7.css` の該当ルールを `quizFlip7.css` に
-  **`.quiz-page` スコープで同等の値のままミラーリング追加**する（各画面のスタイルを独立スコープで
-  管理する既存方針〔`quizFlip7.css` 冒頭コメント〕を踏襲。共通化リファクタは行わない）。
-- **不足トークンの追加**: `.quiz-page` ブロックには `--fl-gold-ink`・`--fl-glow-gold-soft` が
-  未定義のため、`resultFlip7.css` と同じ値で追加する（他のFlip7トークンは既に同一値で両ファイルに
-  定義済みのため追加不要）。
-- **アニメーション**: `@keyframes rp-pop` / `rp-rise` は `resultFlip7.css`（`ResultContent.tsx` が
-  常時import）で既に定義されており、CSSのキーフレームはスコープを持たないため `QuizPage` でも
-  そのまま参照できる。`quizFlip7.css` 側での再定義は不要。
-- **「解説はこちら」トグル（`.rp-detail-toggle`）**: 符計算モードの解説画面には存在しない、
-  点数計算モードのインライン結果専用のUIだが、周囲のカード装飾と浮かないよう **Flip7調に軽く
-  スタイリング**する（色を既存の見出し類〔`.qp-section-label` 等〕と同系の `var(--fl-teal-dark)`
-  にする程度の小さな調整。新規の装飾コンセプトは作らない）。
-- **対象外**: `ResultPage.tsx`（`/result`、点数計算モードのディープリンク用の別画面）自体は変更
-  しない。既に `.result-page` スコープで符計算モードと同じFlip7装飾を持っている。
-
-### 影響ファイル
-
-- `src/components/quizFlip7.css` — `.quiz-page` 向けの判定カード・内訳カード・高点法別解・
-  トグルのスタイル追加、不足トークンの追加
-
-### 実装ステップ
-
-1. **`quizFlip7.css`**:
-   - `.quiz-page` トークンブロックに `--fl-gold-ink: #8a6d00;`・
-     `--fl-glow-gold-soft: 0 4px 14px rgba(255, 210, 63, 0.28);` を追加する。
-   - `resultFlip7.css` の以下のルールを `.result-page` → `.quiz-page` に置き換えて追加する
-     （値は変更しない。`--primary` 系・`meld-mark` 系〔`FuResultPage` 専用〕は除く）:
-     - `.result-verdict-row`（`:has(.correct)` / `:has(.incorrect)` 含む）・登場アニメーション
-     - `.result-verdict` / `.correct` / `.incorrect`
-     - `.result-answer`
-     - `.card`・`.result-breakdown`（登場アニメーション含む）
-     - `.rp-section-label`
-     - `.yaku-list` / `.yaku-list li` / `li > span:first-child` / `li > span:last-child`
-     - `.calculation-line`
-     - `.fu-list li` / `.fu-note`（非 `--primary` 版）
-     - `.result-alt` / `h2` / `.rp-alt-icon` / `p`
-     - `prefers-reduced-motion` によるアニメーション無効化ブロック
-   - `.rp-detail-toggle` に `.quiz-page` スコープの軽微な上書き（`color: var(--fl-teal-dark)` 等）を
-     新規追加する。
-2. **目視確認**: `/quiz` で正解時・不正解時それぞれ回答し、判定カード・答え・内訳カード・
-   （不正解時は自動展開される）高点法別解が `/fu/result` と同系統のFlip7装飾で表示されることを
-   確認する。「解説はこちら」トグルの開閉も確認する。
-
-### 受け入れ基準
-
-- 点数計算モード（`/quiz`）の回答後、正誤表示が判定カード（正解=ティール系／不正解=コーラル系の
-  色付き枠＋グロー影）として表示される。
-- 答えがゴールドピルで表示される。
-- 内訳カード・高点法別解カードが符計算モードの解説画面と同系統のFlip7装飾（テイール枠・グロー影等）
-  になる。
-- 「解説はこちら」トグルが周囲のカードと違和感なく馴染む見た目になっている。
-- `ResultPage.tsx`（`/result`）・`FuResultPage.tsx`（`/fu/result`）の表示に変更がない（回帰）。
-- 符計算モードの `ChoiceGrid`・出題部分など、判定カード以外の表示に変更がない。
-- `npm test` / `npm run lint` が通る。
-
----
-
-## T-011 点数計算モードに「もう一度」ボタンを追加（完了）
-
-### 目的 / 変更内容
-
-`FuPartsQuizPage.tsx`（符分解モード）には、採点後に同じ問題を回答・採点状態だけリセットして
-解き直せる「もう一度」ボタンが既にある。`QuizPage.tsx`（最終点数モード）には同等の手段が無く、
-回答後は「次の問題へ」で新しい問題に進むことしかできない。同じ問題をすぐ解き直したいユーザーの
-ために、最終点数モードにも「もう一度」ボタンを追加する。
-（正典: SPEC.md §4.2「「もう一度」ボタン（最終点数モード）」）
-
-### 確定した設計判断
-
-- **表示条件**: 回答後（インライン結果表示時）のみ表示する。未回答時は表示しない（解き直す対象が
-  無いため）。
-- **挙動**: クリックで同じ問題（`problem` は変更しない）を未回答状態に戻す。既存の「問題に戻る」
-  （復習）の仕組み（`reviewProblem` state）をそのまま流用し、`setReviewProblem(problem)` →
-  `setAnswered(null)` とする。
-- **成績への非反映**: 「もう一度」で解き直した後の再回答は、`handleAnswer` 内の既存ガード
-  （`if (!reviewProblem) recordAnswer(...)`）により**成績（今日の回答数・正答率・苦手タグ）に
-  記録しない**。「次の問題へ」を押すと `reviewProblem` がクリアされ、以降の新しい問題は通常どおり
-  記録される（既存の `handleNext` のロジックをそのまま利用、変更不要）。
-- **ボタンの重み付け・並び**: **対等な2ボタン**とする（符分解モードの `fu-parts-nav` と同じ考え方）。
-  「次の問題へ」を Flip7 のティール枠アウトラインピル（既存の `qp-skip-btn`／T-009）から変更せず、
-  「もう一度」ボタンも**同一クラス（`qp-skip-btn`）**で見た目を揃える。並び順は「もう一度」→
-  「次の問題へ」（次の問題へを右側＝進行方向側に配置し、既存の押下位置の感覚を保つ）。
-  - 補足: `docs/OBJECTIVE.md` の「ワンタップ次へ」原則とは緊張関係があるが、ユーザー確認の上で
-    今回はテンポ最優先ではなく対等な2択を意図的に選ぶ。
-- **アイコン**: 「もう一度」は `↻`（循環矢印。`qp-skip-arrow` と同じ位置づけの新規スパン、
-  クラス名は既存の `qp-skip-arrow` を流用してよい）。「次の問題へ」の `→` とは区別する。
-- **対象外**: `ResultPage.tsx`（`/result`、点数計算モードのディープリンク用の別画面）・符計算モード
-  自体は変更しない。
-
-### 影響ファイル
-
-- `src/components/QuizPage.tsx` — `handleRetry` 追加、回答後ブロックへ「もう一度」ボタン追加
-- `src/components/quiz.css` — `.quiz-skip` に2ボタン横並び用の `gap` を追加
-  （1ボタンの既存箇所〔`FuQuizPage.tsx` 等〕には影響しない）
-- `src/components/QuizPage.test.tsx` — 「もう一度」ボタンの表示条件・挙動・成績非記録の検証
-
-### 実装ステップ
-
-1. **`QuizPage.tsx`**:
-   - `handleRetry` 関数を追加する: `if (!answered) return; setReviewProblem(problem); setAnswered(null);`
-   - `answered` 分岐内の `<section className="quiz-skip">` に、既存の「次の問題へ」ボタンの**前**に
-     「もう一度」ボタンを追加する（`className="qp-skip-btn"` / アイコンは `↻`、`onClick={handleRetry}`）。
-2. **`quiz.css`**: `.quiz-skip` に `gap: var(--space-3);`（2ボタンの間隔）を追加する。
-3. **テスト（`QuizPage.test.tsx`）**:
-   - 未回答時は「もう一度」ボタンが存在しないこと。
-   - 回答後、「もう一度」ボタンが表示され、押すと同じ問題が未回答状態（4択）で再表示されること
-     （手牌・問題IDが変わらないことを何らかの形で確認する。例: 選択肢の内容が同じであること）。
-   - 「もう一度」後に再回答しても `loadStats().totalAnswered` が増えないこと（成績非記録の確認）。
-   - 「もう一度」後に「次の問題へ」を押すと、以降は通常どおり新しい問題に進み、成績記録も再開する
-     こと（回帰確認）。
-
-### 受け入れ基準
-
-- 最終点数モード（`/quiz`）で、回答後に「もう一度」ボタンが「次の問題へ」と並んで表示される。
-- 未回答時は「もう一度」ボタンが表示されない。
-- 「もう一度」を押すと、同じ問題が未回答状態（4択）で再表示される。
-- 「もう一度」後の再回答は成績（今日の回答数・正答率・苦手タグ）に記録されない。
-- 「もう一度」後に「次の問題へ」を押すと、以降の新しい問題は通常どおり成績に記録される。
-- 「もう一度」「次の問題へ」ボタンの見た目（Flip7のティール枠アウトラインピル）が同一である。
-- `ResultPage.tsx`・符計算モードの表示・挙動に変更がない（回帰）。
+- スマホ幅（640px未満）で、点数計算モードの正誤ラベル（`.result-verdict`）が `1.3rem` で表示される。
+- PC幅（640px以上）では正誤ラベルのサイズが従来どおり（`--fs-score`＝2.2rem）のまま変わらない。
+- 答えのピル・計算式のサイズに変更がない。
+- `ResultPage.tsx`（`/result`）・`FuResultPage.tsx`（`/fu/result`）・符計算モードの表示に変更がない（回帰）。
 - `npm test` / `npm run lint` が通る。
