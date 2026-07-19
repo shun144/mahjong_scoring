@@ -10,7 +10,8 @@ export function PrivacyPolicyPage() {
   const headingClass =
     "text-[1.05rem] font-extrabold text-fl-teal-dark pb-1.5 border-b-[3px] border-[rgba(43,168,162,0.4)] [border-bottom-style:dashed]";
   const bodyClass = "m-0 text-fl-body leading-[var(--leading-normal)]";
-  const listClass = "m-0 pl-[1.3em] flex flex-col gap-2 leading-[var(--leading-normal)] marker:text-fl-teal";
+  const listClass =
+    "m-0 pl-[1.3em] flex flex-col gap-2 leading-[var(--leading-normal)] marker:text-fl-teal";
   const linkClass = "text-fl-teal-dark font-bold underline underline-offset-2 hover:text-fl-teal";
 
   return (
