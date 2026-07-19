@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { ModeId } from "../modes";
 import { MODES } from "../modes";
-import { HamburgerButton } from "../../components/HamburgerButton";
+import { HamburgerButton } from "./HamburgerButton";
 import { Sidebar } from "./Sidebar";
 
 interface Props {

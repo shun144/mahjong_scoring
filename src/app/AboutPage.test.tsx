@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import { OPERATOR_NAME } from "../config/site";
+import { OPERATOR_NAME } from "./site";
 import { AboutPage } from "./AboutPage";
 
 function renderPage() {

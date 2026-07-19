@@ -18,14 +18,23 @@
 
 ## ディレクトリ構成
 
+bulletproof-react（機能で縦割り）＋オニオン（機能内を層で整理）のハイブリッド構成。
+フォルダ構成・層分割・依存ルールの詳細は **`ARCHITECTURE.md`を正典**とする。
+
 ```
 src/
-  engine/     # 純粋TS: 牌モデル, 和了分解, 役判定, 符/翻, 点数, ドラ, 高点法
-  data/       # 牌画像アセット, 問題バンク(JSON)
-  generator/  # ランダム問題生成 + 妥当性検証, 誤答生成
-  store/      # localStorage(成績・苦手タグ) と集計・重み付け出題
-  components/ # 出題/解説/成績 の各画面 (React)
-  App.tsx / main.tsx
+  engine/                 # 純粋TS: 牌モデル, 和了分解, 役判定, 符/翻, 点数, ドラ, 高点法（唯一のコア・ドメイン）
+  features/
+    practice/             # 出題（4モード: 最終点数/符計算/符分解/点数換算）＋成績・復習
+      domain/  application/  infrastructure/  presentation/
+    settings/             # 設定（切り上げ満貫トグル等）
+      domain/  application/  infrastructure/  presentation/
+    articles/             # 学習ガイド記事
+      domain/  infrastructure/  presentation/
+  shared/                 # 複数featureが使う共有UI（牌描画一式・PageHeader/Sidebar/ErrorBoundary/ChoiceGrid等）
+  app/                    # ルーティング・静的ページ・画面組み立て（App.tsx, HomePage, About/Contact/Privacy, RouteMeta, site.ts）
+  main.tsx
+ARCHITECTURE.md     # フォルダ構成・依存ルール（正典）
 SPEC.md             # 仕様書（正典）
 TASKS.md            # 実装計画
 STYLE-TRANSFER.md   # CSS→Tailwind移行のルール（T-014/T-015より抽出）

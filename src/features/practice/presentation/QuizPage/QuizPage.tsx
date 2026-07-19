@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { resolveAnswer, type Problem } from "../../domain/problem";
-import type { Payment } from "../../../../engine/score";
+import type { Payment } from "@/engine/score";
 import { generateChoices, paymentKey } from "../../application/distractors";
 import { createSeededRandom, seedFromString } from "../../application/random";
 import { useSettings } from "../../../settings/presentation/SettingsContext";
@@ -71,6 +71,7 @@ export function QuizPage() {
       ),
     [effectiveProblem],
   );
+
   function handleAnswer(selected: Payment) {
     if (answered) return; // 同一問題の結果表示中は再回答を計上しない
     const isCorrect = paymentKey(selected) === paymentKey(effectiveProblem.answer.payment);

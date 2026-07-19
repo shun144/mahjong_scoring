@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { SITE_NAME } from "../config/site";
+import { SITE_NAME } from "./site";
 import "./privacy.css";
 
 const EFFECTIVE_DATE = "2026年7月4日";

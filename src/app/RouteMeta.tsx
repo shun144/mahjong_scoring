@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { SITE_NAME, SITE_ORIGIN } from "../config/site";
+import { SITE_NAME, SITE_ORIGIN } from "./site";
 import { getArticleBySlug } from "../features/articles/domain/registry";
 
 /**

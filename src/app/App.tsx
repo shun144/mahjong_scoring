@@ -13,7 +13,7 @@ import { HomePage } from "./HomePage";
 import { PrivacyPolicyPage } from "./PrivacyPolicyPage";
 import { QuizPage } from "../features/practice/presentation/QuizPage/QuizPage";
 import { ResultPage } from "../features/practice/presentation/ResultPage/ResultPage";
-import { RouteMeta } from "../components/RouteMeta";
+import { RouteMeta } from "./RouteMeta";
 import { StatsPage } from "../features/practice/presentation/StatsPage/StatsPage";
 import { SettingsPage } from "../features/settings/presentation/SettingsPage";
 import { SettingsProvider } from "../features/settings/presentation/SettingsContext";
@@ -21,7 +21,6 @@ import { ScrollTop } from "../shared/components/ScrollTop";
 
 function App() {
   return (
-    // フッターはエラー時も含め全画面に出したいので、ErrorBoundary の外側に置く。
     <div className="app-layout">
       <RouteMeta />
       <ScrollTop />

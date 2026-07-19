@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { OPERATOR_NAME, SITE_NAME } from "../config/site";
+import { OPERATOR_NAME, SITE_NAME } from "./site";
 import "./about.css";
 
 export function AboutPage() {

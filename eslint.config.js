@@ -23,8 +23,9 @@ export default tseslint.config(
     },
   },
   // --- ARCHITECTURE.md A6/A7: 依存方向の境界ルール ---
-  // 適用範囲は新設レイヤー(engine/features/shared/app)のみ。旧 components/store/content/data/settings
-  // 直下は files glob にそもそも含まれないため対象外(T-025で旧ディレクトリ整理後に全域へ拡大する)。
+  // 旧 components/store/content/data/settings/config はT-025で削除済み。
+  // src配下はengine/features/shared/appの新構成のみのため、以下のルールで全域をカバーする
+  // (app/はA6により無制限のため専用ルールを設けない)。
   {
     files: ["src/engine/**/*.{ts,tsx}"],
     rules: {

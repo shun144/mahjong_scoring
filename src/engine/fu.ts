@@ -3,7 +3,6 @@ import type { Wind, WinType } from "./model";
 import { isTerminalOrHonor, windToHonorType } from "./tileType";
 
 export interface FuContext {
-  /** 副露が一つも無い（門前）かどうか。 */
   isMenzen: boolean;
   winType: WinType;
   seatWind: Wind;
@@ -227,7 +226,15 @@ export function calculateFuElements(
 ): FuElementBreakdown {
   if (isPinfuShape(interp, ctx)) {
     if (ctx.winType === "tsumo") return { kind: "fixed", fu: 20 };
-    return { kind: "standard", winMethod: 10, meldTotal: 0, pair: 0, wait: 0, subtotal: 30, total: 30 };
+    return {
+      kind: "standard",
+      winMethod: 10,
+      meldTotal: 0,
+      pair: 0,
+      wait: 0,
+      subtotal: 30,
+      total: 30,
+    };
   }
 
   const winMethod = ctx.winType === "ron" ? (ctx.isMenzen ? 10 : 0) : 2;

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it } from "vitest";
-import { HamburgerButton } from "../../components/HamburgerButton";
+import { HamburgerButton } from "./HamburgerButton";
 import { Sidebar } from "./Sidebar";
 
 function Harness() {

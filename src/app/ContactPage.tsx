@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CONTACT_FORM_URL, SITE_NAME } from "../config/site";
+import { CONTACT_FORM_URL, SITE_NAME } from "./site";
 import "./contact.css";
 
 /**
