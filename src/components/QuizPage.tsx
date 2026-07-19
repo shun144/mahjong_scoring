@@ -139,7 +139,6 @@ export function QuizPage() {
         showRiichi={false}
       />
 
-      {/* アガリ牌・ドラ・手牌をひとつの「盤面」パネルにまとめて提示する（Flip7 の play mat）。 */}
       <section
         className="flex flex-col gap-[18px] px-4 py-[18px] bg-fl-teal-bg border-2 border-[rgba(43,168,162,0.2)] rounded-[var(--fl-r-lg)] shadow-[var(--fl-glow-teal-soft)] overflow-x-visible animate-[qp-rise_420ms_var(--fl-bounce)_both] motion-reduce:animate-none"
         aria-label="問題"

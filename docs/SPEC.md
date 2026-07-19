@@ -671,6 +671,38 @@ interface ScoreResult {
 - 他画面（`/quiz`等）の見た目に変化がない（新規昇格トークンの追加による回帰がないこと）。
 - `npm test` / `npm run lint` が通る。
 
+### 8.3.4 運営者情報・プライバシーポリシー・お問い合わせページのTailwind移行（T-017）
+
+**実装時の追記**: 計画段階では想定していなかった技術的制約が1点判明した。`.about-page`/`.privacy-page`/`.contact-page`は共有ベース（`src/index.css`の`.page-shell`、非レイヤーCSS）の`gap: var(--space-5)`（24px）とは異なる`gap: 20px`を使う。非レイヤーのCSSは詳細度に関係なくレイヤー化されたTailwindユーティリティに常に優先する（STYLE-TRANSFER.md R2と同じ制約）ため、Tailwindユーティリティ（`gap-5`等）ではこの上書きを再現できないことが判明した。ユーザーに確認のうえ、`gap: 20px`を例外的にページスコープのCSSとして残置することとした（下記「残置CSS」に反映済み）。また`--fl-r-md`（半径トークン）は3ファイルとも定義のみで実際には未使用（付随的な瑕疵）だったため、T-016の`--fl-hand-bg`削除と同様に削除した。
+
+**目的**: §8.3.1・`docs/STYLE-TRANSFER.md`の移行方式を**運営者情報**（`AboutPage.tsx`・`about.css`）・**プライバシーポリシー**（`PrivacyPolicyPage.tsx`・`privacy.css`）・**お問い合わせ**（`ContactPage.tsx`・`contact.css`）の3ページに適用する（`/grilling`セッションでの合意事項）。3ページはFlip7デザインシステム構成をほぼ同一のマークアップ・CSSで複製したものであり、対象・判断が共通のため1タスクにまとめる（T-016の前例と同様）。
+
+**対象範囲の判定**（STYLE-TRANSFER.md R5の適用結果）:
+- `page-shell`・`page-header`・`page-header-link`・`page-header-link-item`は`QuizPage.tsx`・`ResultPage.tsx`・`StatsPage.tsx`・`SettingsPage.tsx`等の未移行ファイルと共有しているため、`src/index.css`のCSSルールは削除しない。3ページ側のみクラス名の使用をやめ、Tailwindユーティリティで同一の見た目を再現する。
+- 3ページはヘッダーを共有コンポーネント`PageHeader.tsx`経由ではなく各ページが自前でマークアップを手書きしている（既存の実装形態）。今回もこの重複はリファクタリングせず、3ページそれぞれに同じTailwindユーティリティ文字列を直書きする（`ArticleListPage.tsx`のヘッダー実装（T-016）と同じ文字列を踏襲し、サイト全体の見た目統一を保つ）。
+- `about.css`・`privacy.css`・`contact.css`はそれぞれ対応するページ専用で、3ファイル間・他の未移行ファイルとの間でクラス名の共有が一切ない（`about-section`・`privacy-section`・`contact-section`等はいずれも自ファイル内のみで使用）。そのため構造・レイアウトのCSSルールは全面的に削除できる（STYLE-TRANSFER.md R5-4相当。ホーム画面T-015と同じ扱い）。
+
+**残置CSS**（STYLE-TRANSFER.md R3・R4の適用結果。3ファイルとも同じ範囲を`.about-page`/`.privacy-page`/`.contact-page`スコープに残す）:
+- 色トークン（`--fl-teal`・`--fl-teal-dark`・`--fl-teal-bg`・`--fl-cream`・`--fl-surface`・`--fl-card`・`--fl-ink`・`--fl-body`・`--fl-muted`）は、いずれも`tailwind.css`の`@theme`に`--color-fl-*`として登録済み（新規昇格なし）のため、ページローカルの再定義は削除し、`bg-fl-*`/`text-fl-*`等のネイティブユーティリティで直接参照する。
+- 色以外のトークン（半径`--fl-r-lg`・`--fl-r-pill`、グロー影`--fl-glow-teal-soft`、バウンスイージング`--fl-bounce`・`--fl-dur`）・登場アニメーションの`@keyframes`（`about-rise`・`privacy-rise`・`contact-rise`）・各ページのグラデーション背景（`radial-gradient(...)` ＋ `var(--color-fl-surface)`）は`@theme`へ昇格させず、ページスコープのCSSカスタムプロパティ・`@keyframes`として残す。未使用だった`--fl-r-md`は削除した（上記「実装時の追記」参照）。
+- `gap: 20px`は、共有ベース`.page-shell`（非レイヤーCSS、`gap: var(--space-5)`=24px）をTailwindユーティリティで上書きできないカスケードレイヤーの制約（上記「実装時の追記」参照）により、例外的にページスコープのCSSとして残置する。
+- `prefers-reduced-motion`ブロック（アニメーション・トランジションの無効化）は、対象要素がTailwindクラスに置き換わるためTailwindの`motion-reduce:`バリアントに移行し、CSS側の該当ルールは削除する。
+
+**破線ボーダー**（STYLE-TRANSFER.md R10の適用）: 各セクション見出し`h2`の下線（点線）は`border-dashed`ではなく`[border-bottom-style:dashed]`を使う。
+
+**既存クラス名とテストへの影響**（STYLE-TRANSFER.md R8の適用結果）: `AboutPage.test.tsx`・`PrivacyPolicyPage.test.tsx`・`ContactPage.test.tsx`はいずれも既に`role`／表示テキストベースのクエリのみで、クラス名セレクタに依存していないため変更不要。
+
+**ドキュメント運用**: T-014〜T-016と同じ運用を踏襲し、`TASKS.md`のT-017は実装完了後に本節へ要点を集約済みとして削除する。
+
+**受け入れ基準**:
+- `npm install`後、`/about`・`/privacy`・`/contact`の見た目が移行前とピクセルレベルで変わらない（配色・余白・角丸・アニメーション含む）。スマホ幅（375px程度）・PC幅の両方で確認する。
+- ヘッダーのホームリンク・お問い合わせボタン（`/contact`）・本文中リンクの`hover`/`active`状態が移行前と一致する。
+- `prefers-reduced-motion`設定時、登場アニメーション・hover移動が無効化される（移行前と同じ挙動）。
+- `--bp-sm-up`（640px）前後でのヘッダー余白の挙動が移行前と一致する。
+- `about.css`・`privacy.css`・`contact.css`から構造・レイアウトのCSSルールが消え、ページスコープのトークン定義・`@keyframes`・背景グラデーションのみが残る。
+- 他画面の見た目に変化がない（`page-shell`/`page-header`系CSSの温存漏れがないこと）。
+- `npm test` / `npm run lint` が通る。
+
 ### 8.4 ファビコン・アプリアイコン・マニフェスト
 
 - **目的**: ブラウザタブ・ブックマーク・iOS/Android「ホーム画面に追加」時に表示されるアプリのアイコンと名称を整え、ブランドの一貫性と信頼性（AdSense 審査・共有時の見栄え）を高める。加えて、Web アプリマニフェストにより**ホーム画面へのインストール（スタンドアロン表示）**を可能にする（ただし Service Worker は持たず、オフラインでは動作しない。§2.2）。

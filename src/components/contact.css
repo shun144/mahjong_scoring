@@ -1,21 +1,18 @@
 /* =====================================================================
-   お問い合わせ（ContactPage）— about.css / privacy.css と同じ Flip7 デザイン
-   システム構成を踏襲。contact.css はこのページ専用。共有の .page-header / h2 /
-   a も .contact-page 配下にスコープして他画面へ波及させない。
+   お問い合わせ（ContactPage）— Flip7 デザインシステム（docs/DESIGN.md）レイヤー。
+   構造・レイアウト・色はTailwindユーティリティ（ContactPage.tsx）に移行済み
+   （T-017／SPEC.md §8.3.4）。ここに残すのは:
+   1. Tailwindの@theme（tailwind.css）に昇格していない色以外のトークン
+      （形状・グロー影・モーション）
+   2. .contact-page の背景グラデーション・@keyframes
+   3. gap: 20px — 共有ベース（src/index.css の .page-shell、非レイヤーCSS、gap:
+      var(--space-5)=24px）はカスケードレイヤーの仕様上Tailwindユーティリティで
+      上書きできない（非レイヤーのルールは常にレイヤー化されたユーティリティに
+      優先する）ため、ページ固有の値をCSSとして残置する。
+   すべて .contact-page スコープに閉じ込め、グローバル・他画面（共有クラスの
+   .page-header系等）には影響させない。
    ===================================================================== */
 .contact-page {
-  /* --- 配色トークン（他画面と同一の Flip7 パレット） --- */
-  --fl-teal: #2ba8a2;
-  --fl-teal-dark: #1e8c86;
-  --fl-teal-bg: #e8f6f5;
-  --fl-cream: #fff8e7;
-  --fl-surface: #eff8f7;
-  --fl-card: #ffffff;
-  --fl-ink: #123f3c;
-  --fl-body: #34514f;
-  --fl-muted: #566d6b;
-
-  --fl-r-md: 16px;
   --fl-r-lg: 24px;
   --fl-r-pill: 999px;
 
@@ -25,152 +22,9 @@
   --fl-dur: 220ms;
 
   gap: 20px;
-  color: var(--fl-body);
   background:
     radial-gradient(120% 40% at 50% -6%, rgba(255, 226, 138, 0.45) 0%, rgba(255, 226, 138, 0) 60%),
-    var(--fl-surface);
-}
-
-/* ヘッダー — 他画面と同じ浮遊 sticky カード。 */
-.contact-page .page-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: rgba(255, 248, 231, 0.86);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 2px solid rgba(43, 168, 162, 0.22);
-  margin-inline: calc(50% - 50vw);
-  margin-top: calc(-1 * var(--space-4));
-  padding: 10px max(16px, calc(50vw - 320px));
-}
-
-@media (--bp-sm-up) {
-  .contact-page .page-header {
-    margin-top: calc(-1 * var(--space-6));
-  }
-}
-.contact-page .page-header h1 {
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--fl-teal-dark);
-}
-.contact-page .page-header-link {
-  gap: 8px;
-}
-.contact-page .page-header-link-item {
-  min-height: 36px;
-  padding: 0 14px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--fl-teal-dark);
-  background: var(--fl-cream);
-  border: 2px solid var(--fl-teal);
-  border-radius: var(--fl-r-pill);
-  transition:
-    transform var(--fl-dur) var(--fl-bounce),
-    background var(--fl-dur) var(--fl-bounce),
-    color var(--fl-dur) var(--fl-bounce);
-}
-@media (hover: hover) {
-  .contact-page .page-header-link-item:hover {
-    color: var(--fl-cream);
-    background: var(--fl-teal);
-    text-decoration: none;
-    transform: translateY(-2px);
-  }
-}
-.contact-page .page-header-link-item:active {
-  transform: scale(0.95);
-}
-
-/* 各セクション＝白いカード。ティール枠＋グロー＋大角丸で暖色の地から浮かせる。 */
-.contact-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: 18px 20px;
-  background: var(--fl-card);
-  border: 2px solid rgba(43, 168, 162, 0.22);
-  border-radius: var(--fl-r-lg);
-  box-shadow: var(--fl-glow-teal-soft);
-  animation: contact-rise 380ms var(--fl-bounce) both;
-}
-
-/* 見出し：ティールの太字＋破線ボーダー（Flip7 の Section Titles）。 */
-.contact-page .contact-section h2 {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--fl-teal-dark);
-  padding-bottom: 6px;
-  border-bottom: 3px dashed rgba(43, 168, 162, 0.4);
-}
-
-.contact-page .contact-section p {
-  margin: 0;
-  color: var(--fl-body);
-  line-height: var(--leading-normal);
-}
-
-.contact-section ul {
-  margin: 0;
-  padding-left: 1.3em;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  line-height: var(--leading-normal);
-}
-.contact-page .contact-section li::marker {
-  color: var(--fl-teal);
-}
-
-/* 本文中のリンクはティールで。 */
-.contact-page a {
-  color: var(--fl-teal-dark);
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-@media (hover: hover) {
-  .contact-page a:hover {
-    color: var(--fl-teal);
-  }
-}
-
-/* 主要導線＝フォームを開くボタン。塗りのピル型で目立たせる（下線は付けない）。 */
-.contact-cta {
-  margin-top: var(--space-1);
-}
-.contact-page a.contact-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 24px;
-  color: var(--fl-cream);
-  background: var(--fl-teal);
-  border: 2px solid var(--fl-teal-dark);
-  border-radius: var(--fl-r-pill);
-  box-shadow: var(--fl-glow-teal-soft);
-  text-decoration: none;
-  transition:
-    transform var(--fl-dur) var(--fl-bounce),
-    background var(--fl-dur) var(--fl-bounce);
-}
-@media (hover: hover) {
-  .contact-page a.contact-button:hover {
-    color: var(--fl-cream);
-    background: var(--fl-teal-dark);
-    transform: translateY(-2px);
-  }
-}
-.contact-page a.contact-button:active {
-  transform: scale(0.97);
+    var(--color-fl-surface);
 }
 
 @keyframes contact-rise {
@@ -181,16 +35,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contact-section {
-    animation: none;
-  }
-  .contact-page .page-header-link-item,
-  .contact-page a.contact-button {
-    transition: none;
-    transform: none;
   }
 }
