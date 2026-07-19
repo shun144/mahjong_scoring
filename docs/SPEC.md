@@ -609,6 +609,53 @@ interface ScoreResult {
 - 牌は**画像スプライト**。鳴き牌は横向き、赤ドラは赤色で表現。
 - **ヘッダーの統一（帯スタイル）**: トップ以外の全画面のヘッダーは、トップ（`.home-topbar`）と**同じ帯スタイル**に統一する。すなわち **画面端まで伸びるクリーム半透明の帯**（背景ぼかし・**下側のみ**の細いティール罫線・角丸/影なし・`sticky top:0`）とし、中央寄せカラム（`max-width` の本文列）の**外側**に全幅で配置する。統一対象は**帯の見た目のみ**で、各ヘッダー内のボタン・ナビ（ホーム/成績などのリンク）と見出しテキストは**現状の配置・スタイルのまま**変更しない（トップにあるブランドマーク等を他画面へ持ち込むことはしない）。
 
+### 8.3.1 スタイル実装方式（Tailwind移行・点数計算モード先行）
+
+**移行の汎用ルールは `docs/STYLE-TRANSFER.md` を正典とする**（Tailwind v4・Preflight非導入・レイヤー宣言・トークン昇格基準・残置CSSパターン・対象範囲の判定ルール・擬似要素の実要素化・ブレークポイント方針・テスト方針・受け入れ基準の定型）。以下は**点数計算モード**（`QuizPage.tsx`・`ResultContent.tsx`・`ResultPage.tsx`）への適用結果を記録する（`/grilling` セッションでの合意事項）。全画面一括ではなく点数計算モードを最初の対象とし、他モード（符計算・符分解・点数換算・ホーム等）への影響ゼロを維持したまま移行の実現性を検証した。以降、**ホーム画面**（§8.3.2・T-015）等へ段階的に対象を広げている。
+
+**Tailwind化する具体的な要素**（STYLE-TRANSFER.md R5の判定ルール適用結果）:
+- `QuizPage.tsx`: `main.page-shell.quiz-page`直下の構造、モメンタムカウンタ（`.qp-momentum`系）、盤面ラッパー（`.qp-board`）、点数早見表の開閉ボタン（`.qp-table-header-btn`）、スキップ操作列（`.quiz-skip`・`.qp-skip-btn`）。対応する`quiz.css`・`quizFlip7.css`のCSSルールは削除する。
+- `ResultContent.tsx`: 「内訳」見出し行一式（`.result-breakdown-header`・`.result-breakdown-verdict`・`.result-breakdown-answer`）、「解説はこちら」トグル（`.rp-detail-toggle`）、役一覧（`.yaku-list`）、計算式（`.calculation-line`）、高点法の別解（`.result-alt`・`.rp-alt-icon`）。対応する`result.css`・`resultFlip7.css`のCSSルールは削除する。
+- `ResultContent.tsx`・`ResultPage.tsx`が使う`.card`・`.result-breakdown`（基底）・`.result-actions`・`.btn-primary`・`.btn-secondary`・`.rp-cta-arrow`は、**`FuResultPage.tsx`が同じクラス名を直接使用しているため**、CSSルールは削除せず残す。移行対象ファイル側のみクラス名の使用をやめ、Tailwindユーティリティで同一の見た目を再現する。
+
+**デザイントークンの扱い**（STYLE-TRANSFER.md R3・R7の適用結果）:
+- `src/index.css`の既存トークン（`--color-*`・`--space-*`・`--fs-*`・`--radius-*`・`--font-numeric`等）はTailwindの`@theme`でマッピングし、`bg-accent`・`text-sm`のようなユーティリティから既存トークンをそのまま参照できるようにする（値の二重管理をしない）。
+- `quizFlip7.css`内で`.quiz-page`スコープに閉じて定義されているFlip7配色（`--fl-teal`等）は、`@theme`に昇格させサイト全体で参照可能なトークンにする（将来の全面移行時にそのまま流用できるようにするため）。
+- ブレークポイントは`@theme`の`--breakpoint-*`を既存の`src/styles/breakpoints.css`（`--bp-sm`系）と同じ値（`640px`境界）に合わせ、Tailwind標準の`sm:`プレフィクスをそのまま使う（既存の`@custom-media --bp-sm-up (min-width: 640px)`と一致）。
+
+**既存クラス名とテストへの影響**（STYLE-TRANSFER.md R8の適用結果）:
+- 移行対象要素の既存クラス名（上記「Tailwind化する具体的な要素」列挙分。ただし`FuResultPage.tsx`と共有するものは除く）はTailwindユーティリティへの置き換えに伴い**廃止**する。
+- これらのクラス名をセレクタに使っていたテスト（`QuizPage.test.tsx`）は、`role`／表示テキスト／`data-testid`を使うクエリへ書き換える（自然なroleやテキストが無い要素にのみ`data-testid`を付与する）。
+- 共有コンポーネント（`ChoiceGrid`等）が描画する要素のクラス名（例: `.quiz-choice-btn`）は変更しないため、それらに依存する既存テストのクエリはそのまま変更不要。
+
+### 8.3.2 ホーム画面のTailwind移行（T-015）
+
+**目的**: §8.3.1・`docs/STYLE-TRANSFER.md`の移行方式を**ホーム画面**（`HomePage.tsx`・`home.css`）に適用する。ホームは他画面とクラス名・CSSカスタムプロパティを一切共有していないため（STYLE-TRANSFER.md R5-4。`FuResultPage.tsx`等との共有制約があった点数計算モードとは異なる）、**構造・レイアウトのCSSルールを全面的に削除**した（`/grilling` セッションでの合意事項）。
+
+**残置CSS（home.cssに残した範囲）**（STYLE-TRANSFER.md R3・R4の適用結果。`.home-page`スコープのCSSカスタムプロパティ・`@keyframes`とし、JSX側はTailwindの任意値記法（`shadow-[var(--fl-glow-teal)]`等）から参照する）:
+- 色以外のトークン（半径`--fl-r-*`、グロー影`--fl-glow-*`、バウンスイージング`--fl-bounce`・`--fl-dur`）。
+- 登場アニメーションの`@keyframes`（`home-rise`・`home-pop`）。
+- `.home-page`のグラデーション背景（`radial-gradient(...)` ＋ `var(--fl-surface)`）。
+
+**新規トークンの昇格**: `home.css`にのみ存在し`tailwind.css`未登録だった色トークン（`--fl-violet`・`--fl-violet-dark`）を、`tailwind.css`の`@theme`へ`--color-fl-violet`・`--color-fl-violet-dark`として追加した（T-014でteal/gold/coral等を昇格させたのと同じ扱い）。
+
+**擬似要素の実要素化**（STYLE-TRANSFER.md R6の適用結果）: `.home-ribbon::before/::after`（リボン両端の帯）・`.home-mode::before`（モードカード左アクセントバー）を`aria-hidden`付きの実要素（`<span>`）に置き換えた（既存の`.home-hero-fan-card`と同じ手法に統一）。
+
+**独自ブレークポイントの扱い**（STYLE-TRANSFER.md R7の適用結果）: `--bp-home-2col`（480px、モードカードグリッドの2列化）は`@theme`へ昇格させず、`min-[480px]:`のTailwind任意値ブレークポイントバリアントとしてJSX側に直接記述した。`src/styles/breakpoints.css`の`--bp-home-2col`定義は削除した。
+
+**付随する既存瑕疵の解消**: `src/index.css`の`prefers-reduced-motion`ブロックにあった`.home-mode-card`セレクタは、現行`home.css`のどのクラスとも一致しない死んだCSS（本移行前からの既存の瑕疵）のため、本タスクであわせて削除した。
+
+**テスト方針**（STYLE-TRANSFER.md R8の適用結果）: 本タスクはスタイルのみの変更のため、`HomePage.test.tsx`は新規追加しない。受け入れ確認はブラウザ目視（下記）で行う。
+
+**受け入れ基準**:
+- `npm install`後、`/`の見た目が移行前とピクセルレベルで変わらない（配色・余白・角丸・アニメーション含む）。スマホ幅（375px程度）・PC幅の両方で確認する。
+- モードカード・ピルボタン・リボン・ファンカードの`hover`/`active`状態が移行前と一致する。
+- `prefers-reduced-motion`設定時、登場アニメーション・hover移動が無効化される（移行前と同じ挙動）。
+- 480px前後でのモードカードグリッドの1列⇄2列切り替えが移行前と一致する。
+- `home.css`から構造・レイアウト・擬似要素・独自ブレークポイントのCSSルールが消え、`.home-page`スコープのトークン定義・`@keyframes`・背景グラデーションのみが残る。
+- 他画面（`/quiz`等）の見た目に変化がない（新規昇格トークンの追加による回帰がないこと）。
+- `npm test` / `npm run lint` が通る。
+
 ### 8.4 ファビコン・アプリアイコン・マニフェスト
 
 - **目的**: ブラウザタブ・ブックマーク・iOS/Android「ホーム画面に追加」時に表示されるアプリのアイコンと名称を整え、ブランドの一貫性と信頼性（AdSense 審査・共有時の見栄え）を高める。加えて、Web アプリマニフェストにより**ホーム画面へのインストール（スタンドアロン表示）**を可能にする（ただし Service Worker は持たず、オフラインでは動作しない。§2.2）。

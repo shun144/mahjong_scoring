@@ -131,7 +131,9 @@
 }
 
 /* =====================================================================
-   盤面（play mat）— アガリ牌・ドラ・手牌をまとめるティール地パネル
+   盤面（play mat）— アガリ牌・ドラ・手牌をまとめるティール地パネル。
+   FuQuizPage.tsx とクラス名を共有するため維持する（QuizPage.tsx 自体は Tailwind
+   ユーティリティに移行済み。T-014）。
    ===================================================================== */
 .quiz-page .qp-board {
   display: flex;
@@ -298,7 +300,9 @@
 }
 
 /* =====================================================================
-   スキップ（次の問題へ）— ティールのアウトラインピル
+   スキップ（次の問題へ）— ティールのアウトラインピル。
+   FuQuizPage.tsx・ConvertQuizPage.tsx とクラス名を共有するため維持する
+   （QuizPage.tsx 自体は Tailwind ユーティリティに移行済み。T-014）。
    ===================================================================== */
 .quiz-page .qp-skip-btn {
   display: inline-flex;
@@ -388,14 +392,10 @@
   box-shadow: var(--fl-glow-gold-soft);
 }
 
-/* 「解説はこちら」トグル（符計算モードの解説画面には無い、インライン結果専用のUI）。
-   新規デザインは起こさず、既存の見出し類と同系色にして周囲のカードと馴染ませる。 */
-.quiz-page .rp-detail-toggle {
-  color: var(--fl-teal-dark);
-}
-
 /* =====================================================================
-   内訳カード（役・翻・符・計算式）
+   内訳カード（役・翻・符・計算式）。FuResultPage.tsx・FuPartsQuizPage.tsx・
+   FuQuizPage.tsx とクラス名（.card/.result-breakdown 基底）を共有するため維持する
+   （ResultContent.tsx 自体の中身は Tailwind ユーティリティに移行済み。T-014）。
    ===================================================================== */
 .quiz-page .card {
   padding: 18px;
@@ -419,32 +419,7 @@
   border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
 }
 
-.quiz-page .yaku-list {
-  gap: 0;
-}
-.quiz-page .yaku-list li {
-  align-items: center;
-  padding: 9px 0;
-  border-bottom: 2px dashed rgba(43, 168, 162, 0.22);
-}
-.quiz-page .yaku-list li:last-child {
-  border-bottom: none;
-}
-.quiz-page .yaku-list li > span:first-child {
-  color: var(--fl-ink);
-  font-weight: 700;
-}
-.quiz-page .yaku-list li > span:last-child {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 12px;
-  font-size: 0.85em;
-  font-weight: 800;
-  color: var(--fl-teal-dark);
-  background: var(--fl-teal-bg);
-  border-radius: var(--fl-r-pill);
-}
-
+/* ConvertQuizPage.tsx とクラス名を共有するため維持する（T-014）。 */
 .quiz-page .calculation-line {
   padding-top: 12px;
   border-top: 2px dashed rgba(43, 168, 162, 0.4);
@@ -458,31 +433,6 @@
 }
 .quiz-page .fu-note {
   color: var(--fl-muted);
-}
-
-/* =====================================================================
-   高点法の別解 — ゴールドの注記カード
-   ===================================================================== */
-.quiz-page .result-alt {
-  padding: 16px 18px;
-  background: color-mix(in srgb, var(--fl-gold) 14%, #fff);
-  border: 2px solid var(--fl-gold-dark);
-  border-radius: var(--fl-r-lg);
-  box-shadow: var(--fl-glow-gold-soft);
-}
-.quiz-page .result-alt h2 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 800;
-  color: var(--fl-gold-ink);
-}
-.quiz-page .rp-alt-icon {
-  font-size: 1.1em;
-  line-height: 1;
-}
-.quiz-page .result-alt p {
-  color: var(--fl-body);
 }
 
 /* =====================================================================

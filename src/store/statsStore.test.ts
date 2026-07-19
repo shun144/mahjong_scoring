@@ -1,6 +1,14 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import type { Problem } from "../data/problem";
-import { clearStats, createEmptyStats, loadStats, recordAnswer, saveStats } from "./statsStore";
+import {
+  clearStats,
+  createEmptyStats,
+  getTodayAnswered,
+  loadStats,
+  recordAnswer,
+  saveStats,
+  todayKey,
+} from "./statsStore";
 
 function fakeProblem(fuType: number, yakuCategories: string[]): Problem {
   return {
@@ -139,5 +147,44 @@ describe("recordAnswer", () => {
     const stats = loadStats();
     expect(stats.history.length).toBeLessThanOrEqual(500);
     expect(stats.totalAnswered).toBe(550); // 集計自体は打ち切らない
+  });
+
+  it("increments todayAnswered on both correct and incorrect answers (throughput, non-punitive)", () => {
+    let stats = recordAnswer(fakeProblem(30, ["リーチ"]), true);
+    expect(stats.todayAnswered).toBe(1);
+    stats = recordAnswer(fakeProblem(30, ["リーチ"]), false);
+    expect(stats.todayAnswered).toBe(2); // 不正解でも今日の回答数は加算される（減らない）
+  });
+
+  it("resets todayAnswered (but not totalAnswered) when the stored date is not today", () => {
+    const yesterday = createEmptyStats();
+    yesterday.totalAnswered = 10;
+    yesterday.todayDate = todayKey(new Date(Date.now() - 24 * 60 * 60 * 1000));
+    yesterday.todayAnswered = 5;
+    saveStats(yesterday);
+
+    const stats = recordAnswer(fakeProblem(30, ["リーチ"]), true);
+
+    expect(stats.todayDate).toBe(todayKey());
+    expect(stats.todayAnswered).toBe(1); // 日跨ぎでリセットされ、今日の1回のみ
+    expect(stats.totalAnswered).toBe(11); // 累計は跨ぎの影響を受けない
+  });
+});
+
+describe("getTodayAnswered", () => {
+  it("returns 0 for stats with no history", () => {
+    expect(getTodayAnswered(createEmptyStats())).toBe(0);
+  });
+
+  it("returns todayAnswered when the stored date is today", () => {
+    const stats = recordAnswer(fakeProblem(30, ["リーチ"]), true);
+    expect(getTodayAnswered(stats)).toBe(1);
+  });
+
+  it("returns 0 when the stored date is not today (stale, not yet rolled over)", () => {
+    const stats = createEmptyStats();
+    stats.todayDate = todayKey(new Date(Date.now() - 24 * 60 * 60 * 1000));
+    stats.todayAnswered = 7;
+    expect(getTodayAnswered(stats)).toBe(0);
   });
 });

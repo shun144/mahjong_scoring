@@ -1,295 +1,5 @@
 # TASKS.md — 実装計画
 
-## T-001 リーチ表示をロン/ツモの右隣へ移動（最終点数モードのみ）
-
-### 目的 / 変更内容
-
-最終点数モード（`QuizPage`／点数計算）で、リーチの表示を**上段の局条件バッジ列から撤去**し、
-**アガリ牌（ツモ/ロンの色付き枠）の右隣**（ドラ表示牌の左）へ移す。
-横の並びは `ツモ/ロン → リーチ → ドラ` の順。（正典: SPEC.md §4.1「リーチ表示の位置」）
-
-### 確定した設計判断
-
-- **見た目**: 既存の `badge badge-riichi` の見た目のまま置く（枠付きタイルグループ様式には寄せない）。
-- **非リーチ時**: 同じ幅の枠を**常に確保して空表示**。リーチ有無でドラ表示牌の位置を動かさない。
-- **並び順**: `ツモ/ロン → リーチ → ドラ`。
-- **スコープ**: **最終点数モード（`QuizPage`）のみ**。上段バッジ列からはリーチを撤去する。
-  符計算モード（`FuQuizPage`）・符分解モード（`FuPartsQuizPage`）・点数換算モード（`ConvertQuizPage`）は**変更しない**。
-
-### 影響ファイル
-
-- `src/components/QuizTileHeader.tsx` — リーチ枠の追加（共有コンポーネント）
-- `src/components/QuizPage.tsx` — 上段からリーチ撤去＋タイルヘッダーへリーチ表示を有効化
-- `src/components/quiz.css`（＋必要に応じて `quizFlip7.css`） — リーチ枠のレイアウト/整列
-- `src/components/QuizPage.test.tsx` / `QuizTileHeader` 用テスト — 位置の検証
-
-### 実装ステップ
-
-1. **`QuizTileHeader.tsx`**: `showRiichi?: boolean`（既定 `false`）を追加。
-   `true` のとき、`win-indicator-section` と `dora-indicator-section` の**間**に
-   リーチ用セクション（例: `.riichi-indicator-section`）を描画する。
-   - `problem.conditions.riichi === true` → 既存 `badge badge-riichi` を描画。
-   - `false` → 同幅の空スペーサー（`aria-hidden`）を描画し、枠だけ確保する。
-   - `showDora` とは独立（`showDora=false` でもリーチ枠は出せる設計にするが、当面 QuizPage 専用）。
-2. **`QuizPage.tsx`**:
-   - `<QuizConditions ... showRiichi={false} />` を渡し、上段バッジ列からリーチを撤去。
-   - `<QuizTileHeader ... showRiichi />` を渡し、新位置でのリーチ表示を有効化。
-3. **CSS**: `.riichi-indicator-section` を追加。
-   - バッジを 2 行（ラベル＋牌）構成のセクション高に対して**縦中央**に置く。
-   - リーチ/非リーチで**幅を固定**（`min-width`）してドラ位置を安定させる。
-   - `.quiz-tile-header` の `justify-content`（現状 `space-between`）が 3 セクションで崩れないか確認し、
-     必要なら `gap` ベースの間隔へ微調整する。
-4. **テスト**:
-   - リーチ手: リーチ表示がアガリ牌セクション側（タイルヘッダー内）に出て、上段バッジ列には**出ない**こと。
-   - 非リーチ手: タイルヘッダー内にリーチバッジが**出ない**が、枠（空表示）は確保されること。
-   - `FuQuizPage` / `FuPartsQuizPage` が `showRiichi` 既定 `false` で**従来どおり**であること（回帰確認）。
-
-### 受け入れ基準
-
-- 最終点数モードで、リーチが `ツモ/ロン → リーチ → ドラ` の順に表示される。
-- 非リーチ時もドラ表示牌の位置が変わらない。
-- 上段の局条件バッジ列にリーチが出ない（最終点数モード）。
-- 他モードの表示・テストに影響がない。
-- `npm test` / `npm run lint` が通る。
-
----
-
-## T-002 点数早見表ダイアログを親/子スワイプカルーセル化
-
-### 目的 / 変更内容
-
-点数早見表ダイアログ（`ScoreTableDialog`）で、現状**トグルボタンでのみ**切り替えている
-親表・子表を、**スワイプで左右に切り替えられるカルーセル**にする。トグルは残し、スワイプと双方向同期する。
-（正典: SPEC.md §4.12「点数早見表ダイアログ」／§8.1 オーバーレイ）
-
-### 確定した設計判断
-
-- **スライド**: **親／子の2枚**（各パネルに 符×翻の本表＋満貫区分行を含む）。
-- **切替UI**: 既存の**親/子トグルを残し、スワイプと双方向同期**。デスクトップ・非タッチでもトグルで切替可。
-- **実装方式**: **CSS `scroll-snap`**（横スクロールコンテナ＋`scroll-snap-type: x mandatory`、各パネル100%幅）。
-  ライブラリ追加・手動touchハンドラは採用しない。
-- **両パネル常時描画**: 現状の片側条件描画（`side === "dealer" ? ... : ...`）をやめ、**両パネルをDOMに常時描画**する（scroll-snap成立の前提）。表データはモジュール読込時に生成済みでコスト増は軽微。
-- **入れ子スクロール排除**: **横軸はカルーセルの1軸のみ**。表内の横スクロール（`.st-scroll { overflow-x: auto }`）を**廃止**し、表を `table-layout: fixed` でパネル幅に収める。極小端末はフォント縮小で吸収。**ダイアログ本文の縦スクロールは残す**。
-- **同期**: スクロール位置→state は `IntersectionObserver`（各パネル、閾値 ~0.55）で判定。
-  トグル押下→対象パネルへ `scrollTo({ behavior: "smooth" })`、**`prefers-reduced-motion` 時は `"auto"`（即時ジャンプ）**。
-- **アクセシビリティ**: トグルの `aria-pressed` を維持、スクロールコンテナに `aria-label`。各パネルの `親`/`子` 見出し（h3）は残す。色のみ依存にしない。
-
-### 影響ファイル
-
-- `src/components/ScoreTableDialog.tsx` — 条件描画→両パネル描画、scroll-snapコンテナ、`IntersectionObserver`/`scrollTo` 同期
-- `src/components/scoreTable.css` — `.st-body` を横スクロール＋スナップ化・パネル100%幅、`.st-scroll` の横スクロール撤去、reduced-motion対応
-- `src/components/ScoreTableDialog.test.tsx` — **新規**（現状ダイアログ単体テストは無い）
-
-### 実装ステップ
-
-1. **`ScoreTableDialog.tsx`**:
-   - `.st-body` 内に**親・子の2パネルを常に描画**する横スクロールコンテナ（例: `.st-carousel`）を置き、各パネルを `.st-panel`（100%幅・`scroll-snap-align: start`）でラップ。
-   - コンテナ要素に `ref` を持たせ、各パネルに `IntersectionObserver`（root=コンテナ、閾値 ~0.55）を張って、可視側で `side` state を更新する（スワイプ→トグル同期）。
-   - `side` 変化がユーザーのトグル操作由来のとき、対象パネルへ `scrollTo`。`window.matchMedia("(prefers-reduced-motion: reduce)")` を見て `behavior` を切替。無限同期ループを避けるため「トグル起点のスクロール」と「スクロール起点のstate更新」を区別する（フラグ/直近値ガード等）。
-   - `open` で開いた直後は現在の `side` に**アニメーションなしで**位置合わせする。
-2. **`scoreTable.css`**:
-   - `.st-carousel { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; }`、`.st-panel { flex:0 0 100%; scroll-snap-align:start; }`。
-   - `.st-scroll { overflow-x: auto }` の横スクロールを撤去（表をパネル幅に収める前提のスタイルへ）。
-   - `@media (prefers-reduced-motion: reduce)` で `scroll-behavior: auto`。スクロールバーは必要なら視覚的に隠す。
-3. **テスト（`ScoreTableDialog.test.tsx` 新規）**:
-   - jsdomはスクロール/スナップ/`IntersectionObserver` 未実装のため、`IntersectionObserver` を**モック**する。
-   - ①親・**両パネルが同時にDOM描画**される、②トグル押下でアクティブ側（`aria-pressed`）が切替、③Observer発火をシミュレートしスクロール→トグル状態が同期、を検証。
-   - 実スワイプのピクセル挙動はjsdom範囲外として検証しない（計画上の割り切り）。
-
-### 受け入れ基準
-
-- 早見表ダイアログで、親表・子表を**スワイプで左右に切り替えられる**。
-- 親/子トグルとスワイプが**双方向同期**する（トグル→スクロール、スワイプ→`aria-pressed`）。
-- 横方向の入れ子スクロールが無く、スワイプが表内スクロールに吸われない。
-- `prefers-reduced-motion` 指定時はトグル切替が即時ジャンプになる。
-- 早見表の数値は従来どおり `calculatePayment` 由来で、クイズ採点と食い違わない。
-- `npm test` / `npm run lint` が通る。
-
----
-
-## T-003 点数早見表の親/子トグル：選択強調を配色で明確化
-
-### 目的 / 変更内容
-
-点数早見表ダイアログ（`ScoreTableDialog`）の親/子トグルで、**非選択側の文字色がteal系のため選択中と紛らわしい**問題を是正する。
-形状（ピル型セグメントコントロール）は変えず、**非選択側の配色・文字ウェイトのみ**変更して対比を強める。
-（正典: SPEC.md §4.12「トグルの選択強調」）
-
-### 確定した設計判断
-
-- **選択中（アクティブ）側**: 現状のまま変更しない（teal塗り・白文字・グロー影・`font-weight: 800`）。
-- **非選択側**:
-  - 文字色: teal系（`#1e8c86`）→ `var(--color-text-sub)`（`#6a6a6a`、既存の共通ミュートトークン）。
-  - 背景: 透明 → 薄いグレー背景（不透明。白ベースで合成し、コンテナの薄teal地に対しても濁らないようにする。`fu-parts.css` の `.fu-parts-choice-btn--muted` と同様の考え方）。
-  - `font-weight`: `800` → `600`。選択中の `800` との差で強弱をつける。
-- **hover挙動**: 非選択ボタンhover時のteal薄染まり（`color-mix(in srgb, #2ba8a2 16%, transparent)`）は変更しない。
-- **ダークモード**: 本アプリは非対応のため考慮不要。
-
-### 影響ファイル
-
-- `src/components/scoreTable.css` — `.st-toggle-btn`（非選択ベース）のスタイル変更
-
-### 実装ステップ
-
-1. **`scoreTable.css`**:
-   - `.st-toggle-btn` のベーススタイルを、非選択状態の見た目として再定義する。
-     - `color: var(--color-text-sub)`
-     - `background`: 白ベースで合成した薄いグレー（例: `color-mix(in srgb, var(--color-text-sub) 8%, #fff)` 相当。コンテナ背景 `#e8f6f5` の上に乗っても不透明で濁らないこと）
-     - `font-weight: 600`
-   - `.st-toggle-btn--active` は現状の宣言（`background: #2ba8a2; color: #fff8e7; box-shadow: ...`）をそのまま維持しつつ、`font-weight: 800` を明示的に上書きする（ベース側が `600` になるため）。
-   - hover用ルール（`.st-toggle-btn:not(.st-toggle-btn--active):hover`）は変更しない。
-2. **目視確認**: `/quiz` または `/convert` から早見表ダイアログを開き、親/子トグルの非選択側が薄いグレー・選択側がteal塗りで明確に区別できること。
-
-### 受け入れ基準
-
-- 非選択トグルボタンの文字色が `var(--color-text-sub)` になっている。
-- 非選択トグルボタンの背景が薄いグレー（不透明）になっている。
-- 非選択トグルボタンの `font-weight` が `600`、選択中は `800` のままである。
-- 選択中側の見た目（teal塗り・白文字・グロー影）に変更がない。
-- hover挙動に変更がない。
-- `npm test` / `npm run lint` が通る。
-
----
-
-## T-004 狭幅時、ドラ表示牌6枚（表3+裏3）でリーチ棒が原因の折り返しを緩和
-
-### 目的 / 変更内容
-
-点数計算モード（`QuizPage`）で、リーチ時に表ドラ表示牌＋裏ドラ表示牌の合計枚数が多いケース
-（例: 表3枚＋裏3枚＝6枚）になると、`dora-indicator-group` の幅が広がり、`quiz-tile-header` の
-折り返し（`flex-wrap: wrap`）によってドラ表示ブロックごと次の行に落ちてしまう。
-これを緩和するため、**狭幅時のみリーチ棒画像（`.riichi-indicator-stick`）の幅を少し縮小**する。
-（正典: SPEC.md §4.1「リーチ棒画像サイズ（狭幅対応）」）
-
-### 確定した設計判断
-
-- **対応範囲はリーチ棒の幅のみ**。`gap`・`padding` など他のレイアウト要素は変更しない
-  （縮小だけでは極狭幅で解消しきらない可能性があるが、今回のスコープでは許容する既知の制限とする）。
-- **適用幅**: 既存の狭幅ブレークポイント（`--bp-sm`, 画面幅640px未満）のみ。PC幅（640px以上）は
-  現状の92px据え置き。
-- **縮小後の幅**: 76px程度（現状比 約-17%）。`height: auto` のままアスペクト比は保持。
-- **既知の制限**: 極端に狭い画面幅（360px程度以下）では、6枚のケースでもなお折り返しが解消しきらない
-  場合がある。これは受け入れ、追加のgap調整などは今回のスコープ外とする。
-- **影響範囲**: `.riichi-indicator-stick` は `QuizTileHeader` の共有スタイルのため、最終点数モード
-  （`QuizPage`）・符計算モード（`FuQuizPage`）の両方に適用される。符計算モードはドラ表示牌自体を
-  出さないため折り返し問題自体は発生しないが、リーチ棒の見た目サイズはこちらも小さくなる。
-- **テスト**: 既存テスト（`QuizPage.test.tsx` / `FuQuizPage.test.tsx`）は `.riichi-indicator-stick`
-  の存在のみ検証しており、幅変更に伴うテストコードの修正は不要。自動の視覚回帰テストは無いため、
-  手動確認で代替する。
-
-### 影響ファイル
-
-- `src/components/quiz.css` — `.riichi-indicator-stick` の狭幅時オーバーライド追加
-
-### 実装ステップ
-
-1. **`quiz.css`**: 既存の `@media (--bp-sm) { ... }` ブロック（`.dora-indicator-tiles` の gap 圧縮と
-   同じ並び）に `.riichi-indicator-stick { width: 76px; }` を追加する。PC向けの基本ルール
-   （`width: 92px`）は変更しない。
-2. **手動確認**:
-   - 開発サーバでブラウザ幅を375px程度に縮小し、点数計算モードでリーチ棒が一回り小さく表示される
-     ことを確認する。
-   - 表3枚+裏3枚（槓2回＋リーチ）のケースを再現する（リロードを繰り返すか、開発者ツールで
-     `.dora-indicator-tiles` に一時的にダミー牌を6枚挿入して検証してもよい）。この状態で
-     ドラ表示ブロックが折り返さず1行に収まる（もしくは縮小前より折り返しにくくなっている）ことを確認する。
-   - PC幅（640px以上）でリーチ棒サイズが従来どおり92pxのままであることを確認する。
-
-### 受け入れ基準
-
-- 狭幅（640px未満）でリーチ棒画像の幅が76px程度に縮小される。
-- PC幅（640px以上）でリーチ棒画像の幅は92pxのまま変わらない。
-- 表3+裏3のドラ表示ケースで、縮小前より折り返しが起きにくくなっている（完全解消は必須要件としない）。
-- 既存テスト（`QuizPage.test.tsx` / `FuQuizPage.test.tsx`）に変更なく通る。
-- `npm test` / `npm run lint` が通る。
-
----
-
-## T-005 サイドバーに他モードへの遷移ボタンを追加
-
-### 目的 / 変更内容
-
-出題・解説系6画面（`/quiz`・`/result`・`/fu/quiz`・`/fu/result`・`/fu/parts`・`/convert`）のサイドバー
-（`SidebarPageHeader`→`Sidebar`）に、**現在表示中のモードを除いた他モードへの遷移ボタン**を追加する。
-（正典: SPEC.md §8.5「モード切替ボタン」）
-
-### 確定した設計判断
-
-- モードは4つ: 点数計算（`/quiz`+`/result`）／符計算（`/fu/quiz`+`/fu/result`）／符分解（`/fu/parts`）／
-  点数換算（`/convert`）。**出題画面と解説画面は同一モードとして扱う**（モードファミリー単位）。
-- **現在のモードのボタンは非表示**（無効化表示ではなく完全に除外。最大3つ表示）。
-- **サイドバー内の並び順**: `ホーム` → 見出し「他のモードで練習」＋モードボタン(最大3) → `成績`
-  （成績非連携モードは従来どおり「成績」を出さない）。
-- **`currentMode` は呼び出し元ページが明示的に prop として `SidebarPageHeader` へ渡す**
-  （`backTo`・`showStats` と同様の設計。URL パターンからの自動判定はしない）。
-- **モード定義の共有**: `src/config/modes.ts`（新規）に id・label・path・アイコン(絵文字)を持つ配列を定義し、
-  `HomePage` のモード選択カードと本機能の両方から参照する（表示名・パスの二重管理を避ける）。
-  `HomePage` 固有の説明文(`desc`)・装飾牌(`TileFace`)・CSS クラスは `HomePage` 側に残し、
-  共有するのは最小限の情報にとどめる。
-- **遷移**: 各モードボタンは対応モードの出題画面（点数計算→`/quiz`、符計算→`/fu/quiz`、
-  符分解→`/fu/parts`、点数換算→`/convert`）への通常の `<Link>`。確認ダイアログなし、state 受け渡しなし
-  （成績ボタンの `backTo`/`problem` とは異なり、単純遷移）。
-- **アイコン**: 絵文字。仮案: 点数計算🧮／符計算🔢／符分解🧩／点数換算📐
-  （既存のホーム🏠・成績📊と同系統。最終デザインは `style` スキルで調整可）。
-
-### 影響ファイル
-
-- `src/config/modes.ts` — 新規。モード定義（id・label・path・icon）の配列。
-- `src/components/HomePage.tsx` — モード選択カードの定義を `modes.ts` 参照に置き換え
-  （label・path の直書きを解消。desc・CSS クラスは維持）。
-- `src/components/SidebarPageHeader.tsx` — `currentMode` prop を追加。`modes.ts` から自モード以外を
-  抽出してサイドバー内に「他のモードで練習」セクションとして描画。
-- `src/components/QuizPage.tsx` / `ResultPage.tsx` — `currentMode="score"` を渡す。
-- `src/components/FuQuizPage.tsx` / `FuResultPage.tsx` — `currentMode="fu"` を渡す。
-- `src/components/FuPartsQuizPage.tsx` — `currentMode="fu-parts"` を渡す。
-- `src/components/ConvertQuizPage.tsx` — `currentMode="convert"` を渡す。
-- `src/components/sidebar.css` — セクション見出し（「他のモードで練習」）のスタイル追加。
-- 各ページの既存テスト（`QuizPage.test.tsx`・`ResultPage.test.tsx`・`FuQuizPage.test.tsx`・
-  `FuResultPage.test.tsx`・`FuPartsQuizPage.test.tsx`・`ConvertQuizPage.test.tsx`）＋
-  `SidebarPageHeader` 用テスト（新規 or 既存拡張）
-
-### 実装ステップ
-
-1. **`src/config/modes.ts`（新規）**: モード定義の配列を作る。
-   ```ts
-   type ModeId = "score" | "fu" | "fu-parts" | "convert";
-   interface ModeDef {
-     id: ModeId;
-     label: string;
-     path: string;
-     icon: string;
-   }
-   ```
-   `score`=点数計算モード(`/quiz`,🧮)／`fu`=符計算モード(`/fu/quiz`,🔢)／
-   `fu-parts`=符分解モード(`/fu/parts`,🧩)／`convert`=点数換算モード(`/convert`,📐)。
-2. **`SidebarPageHeader.tsx`**:
-   - `currentMode: ModeId` prop を追加（必須）。
-   - `modes.ts` から `m.id !== currentMode` でフィルタした配列を、`ホーム` の直後・`成績` の前に
-     「他のモードで練習」の見出し＋リンク一覧として描画する。
-   - 各リンクはクリックで `setOpen(false)`（既存のホーム/成績リンクと同様）。
-3. **各ページコンポーネント**: `SidebarPageHeader` 呼び出しに `currentMode` を追加
-   （`QuizPage`/`ResultPage`→`"score"`、`FuQuizPage`/`FuResultPage`→`"fu"`、
-   `FuPartsQuizPage`→`"fu-parts"`、`ConvertQuizPage`→`"convert"`）。
-4. **`HomePage.tsx`**: モード選択カードの `to`・タイトル文言を `modes.ts` から取得するようリファクタ
-   （`desc`・アイコンの `TileFace`・CSS 修飾クラスはモードごとに個別マップとして残す）。
-5. **`sidebar.css`**: 見出しラベル用のスタイル（例: `.sidebar-nav-heading`）を追加。
-6. **テスト**:
-   - 各ページで自モードのボタンが出ない・他3モードのボタンが出ることを確認。
-   - `/result` は「点数計算モード」ボタンが出ない（モードファミリー判定）ことを確認。
-   - `/fu/parts`・`/convert` は「成績」リンクが出ないまま、モードボタンだけ追加されることを確認。
-   - モードボタン押下で対応パスへ遷移し、サイドバーが閉じることを確認。
-
-### 受け入れ基準
-
-- サイドバーを持つ6画面すべてで、現在のモードを除いた他モードへの遷移ボタンが
-  「ホーム」の下・「成績」の上に表示される。
-- `/result`・`/fu/result` はそれぞれ `/quiz`・`/fu/quiz` と同じモード扱いで、自モードのボタンが出ない。
-- モードボタンは確認なしで即座に遷移する。
-- 符分解・点数換算モードの画面では「成績」リンクが引き続き出ない。
-- `HomePage`・`SidebarPageHeader` がモード定義を `modes.ts` から共有し、ラベル・パスの二重管理がない。
-- `npm test` / `npm run lint` が通る。
-
----
-
 ## テンポ改修（T-006〜T-008）— 背景
 
 差別化の核＝**テンポの良さ**（サクサク回せる）を、体感と証拠で成立させるための改修群。
@@ -365,7 +75,7 @@
 
 ---
 
-## T-008 モメンタムカウンタ（スループット主・ストリーク脇・非懲罰）
+## T-008 モメンタムカウンタ（スループット主・ストリーク脇・非懲罰）（完了）
 
 ### 目的
 
@@ -504,7 +214,7 @@
   役一覧・計算式のみ折りたたみ対象にする。旧`.result-verdict-row`ブロックの描画を削除）
 - `src/components/result.css` — 見出し行（ラベル＋正誤＋答え）のレイアウト・タイポグラフィ追加
 - `src/components/quizFlip7.css` — T-012のスマホ幅縮小ルールを削除。`.quiz-page
-  .result-verdict-row`等のコメントを「点数換算モード専用」に更新
+.result-verdict-row`等のコメントを「点数換算モード専用」に更新
 - `src/components/resultFlip7.css` — コメントの要否確認（`FuResultPage.tsx`専用である旨を明記）
 - `src/components/QuizPage.test.tsx` / `src/components/ResultPage.test.tsx` — 正誤・答えの
   表示場所（内訳見出し行内）・折りたたみ時の常時表示を検証するようテストを更新
@@ -540,4 +250,165 @@
   「解説はこちら」を開くまで見えない。
 - 不正解時は従来どおり解説がデフォルトで展開されている。
 - 符計算モードの解説画面（`/fu/result`）・点数換算モード（`/convert`）の表示に変更がない（回帰）。
+- `npm test` / `npm run lint` が通る。
+
+---
+
+## T-014 スタイル適用方式のTailwind移行（点数計算モード先行）（完了）
+
+**実装時の追記**: 計画段階（グリリング）では `.qp-board`・`.quiz-skip`/`.qp-skip-btn`・
+`.calculation-line`・`.qp-table-header-btn` を「QuizPage/ResultContent専用」としていたが、
+実装時に全ファイル横断でgrepした結果、実際には `FuQuizPage.tsx`（`.qp-board`・`.qp-skip-btn`）・
+`ConvertQuizPage.tsx`（`.qp-skip-btn`・`.calculation-line`・`.qp-table-header-btn`）とも
+共有していたことが判明した。既存ルール（共有クラスはCSS温存・対象ファイル側のみTailwind化）を
+そのまま適用して対応し、ユーザーに確認のうえ予定通り全要素をTailwind化した（CSS削除なし）。
+下記「影響ファイル」「実装ステップ」はこの実態に合わせて更新済み。
+
+### 目的
+
+スタイル適用方式をプレーンCSS（CSSカスタムプロパティ＋ページスコープの子孫セレクタ）からTailwind CSSへ段階移行する。
+全画面一括ではなく**点数計算モード**（`QuizPage.tsx`・`ResultContent.tsx`・`ResultPage.tsx`）を最初の対象とし、
+他モード（符計算・符分解・点数換算・ホーム等）の見た目への影響ゼロを維持する（`/grilling`セッションでの合意事項。
+正典: SPEC.md §8.3.1）。
+
+### 確定した設計判断
+
+`/grilling`セッションでの確認結果（詳細・理由はSPEC.md §8.3.1）:
+
+- **Tailwind v4**（CSS-first。`tailwind.config.js`は使わない）を導入する。
+- **Preflightは導入しない**（`tailwindcss/theme`・`tailwindcss/utilities`のみ読み込む）。対象外画面への見た目の影響をゼロにするため。
+- **対象範囲の判定ルール**: `QuizPage.tsx`・`ResultContent.tsx`・`ResultPage.tsx`自身が直接描画する要素のみをTailwind化する。
+  共有コンポーネント（`ChoiceGrid`・`QuizConditions`・`SidebarPageHeader`・`FuBreakdownContent`・`QuizTileHeader`・
+  `HandDisplay`・`ScoreTableDialog`）自体、およびそれらの汎用クラスを`.quiz-page`/`.result-page`子孫セレクタで
+  上書きしている既存CSSは一切変更しない。
+- **`FuResultPage.tsx`と共有するクラス**（`.card`・`.result-breakdown`（基底）・`.result-actions`・`.btn-primary`・
+  `.btn-secondary`・`.rp-cta-arrow`）は、既存CSSルールを削除せず残す。`ResultContent.tsx`/`ResultPage.tsx`側だけ
+  使用をやめ、Tailwindユーティリティで同じ見た目を再現する（FuResultPageは今回一切変更しない）。
+- **デザイントークン**: `src/index.css`の既存トークン（`--color-*`・`--space-*`・`--fs-*`・`--radius-*`等）は
+  Tailwindの`@theme`にマッピングして流用する（値を二重管理しない）。`quizFlip7.css`の`.quiz-page`スコープ内
+  Flip7配色（`--fl-teal`等）は`@theme`に昇格させサイト全体のトークンにする。
+- **ブレークポイント**: `@theme`の`--breakpoint-*`を既存`--bp-sm`系と同じ値（640px境界）に合わせ、
+  Tailwind標準の`sm:`プレフィクスを使う。
+- **既存クラス名**: 移行対象要素（`FuResultPage.tsx`と共有するものを除く）の既存クラス名は廃止する。
+  依存していたテスト（`QuizPage.test.tsx`）は`role`／表示テキスト／`data-testid`ベースのクエリへ書き換える。
+
+### 影響ファイル
+
+- `package.json` / `package-lock.json` — `tailwindcss@4.3.3`・`@tailwindcss/postcss@4.3.3` を追加
+- `postcss.config.js` — Tailwindプラグインを追加（`postcss-custom-media`より後段に置く。理由は下記）
+- `src/styles/tailwind.css`（**新規**）— `@import "tailwindcss/theme"`・`@import "tailwindcss/utilities"`
+  （`preflight`は読み込まない）と`@theme`でのトークン/Flip7配色/ブレークポイントのマッピング。
+  `src/index.css`とは別ファイルに分離し、`src/main.tsx`から独立したモジュールとしてimportする
+  （理由: `@tailwindcss/postcss`は`@import "tailwindcss/..."`を含むファイルを自前でファイルシステムから
+  読み直して検証するため、同じファイル内にpostcss-custom-media展開前の`@media (--bp-xxx)`が存在すると
+  解析エラーになる。postcssプラグインの実行順を変えても解消しなかった）
+- `src/main.tsx` — `./styles/tailwind.css`のimportを追加（影響ファイル未記載だった追加。上記の理由による）
+- `src/index.css` — 配色・フォントファミリートークンの実体を`@theme`へ移設（`:root`の同名宣言は自己参照に
+  なるため削除。既存の`var(--color-accent)`等の参照は`@theme`の`:root`コンパイル出力でそのまま解決する）
+- `src/components/QuizPage.tsx` — 対象要素をTailwindユーティリティへ置換
+- `src/components/quiz.css` — `.qp-momentum*`（T-008で追加した専用クラス。他ファイルと非共有）のCSSルールを削除
+- `src/components/quizFlip7.css` — `.rp-detail-toggle`・`.yaku-list`・`.result-alt`（非共有）のCSSルールを削除。
+  `.qp-board`・`.qp-skip-btn`・`.calculation-line`（`FuQuizPage.tsx`/`ConvertQuizPage.tsx`と共有と判明）は
+  クラス名・ルールとも維持し、コメントで共有先を明記
+- `src/components/scoreTable.css`（影響ファイル未記載だった追加）— `.qp-table-header-btn`
+  （`ConvertQuizPage.tsx`と共有と判明）はコメント更新のみ、ルールは維持
+- `src/components/ResultContent.tsx` — 対象要素をTailwindユーティリティへ置換
+- `src/components/ResultPage.tsx` — 対象要素をTailwindユーティリティへ置換
+- `src/components/result.css` / `src/components/resultFlip7.css` — `FuResultPage.tsx`と非共有の要素
+  （`.result-breakdown-header`・`.result-breakdown-verdict`・`.result-breakdown-answer`・`.rp-detail-toggle`・
+  `.yaku-list`・`.result-alt`・`.rp-alt-icon`、および`.result-page`スコープの`.calculation-line`）のCSSルールを
+  削除。共有クラス（`.card`・`.result-breakdown`基底・`.result-actions`・`.btn-primary`・`.btn-secondary`・
+  `.rp-cta-arrow`、`.quiz-page`スコープの`.calculation-line`）は残す
+- `src/components/QuizPage.test.tsx` — 廃止クラス名に依存するクエリを`role`/テキスト/`data-testid`へ書き換え
+
+### 実装ステップ（実施内容の記録）
+
+1. **Tailwind導入**: `npm install -D tailwindcss @tailwindcss/postcss`。`postcss.config.js`に
+   `tailwindcss()`を`postcss-custom-media`より後段で追加。`@import "tailwindcss/..."`は
+   `src/styles/tailwind.css`という独立ファイルに置き、`src/main.tsx`から`src/index.css`とは別に
+   importした（同一ファイル内に置くとビルドエラーになったため。上記「影響ファイル」参照）。
+2. **`@theme`マッピング**: 色・フォントファミリートークンは`src/index.css`の`:root`から
+   `src/styles/tailwind.css`の`@theme`へ移設（名前は変更せず、自己参照を避けるため`:root`側の
+   同名宣言は削除）。Flip7配色（`--fl-*`）は`--color-fl-*`として`@theme`に複製（`.quiz-page`/`.result-page`
+   ローカル定義は既存参照のため残す）。`--breakpoint-sm`を`--bp-sm-up`と同じ640pxに設定。
+   spacing/radius/font-sizeは`@theme`へ移さず、Tailwindユーティリティ側で`p-[var(--space-4)]`等の
+   任意値記法で既存`:root`トークンを直接参照する方針とした（`--space-*`等の名前がTailwindの命名規約と
+   異なり、移設すると全CSSファイルでの参照名変更が必要になるため）。
+3. **`QuizPage.tsx`移行**: `.qp-momentum*`・`.qp-board`・`.qp-table-header-btn`・`.quiz-skip`/`.qp-skip-btn`を
+   Tailwindユーティリティに置換。共有と判明した`.qp-board`・`.qp-skip-btn`・`.qp-table-header-btn`は
+   CSSルールを削除せず、クラス名の使用のみやめた。ブラウザ目視で正解/不正解両状態・スマホ幅・PC幅の
+   見た目が移行前と一致することを確認した。
+4. **`ResultContent.tsx`移行**: 見出し行・トグル・役一覧・計算式・高点法別解をTailwindユーティリティに置換。
+   `.calculation-line`は`ConvertQuizPage.tsx`と共有と判明したためCSSルールを削除せずクラス名のみやめた
+   （`.quiz-page`スコープ分は維持、`.result-page`スコープ分は非共有のため削除）。`.card`・`.result-breakdown`
+   基底・`.result-actions`・`.btn-primary`/`.btn-secondary`・`.rp-cta-arrow`も同様にクラス名のみやめ、
+   CSSルールは`FuResultPage.tsx`のために維持した。
+5. **`ResultPage.tsx`移行**: `result-actions`内の`.btn-primary`/`.btn-secondary`インスタンスをTailwindユーティリティに
+   置換（`::before`の光沢オーバーレイは`before:`バリアントで再現）。CSSルール自体は残した。
+6. **テスト移行**: `QuizPage.test.tsx`で廃止クラス名（`.result-breakdown-body`・`.qp-momentum-primary-value`・
+   `.qp-momentum-secondary-value`）に依存するクエリを`data-testid`（`result-breakdown-body`・
+   `momentum-today`・`momentum-streak`）へ書き換えた。`.result-breakdown`（共有・維持）・`.quiz-choice-btn`
+   （`ChoiceGrid`所有）へのクエリは変更していない。
+7. **回帰確認**: `/quiz`・`/fu/quiz`・`/fu/result`・`/convert`・`/`をブラウザで目視し、見た目に変化が
+   ないことを確認した（Preflight非導入・共有クラスのCSS温存を確認）。`/fu/parts`は個別確認していない
+   （変更ファイルを一切含まないため回帰リスクなしと判断）。`/result`はブラウザでの直接確認手順が
+   ないため（`React Router`の`location.state`が必要）、`ResultPage.test.tsx`が無改修のまま全通過することと
+   コードレビューで代替した。
+
+### 受け入れ基準
+
+- `npm install`後、`/quiz`・`/result`で見た目が移行前とピクセルレベルで変わらない（配色・余白・角丸・アニメーション含む）。
+- 対象要素（モメンタムカウンタ・盤面枠・スキップ操作・内訳見出し行・トグル・役一覧・計算式・高点法別解・
+  アクション行）が対応するTailwindユーティリティクラスで実装され、旧クラス名（`FuResultPage.tsx`と共有するものを除く）
+  が`QuizPage.tsx`/`ResultContent.tsx`/`ResultPage.tsx`のJSXから消えている。
+- `/fu/quiz`・`/fu/result`・`/fu/parts`・`/convert`・`/`の見た目に変化がない（回帰。特に`FuResultPage.tsx`の
+  `.card`・`.result-breakdown`・`.result-actions`・ボタンの見た目）。
+- Tailwind導入後もPreflightによる全体リセットが適用されていない（対象外要素のマージン・ボタン既定見た目等が不変）。
+- `npm test` / `npm run lint` が通る。
+
+---
+
+## T-015 ホーム画面のTailwind移行（完了）
+
+### 目的
+
+T-014で確立したスタイル適用方式（Tailwind CSS v4・Preflight非導入・トークンの`@theme`マッピング）を、**ホーム画面**（`HomePage.tsx`・`home.css`）に適用する。ホームは他画面とクラス名・CSSカスタムプロパティを一切共有していない（`FuResultPage.tsx`等と共有クラスがあった点数計算モードとは条件が異なる）ため、共有クラス温存の例外なく構造・レイアウトのCSSを全面的にTailwindユーティリティへ置き換えられる（正典: SPEC.md §8.3.2）。
+
+### 確定した設計判断
+
+`/grilling`セッションでの確認結果:
+
+- **残置パターンはT-014を踏襲**: 構造・レイアウト（`flex`・`grid`・`padding`・文字サイズ等）はすべてTailwindユーティリティに置き換えて`home.css`から削除する。**色・形状・モーションのトークン**（`--fl-r-*`・`--fl-glow-*`・`--fl-bounce`・`--fl-dur`）・**`@keyframes`**（`home-rise`・`home-pop`）・**`.home-page`の背景グラデーション**は`.home-page`スコープのCSSカスタムプロパティとして`home.css`に残し、JSX側はTailwindの任意値記法（例: `shadow-[var(--fl-glow-teal)]`）から参照する。
+- **新規トークンの昇格**: `home.css`にのみ存在する色トークン`--fl-violet`・`--fl-violet-dark`は、`tailwind.css`の`@theme`へ`--color-fl-violet`・`--color-fl-violet-dark`として追加し、`bg-fl-violet`等のネイティブユーティリティとして使えるようにする（T-014でteal/gold/coral等を昇格させたのと同じ扱い）。半径・グロー影・所要時間など色以外の新規トークンは昇格させない。
+- **独自ブレークポイント`--bp-home-2col`（480px）**: `@theme`の`--breakpoint-*`へは昇格させず、`min-[480px]:`のようなTailwindの任意値ブレークポイントバリアントをJSX側に直接記述する。他画面で未使用のため`src/styles/breakpoints.css`の定義は削除する。
+- **擬似要素の実要素化**: `.home-ribbon::before/::after`（リボン両端の帯）・`.home-mode::before`（モードカード左アクセントバー）は、`before:`/`after:`のTailwind任意値チェーンではなく、`aria-hidden`付きの実`<span>`要素に置き換えてTailwindユーティリティで直接スタイリングする（既存の`.home-hero-fan-card`と同じ手法に統一）。
+- **付随する既存瑕疵の解消**: `src/index.css`の`prefers-reduced-motion`ブロックにある、現行`home.css`のどのクラスとも一致しない死んだセレクタ`.home-mode-card`を本タスクであわせて削除する。
+- **テスト**: `HomePage.test.tsx`は新規追加しない（スタイルのみの変更のため）。受け入れ確認はブラウザ目視で行う。
+
+### 影響ファイル
+
+- `src/components/HomePage.tsx` — 対象要素をTailwindユーティリティへ置換。擬似要素だった装飾（リボン両端の帯・モードカード左アクセントバー）を`aria-hidden`付き実要素として実装
+- `src/components/home.css` — 構造・レイアウト・擬似要素ルール・`@media (--bp-home-2col)`を削除。`.home-page`スコープの色/形状/モーショントークン・`@keyframes`・背景グラデーションのみ残す
+- `src/styles/tailwind.css` — `@theme`に`--color-fl-violet`・`--color-fl-violet-dark`を追加
+- `src/styles/breakpoints.css` — 未使用になる`--bp-home-2col`の定義を削除
+- `src/index.css` — `prefers-reduced-motion`ブロックの死んだセレクタ`.home-mode-card`を削除
+
+### 実装ステップ
+
+1. **`tailwind.css`**: `@theme`に`--color-fl-violet`・`--color-fl-violet-dark`を追加する。
+2. **`HomePage.tsx`移行**: トップバー（ブランド・設定ピル）・ヒーロー（ファンカード・リボン・見出し）・練習メニュー（モードカードグリッド）・学習ガイド導線をTailwindユーティリティに置換する。リボンの両端タブ・モードカードの左アクセントバーは`aria-hidden`付きの実`<span>`要素として実装する。
+3. **グリッド切り替え**: モードカードグリッドの1列→2列切り替えは`min-[480px]:`の任意値バリアントで実装する。
+4. **`home.css`の縮小**: 構造・レイアウト・擬似要素・`@media (--bp-home-2col)`ルールを削除し、`.home-page`スコープの色/形状/モーショントークン・`@keyframes`（`home-rise`・`home-pop`）・背景グラデーションのみを残す。
+5. **`breakpoints.css`**: 未使用になった`--bp-home-2col`を削除する。
+6. **`index.css`**: 死んだセレクタ`.home-mode-card`を削除する。
+7. **回帰確認**: ブラウザで`/`をスマホ幅（375px程度）・PC幅の両方、通常表示・hover/active・`prefers-reduced-motion`設定時の3状態で目視確認する。480px前後のグリッド列切り替えも確認する。`/quiz`等の他画面に新規トークン追加による回帰がないことも確認する。
+
+### 受け入れ基準
+
+- `npm install`後、`/`の見た目が移行前とピクセルレベルで変わらない（配色・余白・角丸・アニメーション含む）。スマホ幅・PC幅の両方で確認する。
+- モードカード・ピルボタン・リボン・ファンカードの`hover`/`active`状態が移行前と一致する。
+- `prefers-reduced-motion`設定時、登場アニメーション・hover移動が無効化される（移行前と同じ挙動）。
+- 480px前後でのモードカードグリッドの1列⇄2列切り替えが移行前と一致する。
+- `home.css`から構造・レイアウト・擬似要素・独自ブレークポイントのCSSルールが消え、`.home-page`スコープのトークン定義・`@keyframes`・背景グラデーションのみが残る。
+- 他画面（`/quiz`等）の見た目に変化がない（新規昇格トークンの追加による回帰がないこと）。
 - `npm test` / `npm run lint` が通る。

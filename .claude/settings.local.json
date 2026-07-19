@@ -65,7 +65,8 @@
       "Read(//c/Users/noels/.agents/skills/grilling/**)",
       "Read(//c/Users/noels/.claude/**)",
       "Bash(node ~/.claude/statusline.mjs)",
-      "Skill(implement)"
+      "Skill(implement)",
+      "Bash(grep -n \"querySelector\\\\|\\\\\\\\.result-\\\\|\\\\\\\\.qp-\\\\|\\\\\\\\.card\\\\b\" src/components/ResultPage.test.tsx)"
     ]
   }
 }

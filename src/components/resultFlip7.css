@@ -156,41 +156,6 @@
   border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
 }
 
-/* 役リスト：役名（濃色）＋翻（ティールのピル）。行間は破線で仕切る。 */
-.result-page .yaku-list {
-  gap: 0;
-}
-.result-page .yaku-list li {
-  align-items: center;
-  padding: 9px 0;
-  border-bottom: 2px dashed rgba(43, 168, 162, 0.22);
-}
-.result-page .yaku-list li:last-child {
-  border-bottom: none;
-}
-.result-page .yaku-list li > span:first-child {
-  color: var(--fl-ink);
-  font-weight: 700;
-}
-.result-page .yaku-list li > span:last-child {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 12px;
-  font-size: 0.85em;
-  font-weight: 800;
-  color: var(--fl-teal-dark);
-  background: var(--fl-teal-bg);
-  border-radius: var(--fl-r-pill);
-}
-
-/* 計算式（符×翻＝点）：ティールの破線で仕切り、結果を強調。 */
-.result-page .calculation-line {
-  padding-top: 12px;
-  border-top: 2px dashed rgba(43, 168, 162, 0.4);
-  font-weight: 800;
-  color: var(--fl-teal-dark);
-}
-
 /* 符内訳（点数モードでは補助情報）。控えめに。 */
 .result-page .fu-list li {
   color: var(--fl-muted);
@@ -244,32 +209,9 @@
 }
 
 /* =====================================================================
-   高点法の別解 — ゴールドの注記カード
-   ===================================================================== */
-.result-page .result-alt {
-  padding: 16px 18px;
-  background: color-mix(in srgb, var(--fl-gold) 14%, #fff);
-  border: 2px solid var(--fl-gold-dark);
-  border-radius: var(--fl-r-lg);
-  box-shadow: var(--fl-glow-gold-soft);
-}
-.result-page .result-alt h2 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 800;
-  color: var(--fl-gold-ink);
-}
-.result-page .rp-alt-icon {
-  font-size: 1.1em;
-  line-height: 1;
-}
-.result-page .result-alt p {
-  color: var(--fl-body);
-}
-
-/* =====================================================================
-   アクション（問題に戻る／次の問題へ）
+   アクション（問題に戻る／次の問題へ）— ResultPage.tsx 自体の2ボタンは Tailwind
+   ユーティリティに移行済み（T-014）。以下は同じ .result-page スコープを共有する
+   FuResultPage.tsx（符計算モードの解説画面）専用の装飾として残す。
    ===================================================================== */
 .result-page .result-actions {
   gap: 12px;

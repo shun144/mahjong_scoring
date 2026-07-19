@@ -36,89 +36,15 @@
   letter-spacing: var(--tracking-tight);
 }
 
-/* 「解説はこちら」開閉トグル（インライン結果でのみ使用。常時展開の ResultPage では出ない）。 */
-.rp-detail-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  align-self: flex-start;
-  padding: var(--space-1) 0;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  color: var(--color-text-sub);
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
+/* FuResultPage.tsx・FuPartsQuizPage.tsx とクラス名を共有するため維持する
+   （ResultContent.tsx 自体は Tailwind ユーティリティに移行済み。T-014）。 */
 .result-breakdown {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
 
-/* 見出し行（左: 「内訳」ラベル／右: 正誤＋答え）。折りたたみ状態に関わらず常に表示する。 */
-.result-breakdown-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  column-gap: var(--space-3);
-  row-gap: var(--space-1);
-}
-
-/* 正誤＋答え（旧: 独立した判定カード）。「内訳」見出し行のテキストに降格し、
-   カード自体の枠・背景色は正誤によらず一定にする（正誤は文字色のみで区別）。 */
-.result-breakdown-verdict {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  margin: 0;
-  font-size: var(--fs-emphasis);
-  font-weight: 600;
-}
-
-.result-breakdown-verdict.correct {
-  color: var(--color-success-text);
-}
-
-.result-breakdown-verdict.incorrect {
-  color: var(--color-danger-text);
-}
-
-.result-breakdown-answer {
-  font-family: var(--font-numeric);
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-}
-
-.result-breakdown-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.yaku-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-/* L2: 役名・翻（数字はフォールバックで数字専用フォント） */
-.yaku-list li {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-emphasis);
-  font-weight: 600;
-  font-family: var(--font-numeric);
-  font-variant-numeric: tabular-nums;
-  color: var(--color-text);
-}
-
-/* L2: 計算式（符・翻） */
+/* L2: 計算式（符・翻）。ConvertQuizPage.tsx とクラス名を共有するため維持する（T-014）。 */
 .calculation-line {
   margin: 0;
   padding-top: var(--space-2);
@@ -130,6 +56,8 @@
   text-align: right;
 }
 
+/* FuResultPage.tsx とクラス名（.result-actions .btn-primary/.btn-secondary）を共有するため
+   維持する。ResultPage.tsx 自体の2ボタンは Tailwind ユーティリティに移行済み（T-014）。 */
 .result-actions {
   display: flex;
   gap: var(--space-3);
@@ -215,23 +143,4 @@
   margin: 0;
   font-size: var(--fs-sm);
   color: var(--color-text-sub);
-}
-
-.result-alt {
-  padding: var(--space-4);
-  border-radius: var(--radius);
-  background: var(--color-warning-bg);
-  border: 1px solid var(--color-warning-border);
-}
-
-/* h2 は全画面共通の見出し既定（index.css: --fs-base / 600 / --color-text）を継承。
-   font 系の上書きはせず、見出し前の余白のみ固有 margin として残す。
-   警告トーンは .result-alt コンテナ側の背景/境界で表現する。 */
-.result-alt h2 {
-  margin: 0 0 var(--space-1);
-}
-
-.result-alt p {
-  margin: 0;
-  font-size: var(--fs-sm);
 }

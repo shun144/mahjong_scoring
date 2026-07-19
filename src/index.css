@@ -1,54 +1,23 @@
 /* ブレークポイント（--bp-xxx）の定義は src/styles/breakpoints.css を正典とする
    （postcss.config.js の postcss-global-data 経由で全CSSファイルに読み込まれる）。 */
 
+/* Tailwind（@theme マッピング含む）は src/styles/tailwind.css に分離し、main.tsx から
+   このファイルとは独立した別モジュールとして import している。
+   CSS の @import でこのファイルへ連結すると、Tailwind の PostCSS プラグインが
+   import 元（このファイル）ごと自前でファイルシステムから読み直して検証するため、
+   postcss-custom-media が展開する前の @media (--bp-xxx) をここで解析エラーにしてしまう
+   （postcss プラグインの実行順を変えても解消しない。T-014／SPEC.md §8.3.1で確認済み）。 */
+
 :root {
   color-scheme: light;
 
-  /* --- 配色トークン（design-spec.md 正典：Airbnb 準拠・ライト単一） --- */
-  --color-bg: #ffffff; /* canvas */
-  --color-surface: #f7f7f7; /* surface-soft */
-  --color-text: #222222; /* ink（純黒にしない） */
-  --color-text-sub: #6a6a6a; /* muted */
-  --color-accent: #ff385c; /* Rausch */
-  --color-accent-active: #e00b41; /* 押下/hover のより濃い Rausch */
-  --color-border: #dddddd; /* hairline */
-  --color-border-soft: #ebebeb; /* hairline-soft（補助境界） */
-  --color-accent-contrast: #ffffff; /* on-primary */
-
-  /* カード面。影ではなく border＋余白＋角丸で bg から分離する（Airbnb 流） */
-  --color-surface-2: #ffffff;
+  /* --- 配色トークン・フォントファミリーの実体は src/styles/tailwind.css の @theme
+     （tailwindcss/theme レイヤー）へ移設した。@theme のカスタムプロパティは :root
+     スコープへコンパイルされるため、既存の生CSS（var(--color-accent)・var(--font-sans)等を
+     参照する約15ファイル）はこの :root に何も再宣言しなくてもそのまま解決できる
+     （同名を再宣言すると自己参照で壊れるため、ここでは宣言しない。T-014／SPEC.md §8.3.1）。 --- */
   /* 主役専用グラデ（Rausch。主ボタン・進捗バーのみ） */
   --gradient-accent: linear-gradient(135deg, #ff385c 0%, #e00b41 100%);
-
-  /* --- 拡張色（spec非定義・自前補完。Rausch/ink/hairline と調和・ライト） --- */
-  --color-success-bg: #eef7f0;
-  --color-success-border: #b7dcc0;
-  --color-success-text: #1c7a43;
-  --color-danger-bg: #fdeeea;
-  --color-danger-border: #f3c2b5;
-  --color-danger-text: #c13515; /* Airbnb error text */
-  --color-warning-bg: #fbf6ea;
-  --color-warning-border: #ecd9a6;
-  --color-warning-text: #8a6d1a;
-
-  /* --- アクセント淡色（バッジ等の淡塗り。単色 Rausch の範囲内：ライト） --- */
-  --color-accent-bg: #ffe9ee; /* 淡い Rausch ピンク背景 */
-  --color-accent-border: #ffd1da;
-  --color-accent-text: #c13515; /* 淡背景上で AA(4.5:1) を満たす濃赤 */
-
-  /* --- 後方互換エイリアス（旧変数名→新トークン。漏れ防止用） --- */
-  --color-text-secondary: var(--color-text-sub);
-  --color-surface-alt: var(--color-surface);
-  --color-border-strong: var(--color-border);
-  --color-success: var(--color-success-text);
-  --color-danger: var(--color-danger-text);
-
-  /* --- タイポグラフィ --- */
-  --font-sans: system-ui, "Hiragino Sans", "Segoe UI", Meiryo, sans-serif;
-  /* 数字専用フォント（外部Webフォント不使用・システムフォールバックのみ） */
-  --font-numeric:
-    "SF Pro Display", "Helvetica Neue", "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui,
-    sans-serif;
 
   /* --- サイズ（3段階強調＋補助） --- */
   --fs-score: 2.2rem; /* L1: 点数 */
@@ -122,9 +91,6 @@ body {
   flex-direction: column;
 }
 
-/* ルーティングされる各ページ（main）が伸びてフッターを下端へ押し出す。
-   page-shell は margin:0 auto を持ち flex の stretch が効かないため、
-   width:100% を明示して横幅を親いっぱい（PC は max-width で中央寄せ）に保つ。 */
 .app-layout > main {
   flex: 1 0 auto;
   width: 100%;
@@ -139,9 +105,6 @@ h1 {
   line-height: var(--leading-tight);
 }
 
-/* h2 は全画面共通の「セクション見出し」（Airbnb の modest section head 準拠）。
-   控えめだが見出しとして成立する単一ルール。各ページ固有の余白 margin 以外の
-   font-size/color/weight 上書きは行わない（同一役割を画面ごとに変えない）。 */
 h2 {
   font-size: var(--fs-base);
   font-weight: 600;
@@ -152,10 +115,6 @@ h2 {
 p {
   margin: 0;
   line-height: var(--leading-normal);
-}
-
-a {
-  color: var(--color-accent);
 }
 
 /* focus リング（Rausch ベース。グローは控えめ） */
@@ -200,7 +159,6 @@ select:focus-visible {
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-3);
-  /* ヘッダーは低めに（上下の余白は少しだけ残す）。PC・スマホ共通。 */
   padding: var(--space-1) 0;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg);
@@ -322,8 +280,7 @@ select:focus-visible {
   }
   .btn-primary,
   .btn-secondary,
-  .quiz-choice-btn,
-  .home-mode-card {
+  .quiz-choice-btn {
     transform: none !important;
   }
 }

@@ -26,8 +26,9 @@ src/
   store/      # localStorage(成績・苦手タグ) と集計・重み付け出題
   components/ # 出題/解説/成績 の各画面 (React)
   App.tsx / main.tsx
-SPEC.md   # 仕様書（正典）
-TASKS.md  # 実装計画
+SPEC.md             # 仕様書（正典）
+TASKS.md            # 実装計画
+STYLE-TRANSFER.md   # CSS→Tailwind移行のルール（T-014/T-015より抽出）
 ```
 
 ## 開発コマンド
@@ -80,6 +81,10 @@ npm run lint     # Lint
 点数 = **符**（手の形の加算値、10符切り上げ）と**翻**（役・ドラの合計）から算出。
 基本点 = 符 × 2^(2+翻)。**親/子・ツモ/ロン**で支払いが変わる（`SPEC.md` §5.3）。
 用語の詳細と対象役リスト・符/点数テーブルは **`SPEC.md` §3・§5** を参照。
+
+## スタイル方針
+
+- CSSをTailwind化する作業（既存 `.css` の置換・新画面の移行）を行う際は **`STYLE-TRANSFER.md`** のルールに従う。
 
 ## ドキュメント方針
 

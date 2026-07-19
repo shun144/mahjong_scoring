@@ -274,7 +274,8 @@
 
 /* --- ヘッダーの早見表トリガーボタン（ハンバーガー(.hamburger-btn)と同じ40x40の円形アイコン
    ボタンに揃える。.quiz-page/.result-page 配下でのみ使うため、そのスコープの
-   --fl-teal-dark（Flip7 パレット）をそのまま使える。 --- */
+   --fl-teal-dark（Flip7 パレット）をそのまま使える。ConvertQuizPage.tsx とクラス名を
+   共有するため維持する（QuizPage.tsx 自体は Tailwind ユーティリティに移行済み。T-014）。 --- */
 .qp-table-header-btn {
   display: inline-flex;
   align-items: center;

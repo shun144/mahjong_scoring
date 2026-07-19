@@ -25,6 +25,18 @@ export interface StatsState {
   byFuType: Record<string, TagStat>;
   /** キーは役名（例: "リーチ"）。 */
   byYakuCategory: Record<string, TagStat>;
+  /** 「今日の回答数」（モメンタムカウンタ）。todayDate の日に回答した数。 */
+  todayAnswered: number;
+  /** todayAnswered が対象とする日付（ローカル日付、"YYYY-MM-DD"）。 */
+  todayDate: string;
+}
+
+/** ローカル日付を "YYYY-MM-DD" で表す（today の回答数を日跨ぎでリセットするためのキー）。 */
+export function todayKey(date: Date = new Date()): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 export function createEmptyStats(): StatsState {
@@ -36,7 +48,14 @@ export function createEmptyStats(): StatsState {
     history: [],
     byFuType: {},
     byYakuCategory: {},
+    todayAnswered: 0,
+    todayDate: todayKey(),
   };
+}
+
+/** 今日の回答数を返す。保存データの日付が今日でなければ（未跨ぎ更新前）0として扱う。 */
+export function getTodayAnswered(stats: StatsState): number {
+  return stats.todayDate === todayKey() ? stats.todayAnswered : 0;
 }
 
 function isStatsState(value: unknown): value is StatsState {
@@ -55,13 +74,24 @@ function isStatsState(value: unknown): value is StatsState {
   );
 }
 
+/**
+ * 保存済みデータに todayAnswered/todayDate が無い場合（T-008 以前の旧データ）に
+ * 補う。今日の回答数は旧データからは分からないため 0 から始める。
+ */
+function withToday(stats: StatsState): StatsState {
+  if (typeof stats.todayAnswered === "number" && typeof stats.todayDate === "string") {
+    return stats;
+  }
+  return { ...stats, todayAnswered: 0, todayDate: todayKey() };
+}
+
 /** localStorageから成績を読み込む。無い/壊れている場合は空の成績を返す。 */
 export function loadStats(): StatsState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return createEmptyStats();
     const parsed: unknown = JSON.parse(raw);
-    return isStatsState(parsed) ? parsed : createEmptyStats();
+    return isStatsState(parsed) ? withToday(parsed) : createEmptyStats();
   } catch {
     return createEmptyStats();
   }
@@ -113,6 +143,14 @@ export function recordAnswer(problem: Problem, isCorrect: boolean): StatsState {
   } else {
     stats.currentStreak = 0;
   }
+
+  // 今日の回答数（モメンタムカウンタ）: 正誤に関わらず加算し、絶対に減らさない（非懲罰）。
+  const key = todayKey();
+  if (stats.todayDate !== key) {
+    stats.todayDate = key;
+    stats.todayAnswered = 0;
+  }
+  stats.todayAnswered += 1;
 
   stats.history.push({
     timestamp: Date.now(),

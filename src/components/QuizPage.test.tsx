@@ -217,13 +217,13 @@ describe("QuizPage", () => {
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     // 「内訳」見出し行（正誤・答え）は畳んでいても常に表示される。
     expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
-    expect(container.querySelector(".result-breakdown-body")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("result-breakdown-body")).not.toBeInTheDocument();
     expect(screen.queryByText("平和")).not.toBeInTheDocument();
 
     fireEvent.click(toggle);
 
     expect(toggle).toHaveAttribute("aria-expanded", "true");
-    expect(container.querySelector(".result-breakdown-body")).toBeInTheDocument();
+    expect(screen.getByTestId("result-breakdown-body")).toBeInTheDocument();
     expect(screen.getByText("平和")).toBeInTheDocument();
     // ページ遷移は発生していない
     expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
@@ -241,14 +241,14 @@ describe("QuizPage", () => {
     expect(await screen.findByText("✕ 不正解")).toBeInTheDocument();
     const toggle = screen.getByRole("button", { name: /解説はこちら/ });
     expect(toggle).toHaveAttribute("aria-expanded", "true");
-    expect(container.querySelector(".result-breakdown-body")).toBeInTheDocument();
+    expect(screen.getByTestId("result-breakdown-body")).toBeInTheDocument();
     expect(screen.getByText("平和")).toBeInTheDocument();
 
     // ユーザーは手動で畳める（畳んでも「内訳」見出し行の正誤・答えは表示されたまま）
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
-    expect(container.querySelector(".result-breakdown-body")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("result-breakdown-body")).not.toBeInTheDocument();
     expect(screen.getByText("✕ 不正解")).toBeInTheDocument();
   });
 
@@ -377,6 +377,32 @@ describe("QuizPage", () => {
     fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
 
     expect(loadStats().totalAnswered).toBe(before + 2); // 元の1回 + 「次の問題へ」後の新しい問題1回
+  });
+
+  it("モメンタムカウンタ（今日の回答数・連続正解）が出題中・結果時ともに表示される", () => {
+    localStorage.clear();
+    const { container } = renderQuiz();
+    expect(screen.getByTestId("momentum-today").textContent).toBe("0");
+    expect(screen.getByTestId("momentum-streak").textContent).toBe("0");
+
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+
+    // 結果表示中も同じ要素で表示され続ける（別ページに切り替わらない）。
+    expect(screen.getByTestId("momentum-today").textContent).toBe("1");
+  });
+
+  it("回答結果に応じてモメンタムカウンタが正しく更新される（正解=両方加算／不正解=連続正解のみ0・回答数は減らない）", () => {
+    // 正誤は問題ごとに変わる（generateChoices はランダム）ため、実際に表示された判定
+    // （○正解／✕不正解）に応じて期待値を分岐させる。加算・非懲罰のルール自体は
+    // statsStore.test.ts の recordAnswer テストで正誤を固定して網羅済み。
+    localStorage.clear();
+    const { container } = renderQuiz();
+
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+
+    const isCorrect = !!screen.queryByText("○ 正解");
+    expect(screen.getByTestId("momentum-today").textContent).toBe("1"); // 正誤によらず加算
+    expect(screen.getByTestId("momentum-streak").textContent).toBe(isCorrect ? "1" : "0");
   });
 
   it("点数早見表ボタンはヘッダー（ハンバーガーの隣）にある", () => {

@@ -1,0 +1,93 @@
+@layer theme, base, utilities;
+
+/* Tailwind CSS（v4・CSS-first設定）。theme と utilities のみを読み込み、
+   preflight（全要素グローバルリセット）は導入しない — 導入するとTailwind未導入の
+   他画面（符計算・点数換算・ホーム等）の見た目にも影響するため（T-014／SPEC.md §8.3.1）。
+   点数計算モード（QuizPage・ResultContent・ResultPage。T-014）とホーム画面
+   （HomePage。T-015）がTailwindユーティリティクラスを使う。
+   このファイルを index.css から独立させているのは、Tailwind の PostCSS プラグインが
+   @import "tailwindcss/..." を含むファイルをファイルシステムから直接（postcss-custom-media
+   等の他プラグインによる変換を経由せず）読み直して解析するため。index.css には
+   postcss-custom-media が展開する @media (--bp-xxx) が含まれ、同じファイル内に
+   同居させると未展開のカスタムメディアとして解析エラーになる（T-014で確認済み）。 */
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+
+/* Tailwindの@themeへ既存デザイントークンをマッピングする。色はTailwindの命名規約
+   （--color-*）と既存トークン名が一致するため、値の二重管理を避けてここへ移設する
+   （src/index.css の :root 側には同名宣言を持たない）。Flip7配色（quizFlip7.cssで
+   .quiz-pageスコープにローカル定義された--fl-*）はスコープの外からは参照できないため、
+   サイト全体トークンとして値を複製する（.quiz-page側のローカル定義はquizFlip7.css内の
+   既存参照のため残す）。spacing/radius/font-size等はTailwindの命名規約と既存トークン名が
+   異なり、複製すると二重管理になるため@themeへは移さず、Tailwindユーティリティ側で
+   `p-[var(--space-4)]`のような任意値記法で既存 :root トークンを直接参照する。 */
+@theme {
+  /* 既存 --bp-sm-up（src/styles/breakpoints.css）と同じ640px境界に合わせる。 */
+  --breakpoint-sm: 640px;
+
+  --font-sans: system-ui, "Hiragino Sans", "Segoe UI", Meiryo, sans-serif;
+  /* 数字専用フォント（外部Webフォント不使用・システムフォールバックのみ） */
+  --font-numeric:
+    "SF Pro Display", "Helvetica Neue", "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui,
+    sans-serif;
+
+  --color-bg: #ffffff;
+  --color-surface: #f7f7f7;
+  --color-text: #222222;
+  --color-text-sub: #6a6a6a;
+  --color-accent: #ff385c;
+  --color-accent-active: #e00b41;
+  --color-border: #dddddd;
+  --color-border-soft: #ebebeb;
+  --color-accent-contrast: #ffffff;
+  --color-surface-2: #ffffff;
+
+  --color-success-bg: #eef7f0;
+  --color-success-border: #b7dcc0;
+  --color-success-text: #1c7a43;
+  --color-danger-bg: #fdeeea;
+  --color-danger-border: #f3c2b5;
+  --color-danger-text: #c13515;
+  --color-warning-bg: #fbf6ea;
+  --color-warning-border: #ecd9a6;
+  --color-warning-text: #8a6d1a;
+
+  --color-accent-bg: #ffe9ee;
+  --color-accent-border: #ffd1da;
+  --color-accent-text: #c13515;
+
+  --color-text-secondary: var(--color-text-sub);
+  --color-surface-alt: var(--color-surface);
+  --color-border-strong: var(--color-border);
+  --color-success: var(--color-success-text);
+  --color-danger: var(--color-danger-text);
+
+  /* Flip7配色（quizFlip7.css の .quiz-page ローカル定義と同値。QuizPage.tsx移行分が使う）。 */
+  --color-fl-teal: #2ba8a2;
+  --color-fl-teal-light: #3cc4bd;
+  --color-fl-teal-dark: #1e8c86;
+  --color-fl-teal-bg: #e8f6f5;
+  --color-fl-gold: #ffd23f;
+  --color-fl-gold-light: #ffe47a;
+  --color-fl-gold-dark: #e6b800;
+  --color-fl-gold-ink: #8a6d00;
+  --color-fl-coral: #ef6c4a;
+  --color-fl-coral-light: #ff8a6a;
+  --color-fl-coral-dark: #d45233;
+  --color-fl-cream: #fff8e7;
+  --color-fl-sky: #5dade2;
+  --color-fl-sky-dark: #2f80b8;
+  --color-fl-violet: #9b6dd6;
+  --color-fl-violet-dark: #7a4fc0;
+  --color-fl-surface: #eff8f7;
+  --color-fl-card: #ffffff;
+  --color-fl-ink: #123f3c;
+  --color-fl-body: #34514f;
+  --color-fl-muted: #566d6b;
+}
+
+@layer base {
+  a {
+    color: var(--color-accent);
+  }
+}
