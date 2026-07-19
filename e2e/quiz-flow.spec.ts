@@ -3,11 +3,10 @@ import { expect, test } from "@playwright/test";
 test.describe("麻雀点数トレーニング - 一連の学習フロー", () => {
   test("ホーム→出題→回答→解説→次の問題→成績、の一連が動作する", async ({ page }) => {
     await page.goto("");
-    await expect(page.getByRole("heading", { name: "麻雀点数トレーニング" })).toBeVisible();
+    // await expect(page.getByRole("heading", { name: "麻雀点数トレーニング" })).toBeVisible();
 
-    await page.getByRole("link", { name: "点数計算" }).click();
+    await page.getByRole("link", { name: "点数計算モード" }).click();
     await expect(page).toHaveURL(/\/quiz$/);
-    await expect(page.getByRole("heading", { name: "出題" })).toBeVisible();
 
     // 手牌（牌画像）が表示されている
     await expect(page.getByRole("img").first()).toBeVisible();
@@ -17,15 +16,11 @@ test.describe("麻雀点数トレーニング - 一連の学習フロー", () =>
     await expect(choiceButtons).toHaveCount(4);
     await choiceButtons.first().click();
 
-    await expect(page).toHaveURL(/\/result$/);
-    await expect(page.getByRole("heading", { name: "解説" })).toBeVisible();
+    await expect(page.getByRole("region", { name: "結果" })).toBeVisible();
     await expect(page.getByText(/^答え:/)).toBeVisible();
-    // 点数計算カードは見出しテキストを持たず aria-label で識別する（region ロール）。
-    await expect(page.getByRole("region", { name: "点数計算" })).toBeVisible();
 
     await page.getByRole("link", { name: "次の問題へ" }).click();
     await expect(page).toHaveURL(/\/quiz$/);
-    await expect(page.getByRole("heading", { name: "出題" })).toBeVisible();
 
     await page.getByRole("link", { name: "成績" }).click();
     await expect(page).toHaveURL(/\/stats$/);

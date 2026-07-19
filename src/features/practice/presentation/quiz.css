@@ -1,0 +1,183 @@
+/* 両セクションの色付き枠を、伸ばしたセクションの高さいっぱいに広げて高さを揃える。
+   枠内の牌は縦中央に置く。 */
+.win-indicator-section .tile-info-group,
+.dora-indicator-group {
+  flex: 1;
+  justify-content: center;
+}
+
+/* 「ドラ表示牌」ラベル（枠外）＋グレー枠 を縦に積むセクション。 */
+.dora-indicator-section {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* アガリ牌セクション：ピル型ラベル（枠外・上）＋色付き枠 を縦に積む。ドラ表示牌と同じ構成。 */
+.win-indicator-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.riichi-indicator-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* 点棒画像（横長・約6.67:1）。 */
+.riichi-indicator-stick {
+  display: block;
+  width: 92px;
+  height: auto;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.18));
+}
+
+.riichi-indicator-spacer {
+  visibility: hidden;
+}
+
+/* 表ドラ・裏ドラをまとめて囲む枠。囲みスタイルはアガリ牌と同じ（padding/角丸/枠線）で、
+   ボーナスを示す淡い緑系にする。 */
+.dora-indicator-group {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-success-border);
+  background: var(--color-success-bg);
+}
+
+/* 枠内の表(表ドラ)・裏(裏ドラ)を横並びにする。 */
+.dora-indicator-tiles {
+  display: flex;
+  gap: var(--space-4) var(--space-5);
+}
+
+/* スマホ幅では表・裏の間隔が空きすぎるため詰める。 */
+@media (--bp-sm) {
+  .dora-indicator-tiles {
+    gap: var(--space-2) var(--space-3);
+  }
+}
+
+/* 狭幅ではドラ表示牌の合計枚数が多い（例: 表3+裏3=6枚）とドラ枠が広がり、
+   quiz-tile-header の折り返しでドラ表示ブロックごと次行に落ちやすい。
+   リーチ棒を一回り小さくして横幅の圧迫を緩和する（PC幅は92pxのまま）。 */
+@media (--bp-sm) {
+  .riichi-indicator-stick {
+    width: 76px;
+  }
+}
+
+/* 枠内の「表」「裏」ラベルは枠の緑に合わせた濃い緑にする。 */
+.dora-indicator-tiles .tile-info-label {
+  color: var(--color-success-text);
+  font-weight: 600;
+}
+
+.tile-info-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* 牌の描画領域。牌／「なし」を上下左右中央に置く。 */
+.tile-info-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ドラ表示牌の枠内は、裏ドラの有無で囲いサイズが変わらないよう牌1枚分の領域を必ず確保する。
+   「なし」でもこの領域内で中央寄せされる。サイズは牌(md)の実寸と同じ式で算出し、
+   固定値だと縮小時にラベルと牌の間へ隙間が空くのを防ぐ（tiles.css の md 定義と一致）。 */
+.dora-indicator-tiles .tile-info-slot {
+  --slot-w: min(42px, calc((min(100vw, 640px) - 78px) / 13));
+  min-width: var(--slot-w);
+  min-height: calc(var(--slot-w) * 4 / 3);
+}
+
+/* アガリ牌はツモ／ロンで背景色・枠線・ラベル色をはっきり変え、上がり方を一目で示す。
+   色（青=ツモ／赤=ロン）に加えてラベル文字でも区別できるため色覚多様性にも配慮する。
+   緑はドラ表示牌（ボーナス）専用色なのでツモには使わない。 */
+.tile-info-group--tsumo,
+.tile-info-group--ron {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+}
+
+/* ツモ＝青系。ドラの緑・ロンの赤いずれとも被らない色で区別する。 */
+.tile-info-group--tsumo {
+  background: #d9e6fa;
+  border-color: #b3cdf2;
+}
+
+/* ロン＝赤系（Rausch 寄り）。ツモと明確に対比させる。 */
+.tile-info-group--ron {
+  background: #ffd6de;
+  border-color: var(--color-accent-border);
+}
+
+/* ラベル（ツモ/ロン）は補助グレーをやめ、上がり方の色で太字表示する。 */
+.tile-info-group--tsumo .mj-winning-label {
+  color: #1c5aa8;
+  font-weight: 700;
+}
+
+.tile-info-group--ron .mj-winning-label {
+  color: var(--color-accent-text);
+  font-weight: 700;
+}
+
+/* アガリ牌そのものにも上がり方の色でリングを添え、牌単体でも識別できるようにする。
+   SVGアセットは変更せず、外側から outline とドロップシャドウで縁取る。 */
+.tile-info-group--tsumo .mj-tile-inner {
+  outline: 2px solid #2f6fd0;
+  outline-offset: 1px;
+  border-radius: 3px;
+}
+
+.tile-info-group--ron .mj-tile-inner {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  border-radius: 3px;
+}
+
+.tile-info-label {
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+  white-space: nowrap;
+}
+
+.tile-info-none {
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+}
+
+.quiz-answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.quiz-answer-label {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+}
+
+.quiz-choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}

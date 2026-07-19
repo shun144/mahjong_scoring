@@ -15,7 +15,7 @@ import type { Meld, MeldType, Tile, Wind, WinType } from "../src/engine/model";
 import { scoreHand, type ScoreHandInput } from "../src/engine/scoreHand";
 import { parseTileNotation } from "../src/engine/tiles";
 import { tileToType, tilesToCounts, typeToTile } from "../src/engine/tileType";
-import type { Problem } from "../src/data/problem";
+import type { Problem } from "../src/features/practice/domain/problem";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -638,6 +638,6 @@ for (const p of problems) {
   }
 }
 
-const outPath = resolve(__dirname, "../src/data/problemBank.json");
+const outPath = resolve(__dirname, "../src/features/practice/infrastructure/problemBank.json");
 writeFileSync(outPath, JSON.stringify(problems, null, 2) + "\n", "utf-8");
 console.log(`問題バンクを生成しました: ${problems.length}問 -> ${outPath}`);

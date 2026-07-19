@@ -1,26 +1,6 @@
 @layer theme, base, utilities;
-
-/* Tailwind CSS（v4・CSS-first設定）。theme と utilities のみを読み込み、
-   preflight（全要素グローバルリセット）は導入しない — 導入するとTailwind未導入の
-   他画面（符計算・点数換算・ホーム等）の見た目にも影響するため（T-014／SPEC.md §8.3.1）。
-   点数計算モード（QuizPage・ResultContent・ResultPage。T-014）とホーム画面
-   （HomePage。T-015）がTailwindユーティリティクラスを使う。
-   このファイルを index.css から独立させているのは、Tailwind の PostCSS プラグインが
-   @import "tailwindcss/..." を含むファイルをファイルシステムから直接（postcss-custom-media
-   等の他プラグインによる変換を経由せず）読み直して解析するため。index.css には
-   postcss-custom-media が展開する @media (--bp-xxx) が含まれ、同じファイル内に
-   同居させると未展開のカスタムメディアとして解析エラーになる（T-014で確認済み）。 */
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
-
-/* Tailwindの@themeへ既存デザイントークンをマッピングする。色はTailwindの命名規約
-   （--color-*）と既存トークン名が一致するため、値の二重管理を避けてここへ移設する
-   （src/index.css の :root 側には同名宣言を持たない）。Flip7配色（quizFlip7.cssで
-   .quiz-pageスコープにローカル定義された--fl-*）はスコープの外からは参照できないため、
-   サイト全体トークンとして値を複製する（.quiz-page側のローカル定義はquizFlip7.css内の
-   既存参照のため残す）。spacing/radius/font-size等はTailwindの命名規約と既存トークン名が
-   異なり、複製すると二重管理になるため@themeへは移さず、Tailwindユーティリティ側で
-   `p-[var(--space-4)]`のような任意値記法で既存 :root トークンを直接参照する。 */
 @theme {
   /* 既存 --bp-sm-up（src/styles/breakpoints.css）と同じ640px境界に合わせる。 */
   --breakpoint-sm: 640px;

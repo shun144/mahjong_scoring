@@ -51,6 +51,22 @@ DDDの層をそのまま明示する（bulletproof-react慣例の`api/components
 - **`infrastructure/`**: `application/`が定義したポートの具体実装（アダプタ）。localStorage・IndexedDB・JSON読み込み等の外部I/O。例: `practice`の`problemBank.json`読み込み・`statsStore`のlocalStorage実装、`settings`の`IndexedDbSettingsRepository`・合成ルート（`settingsRepository.instance.ts`は自feature内部の配線としてここに置く。A6参照）。
 - **`presentation/`**: Reactコンポーネント・hooks・Context Provider。例: `QuizPage`/`FuQuizPage`/`ResultPage`/`StatsPage`、`SettingsPage`/`SettingsContext`、`ArticleListPage`/`ArticlePage`。
 
+### A5.1 補足: なぜ永続化の抽象（ポート）を`domain/`ではなく`application/`に置くか
+
+DDD/オニオンの文献には実は2つの流儀がある。
+
+- **クラシックなオニオン（Palermo流）**: リポジトリの抽象は「ドメインが必要とするもの」として`domain/`（Domain Model層）が所有する。`application/`はユースケースのオーケストレーションのみを置く。
+- **クリーンアーキテクチャ／ポート＆アダプタ（ヘキサゴナル）流**: リポジトリの抽象（アウトバウンドポート）は「そのユースケースが外部に何を要求するか」の宣言として`application/`（Use Case層）が所有する。実装（アダプタ）は`infrastructure/`が担う。
+
+本プロジェクトは**後者（クリーンアーキテクチャ／ポート＆アダプタ流）を採用する**。理由は、これが今日のTypeScript実装で最も一般的な流儀であり、`application/`を「外部依存の抽象を宣言する境界」として一貫させられるため。
+
+この流儀での`application/`の役割は、実は無関係な2つではなく、**ポート＆アダプタの"ポート"が2種類ある**ことの両面である。
+
+- **インバウンドポート（駆動される側）**: ユースケース関数そのもの（例: `nextProblem()`・`recordAnswer()`）。`presentation/`はこの関数を呼ぶだけで中身を知らない。
+- **アウトバウンドポート（駆動する側）**: そのユースケース関数が外部（`infrastructure/`）に要求するインターフェース（例: `SettingsRepository`）。
+
+**オーケストレーション＝インバウンドポート（ユースケース関数）の実装本体であり、その実装が使う依存がアウトバウンドポートとして`application/`に宣言される**、という一体の関係である。`settings`のようにユースケース関数が実質存在しない薄いfeatureでは、アウトバウンドポート宣言（`SettingsRepository`インターフェース）だけが`application/`に見える状態になるが、これは流儀の逸脱ではなく、featureが薄いことの当然の帰結である（`practice`移行後は`nextProblem`等のインバウンドポートも揃って見える）。
+
 ## A6. 依存ルール
 
 - 依存の向きは常に「外側→内側」（`presentation → application → domain`、`infrastructure → application`のポートを実装）。内側の層は外側を知らない。

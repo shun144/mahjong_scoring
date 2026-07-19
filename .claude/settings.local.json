@@ -67,7 +67,12 @@
       "Bash(node ~/.claude/statusline.mjs)",
       "Skill(implement)",
       "Bash(grep -n \"querySelector\\\\|\\\\\\\\.result-\\\\|\\\\\\\\.qp-\\\\|\\\\\\\\.card\\\\b\" src/components/ResultPage.test.tsx)",
-      "mcp__plugin_playwright_playwright__browser_hover"
+      "mcp__plugin_playwright_playwright__browser_hover",
+      "Bash(cd *)",
+      "Bash(set -e)",
+      "Bash(mkdir -p src/features/practice/domain src/features/practice/application src/features/practice/infrastructure src/features/practice/presentation)",
+      "Bash(grep -v \"PageHeader.tsx$\")",
+      "Bash(grep *)"
     ]
   }
 }

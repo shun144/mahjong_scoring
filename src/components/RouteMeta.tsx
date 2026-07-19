@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { SITE_NAME, SITE_ORIGIN } from "../config/site";
-import { getArticleBySlug } from "../content/articles/registry";
+import { getArticleBySlug } from "../features/articles/domain/registry";
 
 /**
  * ルートごとに <title> / <meta description> / <link canonical> を出し分ける。
