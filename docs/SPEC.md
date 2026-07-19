@@ -643,6 +643,21 @@ interface ScoreResult {
 
 **独自ブレークポイントの扱い**（STYLE-TRANSFER.md R7の適用結果）: `--bp-home-2col`（480px、モードカードグリッドの2列化）は`@theme`へ昇格させず、`min-[480px]:`のTailwind任意値ブレークポイントバリアントとしてJSX側に直接記述した。`src/styles/breakpoints.css`の`--bp-home-2col`定義は削除した。
 
+### 8.3.3 学習ガイド・記事ページのTailwind移行（T-016）
+
+**目的**: §8.3.1・`docs/STYLE-TRANSFER.md`の移行方式を**学習ガイド一覧**（`ArticleListPage.tsx`）・**記事詳細**（`ArticlePage.tsx`）・その本文描画を担う`ArticleMarkdown.tsx`・`ArticleHand.tsx`（4ファイル、いずれも`articles.css`を使用）に適用する（`/grilling`セッションでの合意事項）。
+
+**対象範囲の判定**（STYLE-TRANSFER.md R5の適用結果）:
+- `page-shell`・`page-header`・`page-header-link`・`page-header-link-item`・`btn-primary`は`FuResultPage.tsx`・`AboutPage.tsx`・`ContactPage.tsx`・`StatsPage.tsx`・`SettingsPage.tsx`・`SidebarPageHeader.tsx`等の未移行ファイルと共有しているため、`src/index.css`のCSSルールは削除しない。`page-shell`はクラス名ごと残す（全画面共通の外枠として）。それ以外（`page-header`等）は対象4ファイル側のみクラス名の使用をやめ、Tailwindユーティリティで同一の見た目を再現する。
+- `articles.css`のそれ以外の全ルール（`.articles-page`/`.article-page`スコープの一覧カード・記事本文・牌姿表示・画像ライトボックス等）は対象4ファイル以外と共有していないため、Tailwind化後にCSSファイルから削除する（STYLE-TRANSFER.md R5-4相当）。
+- 例外として、`ArticleHand.tsx`が使う共有コンポーネント`TileRow`の内部要素（`.mj-tile-wrap.mj-tile-size-md`）へのCSS上書きは、STYLE-TRANSFER.md R5-5（本タスクで新設）によりTailwind化せずCSS残置する。
+
+**擬似要素の実要素化**（STYLE-TRANSFER.md R6の適用結果）: `.article-card::before`（一覧カードの左アクセントバー）・`.article-end-cta .btn-primary::before`（CTAボタンの光沢オーバーレイ）に加え、`.article-body h1::after`（記事タイトルのゴールド下線）も対象とする。`h1`はReactMarkdownが自動生成する要素のため、`ArticleMarkdown.tsx`の`components`に既存の`p`/`table`/`pre`/`a`と同様の手法で`h1`のカスタムコンポーネントを新規追加し、ゴールド下線を`aria-hidden`付きの実`<span>`要素として描画する。
+
+**デザイントークン**: `articles.css`が使う色トークンはすべて`tailwind.css`の`@theme`に登録済み（新規昇格なし）。半径・グロー影・所要時間・背景グラデーション・牌行幅計算用の`--art-tile-w`はSTYLE-TRANSFER.md R3に従い`@theme`へ昇格させず、`.articles-page`/`.article-page`スコープのCSSカスタムプロパティとして残す。未使用トークン`--fl-hand-bg`は付随的な瑕疵として削除する（T-015の`.home-mode-card`削除と同様の扱い）。
+
+**既存クラス名とテストへの影響**（STYLE-TRANSFER.md R8の適用結果）: `ArticleMarkdown.test.tsx`の`toHaveClass("article-image-trigger")`は、該当ボタンに付与する`data-testid="article-image-trigger"`ベースのクエリへ書き換える。`ArticleListPage.test.tsx`・`ArticlePage.test.tsx`は既にrole/表示テキストベースのクエリのみのため変更不要。
+
 **付随する既存瑕疵の解消**: `src/index.css`の`prefers-reduced-motion`ブロックにあった`.home-mode-card`セレクタは、現行`home.css`のどのクラスとも一致しない死んだCSS（本移行前からの既存の瑕疵）のため、本タスクであわせて削除した。
 
 **テスト方針**（STYLE-TRANSFER.md R8の適用結果）: 本タスクはスタイルのみの変更のため、`HomePage.test.tsx`は新規追加しない。受け入れ確認はブラウザ目視（下記）で行う。

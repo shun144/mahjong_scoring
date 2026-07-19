@@ -41,7 +41,7 @@ describe("ArticleMarkdown", () => {
     renderMarkdown("![符→翻→点数の3ステップ図](images/three-steps.png)");
     const image = screen.getByRole("img", { name: "符→翻→点数の3ステップ図" });
     expect(image).toHaveAttribute("src", "images/three-steps.png");
-    expect(image.closest("button")).toHaveClass("article-image-trigger");
+    expect(image.closest("button")).toHaveAttribute("data-testid", "article-image-trigger");
   });
 
   it("画像をクリックすると拡大表示(ライトボックス)が開き、背景クリックで閉じる", () => {

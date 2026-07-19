@@ -66,7 +66,8 @@
       "Read(//c/Users/noels/.claude/**)",
       "Bash(node ~/.claude/statusline.mjs)",
       "Skill(implement)",
-      "Bash(grep -n \"querySelector\\\\|\\\\\\\\.result-\\\\|\\\\\\\\.qp-\\\\|\\\\\\\\.card\\\\b\" src/components/ResultPage.test.tsx)"
+      "Bash(grep -n \"querySelector\\\\|\\\\\\\\.result-\\\\|\\\\\\\\.qp-\\\\|\\\\\\\\.card\\\\b\" src/components/ResultPage.test.tsx)",
+      "mcp__plugin_playwright_playwright__browser_hover"
     ]
   }
 }

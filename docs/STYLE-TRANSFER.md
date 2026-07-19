@@ -35,6 +35,7 @@ Tailwind導入用CSS（`src/styles/tailwind.css`）の先頭で `@layer theme, b
 2. 移行対象コンポーネントが使うクラス名のうち、**他の未移行ファイルや共有コンポーネントと共有されているもの**は、既存のCSSルールを削除しない。移行対象ファイル側はそのクラス名の使用をやめてTailwindユーティリティで同じ見た目を再現するが、CSSルール自体はそのクラス名を使い続けるファイルのために残す（未使用化するだけで削除しない）。
 3. 共有コンポーネント自体（`ChoiceGrid`・`QuizConditions`・`SidebarPageHeader` 等）のコード・マークアップ・クラス名は一切変更しない。
 4. 移行対象コンポーネントが他ファイルと**一切クラス名を共有していない**場合（例: T-015のホーム画面）は、上記2の例外は生じず、構造・レイアウトのCSSを全面的に削除できる。
+5. 移行対象コンポーネントが**共有コンポーネント（`TileRow`等）の内部要素**を、祖先スコープの子孫セレクタでCSS上書きしている場合（例: T-016の`.article-hand-tiles .mj-tile-wrap.mj-tile-size-md`）、移行対象コンポーネントはその内部要素にclassNameを付与できない（共有コンポーネントのマークアップは変更しない、というR5-3の帰結）。このCSSルールはTailwind化できないため、対象コンポーネントのCSSファイルに残置し、コメントで「共有コンポーネント内部要素への上書きのためTailwind化不可」と明記する。
 
 ## R6. 擬似要素は実要素に変換する
 
@@ -60,10 +61,18 @@ Tailwind導入用CSS（`src/styles/tailwind.css`）の先頭で `@layer theme, b
 - 移行対象外の画面の見た目に変化がない（共有クラスの温存漏れ・新規昇格トークンの副作用がないこと）。
 - `npm test` / `npm run lint` が通る。
 
+## R10. 点線（破線）の下線ボーダーは `[border-bottom-style:dashed]` を使う
+
+見出しの下線など、**下辺だけ**を点線にしたい場合は `border-dashed` を使わず、`[border-bottom-style:dashed]`（Tailwindの任意プロパティ記法）を使う。
+
+**理由**: `border-dashed` はTailwindの標準ユーティリティで、`border-style`（四辺すべて）に作用する。片側だけに`border-style`を適用するネイティブユーティリティ（`border-b-dashed`相当）はTailwindに存在しない。`border-b-2`（幅）と`border-dashed`（四辺の様式）を組み合わせると、他の辺の幅が0のときは見た目上偶然問題が出ないが、正確ではない。`[border-bottom-style:dashed]`で対象の辺だけを明示する。参照実装: `src/components/ResultContent.tsx` の `border-b-2 border-[rgba(43,168,162,0.22)] [border-bottom-style:dashed]`。
+
 ---
 
 ## 変更履歴
 
 - **T-014**（点数計算モード）: R1・R3〜R5・R7〜R9 を確立。
 - **T-015**（ホーム画面）: R5-4（非共有ファイルの全面削除）・R6（擬似要素の実要素化）・R7の一回限りブレークポイント方針を確立。
+- **（ユーザー指摘）**: R10（点線下線ボーダーの記法）を確立。
 - **（ユーザー手動対応）**: R2 を確立。`index.css` の非レイヤー `a { color: var(--color-accent); }` を `tailwind.css` の `@layer base` へ移設し、`@layer theme, base, utilities;` を宣言。
+- **T-016**（学習ガイド・記事ページ）: R5-5（共有コンポーネント内部要素への上書きCSSの残置）を確立。

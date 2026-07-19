@@ -412,3 +412,76 @@ T-014で確立したスタイル適用方式（Tailwind CSS v4・Preflight非導
 - `home.css`から構造・レイアウト・擬似要素・独自ブレークポイントのCSSルールが消え、`.home-page`スコープのトークン定義・`@keyframes`・背景グラデーションのみが残る。
 - 他画面（`/quiz`等）の見た目に変化がない（新規昇格トークンの追加による回帰がないこと）。
 - `npm test` / `npm run lint` が通る。
+
+---
+
+## T-016 学習ガイド・記事ページのTailwind移行（完了）
+
+### 目的
+
+T-014/T-015で確立したスタイル適用方式（Tailwind CSS v4・Preflight非導入・トークンの`@theme`マッピング）を、**学習ガイド一覧**（`ArticleListPage.tsx`）・**記事詳細**（`ArticlePage.tsx`）・その本文描画を担う`ArticleMarkdown.tsx`・`ArticleHand.tsx`（いずれも`articles.css`を使用）に適用する（正典: SPEC.md §8.3.3・`/grilling`セッションでの合意事項）。
+
+### 確定した設計判断
+
+`/grilling`セッションでの確認結果（詳細・理由はSPEC.md §8.3.3）:
+
+- **対象ファイル**: `ArticleListPage.tsx`・`ArticlePage.tsx`・`ArticleMarkdown.tsx`・`ArticleHand.tsx`の4ファイルをまとめて対象にする（本文描画側の大半のスタイルはページ本体ではなくこの2コンポーネントに付いているため）。
+- **共有クラスの温存**（STYLE-TRANSFER.md R5-2）: `page-header`・`page-header-link`・`page-header-link-item`・`btn-primary`は他8ファイル（`FuResultPage.tsx`等）と共有のためCSSルールを削除せず、対象ファイル側のみクラス名の使用をやめる。`page-shell`はクラス名ごと残す（全画面共通の外枠）。
+- **非共有ルールの全面削除**（STYLE-TRANSFER.md R5-4相当）: `articles.css`の上記以外の全ルール（一覧カード・記事本文・牌姿表示・画像ライトボックス等）は対象4ファイル以外と非共有のため、Tailwind化後にCSSファイルから削除する。
+- **共有コンポーネント内部要素への上書き**（STYLE-TRANSFER.md R5-5・本タスクで新設）: `ArticleHand.tsx`が使う`TileRow`（共有コンポーネント）の内部要素`.mj-tile-wrap.mj-tile-size-md`へのCSS上書きはTailwind化できないため、`articles.css`に残置しコメントで理由を明記する。
+- **擬似要素の実要素化**（STYLE-TRANSFER.md R6）: `.article-card::before`（アクセントバー）・`.article-end-cta .btn-primary::before`（光沢オーバーレイ）に加え、`.article-body h1::after`（記事タイトルのゴールド下線）も対象とする。`h1`はReactMarkdownの自動生成要素のため、`ArticleMarkdown.tsx`の`components`に既存の`p`/`table`/`pre`/`a`と同様の手法で`h1`カスタムコンポーネントを新規追加し、ゴールド下線を`aria-hidden`付き実`<span>`要素として描画する。
+- **デザイントークン**: `articles.css`が使う色トークンはすべて`tailwind.css`の`@theme`に登録済み（新規昇格なし）。半径・グロー影・所要時間・背景グラデーション・牌行幅計算用の`--art-tile-w`は`@theme`へ昇格させず、`.articles-page`/`.article-page`スコープのCSSカスタムプロパティとして残す。
+- **付随する既存瑕疵の解消**: `.articles-page`スコープの未使用トークン`--fl-hand-bg`を削除する（T-015の`.home-mode-card`削除と同様の扱い）。
+- **テスト**: `ArticleMarkdown.test.tsx`の`toHaveClass("article-image-trigger")`は、該当ボタンに付与する`data-testid="article-image-trigger"`ベースのクエリへ書き換える。`ArticleListPage.test.tsx`・`ArticlePage.test.tsx`は既にrole/表示テキストベースのクエリのみのため変更不要。新規テストは追加しない（スタイルのみの変更のため）。受け入れ確認はブラウザ目視で行う。
+
+### 影響ファイル
+
+- `src/components/ArticleListPage.tsx` — 一覧カードグリッド・ヘッダーをTailwindユーティリティへ置換。アクセントバーを`aria-hidden`付き実`<span>`要素として実装
+- `src/components/ArticlePage.tsx` — トップナビ・末尾CTAをTailwindユーティリティへ置換。CTAボタンの光沢オーバーレイを実`<span>`要素として実装
+- `src/components/articles/ArticleMarkdown.tsx` — 画像トリガー・キャプション・表ラップ・リンク・リンク不可テキスト・ライトボックスをTailwindユーティリティへ置換。`h1`カスタムコンポーネントを新規追加しゴールド下線を実要素化。画像トリガーに`data-testid="article-image-trigger"`を付与
+- `src/components/articles/ArticleHand.tsx` — バッジ行・牌行ラッパーをTailwindユーティリティへ置換。`--art-tile-w`の算出とTileRow内部要素への上書きはCSS残置
+- `src/components/articles.css` — 共有クラス（`page-header`系・`btn-primary`）と`TileRow`/`TileFace`内部要素への上書き（`.mj-tile-wrap.mj-tile-size-md`・`.mj-tile-row`）、色以外のトークン・`@keyframes`・背景グラデーションを除く全ルールを削除。未使用トークン`--fl-hand-bg`を削除
+- `src/components/articles/ArticleMarkdown.test.tsx` — `toHaveClass("article-image-trigger")`を`data-testid`ベースのクエリへ書き換え
+- `docs/STYLE-TRANSFER.md` — R5-5（共有コンポーネント内部要素への上書きCSSの残置）を追記済み
+- `docs/SPEC.md` — §8.3.3を追加済み
+
+### 実装ステップ
+
+1. **`ArticleListPage.tsx`移行**: ヘッダー（sticky帯・見出し・ホームリンク）・カードグリッド（2列・アクセントバー巡回・hover/active・登場アニメーション）をTailwindユーティリティに置換する。アクセントバーは`aria-hidden`付き実`<span>`要素として実装する。
+2. **`ArticlePage.tsx`移行**: トップナビ（sticky帯・戻る導線）・末尾CTA（ゴールドピル・光沢オーバーレイ・hover/active）をTailwindユーティリティに置換する。光沢オーバーレイは実`<span>`要素として実装する。
+3. **`ArticleMarkdown.tsx`移行**: 画像トリガー・キャプション・表ラップ・インラインコード・引用・区切り線・リンク・リンク不可テキスト・画像ライトボックスの各要素をTailwindユーティリティに置換する。`components.h1`を新規追加し、ゴールド下線を実`<span>`要素として実装する。画像トリガーボタンに`data-testid="article-image-trigger"`を付与する。
+4. **`ArticleHand.tsx`移行**: バッジ行（門前/鳴きの配色分岐含む）・牌行ラッパーの構造をTailwindユーティリティに置換する。`--art-tile-w`の算出式と`TileRow`内部要素（`.mj-tile-wrap.mj-tile-size-md`）への上書きはCSSに残す。
+5. **`articles.css`の縮小**: 共有クラス（`page-header`系・`btn-primary`）のCSSルールは残しつつ対象ファイル側の使用箇所を削除、R5-5対象（`TileRow`内部要素への上書き）・色以外のトークン・`@keyframes`・背景グラデーションのみを残し、それ以外の全ルールを削除する。未使用トークン`--fl-hand-bg`を削除する。
+6. **テスト更新**: `ArticleMarkdown.test.tsx`の`toHaveClass("article-image-trigger")`を`data-testid`ベースのクエリへ書き換える。
+7. **回帰確認**: ブラウザで`/articles`・`/articles/tensu-keisan-guide`をスマホ幅（375px程度）・PC幅の両方、通常表示・hover/active・`prefers-reduced-motion`設定時の3状態で目視確認する。カードのnth-childアクセント色巡回、牌姿表示の流動縮小も確認する。`/quiz`等の他画面（共有クラス・トークン）に回帰がないことも確認する。
+
+### 受け入れ基準
+
+- `npm install`後、`/articles`・`/articles/tensu-keisan-guide`の見た目が移行前とピクセルレベルで変わらない（配色・余白・角丸・アニメーション含む）。スマホ幅・PC幅の両方で確認する。
+- 一覧カード・ヘッダーリンク・記事内リンク・末尾CTAボタン・画像トリガーの`hover`/`active`状態が移行前と一致する。
+- `prefers-reduced-motion`設定時、登場アニメーション・hover移動が無効化される（移行前と同じ挙動）。
+- 牌姿表示（門前/鳴きバッジ・牌行の流動縮小）が移行前と一致する。
+- `articles.css`から共有クラス（`page-header`系・`btn-primary`）・R5-5対象（`TileRow`内部要素への上書き）・色以外のトークン・`@keyframes`・背景グラデーションを除く全ルールが消えている。
+- 他画面（`/quiz`・`/fu/result`等、共有クラスを使う画面）の見た目に変化がない。
+- `npm test` / `npm run lint` が通る。
+
+### 実装時の追記（受け入れ基準の検証結果）
+
+- `npm install`後の見た目一致（配色・余白・角丸・アニメーション含む、スマホ幅375px・PC幅1280px）: ○
+  （Playwrightでブラウザ実描画を確認。`/articles`のカードグリッド・sticky帯、`/articles/tensu-keisan-guide`・
+  `/articles/mahjong-yaku-list`のh1下線・引用・見出し・言語なしコードブロック（数式）・インラインコードピル・
+  牌姿バッジ/牌行・表・末尾CTAを目視確認）
+- hover/active状態の一致: ○（一覧カードのhover（枠濃色化・グロー影拡大・4px浮き上がり）・CTAボタンのhover
+  （影拡大・浮き上がり）をPlaywrightの実hoverで確認）
+- `prefers-reduced-motion`設定時の無効化: 実機のOSレベル`prefers-reduced-motion`切り替えでの動的確認はツール制約
+  により未実施。全対象要素に`motion-reduce:animate-none`/`motion-reduce:transition-none`/
+  `motion-reduce:transform-none`をT-014/T-015と同一パターンで付与済み（コード確認のみ、△）。
+  確認手順: OS設定でモーション削減を有効にし、`/articles`のカード登場アニメーション・hover浮き上がり、
+  `/articles/*`の末尾CTAのhover浮き上がりが発生しないことを目視する。
+- 牌姿表示（門前/鳴きバッジ・牌行の流動縮小）の一致: ○（`/articles/mahjong-yaku-list`で確認。バッジ配色・
+  牌行のページ幅いっぱいへの流動縮小を目視）
+- `articles.css`の残置範囲: ○（共有クラス・R5-5対象・色以外のトークン・`@keyframes`・背景グラデーションのみ。
+  未使用トークン`--fl-hand-bg`・`--fl-r-md`（一覧側）・`--fl-r-sm`・`--fl-glow-teal`（記事側、いずれも本来未参照）
+  も削除）
+- 他画面への回帰なし: ○（`/`・`/quiz`をPlaywrightで目視、コンソールエラー/警告なしを確認）
+- `npm test` / `npm run lint`: ○（513 tests passed / 0 errors, 1件の既存無関係warning）
