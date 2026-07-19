@@ -1,6 +1,7 @@
 # 麻雀 点数計算 練習アプリ — 仕様書（SPEC）
 
 > 本書はアプリの唯一の正典（source of truth）。実装・タスクは本書に従う。ドキュメントは日本語で維持する。
+> ただし**フォルダ構成・レイヤー分割・依存ルール**（bulletproof-react＋オニオンアーキテクチャによる構成）は本書ではなく **`ARCHITECTURE.md`** を正典とする。CSS→Tailwind移行のルールが `STYLE-TRANSFER.md` に切り出されているのと同じ扱い。
 
 ---
 
@@ -701,6 +702,42 @@ interface ScoreResult {
 - `--bp-sm-up`（640px）前後でのヘッダー余白の挙動が移行前と一致する。
 - `about.css`・`privacy.css`・`contact.css`から構造・レイアウトのCSSルールが消え、ページスコープのトークン定義・`@keyframes`・背景グラデーションのみが残る。
 - 他画面の見た目に変化がない（`page-shell`/`page-header`系CSSの温存漏れがないこと）。
+- `npm test` / `npm run lint` が通る。
+
+### 8.3.5 設定画面のTailwind移行（T-018）
+
+**目的**: §8.3.1・`docs/STYLE-TRANSFER.md`の移行方式を**設定画面**（`SettingsPage.tsx`・`settings.css`）に適用する（`/grilling`セッションでの合意事項）。設定画面は`page-shell`直下にヘッダーとトグル1個のカードのみを置く単純な構成で、ヘッダー部分の共有制約はT-017（運営者情報・プライバシーポリシー・お問い合わせ）と同型。
+
+**対象範囲の判定**（STYLE-TRANSFER.md R5の適用結果）:
+- `page-shell`は`ResultPage.tsx`・`StatsPage.tsx`・`SidebarPageHeader.tsx`等の未移行ファイルと共有しているため、クラス名ごと残す（`src/index.css`のCSSルールも削除しない）。
+- `page-header`・`page-header-link`・`page-header-link-item`・`card`は同様に未移行ファイルと共有しているため`src/index.css`のCSSルールは削除しないが、`SettingsPage.tsx`側はこれらのクラス名の使用をやめ、Tailwindユーティリティで同一の見た目を再現する。
+- `settings.css`のそれ以外の全ルール（`settings-item`・`settings-toggle-*`・`settings-loading`等）は`SettingsPage.tsx`以外と一切共有していないため、Tailwind化後にCSSファイルから全面削除する（R5-4相当。T-015ホーム画面・T-017 About等と同じ扱い）。
+
+**ヘッダー**: `AboutPage.tsx`・`PrivacyPolicyPage.tsx`・`ContactPage.tsx`（T-017）のヘッダー（sticky帯・見出し・ホームリンクのみ、成績リンクなし）と構造が同一のため、**同じTailwindユーティリティ文字列をそのまま流用**し、見出しテキストのみ「設定」に変更する（サイト全体の見た目統一。3ページ→4ページへの拡張）。
+
+**トグルスイッチの外観**: `input[type="checkbox"]`の擬似要素非依存のカスタム外観（appearance:none・radial-gradientのつまみ・`:checked`での背景位置スライド）は、CSS残置の例外にはせず、`checked:`バリアント＋任意値プロパティによる**完全なTailwindユーティリティ化**を行う（`QuizPage.tsx`の`SKIP_BTN_CLASS`と同じ、長い任意値クラス文字列に落とす手法を踏襲）。
+
+**残置CSS**（STYLE-TRANSFER.md R3・R4の適用結果。`.settings-page`スコープに残す）:
+- 色以外の未昇格トークン（半径`--fl-r-lg`・`--fl-r-pill`、グロー影`--fl-glow-teal-soft`、バウンスイージング`--fl-bounce`・`--fl-dur`）。
+- 登場アニメーションの`@keyframes settings-rise`。
+- `.settings-page`のグラデーション背景（`radial-gradient(...)` ＋ `var(--fl-surface)`）。
+- `gap`は残置**しない**: `.settings-page`の`gap: 24px`は共有ベース`.page-shell`（`src/index.css`、非レイヤーCSS）の`gap: var(--space-5)`（=24px）と同値のため、宣言ごと削除しベースに委ねる。T-017（About等）が`gap: 20px`という異なる値のため例外的に残置したのとは扱いが異なる。
+
+**未使用トークンの削除**: `--fl-gold`・`--fl-gold-light`・`--fl-gold-dark`・`--fl-coral`・`--fl-r-md`・`--fl-glow-teal`（`-soft`ではない方）は定義のみで実際には未使用のため削除する（T-017での`--fl-r-md`削除と同様の付随的瑕疵解消）。
+
+**デザイントークン**: `settings.css`が使う色トークン（`--fl-teal`系・`--fl-cream`・`--fl-surface`・`--fl-card`・`--fl-ink`・`--fl-body`・`--fl-muted`）はすべて`tailwind.css`の`@theme`に`--color-fl-*`として登録済み（新規昇格なし）のため、ページローカルの再定義は削除し`bg-fl-*`/`text-fl-*`等のネイティブユーティリティで直接参照する。
+
+**既存クラス名とテストへの影響**（STYLE-TRANSFER.md R8の適用結果）: `SettingsPage.test.tsx`は既に`role`／表示テキストベースのクエリのみで、クラス名セレクタに依存していないため変更不要。
+
+**ドキュメント運用**: T-014〜T-017と同じ運用を踏襲し、`TASKS.md`のT-018は実装完了後に本節へ要点を集約済みとして削除する。
+
+**受け入れ基準**:
+- `npm install`後、`/settings`の見た目が移行前とピクセルレベルで変わらない（配色・余白・角丸・アニメーション含む）。スマホ幅（375px程度）・PC幅の両方で確認する。
+- ヘッダーのホームリンク・トグルスイッチの`hover`/`active`/`:checked`状態が移行前と一致する。
+- `prefers-reduced-motion`設定時、登場アニメーション・トグルのトランジションが無効化される（移行前と同じ挙動）。
+- `--bp-sm-up`（640px）前後でのヘッダー余白の挙動が移行前と一致する。
+- `settings.css`から構造・レイアウトのCSSルールが消え、ページスコープのトークン定義・`@keyframes`・背景グラデーションのみが残る（`gap`宣言も残らない）。
+- 他画面の見た目に変化がない（`page-shell`/`page-header`/`card`系CSSの温存漏れがないこと）。
 - `npm test` / `npm run lint` が通る。
 
 ### 8.4 ファビコン・アプリアイコン・マニフェスト

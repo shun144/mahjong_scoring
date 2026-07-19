@@ -253,3 +253,233 @@
 - `npm test` / `npm run lint` が通る。
 
 ---
+
+## T-018 設定画面のTailwind移行（完了）
+
+### 目的
+
+`docs/STYLE-TRANSFER.md`の移行方式（T-014〜T-017の前例）を**設定画面**（`SettingsPage.tsx`・`settings.css`）に適用する。
+詳細な設計判断は **SPEC.md §8.3.5** を正典とする（`/grilling`セッションで合意済み）。
+
+### 確定した設計判断（要点。詳細はSPEC.md §8.3.5）
+
+- `page-shell`はクラス名ごと残す（他ファイルと共有）。`page-header`・`page-header-link`・`page-header-link-item`・`card`はCSSルールを削除せず、`SettingsPage.tsx`側のみクラス名の使用をやめてTailwindユーティリティで再現する。
+- `settings.css`のそれ以外の全ルールは他ファイルと共有していないため全面削除する。
+- ヘッダーは`AboutPage.tsx`等（T-017）と同一のTailwindユーティリティ文字列を流用し、見出しテキストのみ「設定」に変更する。
+- トグルスイッチのカスタム外観（appearance:none・radial-gradientのつまみ・`:checked`スライド）はCSS残置せず、`checked:`バリアント＋任意値プロパティで完全にTailwind化する。
+- `.settings-page`の`gap: 24px`はベース`.page-shell`の`gap: var(--space-5)`（=24px）と同値のため宣言ごと削除する。
+- 未使用トークン（`--fl-gold`系・`--fl-coral`・`--fl-r-md`・`--fl-glow-teal`（非soft））を削除する。
+- 色トークン（`--fl-teal`系・`--fl-cream`・`--fl-surface`・`--fl-card`・`--fl-ink`・`--fl-body`・`--fl-muted`）は`@theme`に登録済みのため、ページローカル定義を削除しネイティブユーティリティで参照する。
+- 残すのは色以外の未昇格トークン（`--fl-r-lg`・`--fl-r-pill`・`--fl-glow-teal-soft`・`--fl-bounce`・`--fl-dur`）・`@keyframes settings-rise`・`.settings-page`の背景グラデーションのみ。
+- `SettingsPage.test.tsx`は既にrole/表示テキストベースのクエリのみのため変更不要。
+
+### 影響ファイル
+
+- `src/components/SettingsPage.tsx` — 構造をTailwindユーティリティで再実装
+- `src/components/settings.css` — 構造・レイアウトルールを全面削除し、残置CSS（トークン・keyframes・背景グラデーション）のみ残す
+
+### 実装ステップ
+
+1. `SettingsPage.tsx`のヘッダーを`AboutPage.tsx`等と同一のTailwindユーティリティ文字列で置き換える（見出しテキストのみ「設定」）。
+2. トグル項目のカード（`section.card.settings-item`）・トグル行・トグルスイッチ本体をTailwindユーティリティで再実装する（`checked:`バリアント含む）。
+3. `settings.css`から構造・レイアウトルール、未使用トークン（`--fl-gold`系・`--fl-coral`・`--fl-r-md`・`--fl-glow-teal`）、`gap`宣言、色トークン定義を削除し、残置CSS（半径・グロー影・イージング・keyframes・背景グラデーション）のみ残す。
+4. `prefers-reduced-motion`のCSSブロックを削除し、`motion-reduce:`バリアントに置き換える。
+5. ブラウザ目視（スマホ幅375px・PC幅）でピクセルレベルの一致を確認する。
+
+### 受け入れ基準
+
+- SPEC.md §8.3.5の受け入れ基準を満たす。
+- `npm test` / `npm run lint` が通る。
+
+---
+
+## アーキテクチャ移行（T-019〜T-025）— 背景
+
+bulletproof-react＋オニオンアーキテクチャでDDDを実現するためのフォルダ構成移行群。
+確定した設計判断・全体方針・依存ルールは **`ARCHITECTURE.md`を正典**とする（`/grill-plan`セッションで合意済み）。
+以下は各タスクの要点のみ。詳細な理由・全体構成図はARCHITECTURE.mdを参照。
+
+**依存関係**: T-019（土台）→ T-020（設定パイロット）→ T-021（共有UI）→ T-022（記事）→ T-023（出題+成績、最大）→ T-024（app/新設）→ T-025（後片付け）。原則この順で進める。
+
+---
+
+## T-019 開発基盤整備（パスエイリアス・ESLint境界ルール）
+
+### 目的
+
+移行の土台として、パスエイリアスと依存方向を強制するESLintルールを先に用意する。以降のタスクはこの上で進める。
+
+### 確定した設計判断（詳細はARCHITECTURE.md A6・A7・A8）
+
+- `tsconfig`の`paths`＋Viteの`resolve.alias`で `@/engine`・`@/features/*`・`@/shared`・`@/app` を導入する。既存の相対importは変更しない（共存）。
+- ESLintに`no-restricted-imports`ベースの境界ルールを追加するが、**適用範囲は新設フォルダのみ**（`engine/features/shared/app`）。旧`components/store/content/data/settings`直下は除外パターンで対象外にする。
+- `features/practice → features/settings`の1件だけを明示的な例外として許可し、コメントで理由を明記する。
+
+### 影響ファイル
+
+- `tsconfig.app.json`（`paths`追加）
+- `vite.config.ts`（`resolve.alias`追加）
+- `eslint.config.js`（境界ルール追加、除外パターン込み）
+
+### 受け入れ基準
+
+- 新設エイリアスでのimportが型解決・ビルドともに通る。
+- 既存の相対importを含め`npm run build` / `npm test` / `npm run lint`が通る（既存コードへの影響なし）。
+- 意図的に`engine`→`features`のような逆方向importを書くとESLintがエラーにする（動作確認後、確認用コードは削除する）。
+
+---
+
+## T-020 `features/settings` 移行（パイロット）
+
+### 目的
+
+最も目標構成に近い`settings/`を先行移行し、フォルダ構成・層分割・ESLintルール・エイリアスの型を実証する。
+
+### 確定した設計判断（詳細はARCHITECTURE.md A5）
+
+- `appSettings.ts`（`AppSettings`・`parseSettings`等）→ `features/settings/domain/`
+- `settingsRepository.ts`（`SettingsRepository`インターフェース）→ `features/settings/application/`
+- `indexedDbSettingsRepository.ts`・`settingsRepository.instance.ts`（合成ルート）→ `features/settings/infrastructure/`
+- `SettingsContext.tsx` → `features/settings/presentation/`
+- `src/components/SettingsPage.tsx`・`SettingsPage.test.tsx` → `features/settings/presentation/`
+- 他featureからは`features/settings/presentation`の公開hook（`useSettings`等）経由でのみ参照させる。
+
+### 影響ファイル
+
+- `src/settings/*` 一式（移動）
+- `src/components/SettingsPage.tsx`・`SettingsPage.test.tsx`（移動）
+- `src/App.tsx`・`src/components/QuizPage.tsx`・`ConvertQuizPage.tsx`（import先変更のみ、ロジック不変）
+
+### 受け入れ基準
+
+- 移動後も設定画面・切り上げ満貫トグルの挙動が変わらない（回帰なし）。
+- `features/settings`配下がT-019のESLintルール適用対象に追加され、違反なく通る。
+- `npm test` / `npm run lint` / `npm run build`が通る。
+
+---
+
+## T-021 `shared/` 新設（共有UIの抽出）
+
+### 目的
+
+`features/practice`と`features/articles`の両方から使われる牌描画UIを、featureに属さない共有層へ切り出す。
+
+### 確定した設計判断（詳細はARCHITECTURE.md A3・A4）
+
+- `TileFace`・`MeldGroup`・`TileRow`・`HandDisplay`・`tileAssets.ts`・`ChoiceGrid`・`PageHeader`・`SidebarPageHeader`・`Footer`・`Sidebar`・`ErrorBoundary`・`ScrollTop`・`ScoreTableDialog`を`shared/`へ移動する。
+- ロジック・マークアップは変更しない（移動のみ）。
+
+### 影響ファイル
+
+- `src/components/tiles/*`・`ChoiceGrid.tsx`・`PageHeader.tsx`・`SidebarPageHeader.tsx`・`Footer.tsx`・`Sidebar.tsx`・`ErrorBoundary.tsx`・`ScrollTop.tsx`・`ScoreTableDialog.tsx`（移動）
+- これらをimportする既存コンポーネント（import先変更のみ）
+
+### 受け入れ基準
+
+- 全画面の見た目・挙動に変化がない（回帰なし）。
+- `npm test` / `npm run lint` / `npm run build`が通る。
+
+---
+
+## T-022 `features/articles` 移行
+
+### 目的
+
+記事機能を新構成へ移行する。T-021で共有化した牌描画UIに依存する形にする。
+
+### 確定した設計判断
+
+- `content/articles/registry.ts`（`ArticleMeta`/`Article`）→ `features/articles/domain/`
+- `content/articles/handNotation.ts`（`ParsedHand`）→ `features/articles/domain/`（または`application/`。手牌記法のパースはドメイン変換に近いため`domain/`を優先）
+- Markdown本文の読み込み → `features/articles/infrastructure/`
+- `ArticleListPage.tsx`・`ArticlePage.tsx`・`ArticleHand.tsx`・`ArticleMarkdown.tsx` → `features/articles/presentation/`（`ArticleHand`は`shared/`の`TileRow`をimportする）
+
+### 影響ファイル
+
+- `src/content/articles/*`（移動）
+- `src/components/ArticleListPage.tsx`・`ArticlePage.tsx`・`articles/ArticleHand.tsx`・`articles/ArticleMarkdown.tsx`とそれぞれのテスト（移動）
+
+### 受け入れ基準
+
+- 記事一覧・記事詳細・記事内の手牌表示が移行前と同じ見た目・挙動。
+- `npm test` / `npm run lint` / `npm run build`が通る。
+
+---
+
+## T-023 `features/practice` 移行（出題＋成績統合）
+
+### 目的
+
+最大かつ最高リスクの移行。②出題（4モード）と③成績・復習を`features/practice`1つに統合する（ARCHITECTURE.md A3で確定した通り、独立feature化しない）。
+
+### 確定した設計判断（詳細はARCHITECTURE.md A3・A5・A6）
+
+- `data/problem.ts`（`Problem`/`ProblemConditions`/`ProblemTags`）・`data/problemBank.json` → `features/practice/domain/`・`features/practice/infrastructure/`（バンクJSON読み込み）
+- `generator/*`（`generateProblem`・`distractors`・`conversion`・`randomHand`・`random`） → `features/practice/application/`
+- `store/nextProblem.ts`・`store/statsStore.ts`・`store/weighting.ts` → `features/practice/application/`（③統合）。`statsStore`のlocalStorage読み書き部分は`infrastructure/`に切り出す。
+- `QuizPage`・`FuQuizPage`・`FuPartsQuizPage`・`ConvertQuizPage`・`ResultPage`・`FuResultPage`・`ResultContent`・`StatsPage`・`FuBreakdown`・`QuizConditions`・`QuizTileHeader` → `features/practice/presentation/`
+- `features/practice`から`features/settings`への直接importは、T-019で許可した唯一の例外として扱う（切り上げ満貫設定の読み取り）。
+
+### 影響ファイル
+
+- `src/generator/*`・`src/store/*`・`src/data/*`（移動）
+- `src/components/Quiz*.tsx`・`Fu*.tsx`・`Convert*.tsx`・`Result*.tsx`・`StatsPage.tsx`とそれぞれのテスト（移動）
+- `scripts/buildProblemBank.ts`（バンクJSON生成元。参照パス変更）
+
+### 受け入れ基準
+
+- 4モード（最終点数・符計算・符分解・点数換算）の出題・採点・解説・成績記録・苦手復習の重み付けが移行前と完全に一致する（回帰なし）。
+- `npm run test:e2e`（quiz-flow.spec.ts）が通る。
+- `npm test` / `npm run lint` / `npm run build`が通る。
+
+---
+
+## T-024 `app/` 新設（ルーティング・静的ページ・画面組み立て）
+
+### 目的
+
+ドメインロジックを持たない静的ページとルーティング・出題モード定義を`app/`に集約し、`features/`の純度を保つ。
+
+### 確定した設計判断（詳細はARCHITECTURE.md A3）
+
+- `src/App.tsx` → `app/`（ルーティング定義。各featureの`presentation/`をimportして配線するのみ）
+- `HomePage.tsx`・`AboutPage.tsx`・`ContactPage.tsx`・`PrivacyPolicyPage.tsx` → `app/`
+- `config/modes.ts`（`ModeId`/`ModeDef`） → `app/`
+
+### 影響ファイル
+
+- `src/App.tsx`・`src/components/HomePage.tsx`・`AboutPage.tsx`・`ContactPage.tsx`・`PrivacyPolicyPage.tsx`・`src/config/modes.ts`（移動）
+- `src/main.tsx`（import先変更のみ）
+
+### 受け入れ基準
+
+- 全ルートのページ遷移・表示が移行前と同じ。
+- `npm test` / `npm run lint` / `npm run build`が通る。
+
+---
+
+## T-025 旧ディレクトリ整理・ドキュメント更新
+
+### 目的
+
+移行完了後、旧トップレベルディレクトリを削除し、ESLint境界ルールの除外パターンを解除、`CLAUDE.md`のディレクトリ構成記述を更新する。
+
+### 確定した設計判断
+
+- 空になった`src/components/`（フラット構成）・`src/store/`・`src/content/`・`src/data/`・`src/settings/`・`src/config/`を削除する。
+- T-019で設けたESLint除外パターンを解除し、境界ルールをリポジトリ全体に適用する。
+- `CLAUDE.md`の「ディレクトリ構成」節を新構成（`engine/features/shared/app`）に書き換える。
+
+### 影響ファイル
+
+- 上記の旧ディレクトリ（削除）
+- `eslint.config.js`（除外パターン解除）
+- `CLAUDE.md`（ディレクトリ構成節）
+
+### 受け入れ基準
+
+- 旧ディレクトリが存在しない。
+- ESLint境界ルールが例外（`practice→settings`の1件）を除き全域で有効。
+- `npm test` / `npm run lint` / `npm run build`が通る。
+
+---

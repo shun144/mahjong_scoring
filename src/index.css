@@ -65,6 +65,8 @@
   --duration: 200ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
+  --fl-r-lg: 24px;
+
   font-family: var(--font-sans);
   color: var(--color-text);
   background: var(--color-bg);
