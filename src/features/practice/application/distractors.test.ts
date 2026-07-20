@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { FuBreakdown } from "../../../engine/fu";
-import { calculatePayment, type Payment } from "../../../engine/score";
+import type { FuBreakdown } from "@/engine/fu";
+import { calculatePayment, type Payment } from "@/engine/score";
 import { generateChoices, generateFuChoices, type DistractorContext } from "./distractors";
 import { createSeededRandom } from "./random";
 

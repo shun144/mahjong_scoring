@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import { DEFAULT_SETTINGS, type AppSettings } from "../../../settings/domain/appSettings";
-import { SettingsProvider } from "../../../settings/presentation/SettingsContext";
-import type { SettingsRepository } from "../../../settings/application/settingsRepository";
+import { DEFAULT_SETTINGS, type AppSettings } from "@/features/settings/domain/appSettings";
+import { SettingsProvider } from "@/features/settings/presentation/SettingsContext";
+import type { SettingsRepository } from "@/features/settings/application/settingsRepository";
 import { ConvertQuizPage } from "./ConvertQuizPage";
 
 function createInMemoryRepository(initial: AppSettings = DEFAULT_SETTINGS): SettingsRepository {

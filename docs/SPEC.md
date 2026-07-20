@@ -615,13 +615,13 @@ interface ScoreResult {
 **移行の汎用ルールは `docs/STYLE-TRANSFER.md` を正典とする**（Tailwind v4・Preflight非導入・レイヤー宣言・トークン昇格基準・残置CSSパターン・対象範囲の判定ルール・擬似要素の実要素化・ブレークポイント方針・テスト方針・受け入れ基準の定型）。以下は**点数計算モード**（`QuizPage.tsx`・`ResultContent.tsx`・`ResultPage.tsx`）への適用結果を記録する（`/grilling` セッションでの合意事項）。全画面一括ではなく点数計算モードを最初の対象とし、他モード（符計算・符分解・点数換算・ホーム等）への影響ゼロを維持したまま移行の実現性を検証した。以降、**ホーム画面**（§8.3.2・T-015）等へ段階的に対象を広げている。
 
 **Tailwind化する具体的な要素**（STYLE-TRANSFER.md R5の判定ルール適用結果）:
-- `QuizPage.tsx`: `main.page-shell.quiz-page`直下の構造、モメンタムカウンタ（`.qp-momentum`系）、盤面ラッパー（`.qp-board`）、点数早見表の開閉ボタン（`.qp-table-header-btn`）、スキップ操作列（`.quiz-skip`・`.qp-skip-btn`）。対応する`quiz.css`・`quizFlip7.css`のCSSルールは削除する。
+- `QuizPage.tsx`: `main.page-shell.quiz-page`直下の構造、モメンタムカウンタ（`.qp-momentum`系）、盤面ラッパー（`.qp-board`）、点数早見表の開閉ボタン（`.qp-table-header-btn`）、スキップ操作列（`.quiz-skip`・`.qp-skip-btn`）。対応する`quiz.css`のCSSルールは削除する。
 - `ResultContent.tsx`: 「内訳」見出し行一式（`.result-breakdown-header`・`.result-breakdown-verdict`・`.result-breakdown-answer`）、「解説はこちら」トグル（`.rp-detail-toggle`）、役一覧（`.yaku-list`）、計算式（`.calculation-line`）、高点法の別解（`.result-alt`・`.rp-alt-icon`）。対応する`result.css`・`resultFlip7.css`のCSSルールは削除する。
 - `ResultContent.tsx`・`ResultPage.tsx`が使う`.card`・`.result-breakdown`（基底）・`.result-actions`・`.btn-primary`・`.btn-secondary`・`.rp-cta-arrow`は、**`FuResultPage.tsx`が同じクラス名を直接使用しているため**、CSSルールは削除せず残す。移行対象ファイル側のみクラス名の使用をやめ、Tailwindユーティリティで同一の見た目を再現する。
 
 **デザイントークンの扱い**（STYLE-TRANSFER.md R3・R7の適用結果）:
 - `src/index.css`の既存トークン（`--color-*`・`--space-*`・`--fs-*`・`--radius-*`・`--font-numeric`等）はTailwindの`@theme`でマッピングし、`bg-accent`・`text-sm`のようなユーティリティから既存トークンをそのまま参照できるようにする（値の二重管理をしない）。
-- `quizFlip7.css`内で`.quiz-page`スコープに閉じて定義されているFlip7配色（`--fl-teal`等）は、`@theme`に昇格させサイト全体で参照可能なトークンにする（将来の全面移行時にそのまま流用できるようにするため）。
+- `quiz.css`内で`.quiz-page`スコープに閉じて定義されているFlip7配色（`--fl-teal`等）は、`@theme`に昇格させサイト全体で参照可能なトークンにする（将来の全面移行時にそのまま流用できるようにするため）。
 - ブレークポイントは`@theme`の`--breakpoint-*`を既存の`src/styles/breakpoints.css`（`--bp-sm`系）と同じ値（`640px`境界）に合わせ、Tailwind標準の`sm:`プレフィクスをそのまま使う（既存の`@custom-media --bp-sm-up (min-width: 640px)`と一致）。
 
 **既存クラス名とテストへの影響**（STYLE-TRANSFER.md R8の適用結果）:

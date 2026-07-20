@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { scoreHand } from "../../../engine/scoreHand";
-import { tilesToCounts, windToHonorType } from "../../../engine/tileType";
+import { scoreHand } from "@/engine/scoreHand";
+import { tilesToCounts, windToHonorType } from "@/engine/tileType";
 import { problemToScoreHandInput } from "../domain/problem";
 import { generateProblem } from "./generateProblem";
 import { createSeededRandom } from "./random";

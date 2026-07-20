@@ -1,8 +1,8 @@
-import { indicatorForDora } from "../../../engine/dora";
-import type { Meld, Tile, Wind, WinType } from "../../../engine/model";
-import { scoreHand, type ScoreHandInput } from "../../../engine/scoreHand";
-import type { ScoreResult } from "../../../engine/score";
-import { tileToType, tilesToCounts, typeToTile, windToHonorType } from "../../../engine/tileType";
+import { indicatorForDora } from "@/engine/dora";
+import type { Meld, Tile, Wind, WinType } from "@/engine/model";
+import { scoreHand, type ScoreHandInput } from "@/engine/scoreHand";
+import type { ScoreResult } from "@/engine/score";
+import { tileToType, tilesToCounts, typeToTile, windToHonorType } from "@/engine/tileType";
 import { chance, pickOne, randomInt, type RandomSource } from "./random";
 
 const WINDS: Wind[] = ["east", "south", "west", "north"];

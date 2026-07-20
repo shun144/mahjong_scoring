@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import type { Problem } from "../../domain/problem";
-import type { Payment } from "../../../../engine/score";
+import type { Payment } from "@/engine/score";
 import { ResultContent } from "../ResultContent";
 import "../result.css";
 import "../resultFlip7.css";
-import { SidebarPageHeader } from "../../../../shared/components/SidebarPageHeader";
+import { SidebarPageHeader } from "@/shared/components/SidebarPageHeader";
 
 interface ResultLocationState {
   problem: Problem;

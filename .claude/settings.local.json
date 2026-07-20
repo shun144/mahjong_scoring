@@ -72,7 +72,13 @@
       "Bash(set -e)",
       "Bash(mkdir -p src/features/practice/domain src/features/practice/application src/features/practice/infrastructure src/features/practice/presentation)",
       "Bash(grep -v \"PageHeader.tsx$\")",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "Bash(npm run *)",
+      "Bash(disown)",
+      "Bash(rm -f convert-current.png convert-after.png quiz-after.png fuquiz-after.png fuparts-after.png preview.log)",
+      "Bash(rm -rf .playwright-mcp)",
+      "Bash(powershell -Command 'Get-CimInstance Win32_Process -Filter \"Name='\\\\''node.exe'\\\\''\" | Where-Object { $_.CommandLine -like '\\\\''*vite preview*'\\\\'' -or $_.CommandLine -like '\\\\''*4322*'\\\\'' } | Select-Object ProcessId,CommandLine')",
+      "Bash(powershell -Command \"Stop-Process -Id 20004 -Force\")"
     ]
   }
 }

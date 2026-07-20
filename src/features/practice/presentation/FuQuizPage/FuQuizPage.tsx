@@ -1,18 +1,17 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { problemToScoreHandInput, type Problem } from "../../domain/problem";
-import { scoreHand } from "../../../../engine/scoreHand";
+import { scoreHand } from "@/engine/scoreHand";
 import { generateFuChoices } from "../../application/distractors";
 import { createSeededRandom, seedFromString } from "../../application/random";
 import { nextProblem } from "../../application/nextProblem";
 import { recordAnswer } from "../../application/statsStore";
-import { ChoiceGrid } from "../../../../shared/components/ChoiceGrid";
-import { SidebarPageHeader } from "../../../../shared/components/SidebarPageHeader";
+import { ChoiceGrid } from "@/shared/components/ChoiceGrid";
+import { SidebarPageHeader } from "@/shared/components/SidebarPageHeader";
 import "../quiz.css";
-import "../quizFlip7.css";
 import { QuizConditions } from "../QuizConditions";
 import { QuizTileHeader } from "../QuizTileHeader";
-import { HandDisplay } from "../../../../shared/components/tiles/HandDisplay";
+import { HandDisplay } from "@/shared/components/tiles/HandDisplay";
 
 /** 解説画面から「問題に戻る」で渡される復習用の遷移 state。 */
 function isReviewState(state: unknown): state is { problem: Problem; review: boolean } {

@@ -1,6 +1,6 @@
-import type { Meld, Tile, Wind, WinType } from "../../../engine/model";
-import { scoreHand, type ScoreHandInput } from "../../../engine/scoreHand";
-import type { ScoreResult } from "../../../engine/score";
+import type { Meld, Tile, Wind, WinType } from "@/engine/model";
+import { scoreHand, type ScoreHandInput } from "@/engine/scoreHand";
+import type { ScoreResult } from "@/engine/score";
 
 export interface ProblemHand {
   /** 純手牌（副露を除く。上がり牌を含む）。 */

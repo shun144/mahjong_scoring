@@ -1,8 +1,8 @@
-import type { Tile } from "../../../engine/model";
+import type { Tile } from "@/engine/model";
 import type { Problem } from "../domain/problem";
-import tenbo1000Url from "../../../assets/tenbo/tenbo-1000.png";
+import tenbo1000Url from "@/assets/tenbo/tenbo-1000.png";
 import { WIN_TYPE_LABELS } from "./format";
-import { TileRow } from "../../../shared/components/tiles/TileRow";
+import { TileRow } from "@/shared/components/tiles/TileRow";
 
 /** ラベルを上・対象の牌を下に積んだ1グループ。アガリ牌／ドラ／裏ドラで共通利用する。
     className でグループ単位の追加スタイル（アガリ牌の背景色など）を差し込める。 */

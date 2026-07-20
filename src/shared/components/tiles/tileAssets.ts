@@ -1,4 +1,4 @@
-import type { Tile } from "../../../engine/model";
+import type { Tile } from "@/engine/model";
 
 /**
  * src/assets/tiles/*.svg を Vite の import.meta.glob で一括取り込みし、

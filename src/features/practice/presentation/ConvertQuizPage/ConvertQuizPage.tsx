@@ -1,9 +1,9 @@
 import { useState } from "react";
-import type { Payment } from "../../../../engine/score";
+import type { Payment } from "@/engine/score";
 import { nextConversionQuestion, type ConversionQuestion } from "../../application/conversion";
 import { paymentKey } from "../../application/distractors";
-import { useSettings } from "../../../settings/presentation/SettingsContext";
-import { ChoiceGrid } from "../../../../shared/components/ChoiceGrid";
+import { useSettings } from "@/features/settings/presentation/SettingsContext";
+import { ChoiceGrid } from "@/shared/components/ChoiceGrid";
 import "./convert.css";
 import {
   conversionFormulaParts,
@@ -13,8 +13,8 @@ import {
 } from "../format";
 import "../quiz.css";
 import "../result.css";
-import { ScoreTableDialog } from "../../../../shared/components/ScoreTableDialog";
-import { SidebarPageHeader } from "../../../../shared/components/SidebarPageHeader";
+import { ScoreTableDialog } from "@/shared/components/ScoreTableDialog";
+import { SidebarPageHeader } from "@/shared/components/SidebarPageHeader";
 
 interface ConvertRound {
   question: ConversionQuestion;

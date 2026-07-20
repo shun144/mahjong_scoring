@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { problemToScoreHandInput, type Problem } from "../domain/problem";
-import { scoreHand } from "../../../engine/scoreHand";
+import { scoreHand } from "@/engine/scoreHand";
 import { FuBreakdownContent } from "./FuBreakdown";
 import { formatCalculationLine, formatPayment } from "./format";
 import "./result.css";

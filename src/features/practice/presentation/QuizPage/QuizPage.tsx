@@ -1,22 +1,21 @@
+import type { Payment } from "@/engine/score";
+import { useSettings } from "@/features/settings/presentation/SettingsContext";
+import { ChoiceGrid } from "@/shared/components/ChoiceGrid";
+import { ScoreTableDialog } from "@/shared/components/ScoreTableDialog";
+import { SidebarPageHeader } from "@/shared/components/SidebarPageHeader";
+import { HandDisplay } from "@/shared/components/tiles/HandDisplay";
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { resolveAnswer, type Problem } from "../../domain/problem";
-import type { Payment } from "@/engine/score";
 import { generateChoices, paymentKey } from "../../application/distractors";
-import { createSeededRandom, seedFromString } from "../../application/random";
-import { useSettings } from "../../../settings/presentation/SettingsContext";
 import { nextProblem } from "../../application/nextProblem";
+import { createSeededRandom, seedFromString } from "../../application/random";
 import { getTodayAnswered, loadStats, recordAnswer } from "../../application/statsStore";
-import { ChoiceGrid } from "../../../../shared/components/ChoiceGrid";
+import { resolveAnswer, type Problem } from "../../domain/problem";
 import { formatPayment } from "../format";
-import { ResultContent } from "../ResultContent";
-import { SidebarPageHeader } from "../../../../shared/components/SidebarPageHeader";
 import "../quiz.css";
-import "../quizFlip7.css";
 import { QuizConditions } from "../QuizConditions";
-import { ScoreTableDialog } from "../../../../shared/components/ScoreTableDialog";
 import { QuizTileHeader } from "../QuizTileHeader";
-import { HandDisplay } from "../../../../shared/components/tiles/HandDisplay";
+import { ResultContent } from "../ResultContent";
 
 /** 解説画面から「問題に戻る」で渡される復習用の遷移 state。 */
 function isReviewState(state: unknown): state is { problem: Problem; review: boolean } {
@@ -28,9 +27,6 @@ interface Answered {
   isCorrect: boolean;
 }
 
-// この画面専用の要素（.qp-table-header-btn以外）はTailwindユーティリティで実装する
-// （T-014／SPEC.md §8.3.1）。.qp-skip-btn は quiz-skip 由来のクラスと同じ見た目を再現する
-// クラス文字列を1箇所にまとめ、3箇所（もう一度／次の問題へ×2）で使い回す。
 const SKIP_BTN_CLASS =
   "inline-flex items-center gap-2 min-h-[48px] px-6 text-[0.95rem] font-bold text-fl-teal-dark bg-fl-cream border-2 border-fl-teal rounded-[var(--fl-r-pill)] cursor-pointer transition-[transform,background,color,box-shadow] duration-[220ms] ease-[var(--fl-bounce)] hover:text-fl-cream hover:bg-fl-teal hover:shadow-[var(--fl-glow-teal)] hover:-translate-y-0.5 active:scale-[0.96] motion-reduce:transition-none motion-reduce:transform-none";
 const SKIP_ARROW_CLASS = "text-[1.05em] leading-none";

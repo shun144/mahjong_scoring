@@ -1,5 +1,5 @@
-import type { Meld, Tile } from "../../../engine/model";
-import { removeOneMatchingTile, sortTiles } from "../../../engine/tiles";
+import type { Meld, Tile } from "@/engine/model";
+import { removeOneMatchingTile, sortTiles } from "@/engine/tiles";
 import { MeldGroup } from "./MeldGroup";
 import type { TileSize } from "./TileFace";
 import { TileRow } from "./TileRow";

@@ -42,7 +42,7 @@
   --color-success: var(--color-success-text);
   --color-danger: var(--color-danger-text);
 
-  /* Flip7配色（quizFlip7.css の .quiz-page ローカル定義と同値。QuizPage.tsx移行分が使う）。 */
+  /* Flip7配色（quiz.css の .quiz-page ローカル定義と同値。QuizPage.tsx移行分が使う）。 */
   --color-fl-teal: #2ba8a2;
   --color-fl-teal-light: #3cc4bd;
   --color-fl-teal-dark: #1e8c86;

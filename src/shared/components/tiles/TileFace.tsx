@@ -1,5 +1,5 @@
-import type { Tile } from "../../../engine/model";
-import { tileToLabel } from "../../../engine/tiles";
+import type { Tile } from "@/engine/model";
+import { tileToLabel } from "@/engine/tiles";
 import { backUrl, frontUrl, markUrl } from "./tileAssets";
 import "./tiles.css";
 

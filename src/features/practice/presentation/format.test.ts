@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { ScoreResult } from "../../../engine/score";
+import type { ScoreResult } from "@/engine/score";
 import type { ConversionQuestion } from "../application/conversion";
 import {
   conversionFormulaParts,

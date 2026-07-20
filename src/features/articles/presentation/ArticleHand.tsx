@@ -1,5 +1,5 @@
-import type { Tile } from "../../../engine/model";
-import { TileRow } from "../../../shared/components/tiles/TileRow";
+import type { Tile } from "@/engine/model";
+import { TileRow } from "@/shared/components/tiles/TileRow";
 
 export interface ArticleHandProps {
   hand: readonly Tile[];

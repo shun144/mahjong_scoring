@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { MODES } from "../shared/modes";
-import type { Tile } from "../engine/model";
-import { TileFace } from "../shared/components/tiles/TileFace";
+import { MODES } from "@/shared/modes";
+import type { Tile } from "@/engine/model";
+import { TileFace } from "@/shared/components/tiles/TileFace";
 import "./home.css";
 
 // モードカード・ファンカードの共通見た目トークンはTailwindユーティリティで実装する

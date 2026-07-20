@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { Meld, Tile } from "../../../engine/model";
+import type { Meld, Tile } from "@/engine/model";
 import { HandDisplay } from "./HandDisplay";
 
 function countRenderedTiles() {

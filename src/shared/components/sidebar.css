@@ -3,7 +3,7 @@
    Flip7 デザインシステム（docs/DESIGN.md）に準拠した見た目にする。
    Sidebar は document.body へ portal されるため（Sidebar.tsx 参照）、
    .quiz-page/.result-page のスコープ変数を継承できない。そのため
-   Flip7 のトークンをこのファイル内で自己完結させる（quizFlip7.css /
+   Flip7 のトークンをこのファイル内で自己完結させる（quiz.css /
    resultFlip7.css と同じ値を複製する。他ファイルと同じやり方）。
    ===================================================================== */
 

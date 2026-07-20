@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { calculatePayment, type ScoreRank } from "../../engine/score";
+import { calculatePayment, type ScoreRank } from "@/engine/score";
 import "./scoreTable.css";
 
 /**

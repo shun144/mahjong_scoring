@@ -1,4 +1,4 @@
-import type { Meld } from "../../../engine/model";
+import type { Meld } from "@/engine/model";
 import { TileFace, type TileSize } from "./TileFace";
 import "./tiles.css";
 

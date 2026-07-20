@@ -1,4 +1,4 @@
-import type { FuBreakdown } from "../../../engine/score";
+import type { FuBreakdown } from "@/engine/score";
 
 function formatFuItem(fu: number, isBase: boolean): string {
   // 先頭の基本値（副底・固定符）と0符は素の値、それ以外の加符には「+」を付ける。

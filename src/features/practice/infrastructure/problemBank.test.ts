@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { scoreHand } from "../../../engine/scoreHand";
-import { tilesToCounts } from "../../../engine/tileType";
+import { scoreHand } from "@/engine/scoreHand";
+import { tilesToCounts } from "@/engine/tileType";
 import problemBankRaw from "./problemBank.json";
 import { problemToScoreHandInput, type Problem } from "../domain/problem";
 

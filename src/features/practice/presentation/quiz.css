@@ -1,13 +1,21 @@
+/* =====================================================================
+   出題画面（QuizPage / FuQuizPage / FuPartsQuizPage / ConvertQuizPage）共通スタイル。
+   すべて .quiz-page 配下にスコープする。旧 quiz.css（土台の配置・構造）と
+   旧 quizFlip7.css（docs/DESIGN.md の Flip7 デザインシステムによる配色・装飾の
+   上書き）を統合したもの。土台→Flip7上書きの順で並べ、同じ詳細度のセレクタは
+   後方の宣言が勝つ（CSS カスケード）ため、この順序を崩さないこと。
+   ===================================================================== */
+
 /* 両セクションの色付き枠を、伸ばしたセクションの高さいっぱいに広げて高さを揃える。
    枠内の牌は縦中央に置く。 */
-.win-indicator-section .tile-info-group,
-.dora-indicator-group {
+.quiz-page .win-indicator-section .tile-info-group,
+.quiz-page .dora-indicator-group {
   flex: 1;
   justify-content: center;
 }
 
 /* 「ドラ表示牌」ラベル（枠外）＋グレー枠 を縦に積むセクション。 */
-.dora-indicator-section {
+.quiz-page .dora-indicator-section {
   margin-left: auto;
   display: flex;
   flex-direction: column;
@@ -16,14 +24,14 @@
 }
 
 /* アガリ牌セクション：ピル型ラベル（枠外・上）＋色付き枠 を縦に積む。ドラ表示牌と同じ構成。 */
-.win-indicator-section {
+.quiz-page .win-indicator-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
 }
 
-.riichi-indicator-section {
+.quiz-page .riichi-indicator-section {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,20 +39,20 @@
 }
 
 /* 点棒画像（横長・約6.67:1）。 */
-.riichi-indicator-stick {
+.quiz-page .riichi-indicator-stick {
   display: block;
   width: 92px;
   height: auto;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.18));
 }
 
-.riichi-indicator-spacer {
+.quiz-page .riichi-indicator-spacer {
   visibility: hidden;
 }
 
 /* 表ドラ・裏ドラをまとめて囲む枠。囲みスタイルはアガリ牌と同じ（padding/角丸/枠線）で、
    ボーナスを示す淡い緑系にする。 */
-.dora-indicator-group {
+.quiz-page .dora-indicator-group {
   display: flex;
   flex-direction: column;
   padding: var(--space-2) var(--space-3);
@@ -54,14 +62,14 @@
 }
 
 /* 枠内の表(表ドラ)・裏(裏ドラ)を横並びにする。 */
-.dora-indicator-tiles {
+.quiz-page .dora-indicator-tiles {
   display: flex;
   gap: var(--space-4) var(--space-5);
 }
 
 /* スマホ幅では表・裏の間隔が空きすぎるため詰める。 */
 @media (--bp-sm) {
-  .dora-indicator-tiles {
+  .quiz-page .dora-indicator-tiles {
     gap: var(--space-2) var(--space-3);
   }
 }
@@ -70,18 +78,18 @@
    quiz-tile-header の折り返しでドラ表示ブロックごと次行に落ちやすい。
    リーチ棒を一回り小さくして横幅の圧迫を緩和する（PC幅は92pxのまま）。 */
 @media (--bp-sm) {
-  .riichi-indicator-stick {
+  .quiz-page .riichi-indicator-stick {
     width: 76px;
   }
 }
 
 /* 枠内の「表」「裏」ラベルは枠の緑に合わせた濃い緑にする。 */
-.dora-indicator-tiles .tile-info-label {
+.quiz-page .dora-indicator-tiles .tile-info-label {
   color: var(--color-success-text);
   font-weight: 600;
 }
 
-.tile-info-group {
+.quiz-page .tile-info-group {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,7 +97,7 @@
 }
 
 /* 牌の描画領域。牌／「なし」を上下左右中央に置く。 */
-.tile-info-slot {
+.quiz-page .tile-info-slot {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +106,7 @@
 /* ドラ表示牌の枠内は、裏ドラの有無で囲いサイズが変わらないよう牌1枚分の領域を必ず確保する。
    「なし」でもこの領域内で中央寄せされる。サイズは牌(md)の実寸と同じ式で算出し、
    固定値だと縮小時にラベルと牌の間へ隙間が空くのを防ぐ（tiles.css の md 定義と一致）。 */
-.dora-indicator-tiles .tile-info-slot {
+.quiz-page .dora-indicator-tiles .tile-info-slot {
   --slot-w: min(42px, calc((min(100vw, 640px) - 78px) / 13));
   min-width: var(--slot-w);
   min-height: calc(var(--slot-w) * 4 / 3);
@@ -107,62 +115,62 @@
 /* アガリ牌はツモ／ロンで背景色・枠線・ラベル色をはっきり変え、上がり方を一目で示す。
    色（青=ツモ／赤=ロン）に加えてラベル文字でも区別できるため色覚多様性にも配慮する。
    緑はドラ表示牌（ボーナス）専用色なのでツモには使わない。 */
-.tile-info-group--tsumo,
-.tile-info-group--ron {
+.quiz-page .tile-info-group--tsumo,
+.quiz-page .tile-info-group--ron {
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
   border: 1.5px solid transparent;
 }
 
 /* ツモ＝青系。ドラの緑・ロンの赤いずれとも被らない色で区別する。 */
-.tile-info-group--tsumo {
+.quiz-page .tile-info-group--tsumo {
   background: #d9e6fa;
   border-color: #b3cdf2;
 }
 
 /* ロン＝赤系（Rausch 寄り）。ツモと明確に対比させる。 */
-.tile-info-group--ron {
+.quiz-page .tile-info-group--ron {
   background: #ffd6de;
   border-color: var(--color-accent-border);
 }
 
 /* ラベル（ツモ/ロン）は補助グレーをやめ、上がり方の色で太字表示する。 */
-.tile-info-group--tsumo .mj-winning-label {
+.quiz-page .tile-info-group--tsumo .mj-winning-label {
   color: #1c5aa8;
   font-weight: 700;
 }
 
-.tile-info-group--ron .mj-winning-label {
+.quiz-page .tile-info-group--ron .mj-winning-label {
   color: var(--color-accent-text);
   font-weight: 700;
 }
 
 /* アガリ牌そのものにも上がり方の色でリングを添え、牌単体でも識別できるようにする。
    SVGアセットは変更せず、外側から outline とドロップシャドウで縁取る。 */
-.tile-info-group--tsumo .mj-tile-inner {
+.quiz-page .tile-info-group--tsumo .mj-tile-inner {
   outline: 2px solid #2f6fd0;
   outline-offset: 1px;
   border-radius: 3px;
 }
 
-.tile-info-group--ron .mj-tile-inner {
+.quiz-page .tile-info-group--ron .mj-tile-inner {
   outline: 2px solid var(--color-accent);
   outline-offset: 1px;
   border-radius: 3px;
 }
 
-.tile-info-label {
+.quiz-page .tile-info-label {
   font-size: var(--fs-sm);
   color: var(--color-text-sub);
   white-space: nowrap;
 }
 
-.tile-info-none {
+.quiz-page .tile-info-none {
   font-size: var(--fs-sm);
   color: var(--color-text-sub);
 }
 
-.quiz-answer {
+.quiz-page .quiz-answer {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -170,14 +178,502 @@
   border-top: 1px solid var(--color-border);
 }
 
-.quiz-answer-label {
+.quiz-page .quiz-answer-label {
   margin: 0;
   font-size: var(--fs-sm);
   color: var(--color-text-sub);
 }
 
-.quiz-choices {
+.quiz-page .quiz-choices {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-3);
+}
+
+/* =====================================================================
+   ここから Flip7 デザインシステム（docs/DESIGN.md）レイヤー。
+   上記の土台を .quiz-page でのみ上書きする。共有コンポーネント
+   （QuizConditions / QuizTileHeader / HandDisplay / ChoiceGrid / PageHeader）
+   を使う他画面にも .quiz-page スコープ経由で同じ装飾が適用される。
+   ===================================================================== */
+
+.quiz-page {
+  /* --- 配色トークン（home と同一の Flip7 パレット） --- */
+  --fl-teal: #2ba8a2;
+  --fl-teal-light: #3cc4bd;
+  --fl-teal-dark: #1e8c86;
+  --fl-teal-bg: #e8f6f5;
+  --fl-gold: #ffd23f;
+  --fl-gold-light: #ffe47a;
+  --fl-gold-dark: #e6b800;
+  --fl-gold-ink: #8a6d00;
+  --fl-coral: #ef6c4a;
+  --fl-coral-light: #ff8a6a;
+  --fl-coral-dark: #d45233;
+  --fl-cream: #fff8e7;
+  --fl-sky: #5dade2;
+  --fl-sky-dark: #2f80b8;
+  --fl-surface: #eff8f7;
+  --fl-card: #ffffff;
+  --fl-ink: #123f3c;
+  --fl-body: #34514f;
+  --fl-muted: #566d6b;
+  --fl-r-sm: 10px;
+  --fl-r-md: 16px;
+  --fl-r-lg: 24px;
+  --fl-r-pill: 999px;
+  --fl-shadow-card: 0 6px 20px rgba(43, 168, 162, 0.12);
+  --fl-glow-teal: 0 8px 22px rgba(43, 168, 162, 0.28);
+  --fl-glow-teal-soft: 0 4px 14px rgba(43, 168, 162, 0.18);
+  --fl-glow-coral: 0 6px 18px rgba(239, 108, 74, 0.3);
+  --fl-glow-gold: 0 6px 18px rgba(255, 210, 63, 0.36);
+  --fl-glow-gold-soft: 0 4px 14px rgba(255, 210, 63, 0.28);
+  --fl-glow-sky: 0 6px 18px rgba(93, 173, 226, 0.3);
+  --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fl-dur: 220ms;
+  color: var(--fl-body);
+  background:
+    radial-gradient(130% 55% at 50% -10%, rgba(255, 226, 138, 0.5) 0%, rgba(255, 226, 138, 0) 60%),
+    var(--fl-surface);
+}
+
+.quiz-page .page-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(255, 248, 231, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(43, 168, 162, 0.22);
+  margin-inline: calc(50% - 50vw);
+  margin-top: calc(-1 * var(--space-4));
+  padding: 10px max(16px, calc(50vw - 320px));
+}
+
+@media (--bp-sm-up) {
+  .quiz-page .page-header {
+    margin-top: calc(-1 * var(--space-6));
+  }
+}
+
+.quiz-page .page-header h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--fl-teal-dark);
+}
+
+/* =====================================================================
+   局条件バッジ — クリームのピル（色で役割を識別）
+   ===================================================================== */
+.quiz-page .quiz-conditions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.quiz-page .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--tracking-tight);
+  padding: 6px 14px;
+  background: var(--fl-cream);
+  border: 2px solid rgba(43, 168, 162, 0.4);
+  border-radius: var(--fl-r-pill);
+  color: var(--fl-body);
+  box-shadow: var(--fl-glow-teal-soft);
+}
+
+.quiz-page .badge-label {
+  font-size: var(--fs-sm);
+  color: var(--fl-muted);
+  font-weight: 700;
+}
+.quiz-page .badge-value {
+  color: var(--fl-ink);
+  font-weight: 800;
+}
+
+.quiz-page .badge--windset {
+  gap: var(--space-0);
+  align-items: baseline;
+}
+
+.quiz-page .badge--windset .badge-value {
+  gap: var(--space-0);
+  color: var(--fl-teal-dark);
+  font-size: var(--fs-base);
+}
+
+/* 親/子：ティール。 */
+.quiz-page .badge--dealer {
+  background: var(--fl-teal-bg);
+  border-color: var(--fl-teal);
+}
+.quiz-page .badge--dealer .badge-value {
+  color: var(--fl-teal-dark);
+}
+
+/* 満貫切上 */
+.quiz-page .badge--roundup {
+  background: var(--fl-gold-light);
+  border-color: var(--fl-gold-dark);
+  color: var(--color-accent-text);
+  box-shadow: var(--fl-glow-gold);
+}
+.quiz-page .badge--roundup .badge-value {
+  color: #8a6d00;
+}
+
+/* =====================================================================
+   盤面（play mat）— アガリ牌・ドラ・手牌をまとめるティール地パネル。
+   FuQuizPage.tsx とクラス名を共有するため維持する（QuizPage.tsx 自体は Tailwind
+   ユーティリティに移行済み。T-014）。
+   ===================================================================== */
+.quiz-page .qp-board {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 16px;
+  background: var(--fl-teal-bg);
+  border: 2px solid rgba(43, 168, 162, 0.2);
+  border-radius: var(--fl-r-lg);
+  box-shadow: var(--fl-glow-teal-soft);
+  overflow-x: visible;
+}
+
+/* --- アガリ牌（ツモ＝スカイ／ロン＝コーラル）。色付きカード＋グロー。 --- */
+.quiz-page .tile-info-group--tsumo,
+.quiz-page .tile-info-group--ron {
+  padding: 8px 14px;
+  border-width: 2px;
+  border-radius: var(--fl-r-md);
+}
+.quiz-page .tile-info-group--tsumo {
+  background: color-mix(in srgb, var(--fl-sky) 16%, #fff);
+  border-color: var(--fl-sky);
+  box-shadow: var(--fl-glow-sky);
+}
+.quiz-page .tile-info-group--ron {
+  background: color-mix(in srgb, var(--fl-coral) 15%, #fff);
+  border-color: var(--fl-coral);
+  box-shadow: var(--fl-glow-coral);
+}
+.quiz-page .tile-info-group--tsumo .mj-winning-label {
+  color: var(--fl-sky-dark);
+  font-weight: 800;
+}
+.quiz-page .tile-info-group--ron .mj-winning-label {
+  color: var(--fl-coral-dark);
+  font-weight: 800;
+}
+.quiz-page .tile-info-group--tsumo .mj-tile-inner {
+  outline-color: var(--fl-sky);
+}
+.quiz-page .tile-info-group--ron .mj-tile-inner {
+  outline-color: var(--fl-coral);
+}
+
+/* --- ドラ表示牌（ボーナス＝ゴールド） --- */
+.quiz-page .dora-indicator-group {
+  padding: 8px 14px;
+  border-width: 2px;
+  border-color: var(--fl-gold-dark);
+  border-radius: var(--fl-r-md);
+  background: var(--fl-gold-light);
+  box-shadow: var(--fl-glow-gold);
+}
+.quiz-page .dora-indicator-tiles .tile-info-label {
+  color: #8a6d00;
+  font-weight: 800;
+}
+.quiz-page .tile-info-label {
+  color: var(--fl-muted);
+  font-weight: 700;
+}
+.quiz-page .tile-info-none {
+  color: var(--fl-muted);
+}
+
+/* --- 上がり牌/リーチ表示エリア/ドラ表示エリア --- */
+.quiz-page .quiz-tile-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: stretch;
+}
+
+/* --- 手牌 --- */
+.quiz-page .quiz-hand {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-x: visible;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-bottom: var(--space-1);
+}
+
+/* 小さな見出しピル（手牌／ボーナス等の区切り。破線でレトロ・ポップに）。 */
+.quiz-page .qp-section-label {
+  align-self: flex-start;
+  padding: 3px 12px 5px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--fl-teal-dark);
+  border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
+  margin-left: 16px;
+}
+
+/* 手牌の囲い：白カード＋ティール枠＋グロー。SVG 牌自体は不変。
+   左右パディングを詰めて牌の描画に使える幅を稼ぎ、見切れを防ぐ（上下は据え置き）。 */
+.quiz-page .mj-hand-display {
+  padding-left: 8px;
+  padding-right: 8px;
+  background: var(--fl-card);
+  border: 2px solid rgba(43, 168, 162, 0.32);
+  border-radius: var(--fl-r-md);
+  box-shadow: var(--fl-glow-teal-soft);
+}
+/* 純手牌／副露の境界点線をティールに。 */
+.quiz-page .mj-meld-row {
+  border-top-color: rgba(43, 168, 162, 0.35);
+}
+
+/* =====================================================================
+   回答（4択）
+   ===================================================================== */
+.quiz-page .quiz-answer {
+  gap: 14px;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* 「点数を選んでください」— 破線ボーダーのセクション見出し。 */
+.quiz-page .quiz-answer-label {
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--fl-teal-dark);
+  border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
+}
+.quiz-page .qp-answer-icon {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+.quiz-page .quiz-choices {
+  gap: 14px;
+}
+
+/* 選択肢＝タップしたくなるゲーム駒。白カード／ティール枠／大角丸／ティールグロー。 */
+.quiz-page .quiz-choice-btn {
+  min-height: 62px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--fl-ink);
+  background: var(--fl-card);
+  border: 2px solid var(--fl-teal);
+  border-radius: var(--fl-r-md);
+  box-shadow: var(--fl-glow-teal-soft);
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    background var(--fl-dur) var(--fl-bounce),
+    box-shadow var(--fl-dur) var(--fl-bounce);
+}
+
+@media (hover: hover) {
+  .quiz-page .quiz-choice-btn:hover {
+    background: var(--fl-teal-bg);
+    border-color: var(--fl-teal);
+    box-shadow: var(--fl-glow-teal);
+    transform: translateY(-3px);
+  }
+}
+.quiz-page .quiz-choice-btn:active {
+  transform: scale(0.96);
+}
+
+/* =====================================================================
+   スキップ（次の問題へ）— ティールのアウトラインピル。
+   FuQuizPage.tsx・ConvertQuizPage.tsx とクラス名を共有するため維持する
+   （QuizPage.tsx 自体は Tailwind ユーティリティに移行済み。T-014）。
+   ===================================================================== */
+.quiz-page .qp-skip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--fl-teal-dark);
+  background: var(--fl-cream);
+  border: 2px solid var(--fl-teal);
+  border-radius: var(--fl-r-pill);
+  cursor: pointer;
+  transition:
+    transform var(--fl-dur) var(--fl-bounce),
+    background var(--fl-dur) var(--fl-bounce),
+    color var(--fl-dur) var(--fl-bounce),
+    box-shadow var(--fl-dur) var(--fl-bounce);
+}
+.quiz-page .qp-skip-arrow {
+  font-size: 1.05em;
+  line-height: 1;
+}
+@media (hover: hover) {
+  .quiz-page .qp-skip-btn:hover {
+    color: var(--fl-cream);
+    background: var(--fl-teal);
+    box-shadow: var(--fl-glow-teal);
+    transform: translateY(-2px);
+  }
+}
+.quiz-page .qp-skip-btn:active {
+  transform: scale(0.96);
+}
+
+/* =====================================================================
+   正誤＋答え — 結果を祝う「判定カード」（正解＝ティール／不正解＝コーラル）。
+   T-013 により点数計算モード（QuizPage のインライン結果）はこの判定カードを廃止し、
+   「内訳」見出し行のテキスト表示（下部の .result-breakdown-header 等）に統合した。
+   以下は現在、同じ .quiz-page スコープを共有する点数換算モード（ConvertQuizPage）
+   専用の装飾として残す。
+   ===================================================================== */
+.quiz-page .result-verdict-row {
+  align-items: center;
+  gap: 10px 16px;
+  padding: 18px 20px;
+  background: var(--fl-card);
+  border: 2px solid rgba(43, 168, 162, 0.28);
+  border-radius: var(--fl-r-lg);
+  box-shadow: var(--fl-glow-teal-soft);
+  animation: rp-pop 420ms var(--fl-bounce) both;
+}
+.quiz-page .result-verdict-row:has(.result-verdict.correct) {
+  background: color-mix(in srgb, var(--fl-teal) 9%, #fff);
+  border-color: var(--fl-teal);
+  box-shadow: var(--fl-glow-teal);
+}
+.quiz-page .result-verdict-row:has(.result-verdict.incorrect) {
+  background: color-mix(in srgb, var(--fl-coral) 9%, #fff);
+  border-color: var(--fl-coral);
+  box-shadow: var(--fl-glow-coral);
+}
+
+.quiz-page .result-verdict {
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.quiz-page .result-verdict.correct {
+  color: var(--fl-teal-dark);
+}
+.quiz-page .result-verdict.incorrect {
+  color: var(--fl-coral-dark);
+}
+
+.quiz-page .result-answer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 16px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--fl-ink);
+  background: var(--fl-gold-light);
+  border: 2px solid var(--fl-gold-dark);
+  border-radius: var(--fl-r-pill);
+  box-shadow: var(--fl-glow-gold-soft);
+}
+
+/* =====================================================================
+   内訳カード（役・翻・符・計算式）。FuResultPage.tsx・FuPartsQuizPage.tsx・
+   FuQuizPage.tsx とクラス名（.card/.result-breakdown 基底）を共有するため維持する
+   （ResultContent.tsx 自体の中身は Tailwind ユーティリティに移行済み。T-014）。
+   ===================================================================== */
+.quiz-page .card {
+  padding: 18px;
+  background: var(--fl-card);
+  border: 2px solid rgba(43, 168, 162, 0.3);
+  border-radius: var(--fl-r-lg);
+  box-shadow: var(--fl-glow-teal-soft);
+}
+.quiz-page .result-breakdown {
+  gap: 12px;
+  animation: rp-rise 460ms var(--fl-bounce) both;
+}
+
+.quiz-page .rp-section-label {
+  align-self: flex-start;
+  padding: 3px 12px 5px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--fl-teal-dark);
+  border-bottom: 3px dashed rgba(43, 168, 162, 0.5);
+}
+
+/* ConvertQuizPage.tsx とクラス名を共有するため維持する（T-014）。 */
+.quiz-page .calculation-line {
+  padding-top: 12px;
+  border-top: 2px dashed rgba(43, 168, 162, 0.4);
+  font-weight: 800;
+  color: var(--fl-teal-dark);
+}
+
+/* 符内訳（点数計算モードでは補助情報）。控えめに。 */
+.quiz-page .fu-list li {
+  color: var(--fl-muted);
+}
+.quiz-page .fu-note {
+  color: var(--fl-muted);
+}
+
+/* =====================================================================
+   登場モーション（弾む）
+   ===================================================================== */
+.quiz-page .qp-board {
+  animation: qp-rise 420ms var(--fl-bounce) both;
+}
+.quiz-page .quiz-choices {
+  animation: qp-rise 460ms var(--fl-bounce) both;
+}
+
+@keyframes qp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* モーション抑制時は登場・ホバー移動を無効化。 */
+@media (prefers-reduced-motion: reduce) {
+  .quiz-page .qp-board,
+  .quiz-page .quiz-choices,
+  .quiz-page .result-verdict-row,
+  .quiz-page .result-breakdown {
+    animation: none;
+  }
+  .quiz-page .quiz-choice-btn,
+  .quiz-page .qp-skip-btn {
+    transition: none;
+    transform: none;
+  }
 }

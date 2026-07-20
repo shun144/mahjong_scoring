@@ -1,5 +1,5 @@
-import type { Wind, WinType } from "../../../engine/model";
-import { basicPoints, type Payment, type ScoreRank, type ScoreResult } from "../../../engine/score";
+import type { Wind, WinType } from "@/engine/model";
+import { basicPoints, type Payment, type ScoreRank, type ScoreResult } from "@/engine/score";
 import type { ConversionQuestion } from "../application/conversion";
 
 export const WIND_LABELS: Record<Wind, string> = {

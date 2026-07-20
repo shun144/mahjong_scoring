@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { Meld } from "../../../engine/model";
+import type { Meld } from "@/engine/model";
 import { MeldGroup } from "./MeldGroup";
 
 describe("MeldGroup", () => {

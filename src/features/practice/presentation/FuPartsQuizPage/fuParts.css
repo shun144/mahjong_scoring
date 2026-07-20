@@ -1,5 +1,5 @@
 /* 符分解モード（FuPartsQuizPage）専用スタイル。
-   ページ全体は .quiz-page（quiz.css/quizFlip7.css）の配色・カード・ボタン基調を継承し、
+   ページ全体は .quiz-page（quiz.css）の配色・カード・ボタン基調を継承し、
    ここでは符の要素フォーム固有のレイアウト・状態色のみを追加する。
    スマホ縦画面で「手牌・お題・回答・採点結果」を極力1画面に収め、選択肢を操作しても
    手牌が視界から外れないようにする（SPEC.md §4.10「スマホ1画面表示」）。 */
@@ -31,8 +31,8 @@
 }
 
 /* アガリ牌チップ（局条件バッジの隣に添える。ツモ=スカイ／ロン=コーラルで色分け）。
-   quizFlip7.css の `.quiz-page .badge` と同specificity(2クラス)にして、後勝ち
-   （このCSSは quiz.css/quizFlip7.css の後に読み込む）で確実に上書きする。 */
+   quiz.css の `.quiz-page .badge` と同specificity(2クラス)にして、後勝ち
+   （このCSSは quiz.css の後に読み込む）で確実に上書きする。 */
 .badge.fu-parts-wintype-badge {
   display: inline-flex;
   align-items: center;
@@ -49,7 +49,7 @@
 }
 
 /* 手牌の囲い自体は HandDisplay（.mj-hand-display）が持つため、ここでは余白調整のみ行う。
-   独立した「アガリ牌」ブロックを廃した分、既存の .qp-board(quizFlip7.css) は使わない。 */
+   独立した「アガリ牌」ブロックを廃した分、既存の .qp-board(quiz.css) は使わない。 */
 .fu-parts-board {
   display: flex;
 }
