@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { problemToScoreHandInput, type Problem } from "../../domain/problem";
-import { scoreHand } from "@/engine/scoreHand";
+import { scoreHand } from "@/core/scoring/domain/scoreHandService";
 import { FuBreakdownContent } from "../FuBreakdown";
 import "../result.css";
 import "../resultFlip7.css";
-import { SidebarPageHeader } from "@/shared/components/SidebarPageHeader";
+import { SidebarPageHeader } from "@/components/SidebarPageHeader";
 
 interface FuResultLocationState {
   problem: Problem;

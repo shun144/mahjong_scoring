@@ -24,10 +24,10 @@ export default tseslint.config(
   },
   // --- ARCHITECTURE.md A6/A7: 依存方向の境界ルール ---
   // 旧 components/store/content/data/settings/config はT-025で削除済み。
-  // src配下はengine/features/shared/appの新構成のみのため、以下のルールで全域をカバーする
+  // src配下はcore/features/shared/appの新構成のみのため、以下のルールで全域をカバーする
   // (app/はA6により無制限のため専用ルールを設けない)。
   {
-    files: ["src/engine/**/*.{ts,tsx}"],
+    files: ["src/core/**/*.{ts,tsx}"],
     rules: {
       "no-restricted-imports": [
         "error",
@@ -36,7 +36,7 @@ export default tseslint.config(
             {
               group: ["@/features/*", "@/shared/*", "@/app/*"],
               message:
-                "engine(コア・ドメイン)は features/shared/app のいずれにも依存できません(ARCHITECTURE.md A6)。",
+                "core(コア・ドメイン)は features/shared/app のいずれにも依存できません(ARCHITECTURE.md A6)。",
             },
           ],
         },

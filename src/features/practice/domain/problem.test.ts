@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { scoreHand } from "@/engine/scoreHand";
-import { parseTileNotation } from "@/engine/tiles";
+import { scoreHand } from "@/core/scoring/domain/scoreHandService";
+import { parseTileNotation } from "@/core/scoring/domain/tile";
 import { resolveAnswer, type Problem } from "./problem";
 
 function tiles(compact: string) {

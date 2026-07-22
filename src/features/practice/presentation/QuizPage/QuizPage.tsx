@@ -1,9 +1,9 @@
-import type { Payment } from "@/engine/score";
+import type { Payment } from "@/core/scoring/domain/scoreService";
 import { useSettings } from "@/features/settings/presentation/SettingsContext";
-import { ChoiceGrid } from "@/shared/components/ChoiceGrid";
-import { ScoreTableDialog } from "@/shared/components/ScoreTableDialog";
-import { SidebarPageHeader } from "@/shared/components/SidebarPageHeader";
-import { HandDisplay } from "@/shared/components/tiles/HandDisplay";
+import { ChoiceGrid } from "@/components/ChoiceGrid";
+import { ScoreTableDialog } from "@/components/ScoreTableDialog";
+import { SidebarPageHeader } from "@/components/SidebarPageHeader";
+import { HandDisplay } from "@/components/tiles/HandDisplay";
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { generateChoices, paymentKey } from "../../application/distractors";

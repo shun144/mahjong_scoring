@@ -1,5 +1,5 @@
-import type { WinType } from "@/engine/model";
-import { calculatePayment, determineRank, type Payment } from "@/engine/score";
+import type { WinType } from "@/core/scoring/domain/matchContext";
+import { calculatePayment, determineRank, type Payment } from "@/core/scoring/domain/scoreService";
 import { generateChoices } from "./distractors";
 import { chance, pickOne, type RandomSource } from "./random";
 

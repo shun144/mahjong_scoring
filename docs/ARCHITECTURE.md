@@ -30,7 +30,9 @@ bulletproof-react（feature-first）とオニオン（layer-first）は思想が
 
 ```
 src/
-  engine/                 # ①採点コア・ドメイン。他の層に一切依存しない（名称は変更しない。A8参照）
+  core/
+    scoring/
+      domain/             # ①採点コア・ドメイン。他の層に一切依存しない（旧engine/→core-domain/。A8参照）
   features/
     practice/             # ②出題（4モード）＋③成績・復習を統合
       domain/  application/  infrastructure/  presentation/
@@ -70,7 +72,7 @@ DDD/オニオンの文献には実は2つの流儀がある。
 ## A6. 依存ルール
 
 - 依存の向きは常に「外側→内側」（`presentation → application → domain`、`infrastructure → application`のポートを実装）。内側の層は外側を知らない。
-- `engine/`は`features/`・`shared/`・`app/`のいずれにも依存しない（唯一のコア）。
+- `core/scoring/domain/`は`features/`・`shared/`・`app/`のいずれにも依存しない（唯一のコア）。
 - `features/*`は原則として他の`features/*`を直接importしない（必要なら`shared/`経由）。
 - **例外を1つだけ明示的に許可する**: `features/practice`は`features/settings`を直接importしてよい（切り上げ満貫設定`roundUpMangan`を読み取り`scoreHand`に渡すため）。これは片方向依存であり、`settings`は`practice`の存在を知らない。ESLint設定にはこの1行例外をコメント付きで明記する。
 - `app/`はどこからでも（`engine/`・`features/*`・`shared/`）importしてよい。
@@ -79,12 +81,20 @@ DDD/オニオンの文献には実は2つの流儀がある。
 ## A7. ESLintによる強制
 
 - 素のESLint（`no-restricted-imports`等、追加パッケージ不要）でA6のルールをパスパターンとして強制する。
-- **適用範囲は新設フォルダ（`engine/features/shared/app`）のみ**。段階移行中は旧`components/`・`store/`・`content/`・`data/`・`settings/`（トップレベル直下）を除外パターンとし、移行が完了した部分から順次ルール適用範囲に加える。
+- **適用範囲は新設フォルダ（`core/features/shared/app`）のみ**。段階移行中は旧`components/`・`store/`・`content/`・`data/`・`settings/`（トップレベル直下）を除外パターンとし、移行が完了した部分から順次ルール適用範囲に加える。
 
 ## A8. パスエイリアス・命名規約
 
-- `tsconfig`の`paths`＋Viteの`resolve.alias`で `@/engine`・`@/features/*`・`@/shared`・`@/app` の絶対パスを導入する。既存の相対importと共存させ、置き換えは移行のついでに行う（一括置換はしない）。
-- `engine/`は`core/`等へリネームしない。コア・ドメイン層であることは`ARCHITECTURE.md`上の位置づけで示せば十分であり、既存27ファイルの参照を変更するコストに見合わない。
+- `tsconfig`の`paths`（`"@/*": ["./src/*"]`という単一ワイルドカード。Vite側は`vite-tsconfig-paths`プラグインがこれをそのまま解決する）で`src/`配下への絶対パスimportを提供する。フォルダごとの個別エイリアス定義はない。
+- コア・ドメイン層は`core/<集約名>/domain/`と命名する（現状は`core/scoring/domain/`のみ）。
+  - トップレベルは`core/`とする。複数feature（`practice`・`articles`）から依存される共有カーネルという性格を持ち、将来他の共有カーネルが増えても同じ形で収まる入れ物にする。
+  - `core/`の直下に集約名（`scoring`）を挟む。「何のcoreか」を`core/`という汎用語だけに頼らず、パス自体で明示するため。
+  - `scoring/`配下は`domain/`のみを持つ（`application/`はポートを伴うユースケースが必要になった時にのみ追加する。現状は完全に純粋関数でI/Oを持たないため不要）。`features/*`の内部層（A5）と同じ`domain/`・`application/`という語彙を使い、共有カーネルも1つのfeatureと同じ考え方で読めるようにする。`features/*/domain/`と字面上は同じ`domain`という語を使うが、パス全体（`core/scoring/domain/` vs `features/practice/domain/`）で見れば曖昧にならない。
+- `core/scoring/domain/`内部は、Entity/Value Objectとドメインサービスをファイル名で区別する。
+  - **Entity/VO**: 概念そのものの名前をファイル名にする（suffixなし）。`tile.ts`（`Suit`/`Tile`/`HONOR_NAMES`/`SUIT_LABELS`。Tileの検証・比較・整形・分類といったTile自身の振る舞いも同居させる。旧`tileType.ts`・`tiles.ts`はここに統合）、`meld.ts`（`MeldType`/`Meld`）、`matchContext.ts`（`Wind`/`WinType`/`WIND_TO_HONOR_RANK`）。旧`model.ts`はこの3ファイルに分割する。
+  - **ドメインサービス**: `<概念>Service.ts`と命名する。`decomposeService.ts`・`interpretationService.ts`・`yakuService.ts`・`yakumanService.ts`・`fuService.ts`・`doraService.ts`・`scoreService.ts`・`scoreHandService.ts`（旧`decompose.ts`・`interpretation.ts`・`yaku.ts`・`yakuman.ts`・`fu.ts`・`dora.ts`・`score.ts`・`scoreHand.ts`）。
+  - `scoreHandService.ts`は他の8つのドメインサービスを呼び出して採点結果を組み立てるが、feature固有の型もI/Oも一切参照しない。「麻雀の手を採点する」という操作自体が麻雀ドメインの定義そのものであり、特定ユースケース向けの手順ではないため、application層ではなくドメインサービスとして扱う。
+  - `*.test.ts`は対応するソースファイルと同名で同居させる（`tile.test.ts`は旧`tileType.test.ts`・`tiles.test.ts`を統合）。`yakuCatalogue.test.ts`は対応する同名ソースファイルを持たない独立した回帰テスト（`scoreHandService`を広範な役の組み合わせで検証する）のため、リネーム対象外とする。
 
 ## A9. 移行方針
 

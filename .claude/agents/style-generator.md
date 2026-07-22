@@ -29,7 +29,7 @@ model: opus
   - ただし**ロジックは変更しない**。state・props・イベントハンドラ・条件分岐・データ取得・
     計算呼び出し・import のうち挙動に関わるものは触らない（デザイン用の要素追加に伴う
     最小限の className import 等は可）。
-- src/engine/ など計算ロジックや src/store/・src/generator/ の挙動には触れない。
+- src/core/ など計算ロジックや src/store/・src/generator/ の挙動には触れない。
 - 新規ファイルは作らない。トークンは既存のグローバルCSSに置く。
   適切な既存ファイルが無ければ、実装せず方針段階で報告する。
 

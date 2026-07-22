@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculatePayment, determineRank } from "@/engine/score";
+import { calculatePayment, determineRank } from "@/core/scoring/domain/scoreService";
 import { eligibleCells, nextConversionQuestion } from "./conversion";
 import { paymentKey } from "./distractors";
 import { createSeededRandom } from "./random";

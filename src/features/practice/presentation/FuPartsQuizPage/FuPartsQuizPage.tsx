@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { problemToScoreHandInput, type Problem } from "../../domain/problem";
-import type { FuElementBreakdown } from "@/engine/fu";
-import { scoreHand } from "@/engine/scoreHand";
+import type { FuElementBreakdown } from "@/core/scoring/domain/fuService";
+import { scoreHand } from "@/core/scoring/domain/scoreHandService";
 import {
   FIXED_FU_CHOICES,
   generateMeldTotalChoices,
@@ -16,10 +16,10 @@ import { FuBreakdownContent } from "../FuBreakdown";
 import "../quiz.css";
 import "./fuParts.css";
 import { WIN_TYPE_LABELS } from "../format";
-import { SidebarPageHeader } from "@/shared/components/SidebarPageHeader";
+import { SidebarPageHeader } from "@/components/SidebarPageHeader";
 import { QuizConditions } from "../QuizConditions";
-import { HandDisplay } from "@/shared/components/tiles/HandDisplay";
-import { TileFace } from "@/shared/components/tiles/TileFace";
+import { HandDisplay } from "@/components/tiles/HandDisplay";
+import { TileFace } from "@/components/tiles/TileFace";
 
 /** 標準手（4面子1雀頭）で選ぶ4要素の回答状態。未選択は null。 */
 interface StandardAnswers {

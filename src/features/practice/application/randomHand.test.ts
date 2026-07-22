@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { Meld, Tile } from "@/engine/model";
-import { tilesToCounts } from "@/engine/tileType";
+import type { Meld } from "@/core/scoring/domain/meld";
+import { tilesToCounts, type Tile } from "@/core/scoring/domain/tile";
 import { createSeededRandom } from "./random";
 import { allowsRiichi, generateRandomHand } from "./randomHand";
 

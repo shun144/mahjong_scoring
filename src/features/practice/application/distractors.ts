@@ -1,6 +1,6 @@
-import type { FuBreakdown } from "@/engine/fu";
-import type { WinType } from "@/engine/model";
-import { calculatePayment, type Payment } from "@/engine/score";
+import type { FuBreakdown } from "@/core/scoring/domain/fuService";
+import type { WinType } from "@/core/scoring/domain/matchContext";
+import { calculatePayment, type Payment } from "@/core/scoring/domain/scoreService";
 import { shuffle, type RandomSource } from "./random";
 
 export interface DistractorContext {

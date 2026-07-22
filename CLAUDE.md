@@ -23,7 +23,9 @@ bulletproof-react（機能で縦割り）＋オニオン（機能内を層で整
 
 ```
 src/
-  engine/                 # 純粋TS: 牌モデル, 和了分解, 役判定, 符/翻, 点数, ドラ, 高点法（唯一のコア・ドメイン）
+  core/
+    scoring/              # 純粋TS: 牌モデル, 和了分解, 役判定, 符/翻, 点数, ドラ, 高点法（唯一のコア・ドメイン。旧engine/→core-domain/）
+      domain/
   features/
     practice/             # 出題（4モード: 最終点数/符計算/符分解/点数換算）＋成績・復習
       domain/  application/  infrastructure/  presentation/

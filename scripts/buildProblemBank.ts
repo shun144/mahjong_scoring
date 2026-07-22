@@ -10,11 +10,17 @@
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
-import { indicatorForDora } from "../src/engine/dora";
-import type { Meld, MeldType, Tile, Wind, WinType } from "../src/engine/model";
-import { scoreHand, type ScoreHandInput } from "../src/engine/scoreHand";
-import { parseTileNotation } from "../src/engine/tiles";
-import { tileToType, tilesToCounts, typeToTile } from "../src/engine/tileType";
+import { indicatorForDora } from "../src/core/scoring/domain/doraService";
+import type { Meld, MeldType } from "../src/core/scoring/domain/meld";
+import type { Wind, WinType } from "../src/core/scoring/domain/matchContext";
+import { scoreHand, type ScoreHandInput } from "../src/core/scoring/domain/scoreHandService";
+import {
+  parseTileNotation,
+  tileToType,
+  tilesToCounts,
+  type Tile,
+  typeToTile,
+} from "../src/core/scoring/domain/tile";
 import type { Problem } from "../src/features/practice/domain/problem";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

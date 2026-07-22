@@ -1,5 +1,4 @@
-import type { Tile } from "@/engine/model";
-import { parseTileNotation } from "@/engine/tiles";
+import { parseTileNotation, type Tile } from "@/core/scoring/domain/tile";
 
 export interface ParsedHand {
   hand: Tile[];

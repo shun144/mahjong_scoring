@@ -10,7 +10,6 @@ import { getArticleBySlug } from "@/features/articles/domain/registry";
  * クライアント遷移で巻き上げ済みタグの title/content を更新しないケースがあるため、
  * head の同期は useEffect から直接 DOM を操作して確実に行う。index.html には静的な
  * title/description/canonical を置かない（このコンポーネントが唯一の管理点）。
- *
  * canonicalPath を持つルート＝インデックス対象。持たないルート（結果・成績・設定など
  * 一時的/個人依存の画面）は noindex とし canonical を出さない。
  */

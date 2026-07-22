@@ -1,5 +1,5 @@
-import type { Tile } from "@/engine/model";
-import { TileRow } from "@/shared/components/tiles/TileRow";
+import type { Tile } from "@/core/scoring/domain/tile";
+import { TileRow } from "@/components/tiles/TileRow";
 
 export interface ArticleHandProps {
   hand: readonly Tile[];
@@ -37,7 +37,9 @@ export function ArticleHand({ hand, winningTile, menzen, naki }: ArticleHandProp
       {showBadges && (
         <div className="flex flex-wrap gap-2 px-[6px]">
           {menzen !== undefined && (
-            <span className={`${BADGE_CLASS} text-fl-teal-dark bg-fl-teal-bg border-[rgba(43,168,162,0.4)]`}>
+            <span
+              className={`${BADGE_CLASS} text-fl-teal-dark bg-fl-teal-bg border-[rgba(43,168,162,0.4)]`}
+            >
               <span className={BADGE_LABEL_CLASS}>門前</span>
               <span>{formatHan(menzen)}</span>
             </span>

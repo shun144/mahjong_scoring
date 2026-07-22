@@ -300,3 +300,93 @@ bulletproof-react＋オニオンアーキテクチャでDDDを実現するため
 - `npm test` / `npm run lint` / `npm run build`が通る。
 
 ---
+
+## アーキテクチャ移行フォローアップ（T-026）— 背景
+
+T-019〜T-025完了後、より一般的なbulletproof-react構成（`components/hooks/lib/config/stores/testing/types/utils`等）への
+将来的な追随を見据えた`/grill-plan`セッションで、コア・ドメイン層の命名を再検討した。ARCHITECTURE.md A8が当初「`engine/`は
+リネームしない」としていた判断を撤回し、`core-domain/`へ改称する（詳細はARCHITECTURE.md A8参照）。今回のスコープは
+この改称のみで、他のトップレベルフォルダ新設は対象外（将来別セッションで検討）。
+
+---
+
+## T-026 `core-domain/` 命名変更（旧`engine/`）（完了）
+
+### 目的
+
+コア・ドメイン層`engine/`を、複数feature（`practice`・`articles`）から依存される共有カーネルであることがフォルダ名から
+直接読み取れるよう`core-domain/`へ改称する。
+
+### 確定した設計判断（詳細はARCHITECTURE.md A8）
+
+- `src/engine/` → `src/core-domain/`にディレクトリごと移動する。内部20ファイルの構成・ファイル名は変更しない
+  （フラットなまま、テスト`*.test.ts`も同居のまま）。
+- パスエイリアスは`tsconfig`の`"@/*": ["./src/*"]`という単一ワイルドカードのみで、フォルダ移動だけで
+  `@/core-domain/*`が自動的に解決される。`tsconfig.app.json`・`vite.config.ts`の変更は不要。
+- 既存import 56箇所（`@/engine/...`）をすべて`@/core-domain/...`へ置換する。
+- `eslint.config.js`の`files: ["src/engine/**/*.{ts,tsx}"]`パターンと、対応するエラーメッセージ文言を
+  `core-domain`に合わせて更新する。
+
+### 影響ファイル
+
+- `src/engine/*`（ディレクトリごと`src/core-domain/`へ移動）
+- `@/engine/...`をimportする全ファイル（56箇所、`features/*`・`app/*`・`shared/*`にまたがる）
+- `eslint.config.js`（パスパターン・メッセージ更新）
+- `CLAUDE.md`のディレクトリ構成節（更新済み）
+
+### 受け入れ基準
+
+- `src/engine/`が存在せず、`src/core-domain/`に20ファイルすべてが移動している。
+- リポジトリ内に`@/engine`への参照が残っていない。
+- `npm test` / `npm run lint` / `npm run build`が通る（回帰なし）。
+- 意図的に`features/*`等から`core-domain`への逆方向import（`core-domain`→`features`）を書くとESLintがエラーにする
+  （動作確認後、確認用コードは削除する）。
+
+---
+
+## T-027 `core/scoring/domain/` への再編（Entity/VOとドメインサービスの可読性向上）（完了）
+
+### 目的
+
+T-026で`core-domain/`に移した採点コアが、20ファイルフラットで「どれがEntity/VOで、どれがドメインサービスか」
+ファイル名から読み取れない問題を解消する。`/grill-plan`セッションで、`features/*`と同じ`domain/`・`application/`の
+語彙を共有カーネルにも適用する方針に合意した（詳細はARCHITECTURE.md A8参照）。
+
+### 確定した設計判断（詳細はARCHITECTURE.md A8）
+
+- トップレベルを`core-domain/` → `core/`に改称し、直下に集約名`scoring/`を挟み、その下に`domain/`を置く
+  （`core/scoring/domain/`）。`application/`はポートを伴うユースケースが必要になるまで作らない（現状は不要）。
+- Entity/VOはsuffixなしで概念名そのものをファイル名にする。旧`model.ts`を3分割する:
+  - `tile.ts`（`Suit`/`Tile`/`HONOR_NAMES`/`SUIT_LABELS`。旧`tileType.ts`・`tiles.ts`の内容もここに統合。
+    Tileの検証・比較・整形・分類はTile自身の振る舞いであり、他オブジェクトを横断しないためドメインサービスと区別する）
+  - `meld.ts`（`MeldType`/`Meld`）
+  - `matchContext.ts`（`Wind`/`WinType`/`WIND_TO_HONOR_RANK`）
+- ドメインサービスは`<概念>Service.ts`にリネームする:
+  `decompose.ts→decomposeService.ts`／`interpretation.ts→interpretationService.ts`／`yaku.ts→yakuService.ts`／
+  `yakuman.ts→yakumanService.ts`／`fu.ts→fuService.ts`／`dora.ts→doraService.ts`／`score.ts→scoreService.ts`／
+  `scoreHand.ts→scoreHandService.ts`。
+- `scoreHandService.ts`は他8つのドメインサービスを呼び出すが、feature固有の型もI/Oも参照しないため、
+  application層ではなくドメインサービスのまま扱う（application層へは移さない）。
+- テストファイルはソースと同名にリネームする。`tileType.test.ts`・`tiles.test.ts`は`tile.test.ts`に統合する。
+  `yakuCatalogue.test.ts`は対応する同名ソースファイルを持たない独立した回帰テストのため、リネーム対象外とする。
+- 内部・外部を問わず、`core-domain`配下への全import（`@/core-domain/...`および相対import）を新パスに置き換える。
+- `eslint.config.js`の`files: ["src/core-domain/**/*.{ts,tsx}"]`パターンと、対応するエラーメッセージ文言を
+  `core/scoring/domain`に合わせて更新する。
+
+### 影響ファイル
+
+- `src/core-domain/*`（`src/core/scoring/domain/`へ再編。分割・統合・リネームを伴う）
+- `@/core-domain/...`をimportする全ファイル（`features/*`・`app/*`・`shared/*`・`scripts/buildProblemBank.ts`）
+- `eslint.config.js`（パスパターン・メッセージ更新）
+- `CLAUDE.md`のディレクトリ構成節（更新済み）
+
+### 受け入れ基準
+
+- `src/core-domain/`が存在せず、`src/core/scoring/domain/`に再編後の全ファイルが揃っている
+  （`tile.ts`・`meld.ts`・`matchContext.ts`＋8本の`*Service.ts`＋対応する`*.test.ts`＋`yakuCatalogue.test.ts`）。
+- リポジトリ内に`@/core-domain`・`src/core-domain`への参照が残っていない。
+- `npm test` / `npm run lint` / `npm run build`が通る（回帰なし）。
+- 意図的に`features/*`等から`core/scoring/domain`への逆方向importを書くとESLintがエラーにする
+  （動作確認後、確認用コードは削除する）。
+
+---
