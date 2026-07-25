@@ -5,6 +5,7 @@ import { scoreHand } from "@/core/scoring/domain/scoreHandService";
 import { generateFuChoices } from "../../application/distractors";
 import { createSeededRandom, seedFromString } from "../../application/random";
 import { nextProblem } from "../../application/nextProblem";
+import { CHIITOI_BIAS_FU_QUIZ } from "../../application/weighting";
 import { recordAnswer } from "../../application/statsStore";
 import { ChoiceGrid } from "@/components/ChoiceGrid";
 import { SidebarPageHeader } from "@/components/SidebarPageHeader";
@@ -26,8 +27,11 @@ export function FuQuizPage() {
     isReviewState(location.state) ? location.state.problem : null,
   );
   // 符計算モードでは満貫以上（符が点数に影響しない区分）を出題しない（SPEC.md §4.0）。
+  // 七対子はexcludeManganで相対比率が上がるため専用バイアスで抑える（T-028）。
   const [problem, setProblem] = useState(
-    () => reviewProblem ?? nextProblem(Math.random, { excludeMangan: true }),
+    () =>
+      reviewProblem ??
+      nextProblem(Math.random, { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_QUIZ }),
   );
 
   // バンク問題は fuDetail 未保存の可能性があるため、無ければエンジンで再計算する（決定的）。
@@ -54,7 +58,7 @@ export function FuQuizPage() {
   // 回答せずに次の問題へスキップする。成績には一切記録しない（回答数にもカウントしない）。
   function handleSkip() {
     setReviewProblem(null);
-    setProblem(nextProblem(Math.random, { excludeMangan: true }));
+    setProblem(nextProblem(Math.random, { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_QUIZ }));
   }
 
   return (

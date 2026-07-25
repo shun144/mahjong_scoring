@@ -39,6 +39,7 @@ export const SUIT_LABELS: Record<Suit, string> = {
 
 /** 牌種インデックスの基準となる suit の並び順（m→p→s→z）。 */
 const SUIT_BY_INDEX: Suit[] = ["m", "p", "s", "z"];
+
 /** suit から並び順インデックスを引くための逆引きテーブル。 */
 const SUIT_INDEX: Record<Suit, number> = { m: 0, p: 1, s: 2, z: 3 };
 
@@ -78,7 +79,7 @@ export function isTerminal(type: number): boolean {
 
 /** 牌種インデックスが么九牌（老頭牌または字牌）かどうかを判定する。 */
 export function isTerminalOrHonor(type: number): boolean {
-  if (isHonorType(type)) return true; // 字牌
+  if (isHonorType(type)) return true;
   const rank = (type % 9) + 1;
   return rank === 1 || rank === 9;
 }

@@ -27,27 +27,46 @@ export function problemWeight(problem: Problem, stats: StatsState): number {
   return WEIGHT_BASE - minAccuracy;
 }
 
-/** 出題傾向を調整するカテゴリ別バイアス（苦手復習の重みに掛ける）。 */
-const YAKUMAN_BIAS = 0.18; // 役満は出過ぎるため抑える（実出題で約3%）
-const CHIITOI_BIAS = 0.31; // 七対子は出過ぎるため抑える（実出題で約6%）
-const MANGAN_FU50_BIAS = 2.2; // 満貫以上かつ50符以上の高符高翻手は薄いため増やす
+/** 出題傾向を調整するカテゴリ別バイアス（苦手復習の重みに掛ける）。
+    以下の数値は nextProblem.ts の GENERATED_CANDIDATE_COUNT（生成候補数）に依存する。
+    候補数を変えると同じ数値でも効き方が変わるため、候補数を変更する場合はこの4つの
+    バイアス値すべてを scripts/measureDistribution.ts で再実測・再調整すること（T-028）。 */
+const YAKUMAN_BIAS = 0.4; // 役満は出過ぎるため抑える（実出題で約3%）
+const CHIITOI_BIAS = 0.13; // 七対子は出過ぎるため抑える（実出題で約6%）
+/** 満貫以上（役満を除く）を一括抑制する一般係数。素の生成分布は満貫以上が約50%を占め、
+    最終点数モードの出題体感を歪めていたため、最終点数モードでの出現率が約15%
+    （許容12〜18%）に収まるよう実測調整した（/grill-plan T-028。SPEC.md §4.1）。 */
+const MANGAN_BIAS = 0.08;
+/** 満貫以上かつ50符以上の高符高翻手は薄いため、MANGAN_BIAS のさらに上に乗算して増やす
+    （排他ではなく重ねがけ。T-028で2.2から実測調整）。 */
+const MANGAN_FU50_BIAS = 1.6;
+/** 符計算モード専用の七対子抑制係数。excludeMangan（満貫以上を出題しない）により
+    満貫以上の候補が丸ごと除外される分、七対子の相対比率が最終点数モードより上がるため、
+    既定の CHIITOI_BIAS とは別に、excludeMangan 環境下で実出題約8〜9%になるよう
+    実測調整した値を持つ（T-028。旧デフォルトCHIITOI_BIASを流用していたことに由来する水準）。 */
+export const CHIITOI_BIAS_FU_QUIZ = 0.45;
 /** 符分解モード専用の七対子抑制係数。七対子は固定符（25符を選ぶだけ）で要素分解の
-    練習にならず、かつ excludeMangan により相対比率が約8〜9%まで上がるため、
-    通常の CHIITOI_BIAS よりさらに強く抑え、実出題で約3%を狙う（実測調整値。SPEC.md §4.10）。 */
+    練習にならず、かつ excludeMangan により相対比率が上がるため、
+    CHIITOI_BIAS_FU_QUIZ よりさらに強く抑え、実出題で約3%を狙う（実測調整値。SPEC.md §4.10）。 */
 export const CHIITOI_BIAS_FU_PARTS = 0.12;
 
 /**
  * カテゴリ別の出題頻度バイアス（問題の内容だけで決まり、成績に依らない）。
  * 苦手復習の重み（problemWeight）に乗算して最終的な出題傾向を整える。
- * 役満・七対子は体感で出過ぎるため抑制し、満貫以上×50符以上の高符高翻手は薄いため増やす。
- * 区分は排他（役満→七対子→満貫以上&50符+ の順に判定）。
+ * 役満・七対子は体感で出過ぎるため抑制する（役満→七対子の順に排他判定。該当した方の
+ * 係数のみを適用し、他の係数とは掛け合わせない）。
+ * どちらにも該当しない満貫以上（役満を除く）は MANGAN_BIAS で一括抑制し、そのうち
+ * 50符以上の高符高翻手はさらに MANGAN_FU50_BIAS を乗算して薄くなりすぎないようにする
+ * （こちらは排他ではなく重ねがけ）。
  * chiitoiBias を渡すと七対子の抑制係数だけをモード別に上書きできる（既定は CHIITOI_BIAS）。
  */
 export function categoryBias(problem: Problem, chiitoiBias: number = CHIITOI_BIAS): number {
   const { rank, fu, yaku } = problem.answer;
   if (rank === "yakuman") return YAKUMAN_BIAS;
   if (yaku.some((y) => y.name.includes("七対子"))) return chiitoiBias;
-  if (rank !== undefined && fu >= 50) return MANGAN_FU50_BIAS;
+  if (rank !== undefined) {
+    return fu >= 50 ? MANGAN_BIAS * MANGAN_FU50_BIAS : MANGAN_BIAS;
+  }
   return 1;
 }
 

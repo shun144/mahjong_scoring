@@ -79,8 +79,15 @@ describe("categoryBias", () => {
     expect(categoryBias(biasProblem({ yaku: ["七対子"], fu: 25 }))).toBeLessThan(1);
   });
 
-  it("boosts 満貫以上かつ50符以上 (bias > 1)", () => {
-    expect(categoryBias(biasProblem({ rank: "mangan", fu: 50 }))).toBeGreaterThan(1);
+  it("suppresses 満貫以上（役満を除く） (bias < 1)", () => {
+    expect(categoryBias(biasProblem({ rank: "mangan", fu: 40 }))).toBeLessThan(1);
+  });
+
+  it("boosts 満貫以上×50符以上 relative to 満貫以上×50符未満（重ねがけ。ただし1倍は超えない）", () => {
+    const under50 = categoryBias(biasProblem({ rank: "mangan", fu: 40 }));
+    const over50 = categoryBias(biasProblem({ rank: "mangan", fu: 50 }));
+    expect(over50).toBeGreaterThan(under50);
+    expect(over50).toBeLessThan(1); // 一般抑制の範囲内に収まる（役満のような単独ブーストではない）
   });
 
   it("is neutral (=1) for a normal 40符 hand and for 満貫未満の50符", () => {
@@ -93,16 +100,23 @@ describe("categoryBias", () => {
     expect(categoryBias(biasProblem({ rank: "yakuman", fu: 60 }))).toBeLessThan(1);
   });
 
+  it("七対子由来で満貫に達した手は、満貫以上の一般抑制ではなく七対子係数の管轄のまま", () => {
+    const chiitoiMangan = categoryBias(biasProblem({ yaku: ["七対子"], rank: "mangan", fu: 25 }));
+    const chiitoiOnly = categoryBias(biasProblem({ yaku: ["七対子"], fu: 25 }));
+    expect(chiitoiMangan).toBe(chiitoiOnly); // rank の有無で結果が変わらない = チェック対象は七対子分岐のみ
+  });
+
   it("chiitoiBias 引数を渡すと七対子の抑制係数だけを上書きする（符分解モード用）", () => {
     const chiitoi = biasProblem({ yaku: ["七対子"], fu: 25 });
     expect(categoryBias(chiitoi, CHIITOI_BIAS_FU_PARTS)).toBe(CHIITOI_BIAS_FU_PARTS);
-    // 引数省略時は従来どおり CHIITOI_BIAS（0.31）のまま
-    expect(categoryBias(chiitoi)).toBeCloseTo(0.31, 5);
+    // 引数省略時は従来どおり既定の CHIITOI_BIAS のまま（七対子×満貫のケースと同じ値）
+    expect(categoryBias(chiitoi)).toBeCloseTo(0.13, 5);
   });
 
-  it("chiitoiBias 引数は役満・満貫50符+の分岐に影響しない", () => {
+  it("chiitoiBias 引数は役満・満貫以上の分岐に影響しない", () => {
     expect(categoryBias(biasProblem({ rank: "yakuman", fu: 40 }), 0.05)).toBeLessThan(1);
-    expect(categoryBias(biasProblem({ rank: "mangan", fu: 50 }), 0.05)).toBeGreaterThan(1);
+    const defaultBias = categoryBias(biasProblem({ rank: "mangan", fu: 50 }));
+    expect(categoryBias(biasProblem({ rank: "mangan", fu: 50 }), 0.05)).toBe(defaultBias);
   });
 });
 

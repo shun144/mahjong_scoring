@@ -4,7 +4,7 @@ import type { Problem } from "../domain/problem";
 import { createSeededRandom } from "./random";
 import { nextProblem } from "./nextProblem";
 import { loadStats, recordAnswer, type StatsState } from "./statsStore";
-import { categoryBias, CHIITOI_BIAS_FU_PARTS, problemWeight } from "./weighting";
+import { categoryBias, CHIITOI_BIAS_FU_PARTS, CHIITOI_BIAS_FU_QUIZ, problemWeight } from "./weighting";
 
 const problemBank = problemBankRaw as unknown as Problem[];
 
@@ -63,6 +63,8 @@ describe("nextProblem", () => {
   });
 
   it("符分解モード（chiitoiBias=CHIITOI_BIAS_FU_PARTS）は七対子の出題率を約3%に抑える", () => {
+    // 候補数8（T-028）で1回のnextProblemあたりの生成コストが増えたため、
+    // N=6000×2パターンの統計的検証には既定の5秒タイムアウトでは足りない。
     function chiitoiShare(rng: ReturnType<typeof createSeededRandom>, opts: object, n: number) {
       let chiitoi = 0;
       for (let i = 0; i < n; i++) {
@@ -78,12 +80,16 @@ describe("nextProblem", () => {
       { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_PARTS },
       N,
     );
-    const fuQuizShare = chiitoiShare(createSeededRandom(11), { excludeMangan: true }, N);
+    const fuQuizShare = chiitoiShare(
+      createSeededRandom(11),
+      { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_QUIZ },
+      N,
+    );
 
     // 符分解モードは約3%（幅を持たせて判定）。
     expect(fuPartsShare).toBeGreaterThan(0.01);
     expect(fuPartsShare).toBeLessThan(0.05);
-    // chiitoiBias を渡さない符計算モード相当は従来水準（符分解より明確に高い）のまま。
+    // 符計算モード専用バイアス（CHIITOI_BIAS_FU_QUIZ）は符分解より明確に高い水準（約8〜9%）を保つ。
     expect(fuQuizShare).toBeGreaterThan(fuPartsShare * 1.5);
-  });
+  }, 20000);
 });
