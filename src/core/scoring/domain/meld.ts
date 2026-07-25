@@ -1,8 +1,7 @@
 import type { Tile } from "./tile";
 
 /**
- * 副露（鳴き）・面子に関する値オブジェクト。
- * SPEC.md §6 のデータモデルに準拠する。
+ * 副露（鳴き）・面子に関する値オブジェクト
  */
 
 export type MeldType = "chi" | "pon" | "minkan" | "ankan";

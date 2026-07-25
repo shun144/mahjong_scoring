@@ -1,20 +1,16 @@
-import { useState } from "react";
-import type { Payment } from "@/core/scoring/domain/scoreService";
-import { nextConversionQuestion, type ConversionQuestion } from "../../application/conversion";
-import { paymentKey } from "../../application/distractors";
-import { useSettings } from "@/features/settings/presentation/SettingsContext";
 import { ChoiceGrid } from "@/components/ChoiceGrid";
-import "./convert.css";
-import {
-  conversionFormulaParts,
-  formatConversionFormula,
-  formatPayment,
-  WIN_TYPE_LABELS,
-} from "../format";
-import "../quiz.css";
-import "../result.css";
 import { ScoreTableDialog } from "@/components/ScoreTableDialog";
 import { SidebarPageHeader } from "@/components/SidebarPageHeader";
+import { WIN_TYPE_LABELS } from "@/core/scoring/domain/condition/constants";
+import type { Payment } from "@/core/scoring/domain/condition/types";
+import { useSettings } from "@/features/settings/presentation/SettingsContext";
+import { useState } from "react";
+import { nextConversionQuestion, type ConversionQuestion } from "../../application/conversion";
+import { paymentKey } from "../../application/distractors";
+import { conversionFormulaParts, formatConversionFormula, formatPayment } from "../format";
+import "../quiz.css";
+import "../result.css";
+import "./convert.css";
 
 interface ConvertRound {
   question: ConversionQuestion;

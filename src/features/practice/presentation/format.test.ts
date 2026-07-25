@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { ScoreResult } from "@/core/scoring/domain/scoreService";
+import type { ScoreResult } from "@/core/scoring/domain/score/scoreService";
 import type { ConversionQuestion } from "../application/conversion";
 import {
   conversionFormulaParts,
@@ -18,9 +18,7 @@ describe("formatPayment", () => {
   });
 
   it("formats tsumo-ko as a child/parent split", () => {
-    expect(formatPayment({ kind: "tsumo-ko", nonDealer: 2000, dealer: 4000 })).toBe(
-      "2000 / 4000",
-    );
+    expect(formatPayment({ kind: "tsumo-ko", nonDealer: 2000, dealer: 4000 })).toBe("2000 / 4000");
   });
 });
 
@@ -95,9 +93,7 @@ describe("conversionFormulaParts / formatConversionFormula", () => {
     const parts = conversionFormulaParts(question);
     expect(parts.product).toBe(960);
     expect(parts.rounded).toBe(true);
-    expect(formatConversionFormula(question)).toBe(
-      "30符 × 2^(2+1翻) ×4(子ロン) = 960 → 1000",
-    );
+    expect(formatConversionFormula(question)).toBe("30符 × 2^(2+1翻) ×4(子ロン) = 960 → 1000");
   });
 
   it("親ツモ・丸めあり", () => {
@@ -142,8 +138,6 @@ describe("conversionFormulaParts / formatConversionFormula", () => {
       winType: "tsumo",
       answer: { kind: "tsumo-ko", nonDealer: 300, dealer: 500 },
     };
-    expect(formatConversionFormula(question)).toBe(
-      "30符 × 2^(2+1翻) (子ツモ) = 240 → 300 / 500",
-    );
+    expect(formatConversionFormula(question)).toBe("30符 × 2^(2+1翻) (子ツモ) = 240 → 300 / 500");
   });
 });

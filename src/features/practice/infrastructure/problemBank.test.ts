@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scoreHand } from "@/core/scoring/domain/scoreHandService";
+import { scoreHand } from "@/core/scoring/domain/score/scoreHandService";
 import { tilesToCounts } from "@/core/scoring/domain/tile";
 import problemBankRaw from "./problemBank.json";
 import { problemToScoreHandInput, type Problem } from "../domain/problem";
@@ -96,9 +96,7 @@ describe("problemBank", () => {
 
   it("ドラ表示牌の枚数は「1+槓の数」に一致する（麻雀ルール上「なし」はあり得ない・SPEC §5.4）", () => {
     for (const p of problemBank) {
-      const kanCount = p.hand.melds.filter(
-        (m) => m.type === "minkan" || m.type === "ankan",
-      ).length;
+      const kanCount = p.hand.melds.filter((m) => m.type === "minkan" || m.type === "ankan").length;
       expect(p.doraIndicators.length).toBe(1 + kanCount);
     }
   });

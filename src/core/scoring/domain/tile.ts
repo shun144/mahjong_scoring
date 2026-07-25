@@ -1,4 +1,4 @@
-import type { Wind } from "./matchContext";
+import type { Wind } from "./condition/types";
 
 /**
  * 牌に関する値オブジェクトと、その振る舞い（検証・比較・分類・整形）。
@@ -7,6 +7,14 @@ import type { Wind } from "./matchContext";
 
 /** 萬子/筒子/索子/字牌 */
 export type Suit = "m" | "p" | "s" | "z";
+
+/** 種類(suit)ごとの表示名。 */
+export const SUIT_LABELS: Record<Suit, string> = {
+  m: "萬",
+  p: "筒",
+  s: "索",
+  z: "字",
+};
 
 /**
  * 牌。z(字牌)の rank は 1=東 2=南 3=西 4=北 5=白 6=發 7=中。
@@ -29,14 +37,6 @@ export const HONOR_NAMES: Record<number, { label: string }> = {
   7: { label: "中" },
 };
 
-/** 種類(suit)ごとの表示名。 */
-export const SUIT_LABELS: Record<Suit, string> = {
-  m: "萬",
-  p: "筒",
-  s: "索",
-  z: "字",
-};
-
 /** 牌種インデックスの基準となる suit の並び順（m→p→s→z）。 */
 const SUIT_BY_INDEX: Suit[] = ["m", "p", "s", "z"];
 
@@ -56,6 +56,10 @@ const SANGEN_TYPES: readonly number[] = [31, 32, 33];
 export function tileToType(tile: Tile): number {
   const base = { m: 0, p: 9, s: 18, z: 27 }[tile.suit];
   return base + (tile.rank - 1);
+}
+
+export function windToType(wind: Wind): number {
+  return { east: 27, south: 28, west: 29, north: 30 }[wind];
 }
 
 /** 34種の牌種インデックス(0-33)を牌に変換する */
@@ -110,7 +114,6 @@ export function isGreenType(type: number): boolean {
 /** 牌配列を34種カウント配列に集計する。 */
 export function tilesToCounts(tiles: readonly Tile[]): number[] {
   const counts = new Array(34).fill(0);
-
   for (const t of tiles) {
     counts[tileToType(t)] += 1;
   }

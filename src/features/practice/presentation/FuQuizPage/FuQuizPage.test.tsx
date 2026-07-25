@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import type { Problem } from "../../domain/problem";
-import { scoreHand } from "@/core/scoring/domain/scoreHandService";
+import { scoreHand } from "@/core/scoring/domain/score/scoreHandService";
 import { parseTileNotation } from "@/core/scoring/domain/tile";
 import { loadStats } from "../../application/statsStore";
 import { FuQuizPage } from "./FuQuizPage";

@@ -1,5 +1,5 @@
+import { WIND_LABELS } from "@/core/scoring/domain/condition/constants";
 import type { Problem } from "../domain/problem";
-import { WIND_LABELS } from "./format";
 
 /** 局条件（場風・自風・親子・リーチ）のバッジ表示。最終点数モード・符計算モードで共有する。
     上がり方（ツモ/ロン）はアガリ牌のラベルと背景色で示すため、ここには表示しない。

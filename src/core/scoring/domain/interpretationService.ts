@@ -1,5 +1,10 @@
+/**
+ * 手牌分解結果(decomposeService)から「あがり牌がどの面子/雀頭を完成させたか」まで含む具体的解釈を組み立てる。
+ * 高点法（複数解釈中 最高得点採用）の材料生成 担当。
+ */
+
 import type { Meld } from "./meld";
-import type { WinType } from "./matchContext";
+import type { WinType } from "./condition/types";
 import type { StandardDecomposition } from "./decomposeService";
 import { decomposeStandard } from "./decomposeService";
 import { tileToType } from "./tile";

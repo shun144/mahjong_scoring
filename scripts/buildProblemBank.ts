@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { indicatorForDora } from "../src/core/scoring/domain/doraService";
 import type { Meld, MeldType } from "../src/core/scoring/domain/meld";
-import type { Wind, WinType } from "../src/core/scoring/domain/matchContext";
+import type { Wind, WinType } from "../src/core/scoring/domain/match/types";
 import { scoreHand, type ScoreHandInput } from "../src/core/scoring/domain/scoreHandService";
 import {
   parseTileNotation,

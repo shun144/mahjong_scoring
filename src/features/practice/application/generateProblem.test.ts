@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scoreHand } from "@/core/scoring/domain/scoreHandService";
+import { scoreHand } from "@/core/scoring/domain/score/scoreHandService";
 import { tilesToCounts, windToHonorType } from "@/core/scoring/domain/tile";
 import { problemToScoreHandInput } from "../domain/problem";
 import { generateProblem } from "./generateProblem";
@@ -79,9 +79,7 @@ describe("generateProblem", () => {
   it("dora indicator count is exactly 1 + the number of kans in the hand (SPEC.md §5.4)", () => {
     const problems = generateMany(SAMPLE_SIZE, 12);
     for (const p of problems) {
-      const kanCount = p.hand.melds.filter(
-        (m) => m.type === "minkan" || m.type === "ankan",
-      ).length;
+      const kanCount = p.hand.melds.filter((m) => m.type === "minkan" || m.type === "ankan").length;
       expect(p.doraIndicators.length).toBe(1 + kanCount);
       expect(p.doraIndicators.length).toBeLessThanOrEqual(5);
       // リーチ時は裏ドラ表示牌も表と同数（1+槓の数）出す。非リーチは0枚。

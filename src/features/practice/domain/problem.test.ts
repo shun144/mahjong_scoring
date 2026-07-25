@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scoreHand } from "@/core/scoring/domain/scoreHandService";
+import { scoreHand } from "@/core/scoring/domain/score/scoreHandService";
 import { parseTileNotation } from "@/core/scoring/domain/tile";
 import { resolveAnswer, type Problem } from "./problem";
 

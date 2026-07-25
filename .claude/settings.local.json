@@ -81,7 +81,8 @@
       "Bash(powershell -Command \"Stop-Process -Id 20004 -Force\")",
       "Bash(xargs -I{} dirname {})",
       "Bash(mkdir -p .tmp_measure)",
-      "Bash(cp \"C:\\\\Users\\\\noels\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--work-20260702-mahjong-scoring\\\\4b104f4b-0547-41e8-b9e6-94c5c0b446c8\\\\scratchpad\\\\measureRank.ts\" .tmp_measure/measureRank.ts)"
+      "Bash(cp \"C:\\\\Users\\\\noels\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--work-20260702-mahjong-scoring\\\\4b104f4b-0547-41e8-b9e6-94c5c0b446c8\\\\scratchpad\\\\measureRank.ts\" .tmp_measure/measureRank.ts)",
+      "Bash(xargs wc -l)"
     ]
   }
 }

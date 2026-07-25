@@ -1,8 +1,8 @@
 import { indicatorForDora } from "@/core/scoring/domain/doraService";
 import type { Meld } from "@/core/scoring/domain/meld";
-import type { Wind, WinType } from "@/core/scoring/domain/matchContext";
-import { scoreHand, type ScoreHandInput } from "@/core/scoring/domain/scoreHandService";
-import type { ScoreResult } from "@/core/scoring/domain/scoreService";
+import type { Wind, WinType } from "@/core/scoring/domain/condition/types";
+import { scoreHand, type ScoreHandInput } from "@/core/scoring/domain/score/scoreHandService";
+import type { ScoreResult } from "@/core/scoring/domain/score/scoreService";
 import {
   tileToType,
   tilesToCounts,
@@ -198,9 +198,7 @@ function buildDoraIndicators(
   // ドラ表示牌の枚数は「1＋槓の数」（基本1枚＋槓ごとに1枚めくられる槓ドラ表示牌。SPEC.md §5.4）。
   const indicatorCount = 1 + countKans(melds);
   const doraIndicators = Array.from({ length: indicatorCount }, pickIndicatorTile);
-  const uraDoraIndicators = riichi
-    ? Array.from({ length: indicatorCount }, pickIndicatorTile)
-    : [];
+  const uraDoraIndicators = riichi ? Array.from({ length: indicatorCount }, pickIndicatorTile) : [];
   return { doraIndicators, uraDoraIndicators };
 }
 
@@ -365,12 +363,7 @@ export function generateRandomHand(rng: RandomSource = Math.random): GeneratedHa
     const built = useChiitoi ? buildRandomChiitoiHand(rng) : buildRandomStandardHand(rng);
     if (!built) continue;
     if (
-      !isTileCountValid(
-        built.concealed,
-        built.melds,
-        built.doraIndicators,
-        built.uraDoraIndicators,
-      )
+      !isTileCountValid(built.concealed, built.melds, built.doraIndicators, built.uraDoraIndicators)
     )
       continue;
 

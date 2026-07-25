@@ -1,6 +1,4 @@
-import { shuffle, type RandomSource } from "./random";
-
-const CHOICE_COUNT = 4;
+import { CHOICE_COUNT, shuffle, type RandomSource } from "./random";
 
 /** 上がり方: 門前ロン=10 / ツモ=2 / 鳴きロン=0（固定選択肢。SPEC.md §4.10）。 */
 export const WIN_METHOD_CHOICES = [0, 2, 10] as const;

@@ -1,95 +1,29 @@
-import type { Payment } from "@/core/scoring/domain/scoreService";
-import { useSettings } from "@/features/settings/presentation/SettingsContext";
 import { ChoiceGrid } from "@/components/ChoiceGrid";
 import { ScoreTableDialog } from "@/components/ScoreTableDialog";
 import { SidebarPageHeader } from "@/components/SidebarPageHeader";
-import { HandDisplay } from "@/components/tiles/HandDisplay";
-import { useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { generateChoices, paymentKey } from "../../application/distractors";
-import { nextProblem } from "../../application/nextProblem";
-import { createSeededRandom, seedFromString } from "../../application/random";
-import { getTodayAnswered, loadStats, recordAnswer } from "../../application/statsStore";
-import { resolveAnswer, type Problem } from "../../domain/problem";
+import { paymentKey } from "@/features/practice/application/distractors";
 import { formatPayment } from "../format";
 import "../quiz.css";
-import { QuizConditions } from "../QuizConditions";
-import { QuizTileHeader } from "../QuizTileHeader";
-import { ResultContent } from "../ResultContent";
-
-/** 解説画面から「問題に戻る」で渡される復習用の遷移 state。 */
-function isReviewState(state: unknown): state is { problem: Problem; review: boolean } {
-  return !!state && typeof state === "object" && "problem" in state && "review" in state;
-}
-
-interface Answered {
-  selected: Payment;
-  isCorrect: boolean;
-}
-
-const SKIP_BTN_CLASS =
-  "inline-flex items-center gap-2 min-h-[48px] px-6 text-[0.95rem] font-bold text-fl-teal-dark bg-fl-cream border-2 border-fl-teal rounded-[var(--fl-r-pill)] cursor-pointer transition-[transform,background,color,box-shadow] duration-[220ms] ease-[var(--fl-bounce)] hover:text-fl-cream hover:bg-fl-teal hover:shadow-[var(--fl-glow-teal)] hover:-translate-y-0.5 active:scale-[0.96] motion-reduce:transition-none motion-reduce:transform-none";
-const SKIP_ARROW_CLASS = "text-[1.05em] leading-none";
+import { ActionButton } from "./components/ActionButton";
+import { MomentSection } from "./components/sections/MomentSection";
+import { QuizSection } from "./components/sections/QuizSection";
+import { ResultSection } from "./components/sections/ResultSection";
+import { useQuizPageHook } from "./hooks/useQuizPageHook";
 
 export function QuizPage() {
-  const location = useLocation();
-  const { settings } = useSettings();
-  // 解説から「問題に戻る」で来た場合は同じ問題を再表示する。復習なので成績は記録しない。
-  const [reviewProblem, setReviewProblem] = useState(() =>
-    isReviewState(location.state) ? location.state.problem : null,
-  );
-  const [problem, setProblem] = useState(() => reviewProblem ?? nextProblem());
-  // 回答結果。null=未回答（選択肢を表示）、非nullなら同画面に結果をインライン表示する。
-  const [answered, setAnswered] = useState<Answered | null>(null);
-  // モメンタムカウンタ（今日の回答数・連続正解数）。出題中・結果時とも常時表示する。
-  const [stats, setStats] = useState(() => loadStats());
-  // 点数早見表ダイアログの開閉。
-  const [showScoreTable, setShowScoreTable] = useState(false);
-  // 切り上げ満貫設定を反映した実効問題。設定ロード完了前はfalse相当（標準ルール）で表示する。
-  const effectiveProblem = useMemo(
-    () => resolveAnswer(problem, settings.roundUpMangan),
-    [problem, settings.roundUpMangan],
-  );
-  // 選択肢のシャッフルは問題IDから決定的に導出する。成績画面を経由して戻ってくるなど、
-  // 同じ問題で画面が再マウントされても4択の内容・並び順が変わらないようにするため
-  // （Math.randomだと再マウントのたびに再シャッフルされてしまう）。
-  const choices = useMemo<Payment[]>(
-    () =>
-      generateChoices(
-        effectiveProblem.answer.payment,
-        {
-          han: effectiveProblem.answer.han,
-          fu: effectiveProblem.answer.fu,
-          isDealer: effectiveProblem.conditions.isDealer,
-          winType: effectiveProblem.hand.winType,
-        },
-        createSeededRandom(seedFromString(effectiveProblem.id)),
-      ),
-    [effectiveProblem],
-  );
-
-  function handleAnswer(selected: Payment) {
-    if (answered) return; // 同一問題の結果表示中は再回答を計上しない
-    const isCorrect = paymentKey(selected) === paymentKey(effectiveProblem.answer.payment);
-    if (!reviewProblem) setStats(recordAnswer(problem, isCorrect)); // 復習（同じ問題の再回答）は二重計上しない
-    setAnswered({ selected, isCorrect });
-  }
-
-  // 次の問題へ進む。未回答時は「次の問題へ」スキップ、回答後は結果からの「次へ」で使う。
-  // いずれも成績には記録しない（記録は handleAnswer で1回のみ行う）。
-  function handleNext() {
-    setAnswered(null);
-    setReviewProblem(null);
-    setProblem(nextProblem());
-  }
-
-  // 回答後、同じ問題を回答・採点状態だけリセットして解き直す。「問題に戻る」と同じ復習扱いにし、
-  // 再回答を成績に二重計上しない（handleAnswer の reviewProblem ガードを流用）。
-  function handleRetry() {
-    if (!answered) return;
-    setReviewProblem(problem);
-    setAnswered(null);
-  }
+  const {
+    problem,
+    setShowScoreTable,
+    stats,
+    effectiveProblem,
+    settings,
+    answered,
+    handleRetry,
+    handleNext,
+    choices,
+    handleAnswer,
+    showScoreTable,
+  } = useQuizPageHook();
 
   return (
     <main className="page-shell quiz-page">
@@ -109,70 +43,18 @@ export function QuizPage() {
           </button>
         }
       />
-      <section className="flex items-baseline gap-[var(--space-5)]" aria-label="今回の記録">
-        <div className="flex items-baseline gap-[var(--space-1)]">
-          <strong
-            data-testid="momentum-today"
-            className="text-[length:var(--fs-score)] font-extrabold font-numeric tabular-nums text-text leading-none"
-          >
-            {getTodayAnswered(stats)}
-          </strong>
-          <span className="text-sm text-text-sub">今日の回答数</span>
-        </div>
-        <div className="flex items-baseline gap-[var(--space-1)]">
-          <strong
-            data-testid="momentum-streak"
-            className="text-base font-bold font-numeric tabular-nums text-text-sub leading-none"
-          >
-            {stats.currentStreak}
-          </strong>
-          <span className="text-sm text-text-sub">連続正解</span>
-        </div>
-      </section>
 
-      <section aria-label="問題" className="flex flex-col gap-1">
-        <QuizConditions
-          conditions={effectiveProblem.conditions}
-          roundUpMangan={settings.roundUpMangan}
-          showRiichi={false}
-        />
+      <MomentSection stats={stats} />
 
-        <section
-          className="flex flex-col gap-[18px] px-4 py-[18px] bg-fl-teal-bg border-2 border-[rgba(43,168,162,0.2)] rounded-[var(--fl-r-lg)] shadow-[var(--fl-glow-teal-soft)] overflow-x-visible animate-[qp-rise_420ms_var(--fl-bounce)_both] motion-reduce:animate-none"
-          aria-label="牌姿"
-        >
-          <QuizTileHeader problem={effectiveProblem} showRiichi />
-          <div className="quiz-hand">
-            <HandDisplay
-              concealed={effectiveProblem.hand.concealed}
-              melds={effectiveProblem.hand.melds}
-              winningTile={effectiveProblem.hand.winningTile}
-            />
-          </div>
-        </section>
-      </section>
+      <QuizSection effectiveProblem={effectiveProblem} settings={settings} />
 
       {answered ? (
-        <>
-          <section className="flex justify-center gap-3">
-            <button type="button" className={SKIP_BTN_CLASS} onClick={handleRetry}>
-              もう一度
-              <span className={SKIP_ARROW_CLASS} aria-hidden="true">
-                ↻
-              </span>
-            </button>
-            <button type="button" className={SKIP_BTN_CLASS} onClick={handleNext}>
-              次の問題へ
-              <span className={SKIP_ARROW_CLASS} aria-hidden="true">
-                →
-              </span>
-            </button>
-          </section>
-
-          <section className="quiz-answer" aria-label="結果">
-            <ResultContent problem={effectiveProblem} isCorrect={answered.isCorrect} collapsible />
-          </section>
-        </>
+        <ResultSection
+          handleRetry={handleRetry}
+          handleNext={handleNext}
+          effectiveProblem={effectiveProblem}
+          isCorrect={answered.isCorrect}
+        />
       ) : (
         <>
           <section className="quiz-answer">
@@ -184,14 +66,9 @@ export function QuizPage() {
             />
           </section>
 
-          <section className="flex justify-center gap-3">
-            <button type="button" className={SKIP_BTN_CLASS} onClick={handleNext}>
-              次の問題へ
-              <span className={SKIP_ARROW_CLASS} aria-hidden="true">
-                →
-              </span>
-            </button>
-          </section>
+          <div className="flex justify-center gap-3">
+            <ActionButton label="次の問題へ" icon="→" onClick={handleNext} />
+          </div>
         </>
       )}
 

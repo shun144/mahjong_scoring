@@ -1,7 +1,7 @@
 import type { Meld } from "@/core/scoring/domain/meld";
-import type { Wind, WinType } from "@/core/scoring/domain/matchContext";
-import { scoreHand, type ScoreHandInput } from "@/core/scoring/domain/scoreHandService";
-import type { ScoreResult } from "@/core/scoring/domain/scoreService";
+import type { Wind, WinType } from "@/core/scoring/domain/condition/types";
+import { scoreHand, type ScoreHandInput } from "@/core/scoring/domain/score/scoreHandService";
+import type { ScoreResult } from "@/core/scoring/domain/score/scoreService";
 import type { Tile } from "@/core/scoring/domain/tile";
 
 export interface ProblemHand {

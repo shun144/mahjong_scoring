@@ -1,6 +1,9 @@
 /** 0以上1未満の乱数を返す関数。テストではシード付きの実装を注入できる。 */
 export type RandomSource = () => number;
 
+/** 4択の選択肢数（distractors.ts / fuElementChoices.ts で共有）。 */
+export const CHOICE_COUNT = 4;
+
 export function pickOne<T>(arr: readonly T[], rng: RandomSource): T {
   return arr[Math.floor(rng() * arr.length)];
 }

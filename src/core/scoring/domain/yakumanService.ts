@@ -1,10 +1,7 @@
+import type { YakuResult } from "./condition/types";
 import type { StandardInterpretation } from "./interpretationService";
-import type { YakuResult } from "./scoreService";
-import { isGreenType, isHonorType, isTerminal, isSangenType, isWindType } from "./tile";
+import { isGreenType, isHonorType, isSangenType, isTerminal, isWindType } from "./tile";
 import { allMemberTypes } from "./yakuService";
-
-// const SANGEN_TYPES = [31, 32, 33]; // 白發中
-// const WIND_TYPES = [27, 28, 29, 30]; // 東南西北
 
 export interface YakumanContext {
   isMenzen: boolean;

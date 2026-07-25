@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { Meld } from "./meld";
-import type { Tile } from "./tile";
+import type { Meld } from "../meld";
+import type { Tile } from "../tile";
 import { scoreHand, type ScoreHandInput } from "./scoreHandService";
-import { parseTileNotation } from "./tile";
+import { parseTileNotation } from "../tile";
 
 function tiles(compact: string): Tile[] {
   const parts = compact.match(/\d+[mpsz]/g) ?? [];

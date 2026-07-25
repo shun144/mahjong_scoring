@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { Problem } from "../domain/problem";
-import type { ScoreRank } from "@/core/scoring/domain/scoreService";
 import { createSeededRandom } from "./random";
 import { createEmptyStats, type StatsState } from "./statsStore";
 import { categoryBias, CHIITOI_BIAS_FU_PARTS, problemWeight, weightedPick } from "./weighting";
+import type { ScoreRank } from "@/core/scoring/domain/score/types";
 
 function fakeProblem(fuType: number, yakuCategories: string[]): Problem {
   return {

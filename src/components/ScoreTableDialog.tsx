@@ -1,25 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { calculatePayment, type ScoreRank } from "@/core/scoring/domain/scoreService";
+import { calculatePayment } from "@/core/scoring/domain/score/scoreService";
 import "./scoreTable.css";
+import { RANK_LABELS } from "@/core/scoring/domain/score/constants";
 
 /**
- * 点数計算 早見表ダイアログ（SPEC.md §5.3 の点数テーブルの反復学習用）。
+ * 点数計算 早見表ダイアログ（点数テーブルの反復学習用）。
  *
  * セルの数値は静的に持たず、エンジンの `calculatePayment` から生成する。
  * こうすることでクイズの採点結果と早見表が食い違わない（誤答提示の防止）。
  * 表示は標準ルール（切り上げ満貫なし）で、添付の一般的な早見表と一致する。
  */
-
-// engineのScoreRank型のみに依存する汎用ラベル。shared/はfeatures/practiceに依存できない
-// （ARCHITECTURE.md A6）ため、features/practice/presentation/format.tsのRANK_LABELSとは
-// 別に保持する（ScoreRankの網羅性チェックで対応漏れは検知される）。
-const RANK_LABELS: Record<ScoreRank, string> = {
-  mangan: "満貫",
-  haneman: "跳満",
-  baiman: "倍満",
-  sanbaiman: "三倍満",
-  yakuman: "役満",
-};
 
 const FU_ROWS: ReadonlyArray<{ fu: number; note?: string }> = [
   { fu: 20, note: "平和ツモ" },
@@ -37,7 +27,6 @@ const HANS: readonly number[] = [1, 2, 3, 4];
 const fmt = (n: number) => n.toLocaleString("en-US");
 
 interface Cell {
-  /** 上段: ロンの点数（満貫以上は区分名）。 */
   main: string;
   /** 下段: ツモの点数（親=各家のオール額／子=「子払い / 親払い」）。 */
   sub: string;

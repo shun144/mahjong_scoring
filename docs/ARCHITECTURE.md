@@ -51,7 +51,7 @@ DDDの層をそのまま明示する（bulletproof-react慣例の`api/components
 - **`domain/`**: そのfeature固有の概念・値オブジェクト・純粋な検証/変換ロジック。他層に依存しない。例: `practice`の`Problem`/`ProblemConditions`/`ProblemTags`、`settings`の`AppSettings`＋`parseSettings`、`articles`の`ArticleMeta`。
 - **`application/`**: `engine/`（コア）と自featureの`domain/`を使って実際のユースケースを実行するオーケストレーション層。永続化・外部I/Oの**抽象（ポート）**もここに定義する。例: `practice`の`generateProblem`/`nextProblem`/`distractors`/`weighting`/`recordAnswer`、`settings`の`SettingsRepository`インターフェース。
 - **`infrastructure/`**: `application/`が定義したポートの具体実装（アダプタ）。localStorage・IndexedDB・JSON読み込み等の外部I/O。例: `practice`の`problemBank.json`読み込み・`statsStore`のlocalStorage実装、`settings`の`IndexedDbSettingsRepository`・合成ルート（`settingsRepository.instance.ts`は自feature内部の配線としてここに置く。A6参照）。
-- **`presentation/`**: Reactコンポーネント・hooks・Context Provider。例: `QuizPage`/`FuQuizPage`/`ResultPage`/`StatsPage`、`SettingsPage`/`SettingsContext`、`ArticleListPage`/`ArticlePage`。
+- **`presentation/`**: Reactコンポーネント・hooks・Context Provider。例: `QuizPage`/`FuQuizPage`/`FuResultPage`/`StatsPage`、`SettingsPage`/`SettingsContext`、`ArticleListPage`/`ArticlePage`。
 
 ### A5.1 補足: なぜ永続化の抽象（ポート）を`domain/`ではなく`application/`に置くか
 
@@ -91,7 +91,7 @@ DDD/オニオンの文献には実は2つの流儀がある。
   - `core/`の直下に集約名（`scoring`）を挟む。「何のcoreか」を`core/`という汎用語だけに頼らず、パス自体で明示するため。
   - `scoring/`配下は`domain/`のみを持つ（`application/`はポートを伴うユースケースが必要になった時にのみ追加する。現状は完全に純粋関数でI/Oを持たないため不要）。`features/*`の内部層（A5）と同じ`domain/`・`application/`という語彙を使い、共有カーネルも1つのfeatureと同じ考え方で読めるようにする。`features/*/domain/`と字面上は同じ`domain`という語を使うが、パス全体（`core/scoring/domain/` vs `features/practice/domain/`）で見れば曖昧にならない。
 - `core/scoring/domain/`内部は、Entity/Value Objectとドメインサービスをファイル名で区別する。
-  - **Entity/VO**: 概念そのものの名前をファイル名にする（suffixなし）。`tile.ts`（`Suit`/`Tile`/`HONOR_NAMES`/`SUIT_LABELS`。Tileの検証・比較・整形・分類といったTile自身の振る舞いも同居させる。旧`tileType.ts`・`tiles.ts`はここに統合）、`meld.ts`（`MeldType`/`Meld`）、`matchContext.ts`（`Wind`/`WinType`/`WIND_TO_HONOR_RANK`）。旧`model.ts`はこの3ファイルに分割する。
+  - **Entity/VO**: 概念そのものの名前をファイル名にする（suffixなし）。`tile.ts`（`Suit`/`Tile`/`HONOR_NAMES`/`SUIT_LABELS`。Tileの検証・比較・整形・分類といったTile自身の振る舞いも同居させる。旧`tileType.ts`・`tiles.ts`はここに統合）、`meld.ts`（`MeldType`/`Meld`）、`match/types.ts`（`Wind`/`WinType`）。旧`model.ts`はこの3ファイルに分割する。
   - **ドメインサービス**: `<概念>Service.ts`と命名する。`decomposeService.ts`・`interpretationService.ts`・`yakuService.ts`・`yakumanService.ts`・`fuService.ts`・`doraService.ts`・`scoreService.ts`・`scoreHandService.ts`（旧`decompose.ts`・`interpretation.ts`・`yaku.ts`・`yakuman.ts`・`fu.ts`・`dora.ts`・`score.ts`・`scoreHand.ts`）。
   - `scoreHandService.ts`は他の8つのドメインサービスを呼び出して採点結果を組み立てるが、feature固有の型もI/Oも一切参照しない。「麻雀の手を採点する」という操作自体が麻雀ドメインの定義そのものであり、特定ユースケース向けの手順ではないため、application層ではなくドメインサービスとして扱う。
   - `*.test.ts`は対応するソースファイルと同名で同居させる（`tile.test.ts`は旧`tileType.test.ts`・`tiles.test.ts`を統合）。`yakuCatalogue.test.ts`は対応する同名ソースファイルを持たない独立した回帰テスト（`scoreHandService`を広範な役の組み合わせで検証する）のため、リネーム対象外とする。

@@ -1,4 +1,6 @@
-import { countAkaDora, countDoraFromIndicators } from "./doraService";
+import type { Wind, WinType, YakuResult } from "../condition/types";
+import { decomposeChiitoitsu, decomposeKokushi } from "../decomposeService";
+import { countAkaDora, countDoraFromIndicators } from "../doraService";
 import {
   calculateFuBreakdown,
   calculateFuElements,
@@ -7,16 +9,17 @@ import {
   type FuBreakdown,
   type FuBreakdownOptions,
   type FuElementBreakdown,
-} from "./fuService";
-import { buildStandardInterpretations, type StandardInterpretation } from "./interpretationService";
-import { decomposeChiitoitsu, decomposeKokushi } from "./decomposeService";
-import type { Meld } from "./meld";
-import type { Tile } from "./tile";
-import type { Wind, WinType } from "./matchContext";
-import { calculatePayment, paymentTotal, type ScoreResult, type YakuResult } from "./scoreService";
-import { isHonorType, isTerminalOrHonor, tileToType, tilesToCounts } from "./tile";
-import { detectStandardYaku } from "./yakuService";
-import { detectYakuman } from "./yakumanService";
+} from "../fuService";
+import {
+  buildStandardInterpretations,
+  type StandardInterpretation,
+} from "../interpretationService";
+import type { Meld } from "../meld";
+import { calculatePayment, paymentTotal, type ScoreResult } from "./scoreService";
+import type { Tile } from "../tile";
+import { isHonorType, isTerminalOrHonor, tilesToCounts, tileToType } from "../tile";
+import { detectStandardYaku } from "../yakuService";
+import { detectYakuman } from "../yakumanService";
 
 export interface ScoreHandInput {
   /** 純手牌（副露を除く。上がり牌を含む）。 */
@@ -24,9 +27,7 @@ export interface ScoreHandInput {
   melds: Meld[];
   winningTile: Tile;
   winType: WinType;
-  /** ドラ表示牌（実際のドラはここから読み替える。SPEC.md §5.4）。 */
   doraIndicators: Tile[];
-  /** 裏ドラ表示牌（リーチ時のみ渡す想定）。 */
   uraDoraIndicators: Tile[];
   seatWind: Wind;
   roundWind: Wind;
@@ -89,10 +90,7 @@ function buildCandidateResult(
  * 0符要素は点数に影響しないため、採点結果(han/fu/payment)は opts の有無で変わらない。
  * opts.roundUpMangan を渡すと切り上げ満貫ルールで採点する（既定false。score.ts参照）。
  */
-export function scoreHand(
-  input: ScoreHandInput,
-  opts: ScoreHandOptions = {},
-): ScoreResult | null {
+export function scoreHand(input: ScoreHandInput, opts: ScoreHandOptions = {}): ScoreResult | null {
   const isMenzen = isMenzenHand(input.melds);
   const concealedCounts = tilesToCounts(input.concealed);
   const winTileType = tileToType(input.winningTile);

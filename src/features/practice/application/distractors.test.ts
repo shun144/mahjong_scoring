@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { FuBreakdown } from "@/core/scoring/domain/fuService";
-import { calculatePayment, type Payment } from "@/core/scoring/domain/scoreService";
+import { calculatePayment } from "@/core/scoring/domain/score/scoreService";
 import { generateChoices, generateFuChoices, type DistractorContext } from "./distractors";
 import { createSeededRandom } from "./random";
+import type { Payment } from "@/core/scoring/domain/condition/types";
 
 function paymentKey(payment: Payment): string {
   if (payment.kind === "ron") return `ron:${payment.total}`;

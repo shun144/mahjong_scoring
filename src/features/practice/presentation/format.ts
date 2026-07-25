@@ -1,39 +1,26 @@
-import type { Wind, WinType } from "@/core/scoring/domain/matchContext";
-import { basicPoints, type Payment, type ScoreRank, type ScoreResult } from "@/core/scoring/domain/scoreService";
+import { type Payment, type WinType } from "@/core/scoring/domain/condition/types";
+import { basicPoints, type ScoreResult } from "@/core/scoring/domain/score/scoreService";
 import type { ConversionQuestion } from "../application/conversion";
-
-export const WIND_LABELS: Record<Wind, string> = {
-  east: "東",
-  south: "南",
-  west: "西",
-  north: "北",
-};
-
-export const WIN_TYPE_LABELS: Record<WinType, string> = {
-  tsumo: "ツモ",
-  ron: "ロン",
-};
-
-export const RANK_LABELS: Record<ScoreRank, string> = {
-  mangan: "満貫",
-  haneman: "跳満",
-  baiman: "倍満",
-  sanbaiman: "三倍満",
-  yakuman: "役満",
-};
+import { WIN_TYPE_LABELS } from "@/core/scoring/domain/condition/constants";
+import { RANK_LABELS } from "@/core/scoring/domain/score/constants";
 
 /**
- * 点数を選択肢/解説用の表示文字列に整形する（SPEC.md §4.2）。
+ * 点数を選択肢/解説用の表示文字列に整形する
  * ロン=単一値／子ツモ=「子X/親Y」／親ツモ=「Xオール」。
  */
 export function formatPayment(payment: Payment): string {
-  if (payment.kind === "ron") return `${payment.total}`;
-  if (payment.kind === "tsumo-oya") return `${payment.each}オール`;
-  return `${payment.nonDealer} / ${payment.dealer}`;
+  switch (payment.kind) {
+    case "ron":
+      return String(payment.total);
+    case "tsumo-oya":
+      return `${payment.each}オール`;
+    default:
+      return `${payment.nonDealer} / ${payment.dealer}`;
+  }
 }
 
 /**
- * 解説画面の計算式を整形する（SPEC.md §4.4 例: 「40符3翻 → 子ロン 5200」）。
+ * 解説画面の計算式を整形する（ 例: 「40符3翻 → 子ロン 5200」）。
  * 満貫以上は符が結果に影響しないため、符ではなく区分名を示す。
  */
 export function formatCalculationLine(
@@ -44,11 +31,13 @@ export function formatCalculationLine(
   const scoreBasis = answer.rank
     ? `${answer.han}翻 ${RANK_LABELS[answer.rank]}`
     : `${answer.fu}符${answer.han}翻`;
+
   const dealerLabel = isDealer ? "親" : "子";
+
   return `${scoreBasis} (${dealerLabel}${WIN_TYPE_LABELS[winType]}) → ${formatPayment(answer.payment)}`;
 }
 
-/** 点数換算モードの計算式の構成要素（SPEC.md §4.9）。 */
+/** 点数換算モードの計算式の構成要素 */
 export interface ConversionFormulaParts {
   fu: number;
   han: number;
@@ -62,7 +51,7 @@ export interface ConversionFormulaParts {
   paymentText: string;
 }
 
-/** 基本点（符 × 2^(2+翻)）に掛かる、丸め前の理論倍率。 */
+/** 基本点（符 × 2^(2+翻)）に掛かる、丸め前の理論倍率*/
 function conversionMultiplier(winType: WinType, isDealer: boolean): number {
   if (winType === "ron") return isDealer ? 6 : 4;
   return 2; // tsumo-oya（tsumo-koは子の払いを基準にするため×1相当。呼び出し側で分岐）

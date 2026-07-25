@@ -65,7 +65,7 @@ Tailwind導入用CSS（`src/styles/tailwind.css`）の先頭で `@layer theme, b
 
 見出しの下線など、**下辺だけ**を点線にしたい場合は `border-dashed` を使わず、`[border-bottom-style:dashed]`（Tailwindの任意プロパティ記法）を使う。
 
-**理由**: `border-dashed` はTailwindの標準ユーティリティで、`border-style`（四辺すべて）に作用する。片側だけに`border-style`を適用するネイティブユーティリティ（`border-b-dashed`相当）はTailwindに存在しない。`border-b-2`（幅）と`border-dashed`（四辺の様式）を組み合わせると、他の辺の幅が0のときは見た目上偶然問題が出ないが、正確ではない。`[border-bottom-style:dashed]`で対象の辺だけを明示する。参照実装: `src/components/ResultContent.tsx` の `border-b-2 border-[rgba(43,168,162,0.22)] [border-bottom-style:dashed]`。
+**理由**: `border-dashed` はTailwindの標準ユーティリティで、`border-style`（四辺すべて）に作用する。片側だけに`border-style`を適用するネイティブユーティリティ（`border-b-dashed`相当）はTailwindに存在しない。`border-b-2`（幅）と`border-dashed`（四辺の様式）を組み合わせると、他の辺の幅が0のときは見た目上偶然問題が出ないが、正確ではない。`[border-bottom-style:dashed]`で対象の辺だけを明示する。参照実装: `src/features/practice/presentation/QuizPage/components/sections/QuizResultContent.tsx` の `border-b-2 border-[rgba(43,168,162,0.22)] [border-bottom-style:dashed]`。
 
 ---
 

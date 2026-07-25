@@ -2,14 +2,13 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import type { Problem } from "../../domain/problem";
-import { scoreHand } from "@/core/scoring/domain/scoreHandService";
+import { scoreHand } from "@/core/scoring/domain/score/scoreHandService";
 import { parseTileNotation } from "@/core/scoring/domain/tile";
 import { DEFAULT_SETTINGS, type AppSettings } from "@/features/settings/domain/appSettings";
 import { SettingsProvider } from "@/features/settings/presentation/SettingsContext";
 import type { SettingsRepository } from "@/features/settings/application/settingsRepository";
 import { loadStats } from "../../application/statsStore";
 import { QuizPage } from "./QuizPage";
-import { ResultPage } from "../ResultPage/ResultPage";
 import { StatsPage } from "../StatsPage/StatsPage";
 
 function tiles(compact: string) {
@@ -89,7 +88,6 @@ function renderQuiz(repository: SettingsRepository = createInMemoryRepository())
       <SettingsProvider repository={repository}>
         <Routes>
           <Route path="/quiz" element={<QuizPage />} />
-          <Route path="/result" element={<ResultPage />} />
           <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </SettingsProvider>
@@ -103,7 +101,6 @@ function renderQuizWithProblem(problem: Problem, repository: SettingsRepository)
       <SettingsProvider repository={repository}>
         <Routes>
           <Route path="/quiz" element={<QuizPage />} />
-          <Route path="/result" element={<ResultPage />} />
         </Routes>
       </SettingsProvider>
     </MemoryRouter>,
@@ -216,7 +213,7 @@ describe("QuizPage", () => {
     const toggle = screen.getByRole("button", { name: /解説はこちら/ });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     // 「内訳」見出し行（正誤・答え）は畳んでいても常に表示される。
-    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(container.querySelector('[data-testid="result-breakdown"]')).toBeInTheDocument();
     expect(screen.queryByTestId("result-breakdown-body")).not.toBeInTheDocument();
     expect(screen.queryByText("平和")).not.toBeInTheDocument();
 
@@ -247,7 +244,7 @@ describe("QuizPage", () => {
     // ユーザーは手動で畳める（畳んでも「内訳」見出し行の正誤・答えは表示されたまま）
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute("aria-expanded", "false");
-    expect(container.querySelector(".result-breakdown")).toBeInTheDocument();
+    expect(container.querySelector('[data-testid="result-breakdown"]')).toBeInTheDocument();
     expect(screen.queryByTestId("result-breakdown-body")).not.toBeInTheDocument();
     expect(screen.getByText("✕ 不正解")).toBeInTheDocument();
   });

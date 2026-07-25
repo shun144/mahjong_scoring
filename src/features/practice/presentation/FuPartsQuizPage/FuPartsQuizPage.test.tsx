@@ -106,9 +106,7 @@ describe("FuPartsQuizPage", () => {
     const { container } = renderFuParts();
     selectFirstChoiceInEachRow();
     fireEvent.click(screen.getByRole("button", { name: "採点する" }));
-    expect(container.querySelector(".fu-parts-summary")).toHaveClass(
-      "fu-parts-summary--revealed",
-    );
+    expect(container.querySelector(".fu-parts-summary")).toHaveClass("fu-parts-summary--revealed");
 
     fireEvent.click(screen.getByRole("button", { name: "次へ→" }));
     const summary = container.querySelector(".fu-parts-summary");

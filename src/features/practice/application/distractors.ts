@@ -1,7 +1,7 @@
 import type { FuBreakdown } from "@/core/scoring/domain/fuService";
-import type { WinType } from "@/core/scoring/domain/matchContext";
-import { calculatePayment, type Payment } from "@/core/scoring/domain/scoreService";
-import { shuffle, type RandomSource } from "./random";
+import type { Payment, WinType } from "@/core/scoring/domain/condition/types";
+import { calculatePayment } from "@/core/scoring/domain/score/scoreService";
+import { CHOICE_COUNT, shuffle, type RandomSource } from "./random";
 
 export interface DistractorContext {
   han: number;
@@ -75,8 +75,6 @@ function buildCandidatePool(ctx: DistractorContext, correctKind: Payment["kind"]
 
   return pool;
 }
-
-const CHOICE_COUNT = 4;
 
 /** 誤答検証・補完に使う探索範囲（1〜13翻＝数え役満まで）。 */
 const DISTRACTOR_HAN_RANGE = Array.from({ length: 13 }, (_, i) => i + 1);
@@ -159,8 +157,11 @@ export function generateChoices(
   return shuffle([correctPayment, ...shuffledDistractors], rng);
 }
 
-/** 符計算モードで妥当な符の値（誤答の補完に使う）。 */
-const FU_POOL = [20, 25, 30, 40, 50, 60, 70];
+/**
+ * 標準ルールで実在する符のブラケット。符計算モードの誤答補完（本ファイル）と、
+ * 点数換算モードの出題セル定義（conversion.ts の CANDIDATE_FU_HAN）で共有する。
+ */
+export const FU_POOL = [20, 25, 30, 40, 50, 60, 70] as const;
 
 /**
  * 符計算モードの誤答候補を、正解の符内訳から生成する（SPEC.md §7）。

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { problemToScoreHandInput, type Problem } from "../../domain/problem";
-import { scoreHand } from "@/core/scoring/domain/scoreHandService";
+import { scoreHand } from "@/core/scoring/domain/score/scoreHandService";
 import { generateFuChoices } from "../../application/distractors";
 import { createSeededRandom, seedFromString } from "../../application/random";
 import { nextProblem } from "../../application/nextProblem";
@@ -58,7 +58,9 @@ export function FuQuizPage() {
   // 回答せずに次の問題へスキップする。成績には一切記録しない（回答数にもカウントしない）。
   function handleSkip() {
     setReviewProblem(null);
-    setProblem(nextProblem(Math.random, { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_QUIZ }));
+    setProblem(
+      nextProblem(Math.random, { excludeMangan: true, chiitoiBias: CHIITOI_BIAS_FU_QUIZ }),
+    );
   }
 
   return (

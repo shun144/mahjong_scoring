@@ -1,6 +1,6 @@
 import type { HandSet, StandardInterpretation, WaitKind } from "./interpretationService";
-import type { Wind, WinType } from "./matchContext";
-import { isTerminalOrHonor, windToHonorType } from "./tile";
+import type { Wind, WinType } from "./condition/types";
+import { isSangenType, isTerminalOrHonor, windToHonorType } from "./tile";
 
 export interface FuContext {
   isMenzen: boolean;
@@ -45,11 +45,9 @@ function meldFuLabel(set: HandSet): string {
   return `${base}(${grade})`;
 }
 
-const SANGEN_TYPES = [31, 32, 33]; // 白發中
-
 /** 雀頭が役牌（三元牌／自風／場風）かどうか。 */
 export function isYakuhaiPairType(tileType: number, ctx: FuContext): boolean {
-  if (SANGEN_TYPES.includes(tileType)) return true;
+  if (isSangenType(tileType)) return true;
   if (tileType === windToHonorType(ctx.seatWind)) return true;
   if (tileType === windToHonorType(ctx.roundWind)) return true;
   return false;

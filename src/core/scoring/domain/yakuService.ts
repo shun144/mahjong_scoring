@@ -1,8 +1,17 @@
+/**
+ * 標準形（4面子1雀頭）の役判定サービス。役満は対象外(別扱い)。
+ */
 import type { HandSet, StandardInterpretation } from "./interpretationService";
-import type { Wind, WinType } from "./matchContext";
-import { HONOR_NAMES, isHonorType, isTerminalOrHonor, typeToTile } from "./tile";
+import type { Wind, WinType, YakuResult } from "./condition/types";
+import {
+  HONOR_NAMES,
+  isHonorType,
+  isTerminalOrHonor,
+  typeToTile,
+  isSangenType,
+  windToType,
+} from "./tile";
 import { isPinfuShape } from "./fuService";
-import type { YakuResult } from "./scoreService";
 
 export interface YakuContext {
   isMenzen: boolean;
@@ -10,12 +19,6 @@ export interface YakuContext {
   riichi: boolean;
   seatWind: Wind;
   roundWind: Wind;
-}
-
-const SANGEN_TYPES = [31, 32, 33]; // 白發中
-
-function windToType(wind: Wind): number {
-  return { east: 27, south: 28, west: 29, north: 30 }[wind];
 }
 
 export function setMemberTypes(set: HandSet): number[] {
@@ -92,7 +95,7 @@ export function detectStandardYaku(interp: StandardInterpretation, ctx: YakuCont
     const honorName = isHonorType(set.tileType)
       ? HONOR_NAMES[typeToTile(set.tileType).rank].label
       : "";
-    if (SANGEN_TYPES.includes(set.tileType)) {
+    if (isSangenType(set.tileType)) {
       results.push({ name: `役牌(${honorName})`, han: 1 });
     }
     if (set.tileType === windToType(ctx.seatWind)) {
@@ -179,9 +182,9 @@ export function detectStandardYaku(interp: StandardInterpretation, ctx: YakuCont
 
   // 小三元
   const dragonTripletCount = interp.sets.filter(
-    (s) => s.kind === "triplet" && SANGEN_TYPES.includes(s.tileType),
+    (s) => s.kind === "triplet" && isSangenType(s.tileType),
   ).length;
-  if (dragonTripletCount === 2 && SANGEN_TYPES.includes(interp.pair.tileType)) {
+  if (dragonTripletCount === 2 && isSangenType(interp.pair.tileType)) {
     results.push({ name: "小三元", han: 2 });
   }
 

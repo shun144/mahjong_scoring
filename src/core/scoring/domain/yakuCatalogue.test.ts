@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Meld } from "./meld";
 import type { Tile } from "./tile";
-import { scoreHand, type ScoreHandInput } from "./scoreHandService";
+import { scoreHand, type ScoreHandInput } from "./score/scoreHandService";
 import { parseTileNotation } from "./tile";
 
 function tiles(compact: string): Tile[] {

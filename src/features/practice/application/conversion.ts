@@ -1,6 +1,6 @@
-import type { WinType } from "@/core/scoring/domain/matchContext";
-import { calculatePayment, determineRank, type Payment } from "@/core/scoring/domain/scoreService";
-import { generateChoices } from "./distractors";
+import type { Payment, WinType } from "@/core/scoring/domain/condition/types";
+import { calculatePayment, determineRank } from "@/core/scoring/domain/score/scoreService";
+import { FU_POOL, generateChoices } from "./distractors";
 import { chance, pickOne, type RandomSource } from "./random";
 
 /** 点数換算モードの1セル（符・翻・ツモ/ロン）。 */
@@ -11,24 +11,30 @@ export interface ConversionCell {
 }
 
 /**
- * 候補セルの元データ（実在性制約のみを反映。SPEC.md §4.9）。
+ * FU_POOL（distractors.ts。標準ルールで実在する符のブラケット）の各符に対応する
+ * 候補翻・和了形式（実在性制約のみを反映。SPEC.md §4.9）。
  * 標準ルールで既に満貫となるセル（40符以上×4翻・70符×3翻以上）は候補から除外済み。
  * `30符4翻`・`60符3翻`（基本点1920）は標準ルールでは満貫未満のため候補に含め、
  * 切り上げ満貫設定の反映は `eligibleCells` で動的に行う。
  */
+const CELL_RULES: Record<
+  (typeof FU_POOL)[number],
+  { hanList: readonly number[]; winTypes: readonly WinType[] }
+> = {
+  20: { hanList: [2, 3, 4], winTypes: ["tsumo"] },
+  25: { hanList: [2, 3, 4], winTypes: ["ron", "tsumo"] },
+  30: { hanList: [1, 2, 3, 4], winTypes: ["ron", "tsumo"] },
+  40: { hanList: [1, 2, 3], winTypes: ["ron", "tsumo"] },
+  50: { hanList: [1, 2, 3], winTypes: ["ron", "tsumo"] },
+  60: { hanList: [1, 2, 3], winTypes: ["ron", "tsumo"] },
+  70: { hanList: [1, 2], winTypes: ["ron", "tsumo"] },
+};
+
 const CANDIDATE_FU_HAN: readonly {
   fu: number;
   hanList: readonly number[];
   winTypes: readonly WinType[];
-}[] = [
-  { fu: 20, hanList: [2, 3, 4], winTypes: ["tsumo"] },
-  { fu: 25, hanList: [2, 3, 4], winTypes: ["ron", "tsumo"] },
-  { fu: 30, hanList: [1, 2, 3, 4], winTypes: ["ron", "tsumo"] },
-  { fu: 40, hanList: [1, 2, 3], winTypes: ["ron", "tsumo"] },
-  { fu: 50, hanList: [1, 2, 3], winTypes: ["ron", "tsumo"] },
-  { fu: 60, hanList: [1, 2, 3], winTypes: ["ron", "tsumo"] },
-  { fu: 70, hanList: [1, 2], winTypes: ["ron", "tsumo"] },
-];
+}[] = FU_POOL.map((fu) => ({ fu, ...CELL_RULES[fu] }));
 
 function allCandidateCells(): ConversionCell[] {
   const cells: ConversionCell[] = [];
