@@ -26,11 +26,10 @@ export function QuizPage() {
   } = useQuizPageHook();
 
   return (
-    <main className="page-shell quiz-page">
+    <main className="quiz-page max-w-[40rem] mx-auto flex flex-col gap-5 p-4 sm:p-6 ">
       <SidebarPageHeader
         title="点数計算"
         currentMode="score"
-        backTo="/quiz"
         problem={problem}
         headerAction={
           <button

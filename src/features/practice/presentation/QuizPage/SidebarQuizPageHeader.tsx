@@ -1,10 +1,9 @@
+import { MODES, type ModeId } from "@/components/modes";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { ModeId } from "./modes";
-import { MODES } from "./modes";
-import { HamburgerButton } from "./HamburgerButton";
 import { Sidebar } from "./Sidebar";
+import { HamburgerButton } from "@/components/HamburgerButton";
 
 interface Props {
   title: string;
@@ -26,7 +25,7 @@ interface Props {
  * ハンバーガー＋右ドロワーのサイドバーに「ホーム」「他のモードで練習」「成績」を集約したヘッダー。
  * 点数計算モード系の画面で使う（/quiz・/result・/fu/quiz・/fu/result・/fu/parts・/convert）。
  */
-export function SidebarPageHeader({
+export function SidebarQuizPageHeader({
   title,
   currentMode,
   backTo,
