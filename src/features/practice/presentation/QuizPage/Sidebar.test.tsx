@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it } from "vitest";
-import { HamburgerButton } from "./HamburgerButton";
 import { Sidebar } from "./Sidebar";
+import { HamburgerButton } from "@/components/HamburgerButton";
 
 function Harness() {
   const [open, setOpen] = useState(false);
