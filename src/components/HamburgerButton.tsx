@@ -3,7 +3,8 @@ interface Props {
   onClick: () => void;
 }
 
-//TODO:da
+//TODO: onClickではなくHTMLButton特有のプロパティに切り替える
+// 参考：https://zenn.dev/uzu_tech/articles/common-component-anti-pattern
 export function HamburgerButton({ open, onClick }: Props) {
   return (
     <button
