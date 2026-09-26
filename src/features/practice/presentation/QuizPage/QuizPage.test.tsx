@@ -112,7 +112,7 @@ describe("QuizPage", () => {
     const { container } = renderQuiz();
     expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
     expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
-    expect(screen.getByRole("button", { name: "次の問題へ" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "次へ" })).toBeInTheDocument();
   });
 
   it("shows the result inline on the same screen when a choice is clicked (no navigation)", () => {
@@ -125,11 +125,11 @@ describe("QuizPage", () => {
     expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "解説" })).not.toBeInTheDocument();
     expect(screen.getByText(/答え:/)).toBeInTheDocument();
-    // 回答後は選択肢が消え、「次の問題へ」ボタンのみが残る。
+    // 回答後は選択肢が消え、「次へ」ボタンのみが残る。
     expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(0);
   });
 
-  it("回答を記録し、「次の問題へ」を押すと遷移せずに新しい問題が出る", () => {
+  it("回答を記録し、「次へ」を押すと遷移せずに新しい問題が出る", () => {
     localStorage.clear();
     const { container } = renderQuiz();
     const before = loadStats().totalAnswered;
@@ -137,7 +137,7 @@ describe("QuizPage", () => {
     fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
     expect(loadStats().totalAnswered).toBe(before + 1);
 
-    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
 
     expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
     expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
@@ -161,7 +161,7 @@ describe("QuizPage", () => {
     renderQuiz();
     const before = loadStats().totalAnswered;
 
-    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
 
     expect(screen.getByRole("heading", { name: "点数計算" })).toBeInTheDocument();
     expect(loadStats().totalAnswered).toBe(before);
@@ -170,7 +170,7 @@ describe("QuizPage", () => {
   it("skipping loads a new problem (choice set is re-generated)", () => {
     const { container } = renderQuiz();
     // スキップを繰り返しても常に4択+スキップボタンの構成が保たれる（新しい問題に切り替わる）。
-    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
     expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
   });
 
@@ -290,7 +290,7 @@ describe("QuizPage", () => {
     renderQuiz();
     const choicesBefore = screen
       .getAllByRole("button")
-      .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
+      .filter((b) => b !== screen.getByRole("button", { name: "次へ" }))
       .filter((b) => b.getAttribute("aria-label") !== "メニューを開く")
       .map((b) => b.textContent);
 
@@ -300,7 +300,7 @@ describe("QuizPage", () => {
 
     const choicesAfter = screen
       .getAllByRole("button")
-      .filter((b) => b !== screen.getByRole("button", { name: "次の問題へ" }))
+      .filter((b) => b !== screen.getByRole("button", { name: "次へ" }))
       .filter((b) => b.getAttribute("aria-label") !== "メニューを開く")
       .map((b) => b.textContent);
     expect(choicesAfter).toEqual(choicesBefore);
@@ -360,7 +360,7 @@ describe("QuizPage", () => {
     expect(loadStats().totalAnswered).toBe(before + 1); // もう一度後の再回答は計上しない
   });
 
-  it("「もう一度」後に「次の問題へ」を押すと、以降の新しい問題は通常どおり成績に記録される", () => {
+  it("「もう一度」後に「次へ」を押すと、以降の新しい問題は通常どおり成績に記録される", () => {
     localStorage.clear();
     const { container } = renderQuiz();
     const before = loadStats().totalAnswered;
@@ -368,12 +368,12 @@ describe("QuizPage", () => {
     fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
     fireEvent.click(screen.getByRole("button", { name: /もう一度/ }));
     fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
-    fireEvent.click(screen.getByRole("button", { name: "次の問題へ" }));
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
 
     expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
     fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
 
-    expect(loadStats().totalAnswered).toBe(before + 2); // 元の1回 + 「次の問題へ」後の新しい問題1回
+    expect(loadStats().totalAnswered).toBe(before + 2); // 元の1回 + 「次へ」後の新しい問題1回
   });
 
   it("モメンタムカウンタ（今日の回答数・連続正解）が出題中・結果時ともに表示される", () => {
@@ -400,6 +400,84 @@ describe("QuizPage", () => {
     const isCorrect = !!screen.queryByText("○ 正解");
     expect(screen.getByTestId("momentum-today").textContent).toBe("1"); // 正誤によらず加算
     expect(screen.getByTestId("momentum-streak").textContent).toBe(isCorrect ? "1" : "0");
+  });
+
+  it("セッション最初の問題では「戻る」ボタンが表示されない", () => {
+    renderQuiz();
+    expect(screen.queryByRole("button", { name: /戻る/ })).not.toBeInTheDocument();
+  });
+
+  it("「次へ」を押すと「戻る」ボタンが表示され、押すと直前の問題が未回答状態で再表示される", async () => {
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    renderQuizWithProblem(boundaryProblem(), repo);
+    await waitFor(() => expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument());
+    expect(screen.queryByRole("button", { name: /戻る/ })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
+    expect(screen.getByRole("button", { name: /戻る/ })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /戻る/ }));
+    expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument();
+  });
+
+  it("戻った問題への再回答は成績に記録しない", async () => {
+    localStorage.clear();
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    renderQuizWithProblem(boundaryProblem(), repo);
+    await waitFor(() => expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument());
+    const before = loadStats().totalAnswered;
+
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
+    fireEvent.click(screen.getByRole("button", { name: /戻る/ }));
+    fireEvent.click(screen.getByRole("button", { name: "7700" }));
+
+    expect(loadStats().totalAnswered).toBe(before);
+  });
+
+  it("複数回「次へ」を押した後、複数回「戻る」でさかのぼれ、最初の問題まで戻ると「戻る」が消える", async () => {
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    renderQuizWithProblem(boundaryProblem(), repo);
+    await waitFor(() => expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument());
+
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
+    fireEvent.click(screen.getByRole("button", { name: "次へ" }));
+
+    fireEvent.click(screen.getByRole("button", { name: /戻る/ }));
+    expect(screen.getByRole("button", { name: /戻る/ })).toBeInTheDocument(); // まだ履歴が1件残っている
+
+    fireEvent.click(screen.getByRole("button", { name: /戻る/ }));
+    expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /戻る/ })).not.toBeInTheDocument();
+  });
+
+  it("「戻る」で表示した問題から「次へ」を押しても、戻る前に見ていた問題には進まない", async () => {
+    const repo = createInMemoryRepository({ schemaVersion: 1, roundUpMangan: false });
+    const { container } = renderQuizWithProblem(boundaryProblem(), repo);
+    await waitFor(() => expect(screen.getByRole("button", { name: "7700" })).toBeInTheDocument());
+
+    fireEvent.click(screen.getByRole("button", { name: "次へ" })); // -> P1（履歴: [P0]）
+    const p1Choices = Array.from(container.querySelectorAll(".quiz-choice-btn")).map(
+      (b) => b.textContent,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /戻る/ })); // -> P0再表示（履歴: []）
+    fireEvent.click(screen.getByRole("button", { name: "次へ" })); // -> 新規ランダム問題（P2。履歴: [P0]）
+
+    const p2Choices = Array.from(container.querySelectorAll(".quiz-choice-btn")).map(
+      (b) => b.textContent,
+    );
+    expect(p2Choices).not.toEqual(p1Choices); // P1へのredoではなく別の新規問題
+    expect(screen.getByRole("button", { name: /戻る/ })).toBeInTheDocument(); // 履歴: [P0] が積まれている
+  });
+
+  it("回答後の画面でも、履歴があれば「戻る」ボタンが「もう一度」と並んで表示される", () => {
+    const { container } = renderQuiz();
+    fireEvent.click(screen.getByRole("button", { name: "次へ" })); // 履歴を1件作る
+
+    fireEvent.click(container.querySelectorAll(".quiz-choice-btn")[0]);
+
+    expect(screen.getByRole("button", { name: /戻る/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /もう一度/ })).toBeInTheDocument();
   });
 
   it("点数早見表ボタンはヘッダー（ハンバーガーの隣）にある", () => {

@@ -20,6 +20,8 @@ export function QuizPage() {
     answered,
     handleRetry,
     handleNext,
+    handleBack,
+    canGoBack,
     choices,
     handleAnswer,
     showScoreTable,
@@ -51,6 +53,8 @@ export function QuizPage() {
         <ResultSection
           handleRetry={handleRetry}
           handleNext={handleNext}
+          handleBack={handleBack}
+          canGoBack={canGoBack}
           effectiveProblem={effectiveProblem}
           isCorrect={answered.isCorrect}
         />
@@ -66,7 +70,8 @@ export function QuizPage() {
           </section>
 
           <div className="flex justify-center gap-3">
-            <ActionButton label="次の問題へ" icon="→" onClick={handleNext} />
+            {canGoBack && <ActionButton label="戻る" icon="←" onClick={handleBack} />}
+            <ActionButton label="次へ" icon="→" onClick={handleNext} />
           </div>
         </>
       )}
