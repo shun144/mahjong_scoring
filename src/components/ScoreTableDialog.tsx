@@ -169,6 +169,27 @@ function ScoreTableBlock({ rows, rankRows }: { rows: TableRow[]; rankRows: RankR
   );
 }
 
+/**
+ * 点数早見表のグリッドアイコン（角丸rect×4の2x2）。トリガーボタンとダイアログ見出しで共用する。
+ * 色は currentColor（親の color）を使い、サイズは className で指定する。
+ */
+export function ScoreTableIcon({ className = "st-icon" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="3" y="3" width="8" height="8" rx="2" />
+      <rect x="13" y="3" width="8" height="8" rx="2" />
+      <rect x="3" y="13" width="8" height="8" rx="2" />
+      <rect x="13" y="13" width="8" height="8" rx="2" />
+    </svg>
+  );
+}
+
 type Side = "dealer" | "nonDealer";
 
 /** IntersectionObserver でパネルの可視判定に使う閾値。半分を超えて見えている側をアクティブとする。 */
@@ -270,39 +291,45 @@ export function ScoreTableDialog({ open, onClose }: { open: boolean; onClose: ()
     >
       <div className="st-inner">
         <header className="st-header">
-          <div className="st-header-left">
-            <h2 id="score-table-title">点数早見表</h2>
-            <div className="st-toggle" role="group" aria-label="親子切替">
-              <button
-                type="button"
-                className={
-                  side === "dealer" ? "st-toggle-btn st-toggle-btn--active" : "st-toggle-btn"
-                }
-                aria-pressed={side === "dealer"}
-                onClick={() => handleToggle("dealer")}
-              >
-                親
-              </button>
-              <button
-                type="button"
-                className={
-                  side === "nonDealer" ? "st-toggle-btn st-toggle-btn--active" : "st-toggle-btn"
-                }
-                aria-pressed={side === "nonDealer"}
-                onClick={() => handleToggle("nonDealer")}
-              >
-                子
-              </button>
+          <div className="st-header-top">
+            <div className="st-title">
+              <span className="st-title-icon" aria-hidden="true">
+                <ScoreTableIcon />
+              </span>
+              <h2 id="score-table-title">点数早見表</h2>
             </div>
+            <button
+              type="button"
+              className="st-close"
+              aria-label="閉じる"
+              onClick={() => ref.current?.close()}
+            >
+              ×
+            </button>
           </div>
-          <button
-            type="button"
-            className="st-close"
-            aria-label="閉じる"
-            onClick={() => ref.current?.close()}
-          >
-            ×
-          </button>
+          <div className="st-segment" role="group" aria-label="親子切替" data-side={side}>
+            <span className="st-segment-indicator" aria-hidden="true" />
+            <button
+              type="button"
+              className={
+                side === "dealer" ? "st-segment-btn st-segment-btn--active" : "st-segment-btn"
+              }
+              aria-pressed={side === "dealer"}
+              onClick={() => handleToggle("dealer")}
+            >
+              親
+            </button>
+            <button
+              type="button"
+              className={
+                side === "nonDealer" ? "st-segment-btn st-segment-btn--active" : "st-segment-btn"
+              }
+              aria-pressed={side === "nonDealer"}
+              onClick={() => handleToggle("nonDealer")}
+            >
+              子
+            </button>
+          </div>
         </header>
         <div
           className="st-carousel"

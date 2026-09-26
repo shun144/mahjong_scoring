@@ -42,6 +42,12 @@
   --color-success: var(--color-success-text);
   --color-danger: var(--color-danger-text);
 
+  /* 表の罫線（点数早見表）。役割で濃淡を分ける：外枠・見出し下線・見出し列右線・区分線は濃、
+     セル内部の格子線は中間。既存 --color-border-strong は --color-border のエイリアスとして
+     他画面が参照し得るため、別名で新設する。 */
+  --color-table-rule-strong: color-mix(in srgb, var(--color-text-sub) 68%, #fff); /* 旧 #9a9a9a 相当 */
+  --color-table-rule: color-mix(in srgb, var(--color-text-sub) 32%, #fff); /* 旧 #cfcfcf 相当 */
+
   /* Flip7配色（quiz.css の .quiz-page ローカル定義と同値。QuizPage.tsx移行分が使う）。 */
   --color-fl-teal: #2ba8a2;
   --color-fl-teal-light: #3cc4bd;

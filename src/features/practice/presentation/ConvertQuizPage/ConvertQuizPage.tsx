@@ -1,5 +1,5 @@
 import { ChoiceGrid } from "@/components/ChoiceGrid";
-import { ScoreTableDialog } from "@/components/ScoreTableDialog";
+import { ScoreTableDialog, ScoreTableIcon } from "@/components/ScoreTableDialog";
 import { SidebarPageHeader } from "@/components/SidebarPageHeader";
 import { WIN_TYPE_LABELS } from "@/core/scoring/domain/condition/constants";
 import type { Payment } from "@/core/scoring/domain/condition/types";
@@ -60,7 +60,7 @@ export function ConvertQuizPage() {
             onClick={() => setShowScoreTable(true)}
             aria-label="点数早見表を開く"
           >
-            <span aria-hidden="true">📋</span>
+            <ScoreTableIcon />
           </button>
         }
       />
