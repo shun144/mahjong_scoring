@@ -1,5 +1,5 @@
 import { ChoiceGrid } from "@/components/ChoiceGrid";
-import { ScoreTableDialog } from "@/components/ScoreTableDialog";
+import { ScoreTableDialog, ScoreTableIcon } from "@/components/ScoreTableDialog";
 import { SidebarPageHeader } from "@/components/SidebarPageHeader";
 import { paymentKey } from "@/features/practice/application/distractors";
 import { formatPayment } from "../format";
@@ -34,11 +34,11 @@ export function QuizPage() {
         headerAction={
           <button
             type="button"
-            className="inline-flex items-center justify-center w-10 h-10 p-0 text-[1.2rem] leading-none border-0 rounded-full bg-transparent text-fl-teal-dark cursor-pointer shrink-0 transition-[background] duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-[rgba(43,168,162,0.14)]"
+            className="inline-flex items-center justify-center w-[var(--size-icon-btn)] h-[var(--size-icon-btn)] p-0 border-0 rounded-full bg-fl-teal-bg text-fl-teal-dark cursor-pointer shrink-0 transition-[background] duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none hover:bg-[color-mix(in_srgb,var(--color-fl-teal)_20%,var(--color-fl-teal-bg))]"
             onClick={() => setShowScoreTable(true)}
             aria-label="点数早見表を開く"
           >
-            <span aria-hidden="true">📋</span>
+            <ScoreTableIcon />
           </button>
         }
       />

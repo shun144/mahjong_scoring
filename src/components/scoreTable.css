@@ -1,5 +1,22 @@
 /* 点数早見表ダイアログ（ScoreTableDialog）。ネイティブ <dialog> を利用。 */
 
+/* Flip7 のモーション・グロー（quiz.css の .quiz-page ローカル定義と同値）。
+   STYLE-TRANSFER.md R3 に従い @theme へは昇格させず、このコンポーネントのスコープに置く。
+   配色は @theme の --color-fl-* を直接参照する。 */
+.score-table-dialog,
+.qp-table-header-btn {
+  --fl-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fl-dur: 220ms;
+  --fl-glow-teal-soft: 0 4px 14px rgba(43, 168, 162, 0.18);
+}
+
+/* 早見表のグリッドアイコン（ScoreTableIcon）。色は currentColor で親から受け取る。 */
+.st-icon {
+  display: block;
+  width: var(--size-icon);
+  height: var(--size-icon);
+}
+
 .score-table-dialog {
   width: min(760px, 94vw);
   max-height: 90svh;
@@ -22,41 +39,114 @@
   max-height: 90svh;
 }
 
-/* タイトル帯：本文スクロールに追従して常に上部に残す。 */
+/* タイトル帯（2段）：本文スクロールに追従して常に上部に残す。
+   1段目=アイコン＋タイトル／閉じる、2段目=親子セグメントコントロール。 */
 .st-header {
   position: sticky;
   top: 0;
   z-index: 1;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
   background: var(--color-surface-2);
 }
 
-.st-header-left {
+.st-header-top {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-3);
+}
+
+.st-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   min-width: 0;
 }
 
-/* 親/子切替（セグメントコントロール）。docs/DESIGN.md の Flip7 デザイン
-   （ティール基調・ピル型・弾むトランジション・グロー影）に合わせる。
-   出題画面（quiz.css）と同じトーンで、ダイアログ単体でも見た目が完結するよう
-   --fl-* トークンには依存せず値を直書きする。 */
-.st-toggle {
+/* タイトル横のアイコンチップ（トリガーボタンと同じ teal チップを小型化したもの）。 */
+.st-title-icon {
   display: inline-flex;
-  gap: 2px;
-  padding: 3px;
-  border: 2px solid #2ba8a2;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size-icon-chip);
+  height: var(--size-icon-chip);
   border-radius: var(--radius-pill);
-  background: #e8f6f5;
+  background: var(--color-fl-teal-bg);
+  color: var(--color-fl-teal-dark);
 }
 
-.st-toggle-btn {
+.st-title-icon .st-icon {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}
+
+/* 閉じる：枠なし円形ゴーストボタン（トリガーボタン／ハンバーガーと同じ規則）。 */
+.st-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size-icon-btn);
+  height: var(--size-icon-btn);
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-sub);
+  cursor: pointer;
+  transition:
+    background var(--fl-dur) var(--fl-bounce),
+    color var(--fl-dur) var(--fl-bounce);
+}
+
+@media (hover: hover) {
+  .st-close:hover {
+    background: var(--color-fl-teal-bg);
+    color: var(--color-fl-teal-dark);
+  }
+}
+
+/* 親/子切替（セグメントコントロール）。docs/DESIGN.md の Flip7 トーン
+   （ティール・ピル型・弾むトランジション・グロー影）。
+   薄グレーのピル容器の中に teal のインジケーター1枚を置き、選択側へ transform で移動させる。
+   位置は容器の data-side（"dealer" | "nonDealer"）で決まる。 */
+.st-segment {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--color-border-soft);
+  overflow: hidden;
+}
+
+.st-segment-indicator {
+  position: absolute;
+  top: var(--space-1);
+  bottom: var(--space-1);
+  left: var(--space-1);
+  width: calc(50% - var(--space-1));
+  border-radius: var(--radius-pill);
+  background: var(--color-fl-teal);
+  box-shadow: var(--fl-glow-teal-soft);
+  transition: transform var(--fl-dur) var(--fl-bounce);
+}
+
+.st-segment[data-side="nonDealer"] .st-segment-indicator {
+  transform: translateX(100%);
+}
+
+.st-segment-btn {
+  position: relative;
+  z-index: 1;
   min-height: 36px;
   padding: 0 var(--space-4);
   font-size: var(--fs-sm);
@@ -64,57 +154,34 @@
   letter-spacing: 0.02em;
   border: none;
   border-radius: var(--radius-pill);
-  /* 非選択状態: グレーの塗りつぶし（透明のままだとコンテナの薄teal地に紛れて
-     選択中と区別しづらいため、白ベースで合成した不透明なグレーを敷く）。 */
-  background: color-mix(in srgb, var(--color-text-sub) 8%, #fff);
+  background: transparent;
   color: var(--color-text-sub);
   cursor: pointer;
   transition:
-    background 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    color 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    color var(--fl-dur) var(--fl-bounce),
+    transform var(--fl-dur) var(--fl-bounce);
 }
 
 @media (hover: hover) {
-  .st-toggle-btn:not(.st-toggle-btn--active):hover {
-    background: color-mix(in srgb, #2ba8a2 16%, transparent);
+  .st-segment-btn:not(.st-segment-btn--active):hover {
+    color: var(--color-fl-teal-dark);
   }
 }
 
-.st-toggle-btn:active {
+.st-segment-btn:active {
   transform: scale(0.95);
 }
 
-.st-toggle-btn--active {
-  background: #2ba8a2;
-  color: #fff8e7;
+.st-segment-btn--active {
+  color: var(--color-fl-cream);
   font-weight: 800;
-  box-shadow: 0 6px 18px rgba(43, 168, 162, 0.28);
 }
 
-.st-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  font-size: 1.4rem;
-  line-height: 1;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
-  color: var(--color-text-sub);
-  cursor: pointer;
-  transition:
-    border-color var(--duration) var(--ease-standard),
-    color var(--duration) var(--ease-standard);
-}
-
-@media (hover: hover) {
-  .st-close:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
+@media (prefers-reduced-motion: reduce) {
+  .st-segment-indicator,
+  .st-segment-btn,
+  .st-close {
+    transition: none;
   }
 }
 
@@ -176,12 +243,41 @@
   table-layout: fixed;
 }
 
+/* 罫線は太さを揃え、役割で濃淡を分ける。
+   セル内部の格子線=中間グレー（--color-table-rule）、
+   外枠・列見出し下線・符見出し列の右線・跳満区切り=濃グレー（--color-table-rule-strong）。 */
 .score-table th,
 .score-table td {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-table-rule);
   padding: var(--space-1) var(--space-1);
   text-align: center;
   vertical-align: middle;
+}
+
+/* 外枠：border-collapse では同幅・同線種ならセル側の色が table 側に勝つため、
+   table 自体ではなく外周セルの辺を濃色にする。 */
+.score-table tr > :first-child {
+  border-left-color: var(--color-table-rule-strong);
+}
+
+.score-table tr > :last-child {
+  border-right-color: var(--color-table-rule-strong);
+}
+
+.score-table thead th {
+  border-top-color: var(--color-table-rule-strong);
+  /* 列見出しの下線 */
+  border-bottom-color: var(--color-table-rule-strong);
+}
+
+.score-table tbody:last-child tr:last-child > * {
+  border-bottom-color: var(--color-table-rule-strong);
+}
+
+/* 符見出し列（左上「符」含む）の右側縦線 */
+.score-table .st-fu-head,
+.score-table .st-corner {
+  border-right-color: var(--color-table-rule-strong);
 }
 
 /* 列見出し（翻）と左上「符」ラベル：淡い面で表頭を分離。 */
@@ -219,7 +315,7 @@
 /* 跳満以上（符に依存しない区分）の行。70符の行との区切りを太罫線で示す。 */
 .st-rank-row-first th,
 .st-rank-row-first td {
-  border-top: 2px solid var(--color-border);
+  border-top: 2px solid var(--color-table-rule-strong);
 }
 
 .st-rank-name {
@@ -243,8 +339,12 @@
   line-height: 1.25;
 }
 
+/* 上段（ロン点）と下段（ツモ点）の間に極薄のディバイダを置く。 */
 .st-main {
   display: block;
+  padding-bottom: var(--space-0);
+  margin-bottom: var(--space-0);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
   font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--color-text);
@@ -253,7 +353,7 @@
 
 .st-sub {
   display: block;
-  margin-top: 1px;
+  margin-top: 0;
   font-size: 0.65rem;
   color: var(--color-text-sub);
   white-space: nowrap;
@@ -272,30 +372,34 @@
   color: var(--color-border);
 }
 
-/* --- ヘッダーの早見表トリガーボタン（ハンバーガー(.hamburger-btn)と同じ40x40の円形アイコン
-   ボタンに揃える。.quiz-page/.result-page 配下でのみ使うため、そのスコープの
-   --fl-teal-dark（Flip7 パレット）をそのまま使える。ConvertQuizPage.tsx とクラス名を
-   共有するため維持する（QuizPage.tsx 自体は Tailwind ユーティリティに移行済み。T-014）。 --- */
+/* --- ヘッダーの早見表トリガーボタン（ハンバーガー(.hamburger-btn)と同寸の円形アイコンボタン）。
+   常時 teal-bg の円形チップ＋teal-dark のグリッドアイコン（ScoreTableIcon）で、
+   押すと早見表が開くことを常に示す。ConvertQuizPage.tsx が使用。QuizPage.tsx は
+   Tailwind ユーティリティで同じ見た目を再現している（T-014。値を変える際は両方を揃える）。 --- */
 .qp-table-header-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: var(--size-icon-btn);
+  height: var(--size-icon-btn);
   padding: 0;
-  font-size: 1.2rem;
-  line-height: 1;
   border: none;
-  border-radius: 999px;
-  background: none;
-  color: var(--fl-teal-dark, var(--color-text));
+  border-radius: var(--radius-pill);
+  background: var(--color-fl-teal-bg);
+  color: var(--color-fl-teal-dark);
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: background var(--fl-dur) var(--fl-bounce);
 }
 
 @media (hover: hover) {
   .qp-table-header-btn:hover {
-    background: rgba(43, 168, 162, 0.14);
+    background: color-mix(in srgb, var(--color-fl-teal) 20%, var(--color-fl-teal-bg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qp-table-header-btn {
+    transition: none;
   }
 }
