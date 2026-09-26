@@ -15,9 +15,10 @@ export function SettingsPage() {
         <div className="flex gap-2">
           <Link
             to="/"
-            className="inline-flex items-center min-h-[36px] px-[14px] text-[0.8rem] font-bold text-fl-teal-dark no-underline bg-fl-cream border-2 border-fl-teal rounded-[var(--fl-r-pill)] transition-[transform,background,color] duration-[var(--fl-dur)] ease-[var(--fl-bounce)] hover:text-fl-cream hover:bg-fl-teal hover:no-underline hover:-translate-y-0.5 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none"
+            className="inline-flex items-center justify-center w-10 h-10 p-0 text-[1.2rem] leading-none rounded-full bg-transparent text-fl-teal-dark cursor-pointer shrink-0 transition-[background] duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-[rgba(43,168,162,0.14)]"
+            aria-label="ホームに戻る"
           >
-            ホーム
+            <span aria-hidden="true">🏠</span>
           </Link>
         </div>
       </div>
