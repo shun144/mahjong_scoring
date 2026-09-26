@@ -23,7 +23,7 @@ interface Props {
 }
 
 /**
- * ハンバーガー＋右ドロワーのサイドバーに「ホーム」「他のモードで練習」「成績」を集約したヘッダー。
+ * ホームアイコン＋ハンバーガー（右ドロワーに「他のモードで練習」「成績」を集約）のヘッダー。
  * 点数計算モード系の画面で使う（/quiz・/result・/fu/quiz・/fu/result・/fu/parts・/convert）。
  */
 export function SidebarPageHeader({
@@ -42,15 +42,16 @@ export function SidebarPageHeader({
       <h1>{title}</h1>
       <div className="page-header-actions">
         {headerAction}
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center w-10 h-10 p-0 text-[1.2rem] leading-none rounded-full bg-transparent text-fl-teal-dark cursor-pointer shrink-0 transition-[background] duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-[rgba(43,168,162,0.14)]"
+          aria-label="ホームに戻る"
+        >
+          <span aria-hidden="true">🏠</span>
+        </Link>
         <HamburgerButton open={open} onClick={() => setOpen(true)} />
       </div>
       <Sidebar open={open} onClose={() => setOpen(false)} label="メニュー">
-        <Link to="/" className="sidebar-nav-item" onClick={() => setOpen(false)}>
-          <span className="sidebar-nav-icon" aria-hidden="true">
-            🏠
-          </span>
-          ホーム
-        </Link>
         <p className="sidebar-nav-heading">他のモードで練習</p>
         {otherModes.map((mode) => (
           <Link

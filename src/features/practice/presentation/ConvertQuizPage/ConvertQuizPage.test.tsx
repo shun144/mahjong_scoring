@@ -116,13 +116,12 @@ describe("ConvertQuizPage", () => {
     expect(container.querySelectorAll(".quiz-choice-btn")).toHaveLength(4);
   });
 
-  it("shows no stats link, only home, inside the sidebar (点数換算モードは成績に連携しない)", () => {
+  it("shows a home icon in the header, and no stats link inside the sidebar (点数換算モードは成績に連携しない)", () => {
     renderConvert();
-    expect(screen.queryByRole("link", { name: "ホーム" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "ホームに戻る" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "メニューを開く" }));
     expect(screen.queryByRole("link", { name: "成績" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "ホーム" })).toBeInTheDocument();
   });
 
   it("切り上げ満貫ON: 満貫切上タグが表示される", async () => {
