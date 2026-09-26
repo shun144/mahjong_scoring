@@ -33,3 +33,15 @@ if (typeof globalThis.IntersectionObserver === "undefined") {
   globalThis.IntersectionObserver =
     NoopIntersectionObserver as unknown as typeof IntersectionObserver;
 }
+
+// jsdom は ResizeObserver も実装していない。HandDisplay の横スクロールフェード表示等、
+// 要素サイズ変化を監視するだけで実際のレイアウト計算結果を検証しないテストが
+// クラッシュしないよう、no-op のポリフィルを用意する。
+if (typeof globalThis.ResizeObserver === "undefined") {
+  class NoopResizeObserver implements ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  globalThis.ResizeObserver = NoopResizeObserver as unknown as typeof ResizeObserver;
+}

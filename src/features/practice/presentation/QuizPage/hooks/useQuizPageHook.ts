@@ -29,6 +29,10 @@ export function useQuizPageHook() {
 
   const [problem, setProblem] = useState(() => reviewProblem ?? nextProblem());
 
+  // 「戻る」用の来歴スタック。「次へ」で現在の問題を積み、「戻る」で1問popして表示する。
+  // セッション内（このコンポーネントのマウント中）のみ保持し、永続化しない。
+  const [history, setHistory] = useState<Problem[]>([]);
+
   // 回答結果。null=未回答（選択肢を表示）、非nullなら同画面に結果をインライン表示する。
   const [answered, setAnswered] = useState<Answered | null>(null);
 
@@ -69,12 +73,26 @@ export function useQuizPageHook() {
     setAnswered({ selected, isCorrect });
   }
 
-  // 次の問題へ進む。未回答時は「次の問題へ」スキップ、回答後は結果からの「次へ」で使う。
+  // 次の問題へ進む。未回答時は「次へ」でスキップ、回答後は結果からの「次へ」で使う。
   // いずれも成績には記録しない（記録は handleAnswer で1回のみ行う）。
+  // 常に新規ランダム生成へ進む（「戻る」の後でも、戻る前に見ていた問題への「進む」＝redoはしない）。
   function handleNext() {
+    setHistory((h) => [...h, problem]);
     setAnswered(null);
     setReviewProblem(null);
     setProblem(nextProblem());
+  }
+
+  // 直前に表示していた問題へ1問だけ戻る。戻った問題は未回答にリセットする（離れた時点の
+  // 回答内容は復元しない）。復習扱いとし、再回答は成績に二重計上しない（handleAnswer の
+  // reviewProblem ガードを流用）。
+  function handleBack() {
+    if (history.length === 0) return;
+    const previous = history[history.length - 1];
+    setHistory((h) => h.slice(0, -1));
+    setReviewProblem(previous);
+    setProblem(previous);
+    setAnswered(null);
   }
 
   // 回答後、同じ問題を回答・採点状態だけリセットして解き直す。「問題に戻る」と同じ復習扱いにし、
@@ -94,6 +112,8 @@ export function useQuizPageHook() {
     answered,
     handleRetry,
     handleNext,
+    handleBack,
+    canGoBack: history.length > 0,
     choices,
     handleAnswer,
     showScoreTable,

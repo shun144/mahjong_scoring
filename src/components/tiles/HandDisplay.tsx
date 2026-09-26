@@ -1,5 +1,6 @@
 import type { Meld } from "@/core/scoring/domain/meld";
 import { removeOneMatchingTile, sortTiles, type Tile } from "@/core/scoring/domain/tile";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MeldGroup } from "./MeldGroup";
 import type { TileSize } from "./TileFace";
 import { TileRow } from "./TileRow";
@@ -24,8 +25,38 @@ export function HandDisplay({ concealed, melds = [], winningTile, size = "md" }:
   const restTiles = removeOneMatchingTile(concealed, winningTile);
   const sortedConcealed = sortTiles(restTiles);
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // 横スクロールバーは非表示にしている（tiles.css）ため、まだ隠れている牌がある方向を
+  // フェードで示す。スクロールバーが無くても続きがあることが分かるようにするため。
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateFadeState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 1);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+  }, []);
+
+  // 問題が変わる・画面サイズが変わるなど、スクロール要否が変わりうるタイミングで再計算する。
+  useLayoutEffect(() => {
+    updateFadeState();
+  });
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateFadeState, { passive: true });
+    const observer = new ResizeObserver(updateFadeState);
+    observer.observe(el);
+    return () => {
+      el.removeEventListener("scroll", updateFadeState);
+      observer.disconnect();
+    };
+  }, [updateFadeState]);
+
   return (
-    <div className="mj-hand-display">
+    <div className="mj-hand-display" ref={scrollRef}>
       {/* 純手牌の行。 */}
       <div className="mj-hand-row">
         <TileRow tiles={sortedConcealed} size={size} keyPrefix="concealed" />
@@ -37,6 +68,14 @@ export function HandDisplay({ concealed, melds = [], winningTile, size = "md" }:
           <MeldGroup key={`meld-${i}`} meld={meld} size={size} keyPrefix={`meld-${i}`} />
         ))}
       </div>
+      <div
+        className={`mj-hand-fade mj-hand-fade--left${canScrollLeft ? " mj-hand-fade--visible" : ""}`}
+        aria-hidden="true"
+      />
+      <div
+        className={`mj-hand-fade mj-hand-fade--right${canScrollRight ? " mj-hand-fade--visible" : ""}`}
+        aria-hidden="true"
+      />
     </div>
   );
 }
